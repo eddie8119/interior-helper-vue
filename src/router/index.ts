@@ -47,6 +47,18 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
+    path: '/',
+    component: AppLayout,
+    redirect: { name: 'overview' },
+    children: [
+      {
+        name: 'overview',
+        path: 'overview',
+        component: () => import('../pages/protected/overview/index.vue'),
+      },
+    ],
+  },
+  {
     path: '/user',
     component: AppLayout,
     children: [
@@ -54,6 +66,35 @@ const routes: Array<RouteRecordRaw> = [
         name: 'user-edit',
         path: 'edit',
         component: () => import('../pages/protected/user/index.vue'),
+        redirect: { name: 'user-profile' },
+        children: [
+          {
+            name: 'user-profile',
+            path: 'profile',
+            component: () => import('../pages/protected/user/profile.vue'),
+          },
+          {
+            name: 'user-edit-profile',
+            path: 'edit-profile',
+            component: () => import('../pages/protected/user/edit-profile.vue'),
+          },
+          {
+            name: 'user-change-password',
+            path: 'change-password',
+            component: () => import('../pages/protected/user/change-password.vue'),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: '/project',
+    component: AppLayout,
+    children: [
+      {
+        name: 'project-to-do-list',
+        path: 'to-do-list',
+        component: () => import('../pages/protected/project/to-do-list.vue'),
         redirect: { name: 'user-profile' },
         children: [
           {
@@ -86,6 +127,7 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+
   {
     path: '/observation',
     component: AppLayout,
@@ -149,16 +191,16 @@ router.beforeEach((to, _from, next) => {
   const publicPages = ['/auth/login', '/auth/register', '/auth/forgot-password'];
   const isPublicPage = publicPages.includes(to.path);
 
-  if (!isPublicPage && !authStore.isAuthenticated) {
-    return next({
-      name: 'login',
-      query: { redirect: to.fullPath },
-    });
-  }
+  // if (!isPublicPage && !authStore.isAuthenticated) {
+  //   return next({
+  //     name: 'login',
+  //     query: { redirect: to.fullPath },
+  //   });
+  // }
 
-  if (authStore.isAuthenticated && isPublicPage) {
-    return next({ name: 'overview' });
-  }
+  // if (authStore.isAuthenticated && isPublicPage) {
+  //   return next({ name: 'overview' });
+  // }
 
   // isAdmin 是 Vue 的 ComputedRef 物件，而不是一個單純的布林值。
   // 在 JavaScript 中，任何物件（包括 ComputedRef 物件）在布林判斷中都會被視為 true

@@ -2,7 +2,6 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 import AppLayout from '@/layouts/AppLayout.vue';
 import { useAuthStore } from '@/stores/auth';
-import { cleanupAllAnimations } from '@/utils/three/AnimationController';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -48,42 +47,6 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/',
-    component: AppLayout,
-    redirect: { name: 'overview' },
-    children: [
-      {
-        name: 'dashboard',
-        path: 'dashboard',
-        component: () => import('../pages/protected/dashboard/index.vue'),
-      },
-      {
-        name: 'entitySearch',
-        path: 'entity-search',
-        component: () => import('../pages/protected/entity-search/index.vue'),
-        // 動態路由參數使用下劃線，是最佳實踐，需要和 params 保持一致
-        // 一般路徑：使用連字符（-） 是最佳實踐
-        children: [
-          {
-            name: 'overviewEntity',
-            path: 'overview',
-            component: () => import('../pages/protected/overview-entity/index.vue'),
-          },
-        ],
-      },
-      {
-        name: 'devices',
-        path: 'devices',
-        component: () => import('../pages/protected/devices/index.vue'),
-      },
-      {
-        name: 'overview',
-        path: 'overview',
-        component: () => import('../pages/protected/overview/index.vue'),
-      },
-    ],
-  },
-  {
     path: '/user',
     component: AppLayout,
     children: [
@@ -109,22 +72,6 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import('../pages/protected/user/change-password.vue'),
           },
         ],
-      },
-    ],
-  },
-  {
-    path: '/scout',
-    component: AppLayout,
-    children: [
-      {
-        name: 'scout-real-time',
-        path: 'real-time',
-        component: () => import('../pages/protected/scout/real-time.vue'),
-      },
-      {
-        name: 'scout-record',
-        path: 'record',
-        component: () => import('../pages/protected/scout/record.vue'),
       },
     ],
   },
@@ -197,9 +144,6 @@ const router = createRouter({
 
 // Navigation guard
 router.beforeEach((to, _from, next) => {
-  // 清理所有動畫控制器，防止背景資源洩漏
-  cleanupAllAnimations();
-
   const authStore = useAuthStore();
 
   const publicPages = ['/auth/login', '/auth/register', '/auth/forgot-password'];

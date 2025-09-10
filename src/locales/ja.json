@@ -345,6 +345,7 @@
     "name": "名前",
     "phone": "電話"
   },
+  "project": {},
   "tab": {
     "devices": "デバイス一覧",
     "device": "デバイス",

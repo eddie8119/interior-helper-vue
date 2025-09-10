@@ -25,6 +25,11 @@
         "username": "Username",
         "email": "Email",
         "member_since": "Member Since"
+      },
+      "project": {
+        "project_name": "Project Name",
+        "project_type": "Project Type",
+        "construction": "Construction"
       }
     }
   },

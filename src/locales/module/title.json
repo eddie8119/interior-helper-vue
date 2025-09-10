@@ -14,12 +14,7 @@
       "alarm_detail": "Alarm Detail",
       "handling_records": "Handling Records",
       "overview": "Overview",
-      "monitoring": "Monitoring",
-      "factory_scene": "Factory Scene",
-      "alarm_list": "Alarm List",
-      "device": {
-        "alarm_subscription": "Alarm Subscription"
-      },
+      "create_project": "Create Project",
       "subTitle": {
         "latest_calibration": "Latest Calibration",
         "statistics": "Statistics",

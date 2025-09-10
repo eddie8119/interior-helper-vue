@@ -76,6 +76,7 @@
     "replace_date": "Replace Date"
   },
   "common": {
+    "create_project": "Create Project",
     "confirm": "Confirm",
     "cancel": "Cancel",
     "save": "Save",
@@ -216,6 +217,11 @@
       "username": "Username",
       "email": "Email",
       "member_since": "Member Since"
+    },
+    "project": {
+      "project_name": "Project Name",
+      "project_type": "Project Type",
+      "construction": "Construction"
     }
   },
   "link": {
@@ -347,8 +353,14 @@
     "email": "Email",
     "name": "Name",
     "phone": "Phone",
-    "search": "Search"
+    "search": "Search",
+    "project": {
+      "project_name": "Please enter project name",
+      "project_type": "Please select project type",
+      "construction": "Please select construction"
+    }
   },
+  "project": {},
   "tab": {
     "devices": "Devices",
     "device": "Device",
@@ -378,12 +390,7 @@
     "alarm_detail": "Alarm Detail",
     "handling_records": "Handling Records",
     "overview": "Overview",
-    "monitoring": "Monitoring",
-    "factory_scene": "Factory Scene",
-    "alarm_list": "Alarm List",
-    "device": {
-      "alarm_subscription": "Alarm Subscription"
-    },
+    "create_project": "Create Project",
     "subTitle": {
       "latest_calibration": "Latest Calibration",
       "statistics": "Statistics",

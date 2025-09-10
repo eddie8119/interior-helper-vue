@@ -13,7 +13,12 @@
       "email": "Email",
       "name": "Name",
       "phone": "Phone",
-      "search": "Search"
+      "search": "Search",
+      "project": {
+        "project_name": "Please enter project name",
+        "project_type": "Please select project type",
+        "construction": "Please select construction"
+      }
     }
   },
   "zh-TW": {

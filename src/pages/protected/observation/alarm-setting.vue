@@ -1,15 +1,5 @@
-<template>
-  <DevicesAlarmBulletinBoard :observation-type="props.observationType" />
-</template>
+<template></template>
 
-<script setup lang="ts">
-import type { ObservationType } from '@/types/device';
-
-import DevicesAlarmBulletinBoard from '@/components/core/situationRoom/DevicesAlarmBulletinBoard.vue';
-
-const props = defineProps<{
-  observationType: ObservationType;
-}>();
-</script>
+<script setup lang="ts"></script>
 
 <style scoped></style>

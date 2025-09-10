@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const passwordRules = {
-  min: 8,
+  min: 6,
   hasUpperCase: /[A-Z]/,
   hasSpecialChar: /[!@#$%^&*]/,
   hasAlphaNumeric: /[0-9a-zA-Z]/,

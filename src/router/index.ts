@@ -92,25 +92,14 @@ const routes: Array<RouteRecordRaw> = [
     component: AppLayout,
     children: [
       {
-        name: 'project-to-do-list',
-        path: 'to-do-list',
-        component: () => import('../pages/protected/project/to-do-list.vue'),
-        redirect: { name: 'user-profile' },
+        path: '',
+        component: () => import('../pages/protected/project/index.vue'),
+        redirect: { name: 'project-to-do-list' },
         children: [
           {
-            name: 'user-profile',
-            path: 'profile',
-            component: () => import('../pages/protected/user/profile.vue'),
-          },
-          {
-            name: 'user-edit-profile',
-            path: 'edit-profile',
-            component: () => import('../pages/protected/user/edit-profile.vue'),
-          },
-          {
-            name: 'user-change-password',
-            path: 'change-password',
-            component: () => import('../pages/protected/user/change-password.vue'),
+            name: 'project-to-do-list',
+            path: 'to-do-list',
+            component: () => import('../pages/protected/project/to-do-list.vue'),
           },
         ],
       },

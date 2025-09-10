@@ -23,7 +23,7 @@ import { useRoute } from 'vue-router';
 
 import TabObservation from '@/components/core/tab/TabObservation.vue';
 import H1Title from '@/components/core/title/H1Title.vue';
-import { devicesRemoteTabList, devicesTabList } from '@/constants/tab';
+import { devicesTabList } from '@/constants/tab';
 
 const props = defineProps<{
   subject: string;
@@ -33,10 +33,7 @@ const props = defineProps<{
 const route = useRoute();
 
 const tabsList = computed(() => {
-  const baseTabs =
-    props.subject === 'sqm' || props.subject === 'mac'
-      ? [...devicesRemoteTabList]
-      : [...devicesTabList];
+  const baseTabs = [...devicesTabList];
 
   if (route.params.id && props.subject !== 'sqm' && props.subject !== 'mac') {
     const devicesTabIndex = baseTabs.findIndex((tab) => tab.name === 'devices');

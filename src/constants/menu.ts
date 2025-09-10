@@ -16,10 +16,10 @@ export const menu: Menu[] = [
     group: 'nav.group.observation_items',
     items: [
       {
-        label: 'to-do',
-        name: 'to-do',
+        label: 'to-do-list',
+        name: 'to-do-list',
         icon: 'ChartPieSlice',
-        route: '/project/to-do',
+        route: '/project/to-do-list',
       },
       {
         label: 'pH',

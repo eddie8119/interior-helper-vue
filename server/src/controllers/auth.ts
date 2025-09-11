@@ -65,3 +65,41 @@ export const logout = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const refresh = async (req: Request, res: Response) => {
+  try {
+    const { refresh_token } = req.body;
+
+    if (!refresh_token) {
+      return res.status(400).json({
+        success: false,
+        message: "Refresh token is required",
+      });
+    }
+
+    const { data, error } = await supabase.auth.refreshSession({
+      refresh_token,
+    });
+
+    if (error || !data.session) {
+      return res.status(401).json({
+        success: false,
+        message: error?.message || "Invalid refresh token",
+      });
+    }
+
+    res.json({
+      success: true,
+      data: {
+        access_token: data.session.access_token,
+      },
+      message: "Token refreshed successfully",
+    });
+  } catch (error) {
+    console.error("Refresh token error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to refresh token",
+    });
+  }
+};

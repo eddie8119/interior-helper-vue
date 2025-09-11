@@ -1,5 +1,5 @@
-import type { AuthResponse } from '@/api/response';
 import type { ApiResponse } from '@/types/request';
+import type { AuthResponse } from '@/types/response';
 import type { LoginSchema } from '@/utils/schemas/loginSchema';
 
 import request from '@/utils/request';

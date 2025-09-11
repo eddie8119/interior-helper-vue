@@ -61,13 +61,15 @@ const { errorMessage, handleError } = useFormError({
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    const response = await authApi.login(values as unknown as LoginData);
-    if (response.status === 200) {
-      const { tokens, role } = response.data;
-      setRefreshToken(tokens.refresh);
-      setAccessToken(tokens.access);
-      localStorage.setItem('access_role', role);
-      authStore.login(role);
+    const response = await authApi.login(values as LoginData);
+    const { data: apiResponseData, success } = response;
+
+    if (success && apiResponseData) {
+      const { access_token, refresh_token } = apiResponseData;
+      setRefreshToken(refresh_token);
+      setAccessToken(access_token);
+      // localStorage.setItem('access_role', role);
+      // authStore.login(role);
       router.replace(route.query.redirect?.toString() || '/overview');
     }
   } catch (error) {

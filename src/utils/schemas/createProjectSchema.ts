@@ -1,18 +1,17 @@
 import { z } from 'zod';
 
-const constructionSelectionSchema = z.object({
-  id: z.string(),
-  type: z.string(),
-  order: z.number(),
-});
+// const constructionSelectionSchema = z.object({
+//   type: z.string(),
+//   order: z.number(),
+// });
 
-export const createProjectInputSchema = z.object({
-  title: z.string().min(1, '請輸入專案標題').max(15, '標題不能超過15個字'),
+export const createProjectSchema = z.object({
+  title: z.string().min(1, '請輸入專案標題').max(10, '標題不能超過10個字'),
   type: z.enum(['residential', 'luxury', 'commercial', 'office']),
-  constructionContainer: z.array(constructionSelectionSchema).min(1, '至少選擇一個施工項目'),
+  constructionContainer: z.array(z.string()).min(1, '至少選擇一個施工項目'),
 });
 
-export const createProjectSchema = createProjectInputSchema.extend({
+export const createProjectDetailSchema = createProjectSchema.extend({
   startDate: z.date().nullable().optional(),
   dueDate: z.date().nullable().optional(),
   budgetTotal: z.number().nullable().optional().default(0),
@@ -22,5 +21,5 @@ export const createProjectSchema = createProjectInputSchema.extend({
   team: z.array(z.any()).optional(),
 });
 
-export type CreateProjectInputSchema = z.infer<typeof createProjectInputSchema>;
 export type CreateProjectSchema = z.infer<typeof createProjectSchema>;
+export type CreateProjectDetailSchema = z.infer<typeof createProjectDetailSchema>;

@@ -36,9 +36,9 @@
       >
         <el-option
           v-for="item in CONSTRUCTION_CONTAINER"
-          :key="item.id"
+          :key="item.type"
           :label="item.type"
-          :value="item.id"
+          :value="item.type"
         />
       </el-select>
     </el-form-item>
@@ -83,7 +83,8 @@ const { value: constructionContainer, handleBlur: handleBlurConstructionContaine
 
 const onSubmit = handleSubmit((values: CreateProjectSchema) => {
   try {
-    emit('update:projectData', values);
+    console.log(555, values);
+    // emit('update:projectData', values);
 
     onCancel();
   } catch (error) {

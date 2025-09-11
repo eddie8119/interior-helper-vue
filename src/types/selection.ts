@@ -6,7 +6,6 @@ export interface ProjectTypeSelection {
 }
 
 export interface ConstructionSelection {
-  id: string;
   type: string;
   order: number;
 }

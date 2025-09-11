@@ -6,7 +6,6 @@ export interface LoginData {
 export interface RegisterData {
   email: string;
   password: string;
-  confirmPassword: string;
 }
 
 export interface ForgotPasswordData {

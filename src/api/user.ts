@@ -1,3 +1,4 @@
+import type { ApiResponse } from '@/types/request';
 import type {
   ActivationData,
   ChangePasswordData,
@@ -23,27 +24,27 @@ interface ResetPasswordPayload {
   uid: string;
 }
 
-export const usersApi = {
+export const userApi = {
   // User account operations
   // 註冊
-  register(data: RegisterData) {
-    return request.post('/users/', data);
+  register(data: RegisterData): Promise<ApiResponse<null>> {
+    return request.post('/user/register/', data);
   },
 
   // 帳戶激活
   activateAccount(data: ActivationData) {
-    return request.post('/users/activation/', data);
+    return request.post('/user/activation/', data);
   },
 
   // 重發激活郵件
   resendActivation(data: ResendActivationData) {
-    return request.post('/users/activation/resend/', data);
+    return request.post('/user/activation/resend/', data);
   },
 
   // Password management
   // 要求重置密碼
   forgotPassword(data: ForgotPasswordData) {
-    return request.post('/users/reset-password/', data);
+    return request.post('/user/reset-password/', data);
   },
 
   // 重置密碼(忘記密碼)
@@ -57,7 +58,7 @@ export const usersApi = {
       uid,
     };
 
-    return request.patch('/users/reset-password/confirm/', payload);
+    return request.patch('/user/reset-password/confirm/', payload);
   },
 
   // 更改密碼(知道密碼)
@@ -70,17 +71,17 @@ export const usersApi = {
       new_confirm_password: newConfirmPassword,
     };
 
-    return request.put('/users/change-password/', payload);
+    return request.put('/user/change-password/', payload);
   },
 
   // Profile management
   // 取得個人資料
   getUserProfile() {
-    return request.get('/users/profile/');
+    return request.get('/user/profile/');
   },
 
   // 更新個人資料
   updateUserProfile(data: EditProfileData) {
-    return request.put('/users/profile/', data);
+    return request.put('/user/profile/', data);
   },
 };

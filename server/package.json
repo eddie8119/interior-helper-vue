@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "dist/server/src/app.js",
   "_moduleAliases": {
-    "@": "dist/server/src",
-    "@shared": "dist/shared"
+    "@": "dist/server/src"
   },
   "scripts": {
     "start": "node -r module-alias/register -r dotenv/config .",

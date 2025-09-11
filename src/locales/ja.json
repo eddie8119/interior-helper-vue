@@ -219,7 +219,8 @@
     "back_to_home": "ホームに戻る",
     "back_to_forgot_password": "忘記パスワードに戻る",
     "forgot_password": "忘記パスワード",
-    "back_to_login": "ログインに戻る"
+    "back_to_login": "ログインに戻る",
+    "register": "登録する"
   },
   "management": {
     "inviteMember": "メンバーを招待",

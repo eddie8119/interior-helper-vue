@@ -222,7 +222,8 @@
     "back_to_home": "返回首頁",
     "back_to_forgot_password": "返回忘記密碼",
     "forgot_password": "忘記密碼",
-    "back_to_login": "返回登入"
+    "back_to_login": "返回登入",
+    "register": "註冊"
   },
   "management": {
     "roles": {

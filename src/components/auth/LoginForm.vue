@@ -21,7 +21,9 @@
       @update:model-value="emit('update:password', $event)"
       @blur="emit('blur:password')"
     />
-
+    <router-link to="/auth/register">
+      <p class="mb-2 text-sm">{{ t('link.register') }}</p>
+    </router-link>
     <router-link to="/auth/forgot-password">
       <p class="mb-2 text-sm">{{ t('link.forgot_password') }}</p>
     </router-link>

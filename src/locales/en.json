@@ -228,7 +228,8 @@
     "back_to_home": "Back to Home",
     "back_to_forgot_password": "Back to Forgot Password",
     "forgot_password": "Forgot Password",
-    "back_to_login": "Back to Login"
+    "back_to_login": "Back to Login",
+    "register": "Register"
   },
   "management": {
     "inviteMember": "Invite Member",

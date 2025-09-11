@@ -77,11 +77,11 @@ export const userApi = {
   // Profile management
   // 取得個人資料
   getUserProfile() {
-    return request.get('/user/profile/');
+    return request.get('/user/profile');
   },
 
   // 更新個人資料
   updateUserProfile(data: EditProfileData) {
-    return request.put('/user/profile/', data);
+    return request.put('/user/profile', data);
   },
 };

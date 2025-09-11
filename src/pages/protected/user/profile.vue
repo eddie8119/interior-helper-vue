@@ -5,7 +5,7 @@
         <el-avatar :size="50" class="mr-4">
           {{ username?.charAt(0)?.toUpperCase() || 'U' }}
         </el-avatar>
-        <H1Title :title="username || 'User Profile'" />
+        <H1Title :title="username" />
       </div>
     </template>
 
@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { onActivated, ref } from 'vue';
+import { onActivated, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { userApi } from '@/api/user';
@@ -45,20 +45,39 @@ const email = ref<string>('');
 const username = ref<string>('');
 const loading = ref(true);
 
-const fetchUserProfile = async () => {
-  loading.value = true;
+const fetchUserProfile = async (showLoader: boolean) => {
+  if (showLoader) {
+    loading.value = true;
+  }
   try {
-    const response = await userApi.getUserProfile();
-    email.value = response.data.email;
-    username.value = response.data.username;
+    const { data: apiResponseData } = await userApi.getUserProfile();
+    if (apiResponseData?.user) {
+      email.value = apiResponseData.user.email;
+      username.value = apiResponseData.user.name;
+    }
   } finally {
-    loading.value = false;
+    if (showLoader) {
+      loading.value = false;
+    }
   }
 };
 
-// 在 keep-alive 中，onActivated 在首次掛載時也會執行
-// 每次組件被激活時也獲取數據
-onActivated(fetchUserProfile);
+// todo
+// onMounted is called only once when the component is first created.
+// We show the loader on the initial fetch.
+onMounted(() => {
+  fetchUserProfile(true);
+});
+
+// onActivated is called when a kept-alive component is re-inserted into the DOM.
+// We refresh the data in the background without showing the loader.
+onActivated(() => {
+  // The onMounted hook handles the initial fetch, so we can skip the first activation.
+  // This check prevents a double-fetch on the first load.
+  if (!loading.value) {
+    fetchUserProfile(false);
+  }
+});
 </script>
 
 <style scoped>

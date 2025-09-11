@@ -60,7 +60,7 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
-  (response) => response, // 這裡沒有用 response.data 因為後端傳來的結構有的並沒有包在data下;
+  (response) => response.data,
   async (error) => {
     const originalRequest = error.config as CustomAxiosRequestConfig;
 

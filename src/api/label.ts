@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios';
 
-import instance from '@/utils/request';
+import request from '@/utils/request';
 
 interface GetLabelsParams {
   label?: string;
@@ -10,9 +10,9 @@ interface GetLabelsParams {
 export const labelApi = {
   // device statuses
   getLabels(): Promise<AxiosResponse> {
-    return instance.get('/labels/device-statuses/');
+    return request.get('/labels/device-statuses/');
   },
   getAlarmRecords(params?: GetLabelsParams): Promise<AxiosResponse> {
-    return instance.get(`/labels/alarm-records/`, { params });
+    return request.get(`/labels/alarm-records/`, { params });
   },
 };

@@ -8,13 +8,7 @@ import type {
   ResetPasswordData,
 } from '@/types/user';
 
-import instance from '@/utils/request';
-
-interface RegisterPayload {
-  email: string;
-  password: string;
-  confirm_password: string;
-}
+import request from '@/utils/request';
 
 interface ChangePasswordPayload {
   old_password: string;
@@ -30,32 +24,26 @@ interface ResetPasswordPayload {
 }
 
 export const usersApi = {
+  // User account operations
   // 註冊
   register(data: RegisterData) {
-    const { email, password, confirmPassword } = data;
-
-    const payload: RegisterPayload = {
-      email,
-      password,
-      confirm_password: confirmPassword,
-    };
-
-    return instance.post('/users/', payload);
+    return request.post('/users/', data);
   },
 
   // 帳戶激活
   activateAccount(data: ActivationData) {
-    return instance.post('/users/activation/', data);
+    return request.post('/users/activation/', data);
   },
 
   // 重發激活郵件
   resendActivation(data: ResendActivationData) {
-    return instance.post('/users/activation/resend/', data);
+    return request.post('/users/activation/resend/', data);
   },
 
+  // Password management
   // 要求重置密碼
   forgotPassword(data: ForgotPasswordData) {
-    return instance.post('/users/reset-password/', data);
+    return request.post('/users/reset-password/', data);
   },
 
   // 重置密碼(忘記密碼)
@@ -69,7 +57,7 @@ export const usersApi = {
       uid,
     };
 
-    return instance.patch('/users/reset-password/confirm/', payload);
+    return request.patch('/users/reset-password/confirm/', payload);
   },
 
   // 更改密碼(知道密碼)
@@ -82,16 +70,17 @@ export const usersApi = {
       new_confirm_password: newConfirmPassword,
     };
 
-    return instance.put('/users/change-password/', payload);
+    return request.put('/users/change-password/', payload);
   },
 
+  // Profile management
   // 取得個人資料
   getUserProfile() {
-    return instance.get('/users/profile/');
+    return request.get('/users/profile/');
   },
 
   // 更新個人資料
   updateUserProfile(data: EditProfileData) {
-    return instance.put('/users/profile/', data);
+    return request.put('/users/profile/', data);
   },
 };

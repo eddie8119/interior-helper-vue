@@ -1,16 +1,16 @@
 import type { Device, DeviceDevice, Devices } from '@/types/device';
 import type { AxiosResponse } from 'axios';
 
-import instance from '@/utils/request';
+import request from '@/utils/request';
 
 export const deviceApi = {
   getDevices(params?: Record<string, string>): Promise<AxiosResponse<Devices>> {
-    return instance.get('/devices/', { params });
+    return request.get('/devices/', { params });
   },
   getDevice(entityId: string): Promise<AxiosResponse<DeviceDevice>> {
-    return instance.get(`/devices/${entityId}/`);
+    return request.get(`/devices/${entityId}/`);
   },
   patchDevice(deviceID: string, device_details: Partial<Device>): Promise<AxiosResponse<Device>> {
-    return instance.patch(`/devices/${deviceID}/`, device_details);
+    return request.patch(`/devices/${deviceID}/`, device_details);
   },
 };

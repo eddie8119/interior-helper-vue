@@ -3,6 +3,7 @@
     v-model="dialogVisible"
     :title="t('title.create_project')"
     :is-submitting="isSubmitting"
+    :error-message="errorMessage"
     @submit="onSubmit"
     @cancel="onCancel"
   >
@@ -48,9 +49,10 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod';
 import { useField, useForm } from 'vee-validate';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { projectApi } from '@/api/project';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
 import { CONSTRUCTION_CONTAINER, PROJECT_TYPES } from '@/constants/selection';
 import { createProjectSchema, type CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
@@ -65,6 +67,8 @@ const emit = defineEmits<{
   'update:modelValue': [value: boolean];
   'update:projectData': [projectData: CreateProjectSchema];
 }>();
+
+const errorMessage = ref<string>('');
 
 const dialogVisible = computed({
   get: () => props.modelValue,
@@ -81,12 +85,14 @@ const { value: type, handleBlur: handleBlurType } = useField('type');
 const { value: constructionContainer, handleBlur: handleBlurConstructionContainer } =
   useField('constructionContainer');
 
-const onSubmit = handleSubmit((values: CreateProjectSchema) => {
+const onSubmit = handleSubmit(async (values: CreateProjectSchema) => {
   try {
-    console.log(555, values);
-    // emit('update:projectData', values);
-
-    onCancel();
+    const { success, message } = await projectApi.createProject(values);
+    if (!success) {
+      errorMessage.value = message;
+      return;
+    }
+    if (success) onCancel();
   } catch (error) {
     console.error('Failed to update device tag:', error);
   }

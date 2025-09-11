@@ -40,20 +40,20 @@ import { useI18n } from 'vue-i18n';
 
 import TextButton from '@/components/core/button/TextButton.vue';
 
-const props = defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  isSubmitting: {
-    type: Boolean,
-    default: false,
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue: boolean;
+    title: string;
+    isSubmitting: boolean;
+    errorMessage?: string;
+  }>(),
+  {
+    modelValue: false,
+    title: '',
+    isSubmitting: false,
+    errorMessage: '',
+  }
+);
 
 const emit = defineEmits(['update:modelValue', 'submit', 'cancel']);
 const dialogVisible = computed({

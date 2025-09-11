@@ -61,8 +61,7 @@ const { errorMessage, handleError } = useFormError({
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    const response = await authApi.login(values as LoginData);
-    const { data: apiResponseData, success } = response;
+    const { data: apiResponseData, success } = await authApi.login(values as LoginData);
 
     if (success && apiResponseData) {
       const { access_token, refresh_token } = apiResponseData;

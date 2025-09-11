@@ -25,7 +25,7 @@ import { useI18n } from 'vue-i18n';
 import type { ForgotPasswordData } from '@/types/user';
 import type { AxiosError } from 'axios';
 
-import { usersApi } from '@/api/users';
+import { userApi } from '@/api/user';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import ForgotPasswordForm from '@/components/auth/ForgotPasswordForm.vue';
 import { useFormError } from '@/composables/useFormError';
@@ -55,7 +55,7 @@ const { errorMessage, handleError } = useFormError({
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await usersApi.forgotPassword(values as unknown as ForgotPasswordData);
+    await userApi.forgotPassword(values as unknown as ForgotPasswordData);
     showMessage.value = t('message.dialog.check_the_email');
   } catch (error) {
     handleError(error as AxiosError);

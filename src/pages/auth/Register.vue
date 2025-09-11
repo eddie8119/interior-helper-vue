@@ -32,7 +32,7 @@ import { useI18n } from 'vue-i18n';
 import type { RegisterData } from '@/types/user';
 import type { AxiosError } from 'axios';
 
-import { usersApi } from '@/api/users';
+import { userApi } from '@/api/user';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import RegisterForm from '@/components/auth/RegisterForm.vue';
 import { useFormError } from '@/composables/useFormError';
@@ -53,7 +53,6 @@ const verifiedStatus = {
 const { handleSubmit, errors, isSubmitting } = useFormValidation<RegisterData>(registerSchema, {
   email: '',
   password: '',
-  confirmPassword: '',
 });
 
 const { value: email, handleBlur: handleBlurEmail } = useField<string>('email');
@@ -76,7 +75,11 @@ const onSubmit = handleSubmit(async (values) => {
   if (password.value !== confirmPassword.value) return;
 
   try {
-    await usersApi.register(values as unknown as RegisterData);
+    const { success, message } = await userApi.register(values as RegisterData);
+    if (!success) {
+      showMessage.value = message;
+      return;
+    }
 
     showMessage.value = t('message.dialog.check_the_email');
     authStore.setPendingActivationEmail(email.value);

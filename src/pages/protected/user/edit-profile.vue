@@ -24,7 +24,7 @@ import { useField, useForm } from 'vee-validate';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { usersApi } from '@/api/users';
+import { userApi } from '@/api/user';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import EditProfileForm from '@/components/auth/EditProfileForm.vue';
 import { type EditProfileData } from '@/types/user';
@@ -44,7 +44,7 @@ const { value: username, handleBlur: handleBlurUsername } = useField<string>('us
 
 const onSubmit = handleSubmit(async (values: EditProfileData) => {
   try {
-    const response = await usersApi.updateUserProfile(values);
+    const response = await userApi.updateUserProfile(values);
 
     if (response.status === 200) {
       ElMessage.success(t('message.change_password_success'));

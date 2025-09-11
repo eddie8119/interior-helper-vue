@@ -30,7 +30,7 @@ import { useField, useForm } from 'vee-validate';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { usersApi } from '@/api/users';
+import { userApi } from '@/api/user';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import ChangePasswordForm from '@/components/auth/ChangePasswordForm.vue';
 import { type ChangePasswordData } from '@/types/user';
@@ -55,7 +55,7 @@ const { value: newConfirmPassword, handleBlur: handleBlurNewConfirmPassword } =
 
 const onSubmit = handleSubmit(async (values: ChangePasswordData) => {
   try {
-    await usersApi.changePassword(values);
+    await userApi.changePassword(values);
 
     ElMessage.success(t('message.change_password_success'));
     resetForm();

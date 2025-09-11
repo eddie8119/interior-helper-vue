@@ -35,7 +35,7 @@ import { useRoute } from 'vue-router';
 import type { ResendActivationData } from '@/types/user';
 import type { AxiosError } from 'axios';
 
-import { usersApi } from '@/api/users';
+import { userApi } from '@/api/user';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import { useFormError } from '@/composables/useFormError';
 import { useFormValidation } from '@/composables/useFormValidation';
@@ -94,7 +94,7 @@ const onSubmit = handleSubmit(async (values) => {
   }
 
   try {
-    const response = await usersApi.resendActivation(values as unknown as ResendActivationData);
+    const response = await userApi.resendActivation(values as unknown as ResendActivationData);
     if (response.status === 200) {
       showMessage.value = t('message.dialog.check_the_email');
       startCooldown();

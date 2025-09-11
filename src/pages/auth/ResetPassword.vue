@@ -29,7 +29,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 import type { ResetPasswordData } from '@/types/user';
 
-import { usersApi } from '@/api/users';
+import { userApi } from '@/api/user';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import ResetPasswordForm from '@/components/auth/ResetPasswordForm.vue';
 import { useFormValidation } from '@/composables/useFormValidation';
@@ -74,7 +74,7 @@ const onSubmit = handleSubmit(async (values) => {
 
   try {
     errorMessage.value = undefined;
-    await usersApi.resetPassword({
+    await userApi.resetPassword({
       newPassword: values.newPassword,
       newConfirmPassword: values.newConfirmPassword,
       token: token as string,

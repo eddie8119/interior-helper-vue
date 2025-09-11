@@ -45,7 +45,7 @@ import { onActivated, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-import { usersApi } from '@/api/users';
+import { userApi } from '@/api/user';
 import check from '@/assets/images/check.png';
 import close from '@/assets/images/close.png';
 import AuthCard from '@/components/auth/AuthCard.vue';
@@ -70,7 +70,7 @@ const activateAccount = async () => {
 
   try {
     isLoading.value = true;
-    await usersApi.activateAccount({
+    await userApi.activateAccount({
       uid: uid as string,
       token: token as string,
     });
@@ -92,7 +92,7 @@ const reActivateAccount = async () => {
   const email = authStore.pendingActivationEmail;
 
   if (email) {
-    await usersApi.resendActivation({
+    await userApi.resendActivation({
       email,
     });
     activationStatus.value = 'success';

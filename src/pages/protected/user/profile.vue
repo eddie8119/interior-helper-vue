@@ -36,7 +36,7 @@
 import { onActivated, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { usersApi } from '@/api/users';
+import { userApi } from '@/api/user';
 import H1Title from '@/components/core/title/H1Title.vue';
 
 const { t } = useI18n();
@@ -48,7 +48,7 @@ const loading = ref(true);
 const fetchUserProfile = async () => {
   loading.value = true;
   try {
-    const response = await usersApi.getUserProfile();
+    const response = await userApi.getUserProfile();
     email.value = response.data.email;
     username.value = response.data.username;
   } finally {

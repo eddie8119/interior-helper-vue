@@ -7,14 +7,14 @@
     @submit="onSubmit"
     @cancel="onCancel"
   >
-    <el-form-item :label="t('label.project.project_name')" :error="errors.title">
+    <el-form-item :label="t('label.project.project_name')" :error="titleError">
       <el-input
         v-model="title"
         :placeholder="t('placeholder.project.project_name')"
         @blur="handleBlurTitle"
       />
     </el-form-item>
-    <el-form-item :label="t('label.project.project_type')" :error="errors.type">
+    <el-form-item :label="t('label.project.project_type')" :error="typeError">
       <el-select
         v-model="type"
         :placeholder="t('placeholder.project.project_type')"
@@ -28,7 +28,7 @@
         />
       </el-select>
     </el-form-item>
-    <el-form-item :label="t('label.project.construction')" :error="errors.constructionContainer">
+    <el-form-item :label="t('label.project.construction')" :error="constructionContainerError">
       <el-select
         v-model="constructionContainer"
         multiple
@@ -80,16 +80,19 @@ const { handleSubmit, errors, isSubmitting } = useForm({
   initialValues: { title: '', type: 'residential', constructionContainer: [] },
 });
 
-const { value: title, handleBlur: handleBlurTitle } = useField('title');
-const { value: type, handleBlur: handleBlurType } = useField('type');
-const { value: constructionContainer, handleBlur: handleBlurConstructionContainer } =
-  useField('constructionContainer');
+const { value: title, handleBlur: handleBlurTitle, errorMessage: titleError } = useField('title');
+const { value: type, handleBlur: handleBlurType, errorMessage: typeError } = useField('type');
+const {
+  value: constructionContainer,
+  handleBlur: handleBlurConstructionContainer,
+  errorMessage: constructionContainerError,
+} = useField('constructionContainer');
 
 const onSubmit = handleSubmit(async (values: CreateProjectSchema) => {
   try {
     const { success, message } = await projectApi.createProject(values);
     if (!success) {
-      errorMessage.value = message;
+      errorMessage.value = message ?? '';
       return;
     }
     if (success) onCancel();

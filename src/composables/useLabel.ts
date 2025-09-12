@@ -4,14 +4,13 @@
  * @returns {Object}
  */
 
-import { useQuery, useQueryClient } from '@tanstack/vue-query';
+import { useQuery } from '@tanstack/vue-query';
 import { computed, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { DeviceWithAlarms, DeviceWithStatus } from '@/types/label';
 
 import { labelApi } from '@/api/label';
-import { useUpdateTime } from '@/composables/useUpdateTime';
 import { formatRelativeTime } from '@/utils/dateTime';
 
 interface UseLabelReturn {
@@ -21,32 +20,30 @@ interface UseLabelReturn {
   formattedAlarmRecords: Ref<DeviceWithAlarms[]>;
   refetchAlarmRecords: () => Promise<void>;
   refetchLabels: () => Promise<void>;
-  lastUpdateTime: Ref<string | null>;
+  alarmRecordsUpdatedAt: Ref<number>;
+  labelsUpdatedAt: Ref<number>;
 }
 
 export function useLabel(): UseLabelReturn {
   const { t } = useI18n();
-  const { lastUpdateTime, updateLastUpdateTime } = useUpdateTime();
-  const queryClient = useQueryClient();
 
   const {
     data: fetchedLabels,
     isLoading: isLoadingLabels,
     refetch: refetchQueryLabels,
+    dataUpdatedAt: labelsUpdatedAt,
   } = useQuery<DeviceWithStatus[], Error, DeviceWithStatus[], ['labels']>({
     queryKey: ['labels'],
     queryFn: async () => {
       const response = await labelApi.getLabels();
-      updateLastUpdateTime();
       return response.data;
     },
-    staleTime: 0,
-    gcTime: 0,
+    refetchInterval: 1000 * 10,
+    staleTime: 1000 * 10, // 10 秒內認為數據是新鮮的
+    gcTime: 1000 * 60 * 5, // 5 分鐘後清除緩存
   });
 
   const refetchLabels = async (): Promise<void> => {
-    // 添加隨機參數防止緩存
-    await queryClient.invalidateQueries({ queryKey: ['labels'] });
     await refetchQueryLabels();
   };
 
@@ -54,18 +51,19 @@ export function useLabel(): UseLabelReturn {
     data: fetchedLabelsAlarmRecords,
     isLoading: isLoadingAlarmRecords,
     refetch: refetchQueryAlarmRecords,
+    dataUpdatedAt: alarmRecordsUpdatedAt,
   } = useQuery<DeviceWithAlarms[]>({
     queryKey: ['labels', 'alarmRecords'],
     queryFn: async () => {
       const response = await labelApi.getAlarmRecords({ alarm_status: 'unresolved' });
       return response.data;
     },
-    staleTime: 0, // 保持預設
-    gcTime: 0, // 保持預設
+    refetchInterval: 1000 * 10,
+    staleTime: 1000 * 10,
+    gcTime: 1000 * 60 * 5,
   });
 
   const refetchAlarmRecords = async (): Promise<void> => {
-    await queryClient.invalidateQueries({ queryKey: ['labels', 'alarmRecords'] });
     await refetchQueryAlarmRecords();
   };
 
@@ -107,6 +105,7 @@ export function useLabel(): UseLabelReturn {
     refetchLabels,
     refetchAlarmRecords,
     formattedAlarmRecords,
-    lastUpdateTime,
+    alarmRecordsUpdatedAt,
+    labelsUpdatedAt,
   };
 }

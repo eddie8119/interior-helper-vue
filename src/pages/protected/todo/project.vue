@@ -1,33 +1,40 @@
 <template>
-  <TextButton
-    variant="primary"
-    size="md"
-    class="h-[30px] w-full max-w-[60px] lg:w-auto"
-    @click="showCreateProjectDialog = true"
-  >
-    {{ t('common.create_project') }}
-  </TextButton>
-
-  <!-- 建立專案對話框 -->
-  <CreateProjectDialog v-model="showCreateProjectDialog" />
+  <Loading v-if="isLoadingProject" />
+  <div v-else class="relative">
+    <ProjectHeader
+      v-if="fetchedProject"
+      :title="fetchedProject.title"
+      @update:title="updateProjectTitle"
+    />
+    <ShowUpdateTime
+      :last-update-time="formatDateTimeWithMinutes(new Date(fetchedProject?.updatedAt || ''))"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-
-import TextButton from '@/components/core/button/TextButton.vue';
-import CreateProjectDialog from '@/components/core/dialog/CreateProjectDialog.vue';
 import { useProject } from '@/composables/useProject';
+import Loading from '@/components/core/loading/Loading.vue';
+import ProjectHeader from '@/components/core/project/ProjectHeader.vue';
+import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
+import { formatDateTimeWithMinutes } from '@/utils/dateTime';
 
-const { t } = useI18n();
 const route = useRoute();
 const projectId = route.params.id as string;
 
-const showCreateProjectDialog = ref(false);
-const { isLoadingProject, error, fetchedProject, refetchProject, projectUpdatedAt } =
-  useProject(projectId);
+// 使用 composable 獲取專案資料
+const { isLoadingProject, fetchedProject, refetchProject } = useProject(projectId);
+
+// 更新專案標題的方法
+const updateProjectTitle = async (newTitle: string) => {
+  if (fetchedProject.value && fetchedProject.value.title !== newTitle) {
+    // 這裡應該調用 API 來更新專案標題
+    // 例如: await projectApi.updateProject(projectId, { title: newTitle });
+    // 然後重新獲取專案資料
+    await refetchProject();
+  }
+};
 </script>
 
 <style scoped></style>

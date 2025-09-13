@@ -8,6 +8,9 @@ export const projectApi = {
   getProjects: (): Promise<ApiResponse<ProjectResponse[]>> => {
     return request.get('/projects');
   },
+  getProjectById: (id: string): Promise<ApiResponse<ProjectResponse>> => {
+    return request.get(`/projects/${id}`);
+  },
   createProject: (data: CreateProjectSchema): Promise<ApiResponse<ProjectResponse>> => {
     return request.post('/projects', data);
   },

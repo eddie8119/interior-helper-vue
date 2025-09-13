@@ -1,7 +1,7 @@
 import {
   createProject,
-//   deleteProject,
-//   getProject,
+  deleteProject,
+  getProject,
   getProjects,
 } from "@/controllers/project";
 import { authMiddleware, requireUserId } from "@/middleware/auth";
@@ -12,9 +12,9 @@ const router = express.Router();
 router.use(authMiddleware);
 
 router.get("/", requireUserId, getProjects);
-// router.get("/projects/:id", getProject);
+router.get("/:id", requireUserId, getProject);
 router.post("/", requireUserId, createProject);
 // router.patch("/projects/:id", updateProject);
-// router.delete("/projects/:id", deleteProject);
+router.delete("/:id", requireUserId, deleteProject);
 
 export default router;

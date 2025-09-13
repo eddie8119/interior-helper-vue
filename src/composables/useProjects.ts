@@ -32,8 +32,8 @@ export function useProjects(): UseProjectsReturn {
       const response = await projectApi.getProjects();
       return response.data;
     },
-    staleTime: 1000 * 10, // 10 秒內認為數據是新鮮的
-    gcTime: 1000 * 60 * 5, // 5 分鐘後清除緩存
+    staleTime: 1000 * 10 * 3,
+    gcTime: 1000 * 60 * 5,
   });
 
   const refetchProjects = async (): Promise<void> => {

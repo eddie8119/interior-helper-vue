@@ -57,9 +57,9 @@
           <template #default="scope">
             <slot :name="column.field" :row="scope.row">
               <!-- 如果有自定義的插槽，則使用插槽內容 -->
-              <template v-if="column.field === 'tag'">
+              <template v-if="column.field === 'title'">
                 <router-link
-                  :to="`/observation/${props.observationType}/device/${scope.row.ID}`"
+                  :to="`/todo/project/${scope.row.id}`"
                   class="text-brand-primary underline"
                 >
                   {{ scope.row[column.field] }}
@@ -128,7 +128,6 @@ const props = withDefaults(
     showPagination?: boolean;
     lastUpdateTime?: string | null;
     maxHeight?: string;
-    observationType?: string;
   }>(),
   {
     data: () => [] as T[],

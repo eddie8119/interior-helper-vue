@@ -20,7 +20,7 @@ export const userTabList: Tab[] = [
 
 export const toDoListTabList: Tab[] = [
   {
-    label: 'To Do List',
-    name: 'to-do-list',
+    label: 'To Do Projects',
+    name: 'projects',
   },
 ];

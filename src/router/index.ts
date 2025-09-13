@@ -88,18 +88,23 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/project',
+    path: '/todo',
     component: AppLayout,
     children: [
       {
         path: '',
-        component: () => import('../pages/protected/project/index.vue'),
-        redirect: { name: 'project-to-do-list' },
+        component: () => import('../pages/protected/todo/index.vue'),
+        redirect: { name: 'todo-projects' },
         children: [
           {
-            name: 'project-to-do-list',
-            path: 'to-do-list',
-            component: () => import('../pages/protected/project/to-do-list.vue'),
+            name: 'todo-projects',
+            path: 'projects',
+            component: () => import('../pages/protected/todo/projects.vue'),
+          },
+          {
+            name: 'todo-project',
+            path: 'project/:id',
+            component: () => import('../pages/protected/todo/project.vue'),
           },
         ],
       },

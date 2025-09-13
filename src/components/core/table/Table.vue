@@ -65,6 +65,9 @@
                   {{ scope.row[column.field] }}
                 </router-link>
               </template>
+              <template v-else-if="column.field === 'createdAt'">
+                {{ formatDateTimeWithDay(new Date(scope.row[column.field])) }}
+              </template>
               <template v-else>
                 <span v-if="scope.row[column.field] === undefined"> N/A</span>
                 <p v-else>{{ scope.row[column.field] }}</p>
@@ -106,7 +109,7 @@
 import { Search } from '@element-plus/icons-vue';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-
+import { formatDateTimeWithDay } from '@/utils/dateTime';
 import Pagination from '../Pagination.vue';
 
 import DropdownMenu from './DropdownMenu.vue';

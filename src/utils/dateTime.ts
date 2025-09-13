@@ -17,22 +17,6 @@ export const formatTime = (time: Date): string => {
 };
 
 /**
- * 格式化日期時間為 YYYY-MM-DD HH:mm 格式
- * @param date - 日期字串或 Date 物件
- * @returns 格式化後的日期時間字串
- */
-export const formatDateTime = (date: string | Date): string => {
-  const d = new Date(date);
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  const hours = String(d.getHours()).padStart(2, '0');
-  const minutes = String(d.getMinutes()).padStart(2, '0');
-
-  return `${year}-${month}-${day} ${hours}:${minutes}`;
-};
-
-/**
  * 格式化日期時間為 YYYY-MM-DD HH:mm:ss 格式
  * @param date - 日期字串或 Date 物件
  * @returns 格式化後的日期時間字串
@@ -47,6 +31,36 @@ export const formatDateTimeWithSeconds = (date: Date): string => {
   const second = pad(date.getSeconds());
 
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+};
+
+/**
+ * 格式化日期時間為 YYYY-MM-DD HH:mm 格式
+ * @param date - 日期字串或 Date 物件
+ * @returns 格式化後的日期時間字串
+ */
+export const formatDateTimeWithMinutes = (date: string | Date): string => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  const hours = String(d.getHours()).padStart(2, '0');
+  const minutes = String(d.getMinutes()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
+
+/**
+ * 格式化日期時間為 YYYY-MM-DD 格式
+ * @param date - 日期字串或 Date 物件
+ * @returns 格式化後的日期時間字串
+ */
+export const formatDateTimeWithDay = (date: Date): string => {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+
+  return `${year}-${month}-${day}`;
 };
 
 // t: (key: string, values?: Record<string, unknown>) => string

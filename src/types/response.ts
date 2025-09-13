@@ -17,4 +17,5 @@ export interface ProjectResponse {
   title: string;
   type: ProjectType;
   userId: string;
+  createdAt: Date;
 }

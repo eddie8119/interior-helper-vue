@@ -5,7 +5,7 @@ import type { CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
 import request from '@/utils/request';
 
 export const projectApi = {
-  getProjects: (): Promise<ApiResponse<ProjectResponse>> => {
+  getProjects: (): Promise<ApiResponse<ProjectResponse[]>> => {
     return request.get('/projects');
   },
   createProject: (data: CreateProjectSchema): Promise<ApiResponse<ProjectResponse>> => {

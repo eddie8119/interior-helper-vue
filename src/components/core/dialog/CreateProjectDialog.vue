@@ -38,7 +38,7 @@
         <el-option
           v-for="item in CONSTRUCTION_CONTAINER"
           :key="item.type"
-          :label="item.type"
+          :label="item.type + ' 工程'"
           :value="item.type"
         />
       </el-select>

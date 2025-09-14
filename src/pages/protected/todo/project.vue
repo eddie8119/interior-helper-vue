@@ -5,7 +5,7 @@
   <div v-else class="relative h-full w-full">
     <ProjectHeader :title="localProject?.title" @update:title="updateProjectTitle" />
     <ShowUpdateTime
-      :last-update-time="formatDateTimeWithMinutes(new Date(localProject?.updatedAt || ''))"
+      :last-update-time="formatDateTimeWithMinutes(adjustTimeZone(localProject?.updatedAt))"
     />
     <KanbanBoard
       :construction-container="localProject?.constructionContainer"
@@ -22,7 +22,7 @@ import Loading from '@/components/core/loading/Loading.vue';
 import ProjectHeader from '@/components/core/project/ProjectHeader.vue';
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
 import KanbanBoard from '@/components/core/project/KanbanBoard.vue';
-import { formatDateTimeWithMinutes } from '@/utils/dateTime';
+import { formatDateTimeWithMinutes, adjustTimeZone } from '@/utils/dateTime';
 import { watch, onMounted, onBeforeUnmount } from 'vue';
 import type { ProjectResponse } from '@/types/response';
 

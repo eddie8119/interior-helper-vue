@@ -82,3 +82,27 @@ export const formatRelativeTime = (
   const diffDay = Math.floor(diffHr / 24);
   return t('common.relative.day', { count: diffDay });
 };
+
+// 調整時區，將數據庫時間轉換為正確的本地時間
+export const adjustTimeZone = (dateString?: string): Date => {
+  if (!dateString) return new Date();
+  
+  // 判斷數據庫時間是否已包含時區信息
+  const hasTimezone = dateString.includes('Z') || dateString.includes('+');
+  
+  if (hasTimezone) {
+    // 如果時間字符串已包含時區信息，直接解析
+    return new Date(dateString);
+  } else {
+    // 假設數據庫時間是 UTC 時間，手動添加時區偏移
+    const utcDate = new Date(dateString);
+    
+    // 取得用戶所在時區的偏移量（分鐘）
+    const timezoneOffset = new Date().getTimezoneOffset();
+    
+    // 調整時間（注意 timezoneOffset 是負數表示東部時區）
+    const localDate = new Date(utcDate.getTime() - timezoneOffset * 60 * 1000);
+    
+    return localDate;
+  }
+};

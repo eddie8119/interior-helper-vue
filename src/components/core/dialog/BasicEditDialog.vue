@@ -27,7 +27,7 @@
           size="md"
           @click="onSubmit"
         >
-          {{ t('common.save') }}
+          {{ t('common.confirm') }}
         </TextButton>
       </slot>
     </span>

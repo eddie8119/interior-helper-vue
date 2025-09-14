@@ -2,6 +2,23 @@ import { supabase } from "@/lib/supabase";
 import { getUserIdOrUnauthorized } from "@/utils/auth";
 import { NextFunction, Request, Response } from "express";
 
+// 定義用戶接口
+interface User {
+  id: string;
+  email: string;
+  name?: string;
+}
+
+// 擴展 Express 的 Request 類型
+declare global {
+  namespace Express {
+    interface Request {
+      user?: User;
+      userId?: string;
+    }
+  }
+}
+
 /**
  * 驗證用戶身份並將用戶信息附加到 request 對象上
  */

@@ -1,40 +1,141 @@
 <template>
-  <Loading v-if="isLoadingProject" />
-  <div v-else class="relative">
-    <ProjectHeader
-      v-if="fetchedProject"
-      :title="fetchedProject.title"
-      @update:title="updateProjectTitle"
-    />
+  <div v-if="isLoadingProject" class="flex h-full w-full items-center justify-center">
+    <Loading />
+  </div>
+  <div v-else class="relative h-full w-full">
+    <ProjectHeader :title="localProject?.title" @update:title="updateProjectTitle" />
     <ShowUpdateTime
-      :last-update-time="formatDateTimeWithMinutes(new Date(fetchedProject?.updatedAt || ''))"
+      :last-update-time="formatDateTimeWithMinutes(new Date(localProject?.updatedAt || ''))"
+    />
+    <KanbanBoard
+      :construction-container="localProject?.constructionContainer"
+      @update:construction-container="updateConstructionContainer"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { useRoute, onBeforeRouteLeave } from 'vue-router';
 import { useProject } from '@/composables/useProject';
+import { useProjectLocalStorage } from '@/composables/useProjectLocalStorage';
 import Loading from '@/components/core/loading/Loading.vue';
 import ProjectHeader from '@/components/core/project/ProjectHeader.vue';
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
+import KanbanBoard from '@/components/core/project/KanbanBoard.vue';
 import { formatDateTimeWithMinutes } from '@/utils/dateTime';
+import { watch, onMounted, onBeforeUnmount } from 'vue';
+import type { ProjectResponse } from '@/types/response';
 
 const route = useRoute();
 const projectId = route.params.id as string;
 
-// 使用 composable 獲取專案資料
-const { isLoadingProject, fetchedProject, refetchProject } = useProject(projectId);
+// 獲取專案資料
+const { isLoadingProject, fetchedProject, updateProject } = useProject(projectId);
+
+// 獲取本地專案數據
+const { localProject, hasChanges, initLocalProject, saveToLocalStorage } = useProjectLocalStorage(
+  projectId,
+  fetchedProject
+);
+
+// 監聽資料庫數據變化並初始化本地數據
+watch(
+  () => fetchedProject.value,
+  (newVal: ProjectResponse | null) => {
+    if (newVal) {
+      initLocalProject();
+    }
+  },
+  { immediate: true }
+);
 
 // 更新專案標題的方法
-const updateProjectTitle = async (newTitle: string) => {
-  if (fetchedProject.value && fetchedProject.value.title !== newTitle) {
-    // 這裡應該調用 API 來更新專案標題
-    // 例如: await projectApi.updateProject(projectId, { title: newTitle });
-    // 然後重新獲取專案資料
-    await refetchProject();
+const updateProjectTitle = (newTitle: string) => {
+  localProject.value.title = newTitle;
+  saveToLocalStorage();
+};
+
+// 更新工程容器的方法
+const updateConstructionContainer = (containers: string[]) => {
+  if (localProject.value) {
+    localProject.value.constructionContainer = containers;
+    saveToLocalStorage();
   }
 };
+
+// 處理窗口關閉事件
+const handleBeforeUnload = () => {
+  if (hasChanges.value && localProject.value) {
+    // 使用 navigator.sendBeacon 進行非同步請求，不顯示詢問彈窗
+    try {
+      const url = `/api/projects/${projectId}`;
+      const data = new Blob([JSON.stringify(localProject.value)], { type: 'application/json' });
+      navigator.sendBeacon(url, data);
+    } catch (error) {
+      console.error('窗口關閉時保存數據失敗:', error);
+    }
+  }
+};
+
+// 頁面銷毀前保存數據
+onBeforeUnmount(async () => {
+  if (hasChanges.value && localProject.value) {
+    await updateProject(localProject.value);
+    hasChanges.value = false;
+  }
+});
+
+// 路由離開前保存數據 - 直接調用 updateProject
+onBeforeRouteLeave(async (_, __, next: any) => {
+  if (hasChanges.value && localProject.value) {
+    await updateProject(localProject.value);
+    hasChanges.value = false;
+  }
+  next();
+});
+
+// 定期自動保存（每5分鐘）
+let autoSaveInterval: number | null = null;
+
+onMounted(() => {
+  // 確保數據已經初始化
+  if (fetchedProject.value && !localProject.value) {
+    initLocalProject();
+  }
+
+  // 強制重新渲染一次，確保頁面元素可以響應點擊
+  setTimeout(() => {
+    if (localProject.value) {
+      const temp = { ...localProject.value };
+      localProject.value = null;
+      localProject.value = temp;
+    }
+  }, 100);
+
+  // 設置定期保存
+  autoSaveInterval = window.setInterval(
+    async () => {
+      if (hasChanges.value && localProject.value) {
+        await updateProject(localProject.value);
+        hasChanges.value = false;
+      }
+    },
+    5 * 60 * 1000
+  );
+
+  // 添加窗口關閉事件監聽器
+  window.addEventListener('beforeunload', handleBeforeUnload);
+});
+
+onBeforeUnmount(() => {
+  // 清理定時器
+  if (autoSaveInterval !== null) {
+    clearInterval(autoSaveInterval);
+  }
+
+  // 移除窗口關閉事件監聽器
+  window.removeEventListener('beforeunload', handleBeforeUnload);
+});
 </script>
 
 <style scoped></style>

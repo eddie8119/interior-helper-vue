@@ -13,7 +13,7 @@
           :id="container.id"
           :name="container.name"
           :is-default="isDefaultContainer(index)"
-          @delete="deleteContainer(index)"
+          @delete-container="deleteContainer(index)"
           @add-task="handleAddTask(container.id)"
           @update:name="updateContainerName(index, $event)"
         />

@@ -73,7 +73,12 @@
       </button>
     </div>
 
-    <DeleteDialog v-model="showDeleteConstructionDialog" @confirm="handleDeleteConstruction" />
+    <!-- 刪除確認對話框 -->
+    <DeleteDialog
+      v-model="showDeleteConstructionDialog"
+      :target="name"
+      @confirm="handleDeleteConstruction"
+    />
   </div>
 </template>
 
@@ -89,7 +94,7 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'delete'): void;
+  (e: 'delete-container'): void;
   (e: 'add-task'): void;
   (e: 'update:name', name: string): void;
 }>();
@@ -103,7 +108,7 @@ const showDeleteConstructionDialog = ref(false);
 
 // 處理刪除工程類型
 const handleDeleteConstruction = () => {
-  emit('delete');
+  emit('delete-container');
   showDeleteConstructionDialog.value = false;
 };
 </script>

@@ -5,15 +5,8 @@ export function useContainerActions(
   containers: Ref<ContainerData[]>,
   updateConstructionContainer: () => void
 ) {
-  // 判斷是否為默認容器（不可刪除）
-  const isDefaultContainer = (index: number) => {
-    return containers.value ? index < (containers.value.length || 0) : false;
-  };
-
   // 刪除容器
   const deleteContainer = (index: number) => {
-    if (isDefaultContainer(index)) return;
-
     containers.value.splice(index, 1);
 
     // 重新排序

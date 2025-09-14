@@ -178,6 +178,83 @@ export const createProject = async (req: Request, res: Response) => {
   }
 };
 
+// 更新專案
+export const updateProject = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).userId;
+    const projectId = req.params.id;
+
+    if (!projectId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Project ID is required',
+      });
+    }
+
+    // 首先檢查專案是否存在並屬於當前用戶
+    const { data: project, error: projectError } = await supabase
+      .from('Projects')
+      .select('id')
+      .eq('id', projectId)
+      .eq('user_id', userId)
+      .single();
+
+    if (projectError) {
+      console.error('Error fetching project:', projectError);
+      return res.status(404).json({
+        success: false,
+        message: 'Project not found or you do not have permission to update it',
+        error: projectError.message,
+      });
+    }
+
+    const snakeCaseData = snakecaseKeys(req.body, { deep: true });
+    const {
+      title,
+      type,
+      construction_container,
+    } = snakeCaseData;
+
+    // 更新專案
+    const { data: updatedProject, error: updateError } = await supabase
+      .from('Projects')
+      .update({
+        title,
+        type,
+        construction_container,
+      })
+      .eq('id', projectId)
+      .eq('user_id', userId)
+      .select()
+      .single();
+
+    if (updateError) {
+      console.error('Error updating project:', updateError);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to update project',
+        error: updateError.message,
+      });
+    }
+
+    // 在返回前移除敏感欄位
+    const { user_id, ...safeProject } = updatedProject;
+
+    // 轉換回駝峰式命名並返回
+    return res.status(200).json({
+      success: true,
+      message: 'Project updated successfully',
+      data: camelcaseKeys(safeProject),
+    });
+  } catch (error: any) {
+    console.error('Unexpected error updating project:', error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'An unexpected error occurred',
+    });
+  }
+};
+
 export const deleteProject = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).userId;

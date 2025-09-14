@@ -14,4 +14,10 @@ export const projectApi = {
   createProject: (data: CreateProjectSchema): Promise<ApiResponse<ProjectResponse>> => {
     return request.post('/projects', data);
   },
+  updateProject: (
+    id: string,
+    data: Partial<CreateProjectSchema>
+  ): Promise<ApiResponse<ProjectResponse>> => {
+    return request.patch(`/projects/${id}`, data);
+  },
 };

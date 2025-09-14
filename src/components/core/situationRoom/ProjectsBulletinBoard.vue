@@ -3,12 +3,12 @@
     <Table
       :data="fetchedProjects"
       :columns="PROJECT_COLUMNS"
-      :loading="isLoading"
+      :loading="isLoadingProjects"
       :show-id-column="true"
       :show-actions="false"
       :show-search="true"
       :show-pagination="true"
-      :last-update-time="lastUpdateTime"
+      :last-update-time="projectsUpdatedAt"
       :actions="[]"
       max-height="calc(100vh - 360px)"
       @edit="() => {}"
@@ -19,15 +19,12 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue';
 
-import ProgressBar from '@/components/core/chart/ProgressBar.vue';
 import StatusShow from '@/components/core/StatusShow.vue';
 import Table from '@/components/core/table/Table.vue';
 import { useProjects } from '@/composables/useProjects';
-import { useUpdateTime } from '@/composables/useUpdateTime';
 import { PROJECT_COLUMNS } from '@/constants/columns/project';
 
-const { fetchedProjects } = useProjects();
-const { lastUpdateTime, updateLastUpdateTime } = useUpdateTime();
+const { fetchedProjects, isLoadingProjects, projectsUpdatedAt } = useProjects();
 </script>
 
 <style lang="scss" scoped></style>

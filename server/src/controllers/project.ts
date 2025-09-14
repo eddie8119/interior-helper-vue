@@ -146,6 +146,7 @@ export const createProject = async (req: Request, res: Response) => {
           type,
           construction_container,
           user_id: userId,
+          updated_at: new Date().toISOString(),
         },
       ])
       .select()
@@ -222,6 +223,7 @@ export const updateProject = async (req: Request, res: Response) => {
         title,
         type,
         construction_container,
+        updated_at: new Date().toISOString(),
       })
       .eq('id', projectId)
       .eq('user_id', userId)

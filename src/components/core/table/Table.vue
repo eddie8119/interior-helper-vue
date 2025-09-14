@@ -3,7 +3,7 @@
     <ShowUpdateTime
       v-if="props.lastUpdateTime"
       class="absolute right-4 top-4"
-      :last-update-time="props.lastUpdateTime"
+      :last-update-time="formatDateTimeWithMinutes(new Date(props.lastUpdateTime))"
     />
 
     <!-- 搜索 -->
@@ -115,7 +115,7 @@ import Pagination from '../Pagination.vue';
 import DropdownMenu from './DropdownMenu.vue';
 
 import type { Column, TableAction } from '@/types/common';
-
+import { formatDateTimeWithMinutes } from '@/utils/dateTime';
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
 import { useAuth } from '@/composables/useAuth';
 
@@ -129,7 +129,7 @@ const props = withDefaults(
     showActions?: boolean;
     showSearch?: boolean;
     showPagination?: boolean;
-    lastUpdateTime?: string | null;
+    lastUpdateTime?: string | null | number;
     maxHeight?: string;
   }>(),
   {

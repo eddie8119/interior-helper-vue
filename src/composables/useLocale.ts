@@ -31,7 +31,6 @@ export const useLocale = (): UseLocaleReturn => {
   const languages: LanguageItem[] = [
     { code: Language.ZH_TW, label: Language.ZH_TW },
     { code: Language.EN, label: Language.EN },
-    { code: Language.JA, label: Language.JA },
   ];
 
   const handleLanguageChange = (value: Language) => {

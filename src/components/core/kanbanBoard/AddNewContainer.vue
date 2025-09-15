@@ -30,7 +30,7 @@
         v-model="newContainerName"
         type="text"
         class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-        placeholder="新增工程類型"
+        :placeholder="t('placeholder.project.addContainer')"
         @keyup.enter="addNewContainer"
         @keyup.esc="cancelEditing"
       />
@@ -40,14 +40,14 @@
           class="rounded-md bg-gray-200 px-3 py-1 text-gray-700 hover:bg-gray-300"
           @click="cancelEditing"
         >
-          取消
+          {{ t('button.cancel') }}
         </button>
         <button
           class="rounded-md bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
           :disabled="!isValidName"
           @click="addNewContainer"
         >
-          新增
+          {{ t('button.add') }}
         </button>
       </div>
     </div>
@@ -56,6 +56,9 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const emit = defineEmits<{ (e: 'add-container', name: string): void }>();
 

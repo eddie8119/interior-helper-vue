@@ -1,6 +1,8 @@
 {
   "en": {
     "button": {
+      "cancel": "Cancel",
+      "add": "Add",
       "submit": "Submit",
       "register": "Register",
       "login": "Login",

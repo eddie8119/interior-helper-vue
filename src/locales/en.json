@@ -3,6 +3,8 @@
     "edit_all": "Edit All"
   },
   "button": {
+    "cancel": "Cancel",
+    "add": "Add",
     "submit": "Submit",
     "register": "Register",
     "login": "Login",
@@ -314,7 +316,10 @@
     "project": {
       "project_name": "Please enter project name",
       "project_type": "Please select project type",
-      "construction": "Please select construction"
+      "construction": "Please select construction",
+      "addContainer": "Please enter container",
+      "task": "Please enter task",
+      "taskDescription": "Please enter task description"
     }
   },
   "project": {

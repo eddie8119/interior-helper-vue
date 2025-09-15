@@ -44,16 +44,22 @@
 
     <!-- 空容器提示 -->
     <div
+      v-if="!isEditing"
       class="flex h-[100px] items-center justify-center rounded-md border border-gray-200 bg-white"
     >
       <span class="text-gray-400">尚無施作項目</span>
     </div>
 
+    <div v-else>
+      <AddTaskContainer @close="isEditing = false" />
+    </div>
+
     <!-- 添加施作項目按鈕 -->
     <div class="mt-3 flex justify-center">
       <button
+        v-if="!isEditing"
         class="flex items-center justify-center rounded-md bg-blue-100 px-3 py-1 text-blue-700 hover:bg-blue-200"
-        @click="$emit('add-task')"
+        @click="isEditing = true"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -89,6 +95,7 @@ import { useI18n } from 'vue-i18n';
 
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
 import ContainerTitle from '@/components/core/kanbanBoard/ContainerTitle.vue';
+import AddTaskContainer from '@/components/core/kanbanBoard/AddTaskContainer.vue';
 
 defineProps<{
   id: string;
@@ -104,12 +111,13 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
+const showDeleteConstructionDialog = ref(false);
+const isEditing = ref(false);
+
 // 處理容器名稱更新
 const updateContainerName = (newName: string) => {
   emit('update:name', newName);
 };
-
-const showDeleteConstructionDialog = ref(false);
 
 // 處理刪除工程類型
 const handleDeleteConstruction = () => {

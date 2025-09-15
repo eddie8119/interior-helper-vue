@@ -2,7 +2,7 @@
   <header class="header-container border-bottom justify-between">
     <LogoArea class="--mobile md:hidden" />
     <div class="--desktop hidden md:block">
-      <div class="flex gap-4">
+      <div class="flex items-center gap-4">
         <button
           class="text-gray-600 transition-transform duration-300 hover:text-gray-800"
           :class="{ 'rotate-90': props.isSidebarCollapsed }"

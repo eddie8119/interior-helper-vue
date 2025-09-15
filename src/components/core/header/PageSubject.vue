@@ -1,5 +1,6 @@
 <template>
-  <p>{{ t(`title.${pageSubject}`) }}</p>
+  <!-- <H1Title :title="props.title ?? props.subject" /> -->
+  <p class="text-xl">{{ t(`title.${pageSubject}`) }}</p>
 </template>
 
 <script setup lang="ts">

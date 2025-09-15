@@ -1,4 +1,4 @@
-import { CompanyDTO, CompanyFromDB } from "@/types/company";
+import { CompanyDTO, CompanyFromDB } from '@/types/company';
 
 export function toCompanyDTO(db: CompanyFromDB): CompanyDTO {
   return {

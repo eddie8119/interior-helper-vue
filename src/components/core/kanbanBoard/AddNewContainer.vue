@@ -27,8 +27,8 @@
     <div class="flex flex-col space-y-3">
       <input
         ref="inputRef"
-        type="text"
         v-model="newContainerName"
+        type="text"
         class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
         placeholder="新增工程類型"
         @keyup.enter="addNewContainer"
@@ -37,15 +37,15 @@
 
       <div class="flex justify-between">
         <button
-          @click="cancelEditing"
           class="rounded-md bg-gray-200 px-3 py-1 text-gray-700 hover:bg-gray-300"
+          @click="cancelEditing"
         >
           取消
         </button>
         <button
-          @click="addNewContainer"
           class="rounded-md bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
           :disabled="!isValidName"
+          @click="addNewContainer"
         >
           新增
         </button>
@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, computed } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 
 const emit = defineEmits<{ (e: 'add-container', name: string): void }>();
 

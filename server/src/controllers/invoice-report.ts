@@ -1,6 +1,7 @@
-import { supabase } from "@/lib/supabase";
-import camelcaseKeys from "camelcase-keys";
-import { Request, Response } from "express";
+import camelcaseKeys from 'camelcase-keys';
+import { Request, Response } from 'express';
+
+import { supabase } from '@/lib/supabase';
 
 // 獲取指定數量的各月金錢總額
 export const getBalanceByMonthRange = async (req: Request, res: Response) => {
@@ -26,11 +27,11 @@ export const getBalanceByMonthRange = async (req: Request, res: Response) => {
 
       // 查詢該月的發票總額，包含類型
       const { data, error } = await supabase
-        .from("Invoices")
-        .select("total_amount, type")
-        .eq("user_id", userId)
-        .gte("due_date", startOfMonth.toISOString())
-        .lte("due_date", endOfMonth.toISOString());
+        .from('Invoices')
+        .select('total_amount, type')
+        .eq('user_id', userId)
+        .gte('due_date', startOfMonth.toISOString())
+        .lte('due_date', endOfMonth.toISOString());
 
       if (error) {
         throw error;
@@ -41,9 +42,9 @@ export const getBalanceByMonthRange = async (req: Request, res: Response) => {
       let payableTotal = 0;
 
       data?.forEach((invoice) => {
-        if (invoice.type === "receivable") {
+        if (invoice.type === 'receivable') {
           receivableTotal += Number(invoice.total_amount);
-        } else if (invoice.type === "payable") {
+        } else if (invoice.type === 'payable') {
           payableTotal += Number(invoice.total_amount);
         }
       });
@@ -53,7 +54,7 @@ export const getBalanceByMonthRange = async (req: Request, res: Response) => {
 
       // 格式化月份名稱
       const monthName = `${year}/${month}`;
-      const label = i === 0 ? "本月" : i === 1 ? "下月" : "後月";
+      const label = i === 0 ? '本月' : i === 1 ? '下月' : '後月';
 
       results.push({
         year,
@@ -71,10 +72,10 @@ export const getBalanceByMonthRange = async (req: Request, res: Response) => {
       data: results,
     });
   } catch (error) {
-    console.error("Error getting monthly balance:", error);
+    console.error('Error getting monthly balance:', error);
     return res.status(500).json({
       success: false,
-      message: "Failed to get monthly balance",
+      message: 'Failed to get monthly balance',
     });
   }
 };
@@ -105,14 +106,14 @@ export const getInvoicesByMonthRange = async (req: Request, res: Response) => {
       monthsArray.push({
         year,
         month,
-        startDate: startOfMonth.toISOString().split("T")[0],
-        endDate: endOfMonth.toISOString().split("T")[0],
+        startDate: startOfMonth.toISOString().split('T')[0],
+        endDate: endOfMonth.toISOString().split('T')[0],
       });
     }
 
     // 構建查詢條件：獲取這些月份範圍內的所有發票
     let query = supabase
-      .from("Invoices")
+      .from('Invoices')
       .select(
         `
       id,
@@ -126,18 +127,16 @@ export const getInvoicesByMonthRange = async (req: Request, res: Response) => {
       type
       `
       )
-      .eq("user_id", userId);
+      .eq('user_id', userId);
 
     // 構建日期範圍條件：從第一個月的開始日期到最後一個月的結束日期
     const firstMonth = monthsArray[0];
     const lastMonth = monthsArray[monthsArray.length - 1];
 
-    query = query
-      .gte("due_date", firstMonth.startDate)
-      .lte("due_date", lastMonth.endDate);
+    query = query.gte('due_date', firstMonth.startDate).lte('due_date', lastMonth.endDate);
 
     // 執行查詢
-    const { data, error } = await query.order("due_date", { ascending: true });
+    const { data, error } = await query.order('due_date', { ascending: true });
 
     if (error) {
       throw error;
@@ -167,10 +166,10 @@ export const getInvoicesByMonthRange = async (req: Request, res: Response) => {
       data: invoicesByMonth,
     });
   } catch (error) {
-    console.error("Error getting monthly invoices:", error);
+    console.error('Error getting monthly invoices:', error);
     return res.status(500).json({
       success: false,
-      message: "Failed to get monthly invoices",
+      message: 'Failed to get monthly invoices',
     });
   }
 };

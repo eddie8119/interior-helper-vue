@@ -21,9 +21,9 @@
         <ContainerTitle :name="name" @update:name="updateContainerName" />
       </div>
       <button
-        @click="showDeleteConstructionDialog = true"
         class="rounded-full p-1 text-red-500 hover:bg-red-100"
         title="刪除工程類型"
+        @click="showDeleteConstructionDialog = true"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -84,6 +84,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
 import ContainerTitle from '@/components/core/kanbanBoard/ContainerTitle.vue';
 

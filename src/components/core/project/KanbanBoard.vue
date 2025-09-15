@@ -2,10 +2,10 @@
   <div class="w-full overflow-x-auto">
     <Container
       orientation="horizontal"
-      @drop="onContainerDrop"
       drag-handle-selector=".container-drag-handle"
       :get-child-payload="getContainerPayload"
       class="flex overflow-x-auto pt-4"
+      @drop="onContainerDrop"
     >
       <!-- 工程類型容器 -->
       <Draggable v-for="(container, index) in containers" :key="container.id">
@@ -30,8 +30,9 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
 import { Container, Draggable } from 'vue3-smooth-dnd';
-import ContainerItem from '@/components/core/kanbanBoard/ContainerItem.vue';
+
 import AddNewContainer from '@/components/core/kanbanBoard/AddNewContainer.vue';
+import ContainerItem from '@/components/core/kanbanBoard/ContainerItem.vue';
 import { useContainerActions } from '@/composables/useContainerActions';
 import { useDraggableContainers } from '@/composables/useDraggableContainers';
 

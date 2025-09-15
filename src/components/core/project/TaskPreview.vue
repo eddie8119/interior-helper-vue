@@ -3,7 +3,7 @@
     <div class="flex justify-between">
       <div class="task-title font-medium">{{ card.title }}</div>
       <div class="flex">
-        <button @click="handleEdit" class="edit-btn mr-1">
+        <button class="edit-btn mr-1" @click="handleEdit">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-4 w-4"
@@ -19,7 +19,7 @@
             />
           </svg>
         </button>
-        <button @click="handleDelete" class="delete-btn">
+        <button class="delete-btn" @click="handleDelete">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-4 w-4 text-red-500"

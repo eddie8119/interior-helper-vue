@@ -1,8 +1,8 @@
-import { supabase } from "@/lib/supabase";
+import camelcaseKeys from 'camelcase-keys';
+import { Request, Response } from 'express';
+import snakecaseKeys from 'snakecase-keys';
 
-import camelcaseKeys from "camelcase-keys";
-import { Request, Response } from "express";
-import snakecaseKeys from "snakecase-keys";
+import { supabase } from '@/lib/supabase';
 
 // 獲取當前用戶的所有案件列表
 export const getProjects = async (req: Request, res: Response) => {
@@ -26,7 +26,7 @@ export const getProjects = async (req: Request, res: Response) => {
     }
 
     // 在返回前移除敏感欄位
-    const safeProjects = projects?.map(project => {
+    const safeProjects = projects?.map((project) => {
       const { user_id, ...safeProject } = project;
       return safeProject;
     });
@@ -43,7 +43,7 @@ export const getProjects = async (req: Request, res: Response) => {
       message: error.message || 'An unexpected error occurred',
     });
   }
-}
+};
 
 export const getProject = async (req: Request, res: Response) => {
   try {
@@ -111,7 +111,7 @@ export const getProject = async (req: Request, res: Response) => {
       message: error.message || 'An unexpected error occurred',
     });
   }
-}
+};
 
 // 創建新案件
 export const createProject = async (req: Request, res: Response) => {
@@ -119,21 +119,13 @@ export const createProject = async (req: Request, res: Response) => {
     const userId = (req as any).userId;
 
     const snakeCaseData = snakecaseKeys(req.body, { deep: true });
-    const {
-      title,
-      type,
-      construction_container,
-    } = snakeCaseData;
+    const { title, type, construction_container } = snakeCaseData;
 
     // 驗證必要欄位
-    if (
-      !title ||
-      !type ||
-      !construction_container
-    ) {
+    if (!title || !type || !construction_container) {
       return res.status(400).json({
         success: false,
-        message: "Missing required fields",
+        message: 'Missing required fields',
       });
     }
 
@@ -160,10 +152,10 @@ export const createProject = async (req: Request, res: Response) => {
         error: error.message,
       });
     }
-    
+
     // 在返回前移除敏感欄位
     const { user_id, ...safeProject } = project;
-    
+
     // 轉換回駝峰式命名並返回
     return res.status(201).json({
       success: true,
@@ -210,11 +202,7 @@ export const updateProject = async (req: Request, res: Response) => {
     }
 
     const snakeCaseData = snakecaseKeys(req.body, { deep: true });
-    const {
-      title,
-      type,
-      construction_container,
-    } = snakeCaseData;
+    const { title, type, construction_container } = snakeCaseData;
 
     // 更新專案
     const { data: updatedProject, error: updateError } = await supabase
@@ -329,4 +317,4 @@ export const deleteProject = async (req: Request, res: Response) => {
       message: error.message || 'An unexpected error occurred',
     });
   }
-}
+};

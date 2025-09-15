@@ -15,16 +15,18 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute, onBeforeRouteLeave } from 'vue-router';
-import { useProject } from '@/composables/useProject';
-import { useProjectLocalStorage } from '@/composables/useProjectLocalStorage';
+import { onBeforeUnmount, onMounted, watch } from 'vue';
+import { onBeforeRouteLeave, useRoute } from 'vue-router';
+
+import type { ProjectResponse } from '@/types/response';
+
 import Loading from '@/components/core/loading/Loading.vue';
+import KanbanBoard from '@/components/core/project/KanbanBoard.vue';
 import ProjectHeader from '@/components/core/project/ProjectHeader.vue';
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
-import KanbanBoard from '@/components/core/project/KanbanBoard.vue';
-import { formatDateTimeWithMinutes, adjustTimeZone } from '@/utils/dateTime';
-import { watch, onMounted, onBeforeUnmount } from 'vue';
-import type { ProjectResponse } from '@/types/response';
+import { useProject } from '@/composables/useProject';
+import { useProjectLocalStorage } from '@/composables/useProjectLocalStorage';
+import { adjustTimeZone, formatDateTimeWithMinutes } from '@/utils/dateTime';
 
 const route = useRoute();
 const projectId = route.params.id as string;

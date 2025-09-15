@@ -1,4 +1,4 @@
-import { CompanyFromDB } from "./company";
+import { CompanyFromDB } from './company';
 
 export interface InvoiceItem {
   id: string;
@@ -25,7 +25,7 @@ export interface BaseInvoiceFromDB {
   status: string;
   note: string | null;
   created_at: string;
-  type: "receivable" | "payable";
+  type: 'receivable' | 'payable';
 }
 
 export interface InvoiceForList extends BaseInvoiceFromDB {

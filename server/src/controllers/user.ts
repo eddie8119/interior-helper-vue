@@ -1,38 +1,38 @@
-import { supabase } from "@/lib/supabase";
-import { RegisterSchema } from "@/schemas/registerSchema";
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
+
+import { supabase } from '@/lib/supabase';
+import { RegisterSchema } from '@/schemas/registerSchema';
 
 export const register = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body as RegisterSchema;
     // 使用 admin client 建立使用者
-    const { data: authData, error: signUpError } =
-      await supabase.auth.admin.createUser({
-        email,
-        password,
-        email_confirm: true, //todo
-      });
+    const { data: authData, error: signUpError } = await supabase.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true, //todo
+    });
 
     if (signUpError || !authData.user) {
       // 檢查是否因為 email 已存在而失敗
-      if (signUpError?.message.includes("already exists")) {
+      if (signUpError?.message.includes('already exists')) {
         return res.status(409).json({
           success: false,
-          message: "User with this email already exists",
+          message: 'User with this email already exists',
         });
       }
       return res.status(400).json({
         success: false,
-        message: signUpError?.message || "Failed to register user",
+        message: signUpError?.message || 'Failed to register user',
       });
     }
 
     // 在 Profiles 資料表中新增對應的 profile
     const { data: userDoc, error: docError } = await supabase
-      .from("Profiles")
+      .from('Profiles')
       .insert([{ id: authData.user.id, email }])
       .select()
-      .maybeSingle(); 
+      .maybeSingle();
 
     if (docError) {
       // 如果 profile 建立失敗，刪除剛建立的 auth user 以保持資料一致性
@@ -44,17 +44,15 @@ export const register = async (req: Request, res: Response) => {
     }
 
     // 建立使用者後，自動登入以取得 session tokens
-    const { data: sessionData, error: signInError } =
-      await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+    const { data: sessionData, error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
     if (signInError || !sessionData.session) {
       return res.status(500).json({
         success: false,
-        message:
-          signInError?.message || "Auto-login failed after registration.",
+        message: signInError?.message || 'Auto-login failed after registration.',
       });
     }
 
@@ -70,13 +68,13 @@ export const register = async (req: Request, res: Response) => {
         access_token: sessionData.session.access_token,
         refresh_token: sessionData.session.refresh_token,
       },
-      message: "User registered and logged in successfully",
+      message: 'User registered and logged in successfully',
     });
   } catch (error) {
-    console.error("Register error:", error);
+    console.error('Register error:', error);
     res.status(500).json({
       success: false,
-      message: "Registration failed due to an unexpected error.",
+      message: 'Registration failed due to an unexpected error.',
     });
   }
 };
@@ -84,11 +82,11 @@ export const register = async (req: Request, res: Response) => {
 // 獲取當前用戶信息
 export const getCurrentUser = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
+    const token = req.headers.authorization?.replace('Bearer ', '');
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: "No token provided",
+        message: 'No token provided',
       });
     }
 
@@ -100,14 +98,14 @@ export const getCurrentUser = async (req: Request, res: Response) => {
     if (authError || !user) {
       return res.status(401).json({
         success: false,
-        message: authError?.message || "Invalid token or user not found",
+        message: authError?.message || 'Invalid token or user not found',
       });
     }
 
     const { data: userDoc } = await supabase
-      .from("Profiles")
-      .select("*")
-      .eq("id", user.id)
+      .from('Profiles')
+      .select('*')
+      .eq('id', user.id)
       .maybeSingle();
 
     res.json({
@@ -123,10 +121,10 @@ export const getCurrentUser = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    console.error("Get current user error:", error);
+    console.error('Get current user error:', error);
     res.status(500).json({
       success: false,
-      message: "Failed to get user information",
+      message: 'Failed to get user information',
     });
   }
 };
@@ -134,11 +132,9 @@ export const getCurrentUser = async (req: Request, res: Response) => {
 // 更新用戶信息 (僅限本人)
 export const updateUser = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
+    const token = req.headers.authorization?.replace('Bearer ', '');
     if (!token) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Authentication required" });
+      return res.status(401).json({ success: false, message: 'Authentication required' });
     }
 
     const {
@@ -146,7 +142,7 @@ export const updateUser = async (req: Request, res: Response) => {
       error: authError,
     } = await supabase.auth.getUser(token);
     if (authError || !user) {
-      return res.status(401).json({ success: false, message: "Invalid token" });
+      return res.status(401).json({ success: false, message: 'Invalid token' });
     }
 
     const updates = req.body;
@@ -154,28 +150,26 @@ export const updateUser = async (req: Request, res: Response) => {
     const { password, email, ...safeUpdates } = updates;
 
     const { data: updatedUserDoc, error: updateError } = await supabase
-      .from("Profiles")
+      .from('Profiles')
       .update(safeUpdates)
-      .eq("id", user.id) // 使用 token 中的 user.id 確保安全性
+      .eq('id', user.id) // 使用 token 中的 user.id 確保安全性
       .select()
       .maybeSingle();
 
     if (updateError) {
-      return res
-        .status(400)
-        .json({ success: false, message: updateError.message });
+      return res.status(400).json({ success: false, message: updateError.message });
     }
 
     res.json({
       success: true,
       data: { userDoc: updatedUserDoc },
-      message: "User updated successfully",
+      message: 'User updated successfully',
     });
   } catch (error) {
-    console.error("Update user error:", error);
+    console.error('Update user error:', error);
     res.status(500).json({
       success: false,
-      message: "Failed to update user",
+      message: 'Failed to update user',
     });
   }
 };
@@ -183,11 +177,9 @@ export const updateUser = async (req: Request, res: Response) => {
 // 刪除用戶 (僅限本人)
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
+    const token = req.headers.authorization?.replace('Bearer ', '');
     if (!token) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Authentication required" });
+      return res.status(401).json({ success: false, message: 'Authentication required' });
     }
 
     const {
@@ -195,27 +187,20 @@ export const deleteUser = async (req: Request, res: Response) => {
       error: authError,
     } = await supabase.auth.getUser(token);
     if (authError || !user) {
-      return res.status(401).json({ success: false, message: "Invalid token" });
+      return res.status(401).json({ success: false, message: 'Invalid token' });
     }
     const userId = user.id;
 
     // 1. 刪除 Supabase Auth user (這會觸發級聯刪除 Profiles 表中的對應資料，如果已設定)
-    const { error: deleteAuthError } = await supabase.auth.admin.deleteUser(
-      userId
-    );
+    const { error: deleteAuthError } = await supabase.auth.admin.deleteUser(userId);
 
     if (deleteAuthError) {
       // 如果 Auth user 刪除失敗，就不繼續刪 profile
-      return res
-        .status(500)
-        .json({ success: false, message: deleteAuthError.message });
+      return res.status(500).json({ success: false, message: deleteAuthError.message });
     }
 
     // 2. 刪除 profile table 中的資料 (如果沒有設定級聯刪除，則需要手動刪除)
-    const { error: docError } = await supabase
-      .from("Profiles")
-      .delete()
-      .eq("id", userId);
+    const { error: docError } = await supabase.from('Profiles').delete().eq('id', userId);
 
     if (docError) {
       // Log the detailed error for debugging
@@ -232,13 +217,13 @@ export const deleteUser = async (req: Request, res: Response) => {
 
     res.json({
       success: true,
-      message: "User deleted successfully",
+      message: 'User deleted successfully',
     });
   } catch (error) {
-    console.error("Delete user error:", error);
+    console.error('Delete user error:', error);
     res.status(500).json({
       success: false,
-      message: "Failed to delete user",
+      message: 'Failed to delete user',
     });
   }
 };
@@ -248,24 +233,20 @@ export const checkUserExists = async (req: Request, res: Response) => {
   try {
     const { email } = req.params;
     if (!email) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Email is required" });
+      return res.status(400).json({ success: false, message: 'Email is required' });
     }
 
     // 改為查詢 public.Profiles 資料表，這是更可靠且型別安全的方法
     const { data, error } = await supabase
-      .from("Profiles")
-      .select("id")
-      .eq("email", email)
+      .from('Profiles')
+      .select('id')
+      .eq('email', email)
       .maybeSingle();
 
     if (error) {
       // 如果查詢出錯，不應該讓客戶端知道詳細信息
-      console.error("Check user exists query error:", error);
-      return res
-        .status(500)
-        .json({ success: false, message: "Error checking user existence." });
+      console.error('Check user exists query error:', error);
+      return res.status(500).json({ success: false, message: 'Error checking user existence.' });
     }
 
     res.json({
@@ -275,10 +256,10 @@ export const checkUserExists = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    console.error("Check user exists error:", error);
+    console.error('Check user exists error:', error);
     res.status(500).json({
       success: false,
-      message: "Failed to check user existence",
+      message: 'Failed to check user existence',
     });
   }
 };

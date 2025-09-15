@@ -1,16 +1,17 @@
-import { supabase } from "@/lib/supabase";
-import { getUserIdOrUnauthorized } from "@/utils/auth";
-import camelcaseKeys from "camelcase-keys";
-import { Request, Response } from "express";
-import snakecaseKeys from "snakecase-keys";
+import camelcaseKeys from 'camelcase-keys';
+import { Request, Response } from 'express';
+import snakecaseKeys from 'snakecase-keys';
+
+import { supabase } from '@/lib/supabase';
+import { getUserIdOrUnauthorized } from '@/utils/auth';
 
 export const getCompanies = async (req: Request, res: Response) => {
   try {
     const userId = getUserIdOrUnauthorized(req, res);
     if (!userId) return;
 
-    let query = supabase
-      .from("Companies")
+    const query = supabase
+      .from('Companies')
       .select(
         `
         id,
@@ -28,16 +29,16 @@ export const getCompanies = async (req: Request, res: Response) => {
         )
       `
       )
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false });
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
 
     const { data: companiesData, error } = await query;
 
     if (error) {
-      console.error("Error fetching companies:", error);
+      console.error('Error fetching companies:', error);
       return res.status(500).json({
         success: false,
-        message: "Failed to fetch companies",
+        message: 'Failed to fetch companies',
         error: error.message,
       });
     }
@@ -47,10 +48,10 @@ export const getCompanies = async (req: Request, res: Response) => {
       data: camelcaseKeys(companiesData, { deep: true }),
     });
   } catch (error: any) {
-    console.error("Error fetching companies:", error);
+    console.error('Error fetching companies:', error);
     return res.status(500).json({
       success: false,
-      message: "Failed to fetch companies",
+      message: 'Failed to fetch companies',
       error: error.message,
     });
   }
@@ -63,8 +64,8 @@ export const getCompany = async (req: Request, res: Response) => {
 
     const { id } = req.params;
 
-    let query = supabase
-      .from("Companies")
+    const query = supabase
+      .from('Companies')
       .select(
         `
         id,
@@ -82,17 +83,17 @@ export const getCompany = async (req: Request, res: Response) => {
         )
       `
       )
-      .eq("user_id", userId)
-      .eq("id", id)
+      .eq('user_id', userId)
+      .eq('id', id)
       .single();
 
     const { data: companyData, error } = await query;
 
     if (error) {
-      console.error("Error fetching company:", error);
+      console.error('Error fetching company:', error);
       return res.status(500).json({
         success: false,
-        message: "Failed to fetch company",
+        message: 'Failed to fetch company',
         error: error.message,
       });
     }
@@ -100,7 +101,7 @@ export const getCompany = async (req: Request, res: Response) => {
     if (!companyData) {
       return res.status(404).json({
         success: false,
-        message: "Company not found",
+        message: 'Company not found',
       });
     }
 
@@ -109,10 +110,10 @@ export const getCompany = async (req: Request, res: Response) => {
       data: camelcaseKeys(companyData, { deep: true }),
     });
   } catch (error: any) {
-    console.error("Error fetching company:", error);
+    console.error('Error fetching company:', error);
     return res.status(500).json({
       success: false,
-      message: "Failed to fetch company",
+      message: 'Failed to fetch company',
       error: error.message,
     });
   }
@@ -129,26 +130,26 @@ export const createCompany = async (req: Request, res: Response) => {
     if (!name) {
       return res.status(400).json({
         success: false,
-        message: "Missing required fields",
+        message: 'Missing required fields',
       });
     }
 
     const { data: existingCompany } = await supabase
-      .from("Companies")
-      .select("id")
-      .eq("name", name)
-      .eq("user_id", userId)
+      .from('Companies')
+      .select('id')
+      .eq('name', name)
+      .eq('user_id', userId)
       .maybeSingle();
 
     if (existingCompany) {
       return res.status(409).json({
         success: false,
-        message: "Company already exists",
+        message: 'Company already exists',
       });
     }
 
     const { data: newCompanyData, error: companyCreateError } = await supabase
-      .from("Companies")
+      .from('Companies')
       .insert([
         {
           name,
@@ -163,10 +164,10 @@ export const createCompany = async (req: Request, res: Response) => {
       .single();
 
     if (companyCreateError) {
-      console.error("Error updating company:", companyCreateError);
+      console.error('Error updating company:', companyCreateError);
       return res.status(500).json({
         success: false,
-        message: "Failed to update company",
+        message: 'Failed to update company',
         error: companyCreateError.message,
       });
     }
@@ -176,10 +177,10 @@ export const createCompany = async (req: Request, res: Response) => {
       data: camelcaseKeys(newCompanyData, { deep: true }),
     });
   } catch (error: any) {
-    console.error("Error updating company:", error);
+    console.error('Error updating company:', error);
     return res.status(500).json({
       success: false,
-      message: "Failed to update company",
+      message: 'Failed to update company',
       error: error.message,
     });
   }
@@ -194,10 +195,10 @@ export const updateCompany = async (req: Request, res: Response) => {
     const { name, address, phone, email, contact_person } = req.body;
 
     const { data: existingCompany } = await supabase
-      .from("Companies")
-      .select("id, name")
-      .eq("id", id)
-      .eq("user_id", userId)
+      .from('Companies')
+      .select('id, name')
+      .eq('id', id)
+      .eq('user_id', userId)
       .single();
 
     if (!existingCompany) {
@@ -208,17 +209,17 @@ export const updateCompany = async (req: Request, res: Response) => {
     }
 
     const { data: companyData, error } = await supabase
-      .from("Companies")
+      .from('Companies')
       .update({ name, address, phone, email, contact_person })
-      .eq("id", id)
-      .eq("user_id", userId)
+      .eq('id', id)
+      .eq('user_id', userId)
       .single();
 
     if (error) {
-      console.error("Error updating company:", error);
+      console.error('Error updating company:', error);
       return res.status(500).json({
         success: false,
-        message: "Failed to update company",
+        message: 'Failed to update company',
         error: error.message,
       });
     }
@@ -228,10 +229,10 @@ export const updateCompany = async (req: Request, res: Response) => {
       data: camelcaseKeys(companyData, { deep: true }),
     });
   } catch (error: any) {
-    console.error("Error updating company:", error);
+    console.error('Error updating company:', error);
     return res.status(500).json({
       success: false,
-      message: "Failed to update company",
+      message: 'Failed to update company',
       error: error.message,
     });
   }
@@ -244,30 +245,26 @@ export const deleteCompany = async (req: Request, res: Response) => {
 
     const { id } = req.params;
 
-    const { error } = await supabase
-      .from("Companies")
-      .delete()
-      .eq("id", id)
-      .eq("user_id", userId);
+    const { error } = await supabase.from('Companies').delete().eq('id', id).eq('user_id', userId);
 
     if (error) {
-      console.error("Error deleting company:", error);
+      console.error('Error deleting company:', error);
       return res.status(500).json({
         success: false,
-        message: "Failed to delete company",
+        message: 'Failed to delete company',
         error: error.message,
       });
     }
 
     return res.status(200).json({
       success: true,
-      message: "Company deleted successfully",
+      message: 'Company deleted successfully',
     });
   } catch (error: any) {
-    console.error("Error deleting company:", error);
+    console.error('Error deleting company:', error);
     return res.status(500).json({
       success: false,
-      message: "Failed to delete company",
+      message: 'Failed to delete company',
       error: error.message,
     });
   }

@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+
 import type { ContainerData } from '@/types/project';
 
 export function useDraggableContainers(props: any, emit: any) {
@@ -41,7 +42,7 @@ export function useDraggableContainers(props: any, emit: any) {
     const result = [...containers.value];
 
     // 如果有元素被移除
-    let itemToAdd = removedIndex !== null ? result.splice(removedIndex, 1)[0] : null;
+    const itemToAdd = removedIndex !== null ? result.splice(removedIndex, 1)[0] : null;
 
     // 如果有元素被添加
     if (addedIndex !== null && itemToAdd) {

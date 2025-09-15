@@ -1,6 +1,8 @@
 import { ref } from 'vue';
-import { saveProjectToLocalStorage, getProjectStorageKey } from '@/utils/projectStorage';
+
 import type { Ref } from 'vue';
+
+import { getProjectStorageKey, saveProjectToLocalStorage } from '@/utils/projectStorage';
 
 export function useProjectLocalStorage(projectId: string, fetchedProject: Ref<any>) {
   const localProject = ref<any>(null);

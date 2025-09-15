@@ -1,6 +1,7 @@
-import { supabase } from "@/lib/supabase";
-import { getUserIdOrUnauthorized } from "@/utils/auth";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
+
+import { supabase } from '@/lib/supabase';
+import { getUserIdOrUnauthorized } from '@/utils/auth';
 
 // 定義用戶接口
 interface User {
@@ -22,19 +23,15 @@ declare global {
 /**
  * 驗證用戶身份並將用戶信息附加到 request 對象上
  */
-export const authMiddleware = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // 從請求頭中獲取 token
-    const token = req.headers.authorization?.replace("Bearer ", "");
+    const token = req.headers.authorization?.replace('Bearer ', '');
 
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: "No authentication token provided",
+        message: 'No authentication token provided',
       });
     }
 
@@ -44,7 +41,7 @@ export const authMiddleware = async (
     if (error || !data.user) {
       return res.status(401).json({
         success: false,
-        message: "Invalid or expired authentication token",
+        message: 'Invalid or expired authentication token',
       });
     }
 
@@ -59,10 +56,10 @@ export const authMiddleware = async (
 
     next();
   } catch (error: any) {
-    console.error("Authentication error:", error);
+    console.error('Authentication error:', error);
     return res.status(500).json({
       success: false,
-      message: "Authentication failed",
+      message: 'Authentication failed',
       error: error.message,
     });
   }

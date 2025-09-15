@@ -4,7 +4,7 @@
  * @returns {Object}
  */
 
-import { useQuery, useMutation } from '@tanstack/vue-query';
+import { useMutation, useQuery } from '@tanstack/vue-query';
 import { type Ref, ref } from 'vue';
 
 import type { ProjectResponse } from '@/types/response';

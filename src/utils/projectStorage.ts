@@ -1,8 +1,10 @@
 /**
  * 專案數據管理工具函數
  */
-import { getFromLocalStorage, saveToLocalStorage } from './localStorage';
 import { ref } from 'vue';
+
+import { getFromLocalStorage, saveToLocalStorage } from './localStorage';
+
 import type { Ref } from 'vue';
 
 const PROJECT_STORAGE_PREFIX = 'project_';

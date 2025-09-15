@@ -7,7 +7,7 @@
           <H1Title :title="props.title ?? props.subject" />
         </div>
       </div>
-      <TabObservation :subject="props.subject" :tabs-list="tabsList" />
+      <TabProject :subject="props.subject" :tabs-list="tabsList" />
     </div>
 
     <!-- Content Section -->
@@ -21,9 +21,9 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
-import TabObservation from '@/components/core/tab/TabObservation.vue';
+import TabProject from '@/components/core/tab/TabProject.vue';
 import H1Title from '@/components/core/title/H1Title.vue';
-import { toDoListTabList } from '@/constants/tab';
+import { toDoTabList } from '@/constants/tab';
 
 const props = defineProps<{
   subject: string;
@@ -33,7 +33,7 @@ const props = defineProps<{
 const route = useRoute();
 
 const tabsList = computed(() => {
-  const baseTabs = [...toDoListTabList];
+  const baseTabs = [...toDoTabList];
 
   if (route.params.id) {
     const devicesTabIndex = baseTabs.findIndex((tab) => tab.name === 'projects');

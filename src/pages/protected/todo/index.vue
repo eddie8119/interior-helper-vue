@@ -1,9 +1,9 @@
 <template>
-  <NormalLayout subject="toDo" title="ToDo" />
+  <ProjectLayout subject="toDo" title="ToDo" />
 </template>
 
 <script setup lang="ts">
-import NormalLayout from '@/components/app-layout/NormalLayout.vue';
+import ProjectLayout from '@/components/app-layout/ProjectLayout.vue';
 </script>
 
 <style scoped></style>

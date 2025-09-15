@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 const localesDir = path.resolve(__dirname, '../src/locales');
 const moduleDir = path.resolve(localesDir, 'module');
-const languages = ['en', 'ja', 'zh-TW'];
+const languages = ['en', 'zh-TW'];
 
 // Create a placeholder in each module file for different languages
 const moduleFiles = fs.readdirSync(moduleDir).filter((file) => file.endsWith('.json'));

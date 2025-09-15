@@ -123,7 +123,10 @@
     "devices_list_page": "裝置群",
     "show_all_filter": "顯示全部篩選"
   },
-  "dialog": {},
+  "dialog": {
+    "delete_confirm": "確定要刪除",
+    "share_project_link": "分享專案連結"
+  },
   "dropdown": {
     "zh-TW": "繁體中文",
     "en": "English",
@@ -309,6 +312,8 @@
     }
   },
   "project": {
+    "project": "專案",
+    "construction": "工程",
     "type": {
       "residential": "住宅",
       "luxury": "豪宅",
@@ -329,6 +334,7 @@
     "reset_password": "重設密碼",
     "overview": "總覽",
     "todo": "待辦任務",
+    "share": "分享",
     "delete_confirm": "刪除確認",
     "create_project": "新增專案",
     "subTitle": {

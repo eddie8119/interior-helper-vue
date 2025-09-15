@@ -1,6 +1,8 @@
 {
   "en": {
     "project": {
+      "project": "Project",
+      "construction": "Construction",
       "type": {
         "residential": "Residential",
         "luxury": "Luxury",
@@ -11,6 +13,8 @@
   },
   "zh-TW": {
     "project": {
+      "project": "專案",
+      "construction": "工程",
       "type": {
         "residential": "住宅",
         "luxury": "豪宅",
@@ -21,6 +25,8 @@
   },
   "ja": {
     "project": {
+      "project": "プロジェクト",
+      "construction": "工事",
       "type": {
         "residential": "住宅",
         "luxury": "豪邸",

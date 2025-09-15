@@ -257,6 +257,8 @@
     "pageSize": "件/ページ"
   },
   "project": {
+    "project": "プロジェクト",
+    "construction": "工事",
     "type": {
       "residential": "住宅",
       "luxury": "豪邸",

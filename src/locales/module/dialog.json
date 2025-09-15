@@ -1,9 +1,15 @@
 {
   "en": {
-    "dialog": {}
+    "dialog": {
+      "delete_confirm": "Do you confirm the deletion",
+      "share_project_link": "Share Project Link"
+    }
   },
   "zh-TW": {
-    "dialog": {}
+    "dialog": {
+      "delete_confirm": "確定要刪除",
+      "share_project_link": "分享專案連結"
+    }
   },
   "ja": {
     "dialog": {}

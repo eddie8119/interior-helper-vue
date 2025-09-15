@@ -123,7 +123,10 @@
     "devices_list_page": "devices list page",
     "show_all_filter": "show all filter"
   },
-  "dialog": {},
+  "dialog": {
+    "delete_confirm": "Do you confirm the deletion",
+    "share_project_link": "Share Project Link"
+  },
   "dropdown": {
     "zh-TW": "繁體中文",
     "en": "English",
@@ -229,6 +232,9 @@
     "error": {
       "update_failed": "Update failed",
       "failed_to_fetch_weather_data": "Failed to fetch weather data"
+    },
+    "project": {
+      "project_deleted_success_success": "Project deleted success"
     }
   },
   "nav": {
@@ -312,6 +318,8 @@
     }
   },
   "project": {
+    "project": "Project",
+    "construction": "Construction",
     "type": {
       "residential": "Residential",
       "luxury": "Luxury",
@@ -332,6 +340,8 @@
     "reset_password": "Reset Password",
     "overview": "Overview",
     "todo": "To Do",
+    "share": "Share",
+    "manage_collaborators": "Manage Collaborators",
     "delete_confirm": "Delete Confirm",
     "create_project": "Create Project",
     "subTitle": {

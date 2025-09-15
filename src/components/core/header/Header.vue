@@ -2,15 +2,16 @@
   <header class="header-container border-bottom justify-between">
     <LogoArea class="--mobile md:hidden" />
     <div class="--desktop hidden md:block">
-      <div class="flex">
+      <div class="flex gap-4">
         <button
-          class="mr-4 text-gray-600 transition-transform duration-300 hover:text-gray-800"
+          class="text-gray-600 transition-transform duration-300 hover:text-gray-800"
           :class="{ 'rotate-90': props.isSidebarCollapsed }"
-          @click="$emit('toggle-sidebar')"
+          @click="emit('toggle-sidebar')"
         >
           <img src="@/assets/icons/Menu.svg" :alt="`menu Icon`" class="icon-hover icon-basic" />
         </button>
         <PrePage />
+        <PageSubject />
         <!-- <Breadcrumb /> -->
       </div>
     </div>
@@ -19,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+import PageSubject from '@/components/core/header/PageSubject.vue';
 import RightPanel from '@/components/core/header/RightPanel.vue';
 import PrePage from '@/components/core/PrePage.vue';
 import LogoArea from '@/components/core/sidebar/LogoArea.vue';
@@ -26,6 +28,8 @@ import LogoArea from '@/components/core/sidebar/LogoArea.vue';
 const props = defineProps<{
   isSidebarCollapsed: boolean;
 }>();
+
+const emit = defineEmits(['toggle-sidebar']);
 </script>
 
 <style lang="scss" scoped></style>

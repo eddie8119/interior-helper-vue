@@ -9,6 +9,8 @@
       "reset_password": "Reset Password",
       "overview": "Overview",
       "todo": "To Do",
+      "share": "Share",
+      "manage_collaborators": "Manage Collaborators",
       "delete_confirm": "Delete Confirm",
       "create_project": "Create Project",
       "subTitle": {
@@ -33,6 +35,7 @@
       "reset_password": "重設密碼",
       "overview": "總覽",
       "todo": "待辦任務",
+      "share": "分享",
       "delete_confirm": "刪除確認",
       "create_project": "新增專案",
       "subTitle": {

@@ -22,6 +22,9 @@
       "error": {
         "update_failed": "Update failed",
         "failed_to_fetch_weather_data": "Failed to fetch weather data"
+      },
+      "project": {
+        "project_deleted_success_success": "Project deleted success"
       }
     }
   },

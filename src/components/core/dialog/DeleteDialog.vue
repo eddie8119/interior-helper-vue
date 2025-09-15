@@ -7,10 +7,10 @@
     @submit="onSubmit"
     @cancel="dialogVisible = false"
   >
-    <p class="mb-4 text-center text-lg">
-      確定要刪除
+    <p class="text-center text-lg">
+      {{ t('dialog.delete_confirm') }}
       <span class="font-semibold text-secondary-red">{{ props.subject }} -{{ props.target }}</span>
-      嗎？
+      ？
     </p>
   </BasicEditDialog>
 </template>

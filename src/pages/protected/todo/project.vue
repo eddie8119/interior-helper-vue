@@ -3,10 +3,15 @@
     <Loading />
   </div>
   <div v-else class="relative h-full w-full">
-    <ProjectHeader :title="localProject?.title" @update:title="updateProjectTitle" />
-    <ShowUpdateTime
-      :last-update-time="formatDateTimeWithMinutes(adjustTimeZone(localProject?.updatedAt))"
-    />
+    <div class="mb-2 flex flex-col">
+      <div class="flex items-center gap-4">
+        <ProjectHeader :title="localProject?.title" @update:title="updateProjectTitle" />
+        <ProjectSettings :project-title="localProject?.title" :project-id="projectId" />
+      </div>
+      <ShowUpdateTime
+        :last-update-time="formatDateTimeWithMinutes(adjustTimeZone(localProject?.updatedAt))"
+      />
+    </div>
     <KanbanBoard
       :construction-container="localProject?.constructionContainer"
       @update:construction-container="updateConstructionContainer"
@@ -23,6 +28,7 @@ import type { ProjectResponse } from '@/types/response';
 import Loading from '@/components/core/loading/Loading.vue';
 import KanbanBoard from '@/components/core/project/KanbanBoard.vue';
 import ProjectHeader from '@/components/core/project/ProjectHeader.vue';
+import ProjectSettings from '@/components/core/project/ProjectSettings.vue';
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
 import { useProject } from '@/composables/useProject';
 import { useProjectLocalStorage } from '@/composables/useProjectLocalStorage';

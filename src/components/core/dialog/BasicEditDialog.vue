@@ -15,7 +15,13 @@
     <span class="mt-5 flex items-center gap-3">
       <slot name="footer-left" />
       <div class="flex-grow" />
-      <slot name="footer" :on-cancel="onCancel" :on-submit="onSubmit" :is-submitting="isSubmitting">
+      <slot
+        v-if="showFooterButton"
+        name="footer"
+        :on-cancel="onCancel"
+        :on-submit="onSubmit"
+        :is-submitting="isSubmitting"
+      >
         <TextButton size="md" variant="outline" @click="onCancel">
           {{ t('common.cancel') }}
         </TextButton>
@@ -46,12 +52,14 @@ const props = withDefaults(
     title: string;
     isSubmitting: boolean;
     errorMessage?: string;
+    showFooterButton?: boolean;
   }>(),
   {
     modelValue: false,
     title: '',
     isSubmitting: false,
     errorMessage: '',
+    showFooterButton: true,
   }
 );
 

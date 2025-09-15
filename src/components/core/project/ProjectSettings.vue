@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { Share, User, Delete } from '@element-plus/icons-vue';
+import { Delete, Share, User } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';

@@ -3,14 +3,13 @@
     <Loading />
   </div>
   <div v-else class="relative h-full w-full">
-    <div class="mb-2 flex flex-col">
+    <div class="mb-2 flex flex-col md:flex-row md:justify-between">
+      <ProjectHeader :title="localProject?.title" @update:title="updateProjectTitle" />
+
       <div class="flex items-center gap-4">
-        <ProjectHeader :title="localProject?.title" @update:title="updateProjectTitle" />
         <ProjectSettings :project-title="localProject?.title" :project-id="projectId" />
+        <ShowUpdateTime :last-update-time="formattedUpdateTime" />
       </div>
-      <ShowUpdateTime
-        :last-update-time="formatDateTimeWithMinutes(adjustTimeZone(localProject?.updatedAt))"
-      />
     </div>
     <KanbanBoard
       :construction-container="localProject?.constructionContainer"
@@ -20,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 
 import type { ProjectResponse } from '@/types/response';
@@ -32,6 +31,7 @@ import ProjectSettings from '@/components/core/project/ProjectSettings.vue';
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
 import { useProject } from '@/composables/useProject';
 import { useProjectLocalStorage } from '@/composables/useProjectLocalStorage';
+import { useUpdateTime } from '@/composables/useUpdateTime';
 import { adjustTimeZone, formatDateTimeWithMinutes } from '@/utils/dateTime';
 
 const route = useRoute();
@@ -45,6 +45,7 @@ const { localProject, hasChanges, initLocalProject, saveToLocalStorage } = usePr
   projectId,
   fetchedProject
 );
+const { lastUpdateTime, updateLastUpdateTime } = useUpdateTime();
 
 // 監聽資料庫數據變化並初始化本地數據
 watch(
@@ -57,10 +58,23 @@ watch(
   { immediate: true }
 );
 
+const formattedUpdateTime = computed(() => {
+  // 如果有本地更新時間，優先使用本地更新時間
+  if (lastUpdateTime.value) {
+    return lastUpdateTime.value;
+  }
+  // 否則使用從服務器獲取的更新時間
+  if (localProject.value?.updatedAt) {
+    return formatDateTimeWithMinutes(adjustTimeZone(localProject.value.updatedAt));
+  }
+  return '';
+});
+
 // 更新專案標題的方法
 const updateProjectTitle = (newTitle: string) => {
   localProject.value.title = newTitle;
   saveToLocalStorage();
+  updateLastUpdateTime();
 };
 
 // 更新工程容器的方法
@@ -68,6 +82,7 @@ const updateConstructionContainer = (containers: string[]) => {
   if (localProject.value) {
     localProject.value.constructionContainer = containers;
     saveToLocalStorage();
+    updateLastUpdateTime();
   }
 };
 

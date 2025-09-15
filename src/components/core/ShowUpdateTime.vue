@@ -1,5 +1,5 @@
 <template>
-  <p class="absolute right-3 top-3 w-full text-right text-sm text-black-400">
+  <p class="w-full text-right text-sm text-black-400">
     {{ t('common.last_update_time') }}: {{ props.lastUpdateTime }}
   </p>
 </template>

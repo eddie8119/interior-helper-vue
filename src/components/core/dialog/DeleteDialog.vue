@@ -1,14 +1,16 @@
 <template>
   <BasicEditDialog
     v-model="dialogVisible"
-    :title="t('title.delete_confirm')"
+    :title="props.subject + t('title.delete_confirm')"
     :is-submitting="isSubmitting"
     :error-message="errorMessage"
     @submit="onSubmit"
-    @cancel="onCancel"
+    @cancel="dialogVisible = false"
   >
     <p class="mb-4 text-center text-lg">
-      確定要刪除 <span class="font-semibold text-secondary-red">{{ props.target }}</span> 嗎？
+      確定要刪除
+      <span class="font-semibold text-secondary-red">{{ props.subject }} -{{ props.target }}</span>
+      嗎？
     </p>
   </BasicEditDialog>
 </template>
@@ -24,6 +26,7 @@ const { t } = useI18n();
 const props = defineProps<{
   modelValue: boolean;
   target: string;
+  subject?: string;
 }>();
 
 const emit = defineEmits<{
@@ -42,7 +45,7 @@ const dialogVisible = computed({
 const onSubmit = async () => {
   try {
     isSubmitting.value = true;
-    // 觸發確認刪除事件
+    // 觸發確認刪除事
     emit('confirm');
     // 關閉彈窗
     dialogVisible.value = false;
@@ -52,9 +55,5 @@ const onSubmit = async () => {
   } finally {
     isSubmitting.value = false;
   }
-};
-
-const onCancel = () => {
-  emit('update:modelValue', false);
 };
 </script>

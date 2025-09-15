@@ -18,6 +18,7 @@ interface UseProjectsReturn {
   fetchedProject: Ref<ProjectResponse | null>;
   projectUpdatedAt: Ref<number>;
   updateProject: (data: Partial<CreateProjectSchema>) => Promise<ProjectResponse | null>;
+  deleteProject: (id: string) => Promise<void>;
   isUpdating: Ref<boolean>;
   updateError: Ref<Error | null>;
 }
@@ -90,12 +91,34 @@ export function useProject(id: string): UseProjectsReturn {
     }
   };
 
+  // 刪除專案
+  const { mutateAsync } = useMutation<void, Error, string>({
+    mutationFn: async (id: string) => {
+      const response = await projectApi.deleteProject(id);
+      if (!response.success) {
+        throw new Error('刪除專案失敗: API 未返回資料');
+      }
+    },
+    onError: (error) => {
+      console.error('刪除專案失敗:', error);
+    },
+  });
+
+  const deleteProject = async (id: string): Promise<void> => {
+    try {
+      await mutateAsync(id);
+    } catch (error) {
+      console.error('刪除專案失敗:', error);
+    }
+  };
+
   return {
     isLoadingProject,
     error,
     fetchedProject: fetchedProject as Ref<ProjectResponse | null>,
     projectUpdatedAt,
     updateProject,
+    deleteProject,
     isUpdating,
     updateError,
   };

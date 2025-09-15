@@ -76,6 +76,7 @@
     <!-- 刪除確認對話框 -->
     <DeleteDialog
       v-model="showDeleteConstructionDialog"
+      :subject="t('project.construction')"
       :target="name"
       @confirm="handleDeleteConstruction"
     />
@@ -84,6 +85,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
 import ContainerTitle from '@/components/core/kanbanBoard/ContainerTitle.vue';
@@ -99,6 +101,8 @@ const emit = defineEmits<{
   (e: 'add-task'): void;
   (e: 'update:name', name: string): void;
 }>();
+
+const { t } = useI18n();
 
 // 處理容器名稱更新
 const updateContainerName = (newName: string) => {

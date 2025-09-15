@@ -20,4 +20,7 @@ export const projectApi = {
   ): Promise<ApiResponse<ProjectResponse>> => {
     return request.patch(`/projects/${id}`, data);
   },
+  deleteProject: (id: string): Promise<ApiResponse<void>> => {
+    return request.delete(`/projects/${id}`);
+  },
 };

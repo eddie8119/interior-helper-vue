@@ -1,0 +1,267 @@
+{
+  "alarm": {
+    "edit_all": "すべて編集"
+  },
+  "button": {
+    "submit": "提出",
+    "register": "登録",
+    "login": "ログイン",
+    "change_password": "パスワード変更",
+    "forgot_password": "パスワードを忘れた",
+    "resend_activation_email": "再認証メールを送信",
+    "edit_profile": "編集",
+    "resend": "再送信",
+    "activate": "アクティベート",
+    "try_again": "再試行",
+    "pdf": "PDF",
+    "csv": "CSV"
+  },
+  "column": {
+    "edit": "編集",
+    "title": "名前",
+    "type": "タイプ",
+    "createdAt": "作成日",
+    "updatedAt": "更新日"
+  },
+  "common": {
+    "confirm": "確認",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "back": "戻る",
+    "theme": "テーマ",
+    "language": "言語",
+    "notification": "通知",
+    "authentication": "認証",
+    "logout": "ログアウト",
+    "success": "成功",
+    "last_update_time": "最終更新",
+    "loading": "読み込み中",
+    "download": "ダウンロード",
+    "role": {
+      "admin": "管理者",
+      "user": "ユーザー"
+    },
+    "relative": {
+      "second": "{count} 秒",
+      "minute": "{count} 分",
+      "hour": "{count} 時間",
+      "day": "{count} 日"
+    }
+  },
+  "device": {
+    "site_name": "測定地点名",
+    "electrodeLife": "電極寿命",
+    "sensor_name": "センサー型番",
+    "sensor_serial": "セリアル番号（センサー）",
+    "customName": "カスタム名",
+    "edit": "編集",
+    "action": "行動",
+    "handle": "対応",
+    "sensor_remainingDays": "センサー残日数",
+    "location": "設置場所",
+    "product_name": "製品型番",
+    "product_serial": "セリアル番号（製品）",
+    "water_area": "水域",
+    "senser_start_date": "センサー開始日",
+    "day": "日",
+    "deviceWarning": {
+      "warning": "警告",
+      "cleaning_action": "清掃対応",
+      "regeneration_action": "再生対応",
+      "replacement_action": "交換対応",
+      "_": "_",
+      "action": "操作",
+      "error": "エラー",
+      "all": "すべて"
+    },
+    "measurement": {
+      "ph": "pH",
+      "elec": "Elec(mV)",
+      "zero": "zero",
+      "temperature": "温度（°C）",
+      "slope": "slope",
+      "humidity": "湿度",
+      "ppm": "ppm",
+      "sensitivity": "でんきょくかんど",
+      "offset": "オフセット"
+    },
+    "status": {
+      "pending": "未対応",
+      "handled": "対応済み",
+      "cleared": "クリア済み",
+      "running": "稼働中",
+      "caution": "注意",
+      "stopped": "停止中",
+      "warning": "警告",
+      "resolved": "解決済み",
+      "unresolved": "未解決",
+      "idle": "空闲",
+      "undefined": "未定義",
+      "not available": "利用不可",
+      "error": "エラー",
+      "finish": "完成",
+      "failed": "失敗"
+    },
+    "handle_action": {
+      "remote_cleaning": "遠隔洗浄・校正の実行を推奨",
+      "electrode_replacement": "電極部品の交換。幸瑋にご連絡ください",
+      "electrode_reached_life": "電極の使用寿命に達しました。幸瑋にご連絡ください"
+    },
+    "warning": "警告",
+    "caution": "注意",
+    "running": "稼働中",
+    "active": "有効",
+    "stop": "停止",
+    "times": "回",
+    "device": "デバイス",
+    "devices": "デバイス群",
+    "devices_list_page": "デバイス一覧",
+    "show_all_filter": "すべてのフィルターを表示"
+  },
+  "dialog": {},
+  "dropdown": {
+    "zh-TW": "繁體中文",
+    "en": "English",
+    "ja": "日本語",
+    "user": "ユーザー",
+    "logout": "ログアウト",
+    "edit": "編集",
+    "detail": "詳細"
+  },
+  "error": {
+    "login_failed": "ログイン失敗",
+    "register_failed": "登録失敗",
+    "resend_activation_failed": "再送信アクティベーション失敗",
+    "change_password_failed": "パスワードの変更に失敗しました",
+    "activation_failed": "アクティベーション失敗",
+    "reset_password_failed": "パスワードのリセットに失敗しました",
+    "update_failed": "更新失敗"
+  },
+  "link": {
+    "back_to_home": "ホームに戻る",
+    "back_to_forgot_password": "忘記パスワードに戻る",
+    "forgot_password": "忘記パスワード",
+    "back_to_login": "ログインに戻る",
+    "register": "登録する"
+  },
+  "management": {
+    "inviteMember": "メンバーを招待",
+    "collaborator": "共同編集者",
+    "membersList": "メンバー一覧",
+    "role": "役割",
+    "send": "送信",
+    "invite": "招待",
+    "remove": "削除",
+    "status": {
+      "pending": "保留中",
+      "joined": "参加済み"
+    },
+    "roles": {
+      "owner": "オーナー",
+      "admin": "管理者",
+      "editor": "編集者",
+      "viewer": "閲覧者"
+    },
+    "messages": {
+      "inviteSent": "招待が正常に送信されました"
+    },
+    "errors": {
+      "emailExists": "このメールアドレスは既に存在します",
+      "inviteFailed": "メンバーの招待に失敗しました"
+    }
+  },
+  "message": {
+    "dialog": {
+      "activation_success": "アクティベーションに成功しました！",
+      "activation_error": "アクティベーションに失敗しました",
+      "activating": "アクティベート中...",
+      "check_email_for_activation": "認証メールをご確認ください",
+      "no_email_received": "メールが届いていません",
+      "check_the_email": "メールを確認してください",
+      "change_password_success": "パスワードの変更に成功しました！",
+      "change_password_failed": "パスワードの変更に失敗しました。後でもう一度お試しください。"
+    },
+    "sign": {
+      "loading_weather_data": "天気データを読み込み中...",
+      "no_change": "変更なし",
+      "no_alarm": "アラームなし"
+    },
+    "success": {
+      "update_success": "更新に成功しました！"
+    },
+    "error": {
+      "update_failed": "更新に失敗しました",
+      "failed_to_fetch_weather_data": "天気データの取得に失敗しました"
+    }
+  },
+  "nav": {
+    "group": {
+      "home": "ホーム",
+      "main": "メイン",
+      "observation_items": "観測項目",
+      "management": "管理"
+    },
+    "menu": {
+      "dashboard": "ダッシュボード",
+      "entitySearch": "エンティティ検索",
+      "devices": "デバイス一覧",
+      "overview": "概要",
+      "ph": "酸性度",
+      "orp": "酸化還元電位",
+      "sqm": "SQM",
+      "mac": "MAC",
+      "nh3n": "アンモニウム",
+      "flouride": "フッ化物",
+      "set-member": "メンバー設定"
+    }
+  },
+  "notification": {
+    "email": "メールアドレス",
+    "phone": "電話",
+    "name": "名前",
+    "section_title": {
+      "subscriber_info": "購読者情報",
+      "device_selection": "デバイス選択",
+      "time_range_settings": "時間範囲設定"
+    }
+  },
+  "observation": {
+    "ph": "酸性度",
+    "orp": "酸化還原電位",
+    "sqm": "SQM",
+    "mac": "MAC",
+    "nh3n": "アンモニウム",
+    "flouride": "フッ化物"
+  },
+  "option": {
+    "alarm": {
+      "notice": "通知",
+      "caution": "注意",
+      "warning": "警告"
+    },
+    "waterQuality": {
+      "pure_water": "純水",
+      "acid_alkali": "酸・アルカリ水",
+      "biological_water": "生物用水",
+      "general_acid_alkali": "一般酸・アルカリ水",
+      "grinding_water": "研磨水",
+      "copper_grinding": "銅研磨水",
+      "nh3n_water": "NH3-N水",
+      "hydrofluoric_water": "フッ酸水"
+    }
+  },
+  "pagination": {
+    "total": "合計 {total} 件",
+    "pageSize": "件/ページ"
+  },
+  "project": {
+    "type": {
+      "residential": "住宅",
+      "luxury": "豪邸",
+      "commercial": "商業",
+      "office": "事務所"
+    }
+  }
+}

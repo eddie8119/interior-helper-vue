@@ -2,6 +2,7 @@ import { createI18n } from 'vue-i18n';
 
 // import messages from './messages';
 import enJson from '@/locales/en.json';
+import jaJson from '@/locales/ja.json';
 import zhTwJson from '@/locales/zh-TW.json';
 import { Language } from '@/types/language';
 import { LanguageLabels } from '@/types/language';
@@ -17,6 +18,7 @@ const i18n = createI18n({
   messages: {
     [Language.EN]: enJson,
     [Language.ZH_TW]: zhTwJson,
+    [Language.JA]: jaJson,
   },
 });
 

@@ -2,7 +2,7 @@
   "en": {
     "column": {
       "edit": "Edit",
-      "title": "Title",
+      "title": "Name",
       "type": "Type",
       "createdAt": "Created At"
     }
@@ -10,11 +10,19 @@
   "zh-TW": {
     "column": {
       "edit": "編輯",
-      "title": "標題",
+      "title": "名稱",
       "type": "類型",
       "createdAt": "建立時間",
       "updatedAt": "更新時間"
     }
   },
-  "ja": {}
+  "ja": {
+    "column": {
+      "edit": "編集",
+      "title": "名前",
+      "type": "タイプ",
+      "createdAt": "作成日",
+      "updatedAt": "更新日"
+    }
+  }
 }

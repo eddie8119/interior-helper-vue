@@ -7,7 +7,7 @@
     @submit="onSubmit"
     @cancel="onCancel"
   >
-    <p class="mb-4 text-center">
+    <p class="mb-4 text-center text-lg">
       確定要刪除 <span class="font-semibold text-secondary-red">{{ props.target }}</span> 嗎？
     </p>
   </BasicEditDialog>

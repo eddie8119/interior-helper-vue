@@ -23,7 +23,7 @@
         <el-option
           v-for="item in PROJECT_TYPES"
           :key="item.value"
-          :label="item.label"
+          :label="t(`project.type.${item.value}`)"
           :value="item.value"
         />
       </el-select>

@@ -21,7 +21,7 @@
   },
   "column": {
     "edit": "編輯",
-    "title": "標題",
+    "title": "名稱",
     "type": "類型",
     "createdAt": "建立時間",
     "updatedAt": "更新時間"
@@ -167,6 +167,11 @@
       "username": "使用者名稱",
       "email": "電子郵件",
       "member_since": "加入日期"
+    },
+    "project": {
+      "project_name": "專案名稱",
+      "project_type": "專案類型",
+      "construction": "工程"
     }
   },
   "link": {
@@ -296,11 +301,24 @@
     "email": "電子郵件",
     "name": "姓名",
     "phone": "電話",
-    "search": "搜尋"
+    "search": "搜尋",
+    "project": {
+      "project_name": "輸入專案名稱",
+      "project_type": "選擇專案類型",
+      "construction": "選擇工程案類型"
+    }
   },
-  "project": {},
+  "project": {
+    "type": {
+      "residential": "住宅",
+      "luxury": "豪宅",
+      "commercial": "商用",
+      "office": "辦公"
+    }
+  },
   "tab": {
-    "projects": "專案群"
+    "projects": "專案群",
+    "project": "專案"
   },
   "title": {
     "register": "註冊",
@@ -309,19 +327,10 @@
     "account_activation": "帳號啟用",
     "forgot_password": "忘記密碼",
     "reset_password": "重設密碼",
-    "edit_device": "編輯裝置",
-    "edit_device_alarm": "編輯裝置警報",
-    "edit_custom_name": "編輯自訂名稱",
-    "edit_water_quality": "編輯水域",
-    "alarm_detail": "警報詳情",
-    "handling_records": "處理紀錄",
     "overview": "總覽",
-    "monitoring": "監控",
-    "factory_scene": "工廠場景",
-    "alarm_list": "警報清單",
-    "device": {
-      "alarm_subscription": "警報訂閱"
-    },
+    "todo": "待辦任務",
+    "delete_confirm": "刪除確認",
+    "create_project": "新增專案",
     "subTitle": {
       "latest_calibration": "最近一次校正",
       "statistics": "統計資料",

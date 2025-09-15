@@ -35,23 +35,13 @@
       "email": "電子郵件",
       "name": "姓名",
       "phone": "電話",
-      "search": "搜尋"
+      "search": "搜尋",
+      "project": {
+        "project_name": "輸入專案名稱",
+        "project_type": "選擇專案類型",
+        "construction": "選擇工程案類型"
+      }
     }
   },
-  "ja": {
-    "placeholder": {
-      "auth": {
-        "email": "メールアドレス",
-        "password": "パスワード",
-        "confirm_password": "確認パスワード",
-        "old_password": "古いパスワード",
-        "new_password": "新しいパスワード",
-        "new_confirm_password": "新しいパスワードを確認",
-        "username": "ユーザー名"
-      },
-      "email": "メールアドレス",
-      "name": "名前",
-      "phone": "電話"
-    }
-  }
+  "ja": {}
 }

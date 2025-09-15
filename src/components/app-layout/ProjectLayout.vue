@@ -4,7 +4,7 @@
     <div class="flex flex-col gap-2">
       <div class="flex items-center justify-between">
         <div class="flex items-center">
-          <H1Title :title="props.title ?? props.subject" />
+          <H1Title :title="props.subject" />
         </div>
       </div>
       <TabProject :subject="props.subject" :tabs-list="tabsList" />

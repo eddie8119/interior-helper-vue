@@ -1,12 +1,14 @@
 {
   "en": {
     "tab": {
-      "projects": "Projects"
+      "projects": "Projects",
+      "project": "Project"
     }
   },
   "zh-TW": {
     "tab": {
-      "projects": "專案群"
+      "projects": "專案群",
+      "project": "專案"
     }
   },
   "ja": {}

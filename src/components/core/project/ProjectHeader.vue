@@ -1,7 +1,7 @@
 <template>
   <div v-if="!isEditingTitle">
     <button
-      class="inline-block rounded-md py-2 text-3xl font-bold transition-all duration-300 ease-in-out hover:bg-slate-200"
+      class="inline-block rounded-md py-2 text-2xl font-bold transition-all duration-300 ease-in-out hover:bg-slate-200"
       @click="startEditing"
     >
       {{ title }} 工程案

@@ -59,36 +59,13 @@
         "username": "使用者名稱",
         "email": "電子郵件",
         "member_since": "加入日期"
+      },
+      "project": {
+        "project_name": "專案名稱",
+        "project_type": "專案類型",
+        "construction": "工程"
       }
     }
   },
-  "ja": {
-    "label": {
-      "time": "時刻",
-      "status": "ステータス",
-      "device": "デバイス",
-      "detail": "詳細",
-      "action": "操作",
-      "note": "メモ",
-      "average": "平均",
-      "day": "日",
-      "start_time": "開始時刻",
-      "end_time": "終了時刻",
-      "quick_date_selector": "クイック日付選択",
-      "custom_time_range": "カスタム時間範囲",
-      "alarm": {
-        "type": "種類",
-        "time_interval": "時間間隔",
-        "alarm_level": "アラームレベル",
-        "value": "値",
-        "repeat": "繰り返し",
-        "email": "メール"
-      },
-      "user": {
-        "username": "ユーザー名",
-        "email": "メール",
-        "member_since": "会員登録日"
-      }
-    }
-  }
+  "ja": {}
 }

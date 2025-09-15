@@ -21,7 +21,7 @@
   },
   "column": {
     "edit": "Edit",
-    "title": "Title",
+    "title": "Name",
     "type": "Type",
     "createdAt": "Created At"
   },
@@ -311,9 +311,17 @@
       "construction": "Please select construction"
     }
   },
-  "project": {},
+  "project": {
+    "type": {
+      "residential": "Residential",
+      "luxury": "Luxury",
+      "commercial": "Commercial",
+      "office": "Office"
+    }
+  },
   "tab": {
-    "projects": "Projects"
+    "projects": "Projects",
+    "project": "Project"
   },
   "title": {
     "register": "Register",
@@ -322,13 +330,9 @@
     "account_activation": "Account Activation",
     "forgot_password": "Forgot Password",
     "reset_password": "Reset Password",
-    "edit_device": "Edit Device",
-    "edit_device_alarm": "Edit Device Alarm",
-    "edit_custom_name": "Edit Custom Name",
-    "edit_water_quality": "Edit Water Quality",
-    "alarm_detail": "Alarm Detail",
-    "handling_records": "Handling Records",
     "overview": "Overview",
+    "todo": "To Do",
+    "delete_confirm": "Delete Confirm",
     "create_project": "Create Project",
     "subTitle": {
       "latest_calibration": "Latest Calibration",

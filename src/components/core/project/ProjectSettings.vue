@@ -75,7 +75,7 @@ import CollaboratorDialog from '@/components/core/dialog/CollaboratorDialog.vue'
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
 import ShareLinkDialog from '@/components/core/dialog/ShareLinkDialog.vue';
 import { useProject } from '@/composables/useProject';
-import { getProjectStorageKey } from '@/utils/projectStorage';
+import { getProjectStorageKey } from '@/utils/storage/projectStorage';
 
 const props = defineProps<{
   projectId: string;

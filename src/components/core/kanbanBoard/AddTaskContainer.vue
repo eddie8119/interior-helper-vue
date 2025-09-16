@@ -58,9 +58,9 @@
               placeholder="材料名稱"
             />
             <button
-              @click="removeMaterial(index)"
               class="text-red-500 hover:text-red-700"
               title="移除材料"
+              @click="removeMaterial(index)"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -105,8 +105,8 @@
           </div>
         </div>
         <button
-          @click="addMaterial"
           class="flex w-full items-center justify-center rounded-md border border-dashed border-gray-300 py-1 text-sm text-gray-500 hover:bg-gray-100"
+          @click="addMaterial"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -162,11 +162,11 @@
 </template>
 
 <script setup lang="ts">
+import { toTypedSchema } from '@vee-validate/zod';
+import { ElDatePicker } from 'element-plus';
+import { useForm } from 'vee-validate';
 import { nextTick, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { toTypedSchema } from '@vee-validate/zod';
-import { useForm } from 'vee-validate';
-import { ElDatePicker } from 'element-plus';
 
 import { createTaskSchema, type CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 

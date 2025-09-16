@@ -94,8 +94,8 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
-import ContainerTitle from '@/components/core/kanbanBoard/ContainerTitle.vue';
 import AddTaskContainer from '@/components/core/kanbanBoard/AddTaskContainer.vue';
+import ContainerTitle from '@/components/core/kanbanBoard/ContainerTitle.vue';
 
 defineProps<{
   id: string;

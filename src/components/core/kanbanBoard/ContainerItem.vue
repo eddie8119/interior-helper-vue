@@ -51,7 +51,7 @@
     </div>
 
     <div v-else>
-      <AddTaskContainer @close="stopEditing" />
+      <AddNewTask @close="stopEditing" />
     </div>
 
     <!-- 添加施作項目按鈕 -->
@@ -94,7 +94,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
-import AddTaskContainer from '@/components/core/kanbanBoard/AddTaskContainer.vue';
+import AddNewTask from '@/components/core/kanbanBoard/AddNewTask.vue';
 import ContainerTitle from '@/components/core/kanbanBoard/ContainerTitle.vue';
 import { useEditingStateStore } from '@/stores/editingState';
 

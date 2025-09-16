@@ -44,7 +44,7 @@
     <div v-if="showMoreSettings" class="space-y-4 rounded-md border border-gray-200 bg-gray-50 p-3">
       <!-- 材料 -->
       <div class="space-y-2">
-        <h3 class="font-medium text-gray-700">材料</h3>
+        <h3 class="font-medium text-gray-700">材料 (可選)</h3>
         <div
           v-for="(material, index) in taskData.materials"
           :key="index"
@@ -128,7 +128,7 @@
 
       <!-- 提醒 -->
       <div class="space-y-2">
-        <h3 class="font-medium text-gray-700">設定提醒</h3>
+        <h3 class="font-medium text-gray-700">設定提醒 (可選)</h3>
         <div class="flex items-center gap-2">
           <el-date-picker
             v-model="taskData.reminderDatetime"
@@ -169,23 +169,9 @@ import { nextTick, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { createTaskSchema, type CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
+import type { Material, TaskData } from '@/types/task';
 
 const { t } = useI18n();
-
-// 定義材料接口
-interface Material {
-  name: string;
-  quantity: number | null;
-  unitPrice: number | null;
-}
-
-// 定義任務數據接口
-interface TaskData {
-  title: string;
-  description: string;
-  materials: Material[];
-  reminderDatetime: Date | null;
-}
 
 const emit = defineEmits<{
   (e: 'close'): void;
@@ -214,6 +200,7 @@ const taskData = ref<TaskData>({
   description: '',
   materials: [],
   reminderDatetime: null,
+  type: '',
 });
 
 // 切換顯示更多設定

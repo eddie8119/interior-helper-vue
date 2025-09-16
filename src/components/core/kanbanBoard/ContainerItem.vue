@@ -18,7 +18,7 @@
             />
           </svg>
         </div>
-        <ContainerTitle :name="name" @update:name="updateContainerName" />
+        <ContainerTitle :name="name" @update:name="updateConstructionName" />
       </div>
       <button
         class="rounded-full p-1 text-red-500 hover:bg-red-100"
@@ -132,7 +132,7 @@ const stopEditing = () => {
 };
 
 // 處理容器名稱更新
-const updateContainerName = (newName: string) => {
+const updateConstructionName = (newName: string) => {
   emit('update:name', newName);
 };
 

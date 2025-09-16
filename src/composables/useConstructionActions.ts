@@ -1,12 +1,12 @@
 import type { ContainerData } from '@/types/project';
 import type { Ref } from 'vue';
 
-export function useContainerActions(
+export function useConstructionActions(
   containers: Ref<ContainerData[]>,
   updateConstructionContainer: () => void
 ) {
   // 刪除容器
-  const deleteContainer = (index: number) => {
+  const deleteConstruction = (index: number) => {
     containers.value.splice(index, 1);
 
     // 重新排序
@@ -18,7 +18,7 @@ export function useContainerActions(
   };
 
   // 添加新容器
-  const addNewContainer = (newContainerName: string) => {
+  const addNewConstruction = (newContainerName: string) => {
     if (newContainerName && newContainerName.trim()) {
       containers.value.push({
         id: `container-${Date.now()}`,
@@ -30,7 +30,7 @@ export function useContainerActions(
   };
 
   // 更新容器名稱
-  const updateContainerName = (index: number, newName: string) => {
+  const updateConstructionName = (index: number, newName: string) => {
     // 確保索引有效
     if (index >= 0 && index < containers.value.length) {
       // 更新容器名稱
@@ -42,8 +42,8 @@ export function useContainerActions(
   };
 
   return {
-    deleteContainer,
-    addNewContainer,
-    updateContainerName,
+    deleteConstruction,
+    addNewConstruction,
+    updateConstructionName,
   };
 }

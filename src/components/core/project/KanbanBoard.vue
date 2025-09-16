@@ -13,15 +13,15 @@
           :id="container.id"
           :name="container.name"
           :is-default="isDefaultContainer(index)"
-          @delete-container="deleteContainer(index)"
+          @delete-container="deleteConstruction(index)"
           @add-task="handleAddTask(container.id)"
-          @update:name="updateContainerName(index, $event)"
+          @update:name="updateConstructionName(index, $event)"
         />
       </Draggable>
 
       <!-- 添加新工程類型按鈕 -->
       <Draggable>
-        <AddNewContainer id="new-container" @add-container="addNewContainer" />
+        <AddNewConstruction id="new-container" @add-container="addNewConstruction" />
       </Draggable>
     </Container>
   </div>
@@ -31,9 +31,9 @@
 import { onMounted, watch } from 'vue';
 import { Container, Draggable } from 'vue3-smooth-dnd';
 
-import AddNewContainer from '@/components/core/kanbanBoard/AddNewContainer.vue';
+import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
 import ContainerItem from '@/components/core/kanbanBoard/ContainerItem.vue';
-import { useContainerActions } from '@/composables/useContainerActions';
+import { useConstructionActions } from '@/composables/useConstructionActions';
 import { useDraggableContainers } from '@/composables/useDraggableContainers';
 
 const props = defineProps<{
@@ -68,7 +68,7 @@ const isDefaultContainer = (index: number) => {
 };
 
 // 容器的操作
-const { deleteContainer, addNewContainer, updateContainerName } = useContainerActions(
+const { deleteConstruction, addNewConstruction, updateConstructionName } = useConstructionActions(
   containers,
   updateConstructionContainer
 );

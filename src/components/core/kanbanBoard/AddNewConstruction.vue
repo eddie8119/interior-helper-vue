@@ -31,7 +31,7 @@
         type="text"
         class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
         :placeholder="t('placeholder.project.addContainer')"
-        @keyup.enter="addNewContainer"
+        @keyup.enter="AddNewConstruction"
         @keyup.esc="cancelEditing"
       />
 
@@ -45,7 +45,7 @@
         <button
           class="rounded-md bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
           :disabled="!isValidName"
-          @click="addNewContainer"
+          @click="AddNewConstruction"
         >
           {{ t('button.add') }}
         </button>
@@ -94,7 +94,7 @@ const startEditing = () => {
 };
 
 // 添加新容器
-const addNewContainer = () => {
+const AddNewConstruction = () => {
   if (isValidName.value) {
     emit('add-container', newContainerName.value.trim());
     resetForm();

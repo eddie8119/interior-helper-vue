@@ -18,7 +18,10 @@
             />
           </svg>
         </div>
-        <ContainerTitle :construction-name="props.constructionName" @update:construction-name="updateConstructionName" />
+        <ContainerTitle
+          :construction-name="props.constructionName"
+          @update:construction-name="updateConstructionName"
+        />
       </div>
       <button
         class="rounded-full p-1 text-red-500 hover:bg-red-100"

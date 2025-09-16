@@ -97,11 +97,11 @@ const showCollaboratorsDialog = ref(false);
 const handleDelete = async () => {
   try {
     await deleteProject(props.projectId);
-    
+
     // 清除 localStorage 中該項目的儲存
     const storageKey = getProjectStorageKey(props.projectId);
     localStorage.removeItem(storageKey);
-    
+
     ElMessage.success(t('message.project.project_deleted_success'));
     router.push({ name: 'todo-projects' });
   } catch (error) {

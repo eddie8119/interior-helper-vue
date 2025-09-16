@@ -94,7 +94,7 @@ const handleBeforeUnload = async (event: BeforeUnloadEvent): Promise<void> => {
       const url = `/api/projects/${projectId}`;
       const data = new Blob([JSON.stringify(localProject.value)], { type: 'application/json' });
       navigator.sendBeacon(url, data);
-      
+
       // 同時嘗試使用 updateProject 保存數據
       updateProject(localProject.value)
         .then(() => {

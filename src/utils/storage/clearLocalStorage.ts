@@ -10,7 +10,7 @@ import { PROJECT_STORAGE_PREFIX } from './projectStorage';
 export function clearAllProjectLocalStorage(): void {
   try {
     const keysToRemove: string[] = [];
-    
+
     // 掃描所有 localStorage 項目
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
@@ -18,12 +18,12 @@ export function clearAllProjectLocalStorage(): void {
         keysToRemove.push(key);
       }
     }
-    
+
     // 刪除所有找到的項目
-    keysToRemove.forEach(key => {
+    keysToRemove.forEach((key) => {
       localStorage.removeItem(key);
     });
-    
+
     console.log(`已清除 ${keysToRemove.length} 個專案相關的 localStorage 項目`);
   } catch (error) {
     console.error('清除專案 localStorage 時發生錯誤:', error);

@@ -21,7 +21,7 @@
 
       <!-- 添加新工程類型按鈕 -->
       <Draggable>
-        <AddNewContainer @add-container="addNewContainer" />
+        <AddNewContainer id="new-container" @add-container="addNewContainer" />
       </Draggable>
     </Container>
   </div>

@@ -51,7 +51,7 @@
     </div>
 
     <div v-else>
-      <AddTaskContainer @close="isEditing = false" />
+      <AddTaskContainer @close="stopEditing" />
     </div>
 
     <!-- 添加施作項目按鈕 -->
@@ -59,7 +59,7 @@
       <button
         v-if="!isEditing"
         class="flex items-center justify-center rounded-md bg-blue-100 px-3 py-1 text-blue-700 hover:bg-blue-200"
-        @click="isEditing = true"
+        @click="startEditing"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -90,17 +90,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
 import AddTaskContainer from '@/components/core/kanbanBoard/AddTaskContainer.vue';
 import ContainerTitle from '@/components/core/kanbanBoard/ContainerTitle.vue';
+import { useEditingStateStore } from '@/stores/editingState';
 
-defineProps<{
+const props = defineProps<{
   id: string;
   name: string;
   isDefault: boolean;
+  tasks?: string[];
 }>();
 
 const emit = defineEmits<{
@@ -110,9 +112,24 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+const editingStateStore = useEditingStateStore();
 
 const showDeleteConstructionDialog = ref(false);
-const isEditing = ref(false);
+
+// 使用計算屬性來判斷當前容器是否處於編輯狀態
+const isEditing = computed(() => {
+  return editingStateStore.isEditing('container', props.id);
+});
+
+// 開始編輯任務
+const startEditing = () => {
+  editingStateStore.startEditing('container', props.id);
+};
+
+// 停止編輯任務
+const stopEditing = () => {
+  editingStateStore.stopEditing();
+};
 
 // 處理容器名稱更新
 const updateContainerName = (newName: string) => {

@@ -58,20 +58,31 @@
 import { computed, nextTick, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { useEditingStateStore } from '@/stores/editingState';
+
 const { t } = useI18n();
+
+const props = defineProps<{
+  id: string;
+}>();
 
 const emit = defineEmits<{ (e: 'add-container', name: string): void }>();
 
-const isEditing = ref(false);
+const editingStateStore = useEditingStateStore();
 const newContainerName = ref('');
 const inputRef = ref<HTMLInputElement | null>(null);
+
+// 使用計算屬性來判斷是否處於編輯狀態
+const isEditing = computed(() => {
+  return editingStateStore.isEditing('container', props.id);
+});
 
 // 計算屬性：確保名稱有效
 const isValidName = computed(() => newContainerName.value.trim().length > 0);
 
 // 開始編輯模式
 const startEditing = () => {
-  isEditing.value = true;
+  editingStateStore.startEditing('container', props.id);
   newContainerName.value = '';
 
   // 等待 DOM 更新後聚焦輸入框
@@ -98,7 +109,7 @@ const cancelEditing = () => {
 // 重置表單
 const resetForm = () => {
   newContainerName.value = '';
-  isEditing.value = false;
+  editingStateStore.stopEditing();
 };
 </script>
 

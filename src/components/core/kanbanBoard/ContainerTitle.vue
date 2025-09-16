@@ -27,11 +27,11 @@
 import { useEditableTitle } from '@/composables/useEditableTitle';
 
 const props = defineProps<{
-  name: string;
+  constructionName: string;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:name', value: string): void;
+  (e: 'update:construction-name', value: string): void;
 }>();
 
 // 使用可編輯標題的共用邏輯
@@ -44,7 +44,7 @@ const {
   onInputFocus,
   saveTitle,
   cancelEdit,
-} = useEditableTitle(props, emit, 'name');
+} = useEditableTitle(props, emit, 'constructionName');
 </script>
 
 <style scoped>

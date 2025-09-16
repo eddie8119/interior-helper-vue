@@ -18,7 +18,7 @@
             />
           </svg>
         </div>
-        <ContainerTitle :name="name" @update:name="updateConstructionName" />
+        <ContainerTitle :construction-name="props.constructionName" @update:construction-name="updateConstructionName" />
       </div>
       <button
         class="rounded-full p-1 text-red-500 hover:bg-red-100"
@@ -51,7 +51,7 @@
     </div>
 
     <div v-else>
-      <AddNewTask @close="stopEditing" />
+      <AddNewTask @close="stopEditing" :construction-name="props.constructionName" />
     </div>
 
     <!-- 添加施作項目按鈕 -->
@@ -83,7 +83,7 @@
     <DeleteDialog
       v-model="showDeleteConstructionDialog"
       :subject="t('project.construction')"
-      :target="name"
+      :target="props.constructionName"
       @confirm="handleDeleteConstruction"
     />
   </div>
@@ -100,7 +100,7 @@ import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{
   id: string;
-  name: string;
+  constructionName: string;
   isDefault: boolean;
   tasks?: string[];
 }>();
@@ -108,7 +108,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'delete-container'): void;
   (e: 'add-task'): void;
-  (e: 'update:name', name: string): void;
+  (e: 'update:construction-name', name: string): void;
 }>();
 
 const { t } = useI18n();
@@ -133,7 +133,7 @@ const stopEditing = () => {
 
 // 處理容器名稱更新
 const updateConstructionName = (newName: string) => {
-  emit('update:name', newName);
+  emit('update:construction-name', newName);
 };
 
 // 處理刪除工程類型

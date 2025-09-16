@@ -173,6 +173,10 @@ import type { Material, TaskData } from '@/types/task';
 
 const { t } = useI18n();
 
+const props = defineProps<{
+  constructionName: string;
+}>();
+
 const emit = defineEmits<{
   (e: 'close'): void;
   (e: 'add-task', task: TaskData): void;
@@ -200,7 +204,7 @@ const taskData = ref<TaskData>({
   description: '',
   materials: [],
   reminderDatetime: null,
-  type: '',
+  type: props.constructionName,
 });
 
 // 切換顯示更多設定
@@ -269,6 +273,7 @@ const addNewTask = handleSubmit(async (values) => {
     description: taskData.value.description.trim(),
     materials: filteredMaterials,
     reminderDatetime: taskData.value.reminderDatetime,
+    type: props.constructionName,
   };
 
   emit('add-task', newTask);
@@ -279,6 +284,7 @@ const addNewTask = handleSubmit(async (values) => {
     description: '',
     materials: [],
     reminderDatetime: null,
+    type: props.constructionName,
   };
 
   // 聚焦回輸入框

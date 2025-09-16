@@ -11,11 +11,11 @@
       <Draggable v-for="(container, index) in containers" :key="container.id">
         <ContainerItem
           :id="container.id"
-          :name="container.name"
+          :construction-name="container.name"
           :is-default="isDefaultContainer(index)"
           @delete-container="deleteConstruction(index)"
           @add-task="handleAddTask(container.id)"
-          @update:name="updateConstructionName(index, $event)"
+          @update:construction-name="updateConstructionName(index, $event)"
         />
       </Draggable>
 

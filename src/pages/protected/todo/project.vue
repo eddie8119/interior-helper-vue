@@ -87,15 +87,24 @@ const updateConstructionContainer = (containers: string[]) => {
 };
 
 // 處理窗口關閉事件
-const handleBeforeUnload = () => {
+const handleBeforeUnload = async (event: BeforeUnloadEvent): Promise<void> => {
   if (hasChanges.value && localProject.value) {
-    // 使用 navigator.sendBeacon 進行非同步請求，不顯示詢問彈窗
     try {
+      // 使用 sendBeacon 進行非同步請求
       const url = `/api/projects/${projectId}`;
       const data = new Blob([JSON.stringify(localProject.value)], { type: 'application/json' });
       navigator.sendBeacon(url, data);
+      
+      // 同時嘗試使用 updateProject 保存數據
+      updateProject(localProject.value)
+        .then(() => {
+          hasChanges.value = false;
+        })
+        .catch((error) => {
+          console.error('保存數據失敗:', error);
+        });
     } catch (error) {
-      console.error('窗口關閉時保存數據失敗:', error);
+      console.error('窗口關閉或刷新時保存數據失敗:', error);
     }
   }
 };

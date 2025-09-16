@@ -6,6 +6,8 @@ import { createPinia } from 'pinia';
 import PrimeVue from 'primevue/config';
 import * as vue from 'vue';
 
+import { setupClearLocalStorageOnUnload } from './utils/clearLocalStorage';
+
 import './style.css';
 import App from './App.vue';
 import i18n from './i18n';
@@ -31,4 +33,7 @@ app.use(PrimeVue, {
     },
   },
 });
+// 設置在網頁關閉時清除所有項目相關的 localStorage
+setupClearLocalStorageOnUnload();
+
 app.mount('#app');

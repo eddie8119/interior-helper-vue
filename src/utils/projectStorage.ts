@@ -7,7 +7,7 @@ import { getFromLocalStorage, saveToLocalStorage } from './localStorage';
 
 import type { Ref } from 'vue';
 
-const PROJECT_STORAGE_PREFIX = 'project_';
+export const PROJECT_STORAGE_PREFIX = 'project_';
 
 /**
  * 獲取專案的本地存儲鍵名

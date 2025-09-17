@@ -3,32 +3,35 @@ import { ref } from 'vue';
 import type { ConstructionContainerData } from '@/types/project';
 
 export function useDraggableConstructions(props: any, emit: any) {
-  const containers = ref<ConstructionContainerData[]>([]);
+  const constructionContainers = ref<ConstructionContainerData[]>([]);
 
   // 初始化容器
-  const initializeConstructionContainer = () => {
+  const initializeConstructionContainers = () => {
     if (props.constructionContainer && props.constructionContainer.length > 0) {
-      containers.value = props.constructionContainer.map(( name: string, index: number) => ({
-        id: `container-${index}`,
-        name,
-        order: index,
-      }));
+      constructionContainers.value = props.constructionContainer.map(
+        (name: string, index: number) => ({
+          id: `container-${index}`,
+          name,
+          order: index,
+        })
+      );
     }
   };
 
   // 更新父組件的 constructionContainer
   const updateConstructionContainer = () => {
     // 根據 order 排序
-    const sortedContainers = [...containers.value].sort((a, b) => a.order - b.order);
+    const sortedContainers = [...constructionContainers.value].sort((a, b) => a.order - b.order);
     const containerNames = sortedContainers.map((container) => container.name);
     emit('update:constructionContainer', containerNames);
   };
 
   // 拖拽相關函數
   const getConstructionContainerPayload = (index: number) => {
-    return containers.value[index];
+    return constructionContainers.value[index];
   };
 
+  // 拖拽完成後的處理函數
   const onConstructionContainerDrop = (dropResult: any) => {
     const { removedIndex, addedIndex } = dropResult;
 
@@ -36,10 +39,14 @@ export function useDraggableConstructions(props: any, emit: any) {
     if (removedIndex === null && addedIndex === null) return;
 
     // 如果最後一個元素是「添加新工程類型」按鈕，則不允許拖拽
-    if (removedIndex === containers.value.length || addedIndex === containers.value.length) return;
+    if (
+      removedIndex === constructionContainers.value.length ||
+      addedIndex === constructionContainers.value.length
+    )
+      return;
 
     // 創建新的容器陣列
-    const result = [...containers.value];
+    const result = [...constructionContainers.value];
 
     // 如果有元素被移除
     const itemToAdd = removedIndex !== null ? result.splice(removedIndex, 1)[0] : null;
@@ -55,7 +62,7 @@ export function useDraggableConstructions(props: any, emit: any) {
     });
 
     // 更新容器列表
-    containers.value = result;
+    constructionContainers.value = result;
 
     // 確保在拖拽操作後立即更新 constructionContainer 陣列
     // 這會觸發父組件中的 updateConstructionContainer 方法，該方法會保存數據到 localStorage
@@ -63,8 +70,8 @@ export function useDraggableConstructions(props: any, emit: any) {
   };
 
   return {
-    containers,
-    initializeConstructionContainer,
+    constructionContainers,
+    initializeConstructionContainers,
     getConstructionContainerPayload,
     onConstructionContainerDrop,
     updateConstructionContainer,

@@ -150,6 +150,7 @@ import { nextTick, onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { TaskData } from '@/types/task';
+import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 const { t } = useI18n();
 
@@ -159,7 +160,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:task-data', task: TaskData): void;
+  (e: 'update:task-data', task: CreateTaskSchema): void;
 }>();
 
 const inputRef = ref<HTMLInputElement | null>(null);
@@ -169,11 +170,11 @@ const showMoreSettings = ref(false);
 const materialErrors = ref<Record<number, string>>({});
 
 // 初始化任務數據
-const taskData = ref<TaskData>({
+const taskData = ref<CreateTaskSchema>({
   title: props.initialData?.title || '',
   description: props.initialData?.description || '',
   materials: props.initialData?.materials || [],
-  reminderDatetime: props.initialData?.reminderDatetime || null,
+  reminderDatetime: props.initialData?.reminderDatetime || undefined,
   type: props.constructionName,
   order: props.initialData?.order || undefined,
 });
@@ -194,13 +195,13 @@ const toggleMoreSettings = () => {
     // 清除材料列表
     taskData.value.materials = [];
     // 清除提醒日期時間
-    taskData.value.reminderDatetime = null;
+    taskData.value.reminderDatetime = undefined;
     // 清除驗證錯誤
     materialErrors.value = {};
   } else if (props.initialData?.materials?.length || props.initialData?.reminderDatetime) {
     // 如果是打開更多設定，且有初始數據，則恢復初始數據
     taskData.value.materials = props.initialData.materials || [];
-    taskData.value.reminderDatetime = props.initialData.reminderDatetime || null;
+    taskData.value.reminderDatetime = props.initialData.reminderDatetime || undefined;
   }
 
   // 切換顯示狀態
@@ -211,8 +212,8 @@ const toggleMoreSettings = () => {
 const addMaterial = () => {
   taskData.value.materials.push({
     name: '',
-    quantity: null,
-    unitPrice: null,
+    quantity: undefined,
+    unitPrice: undefined,
   });
 };
 

@@ -21,6 +21,7 @@ export const createTaskSchema = z.object({
       })
     )
     .optional(),
+  type: z.string(),
 });
 
 export type CreateTaskSchema = z.infer<typeof createTaskSchema>;

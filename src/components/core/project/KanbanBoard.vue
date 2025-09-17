@@ -8,12 +8,12 @@
       @drop="onConstructionContainerDrop"
     >
       <!-- 工程類型容器 -->
-      <Draggable v-for="(container, index) in tasks" :key="container.id">
+      <Draggable v-for="(container, index) in constructionContainers" :key="container.id">
         <ContainerItem
           :id="container.id"
           :construction-name="container.name"
+          :project-id="projectId"
           @delete-container="deleteConstruction(index)"
-          @add-task="handleAddTask(container.id)"
           @update:construction-name="updateConstructionName(index, $event)"
         />
       </Draggable>
@@ -33,21 +33,21 @@ import { Container, Draggable } from 'vue3-smooth-dnd';
 import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
 import ContainerItem from '@/components/core/kanbanBoard/ContainerItem.vue';
 import { useConstructionActions } from '@/composables/useConstructionActions';
-import { useTaskActions } from '@/composables/useTaskActions';
 import { useDraggableConstructions } from '@/composables/useDraggableConstructions';
 
 const props = defineProps<{
   constructionContainer: string[] | undefined;
+  projectId: string;
 }>();
 
 const emit = defineEmits<{
   (e: 'update:constructionContainer', value: string[]): void;
 }>();
 
-// 使用 useDraggableConstructions composable 管理容器拖拽功能
+//  管理容器拖拽功能
 const {
-  tasks,
-  initializeConstructionContainer,
+  constructionContainers,
+  initializeConstructionContainers,
   getConstructionContainerPayload,
   onConstructionContainerDrop,
   updateConstructionContainer,
@@ -57,31 +57,20 @@ const {
 watch(
   () => props.constructionContainer,
   () => {
-    initializeConstructionContainer();
+    initializeConstructionContainers();
   },
   { immediate: true }
 );
 
 // Construction容器的操作
 const { deleteConstruction, addNewConstruction, updateConstructionName } = useConstructionActions(
-  tasks,
+  constructionContainers,
   updateConstructionContainer
 );
-// Task容器的操作
-const { addNewTask, deleteTask, updateTask } = useTaskActions(
-  tasks,
-  updateTaskContainer
-);
-
-// 處理添加任務的方法
-const handleAddTask = (containerId: string) => {
-  // 目前只是一個佔位符方法，可以在實現任務管理功能時擴展
-  console.log(`添加任務到容器: ${containerId}`);
-};
 
 // 初始化
 onMounted(() => {
-  initializeConstructionContainer();
+  initializeConstructionContainers();
 });
 </script>
 

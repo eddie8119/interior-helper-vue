@@ -22,6 +22,7 @@ export const createTaskSchema = z.object({
     )
     .optional(),
   type: z.string(),
+  projectId: z.string(),
 });
 
 export type CreateTaskSchema = z.infer<typeof createTaskSchema>;

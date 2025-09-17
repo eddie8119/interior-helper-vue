@@ -12,6 +12,7 @@
       </div>
     </div>
     <KanbanBoard
+      :project-id="projectId"
       :construction-container="localProject?.constructionContainer"
       @update:construction-container="updateConstructionContainer"
     />

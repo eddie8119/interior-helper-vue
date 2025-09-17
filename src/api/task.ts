@@ -9,7 +9,7 @@ export const taskApi = {
   getTasksByProjectId: (projectId: string): Promise<ApiResponse<TaskResponse[]>> => {
     return request.get(`/tasks/${projectId}`);
   },
-  updateTasks: (
+  updateProjectTasks: (
     data: Partial<CreateTaskSchema>,
     projectId: string
   ): Promise<ApiResponse<TaskResponse[]>> => {

@@ -9,6 +9,7 @@ export type ApiResponse<T> =
     }
   | {
       success: false;
+      data: T;
       message: string;
       error?: unknown;
     };

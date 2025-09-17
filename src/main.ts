@@ -6,12 +6,12 @@ import { createPinia } from 'pinia';
 import PrimeVue from 'primevue/config';
 import * as vue from 'vue';
 
-import { setupClearLocalStorageOnUnload } from '@/utils/storage/clearLocalStorage';
-
 import './style.css';
 import App from './App.vue';
 import i18n from './i18n';
 import router from './router';
+
+import { setupClearLocalStorageOnUnload } from '@/utils/storage/clearLocalStorage';
 
 const app = vue.createApp(App);
 

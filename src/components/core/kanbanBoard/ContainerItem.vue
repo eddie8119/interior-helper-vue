@@ -54,7 +54,7 @@
     </div>
 
     <div v-else>
-      <AddNewTask @close="stopEditing" :construction-name="props.constructionName" />
+      <AddNewTask :construction-name="props.constructionName" @close="stopEditing" />
     </div>
 
     <!-- 添加施作項目按鈕 -->

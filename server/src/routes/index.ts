@@ -18,5 +18,4 @@ app.use('/api', invoiceRoutes);
 app.use('/api', companyRoutes);
 app.use('/api', contractRoutes);
 
-
 export default app;

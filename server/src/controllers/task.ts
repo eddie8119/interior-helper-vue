@@ -37,10 +37,12 @@ export const getTasksByProjectId = async (req: Request, res: Response) => {
     // 查詢專案下的所有任務
     const { data: tasks, error: tasksError } = await supabase
       .from('Tasks')
-      .select(`
+      .select(
+        `
         *,
         TaskMaterials(*)
-      `)
+      `
+      )
       .eq('project_id', projectId)
       .order('created_at', { ascending: false });
 
@@ -92,10 +94,12 @@ export const getTaskById = async (req: Request, res: Response) => {
     // 查詢任務詳情，包括關聯的材料
     const { data: task, error: taskError } = await supabase
       .from('Tasks')
-      .select(`
+      .select(
+        `
         *,
         TaskMaterials(*)
-      `)
+      `
+      )
       .eq('id', taskId)
       .eq('user_id', userId)
       .single();
@@ -274,7 +278,8 @@ export const updateTask = async (req: Request, res: Response) => {
     }
 
     const snakeCaseData = snakecaseKeys(req.body, { deep: true });
-    const { title, description, construction_type, due_datetime, materials, status } = snakeCaseData;
+    const { title, description, construction_type, due_datetime, materials, status } =
+      snakeCaseData;
 
     // 更新任務
     const { data: updatedTask, error: updateError } = await supabase
@@ -464,7 +469,9 @@ export const updateTasks = async (req: Request, res: Response) => {
                 .select();
 
               if (materialsError) {
-                errors.push(`Error updating materials for task ${task.id}: ${materialsError.message}`);
+                errors.push(
+                  `Error updating materials for task ${task.id}: ${materialsError.message}`
+                );
               } else {
                 updatedTasks.push({
                   ...updatedTask,
@@ -498,7 +505,8 @@ export const updateTasks = async (req: Request, res: Response) => {
     // 返回結果
     return res.status(200).json({
       success: true,
-      message: errors.length > 0 ? 'Some tasks updated with errors' : 'All tasks updated successfully',
+      message:
+        errors.length > 0 ? 'Some tasks updated with errors' : 'All tasks updated successfully',
       data: camelcaseKeys(updatedTasks, { deep: true }),
       errors: errors.length > 0 ? errors : undefined,
     });

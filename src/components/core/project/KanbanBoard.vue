@@ -3,16 +3,15 @@
     <Container
       orientation="horizontal"
       drag-handle-selector=".container-drag-handle"
-      :get-child-payload="getContainerPayload"
+      :get-child-payload="getConstructionContainerPayload"
       class="flex overflow-x-auto pt-4"
-      @drop="onContainerDrop"
+      @drop="onConstructionContainerDrop"
     >
       <!-- 工程類型容器 -->
-      <Draggable v-for="(container, index) in containers" :key="container.id">
+      <Draggable v-for="(container, index) in tasks" :key="container.id">
         <ContainerItem
           :id="container.id"
           :construction-name="container.name"
-          :is-default="isDefaultContainer(index)"
           @delete-container="deleteConstruction(index)"
           @add-task="handleAddTask(container.id)"
           @update:construction-name="updateConstructionName(index, $event)"
@@ -34,7 +33,8 @@ import { Container, Draggable } from 'vue3-smooth-dnd';
 import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
 import ContainerItem from '@/components/core/kanbanBoard/ContainerItem.vue';
 import { useConstructionActions } from '@/composables/useConstructionActions';
-import { useDraggableContainers } from '@/composables/useDraggableContainers';
+import { useTaskActions } from '@/composables/useTaskActions';
+import { useDraggableConstructions } from '@/composables/useDraggableConstructions';
 
 const props = defineProps<{
   constructionContainer: string[] | undefined;
@@ -44,33 +44,33 @@ const emit = defineEmits<{
   (e: 'update:constructionContainer', value: string[]): void;
 }>();
 
-// 使用 useDraggableContainers composable 管理容器拖拽功能
+// 使用 useDraggableConstructions composable 管理容器拖拽功能
 const {
-  containers,
-  initializeContainers,
-  getContainerPayload,
-  onContainerDrop,
+  tasks,
+  initializeConstructionContainer,
+  getConstructionContainerPayload,
+  onConstructionContainerDrop,
   updateConstructionContainer,
-} = useDraggableContainers(props, emit);
+} = useDraggableConstructions(props, emit);
 
 // 監聽 props 變化
 watch(
   () => props.constructionContainer,
   () => {
-    initializeContainers();
+    initializeConstructionContainer();
   },
   { immediate: true }
 );
 
-// 判斷是否為默認容器（不可刪除）
-const isDefaultContainer = (index: number) => {
-  return props.constructionContainer ? index < (props.constructionContainer.length || 0) : false;
-};
-
-// 容器的操作
+// Construction容器的操作
 const { deleteConstruction, addNewConstruction, updateConstructionName } = useConstructionActions(
-  containers,
+  tasks,
   updateConstructionContainer
+);
+// Task容器的操作
+const { addNewTask, deleteTask, updateTask } = useTaskActions(
+  tasks,
+  updateTaskContainer
 );
 
 // 處理添加任務的方法
@@ -81,7 +81,7 @@ const handleAddTask = (containerId: string) => {
 
 // 初始化
 onMounted(() => {
-  initializeContainers();
+  initializeConstructionContainer();
 });
 </script>
 

@@ -7,6 +7,7 @@ export interface Material {
 
 // 任務
 export interface TaskData {
+  id: string;
   title: string;
   description: string;
   materials: Material[];

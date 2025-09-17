@@ -1,8 +1,8 @@
-import type { ContainerData } from '@/types/project';
+import type { ConstructionContainerData } from '@/types/project';
 import type { Ref } from 'vue';
 
 export function useConstructionActions(
-  containers: Ref<ContainerData[]>,
+  containers: Ref<ConstructionContainerData[]>,
   updateConstructionContainer: () => void
 ) {
   // 刪除容器
@@ -10,7 +10,7 @@ export function useConstructionActions(
     containers.value.splice(index, 1);
 
     // 重新排序
-    containers.value.forEach((container: ContainerData, idx: number) => {
+    containers.value.forEach((container: ConstructionContainerData, idx: number) => {
       container.order = idx;
     });
 

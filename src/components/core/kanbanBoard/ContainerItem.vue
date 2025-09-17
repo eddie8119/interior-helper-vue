@@ -104,7 +104,6 @@ import { useEditingStateStore } from '@/stores/editingState';
 const props = defineProps<{
   id: string;
   constructionName: string;
-  isDefault: boolean;
   tasks?: string[];
 }>();
 

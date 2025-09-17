@@ -1,4 +1,4 @@
-export interface ContainerData {
+export interface ConstructionContainerData {
   id: string;
   name: string;
   order: number;

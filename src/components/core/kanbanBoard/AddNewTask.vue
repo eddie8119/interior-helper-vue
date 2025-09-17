@@ -32,7 +32,7 @@ import { useForm } from 'vee-validate';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { TaskData } from '@/types/task';
+import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 import TaskForm from '@/components/core/kanbanBoard/TaskForm.vue';
 import { createTaskSchema } from '@/utils/schemas/createTaskSchema';
@@ -41,13 +41,12 @@ const { t } = useI18n();
 
 const props = defineProps<{
   constructionName: string;
+  projectId: string;
 }>();
-
-const { constructionName } = props;
 
 const emit = defineEmits<{
   (e: 'close'): void;
-  (e: 'add-task', task: TaskData): void;
+  (e: 'add-task', task: CreateTaskSchema): void;
 }>();
 
 // 任務表單組件引用
@@ -59,17 +58,17 @@ const { handleSubmit } = useForm({
 });
 
 // 當前任務數據
-const taskData = ref<TaskData>({
+const taskData = ref<CreateTaskSchema>({
   title: '',
   description: '',
   materials: [],
-  reminderDatetime: null,
-  type: constructionName,
-  order: undefined,
+  reminderDatetime: undefined,
+  type: props.constructionName,
+  projectId: props.projectId,
 });
 
 // 更新任務數據
-const updateTaskData = (newTaskData: TaskData) => {
+const updateTaskData = (newTaskData: CreateTaskSchema) => {
   taskData.value = newTaskData;
 };
 
@@ -96,13 +95,13 @@ const onAddTask = handleSubmit(async () => {
     const filteredMaterials = taskData.value.materials.filter((m) => m.name.trim() !== '');
 
     // 創建任務對象
-    const newTask: TaskData = {
+    const newTask: CreateTaskSchema = {
       title: taskData.value.title.trim(),
       description: taskData.value.description.trim(),
       materials: filteredMaterials,
       reminderDatetime: taskData.value.reminderDatetime,
-      type: constructionName,
-      order: 1,
+      type: props.constructionName,
+      projectId: props.projectId,
     };
 
     emit('add-task', newTask);
@@ -112,9 +111,9 @@ const onAddTask = handleSubmit(async () => {
       title: '',
       description: '',
       materials: [],
-      reminderDatetime: null,
-      type: constructionName,
-      order: undefined,
+      reminderDatetime: undefined,
+      type: props.constructionName,
+      projectId: props.projectId,
     };
 
     // 聚焦回輸入框

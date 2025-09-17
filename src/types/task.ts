@@ -12,4 +12,5 @@ export interface TaskData {
   materials: Material[];
   reminderDatetime: Date | null;
   type: string;
+  order: number | undefined;
 }

@@ -135,7 +135,6 @@
           v-model="reminderDatetime"
           type="datetime"
           format="YYYY-MM-DD HH:mm:ss"
-          value-format="x"
           placeholder="選擇日期和時間"
           class="w-full"
         />

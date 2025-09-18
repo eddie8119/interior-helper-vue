@@ -88,7 +88,7 @@
                 type="number"
                 min="1"
                 class="w-16 rounded-md border border-gray-300 p-1 text-sm"
-                placeholder="數量"
+                placeholder="輸入數量"
               />
             </div>
             <div class="flex items-center">
@@ -98,7 +98,7 @@
                 type="number"
                 min="0"
                 class="w-20 rounded-md border border-gray-300 p-1 text-sm"
-                placeholder="單價"
+                placeholder="輸入單價"
               />
             </div>
           </div>
@@ -161,9 +161,6 @@ const props = defineProps<{
   };
 }>();
 
-// EMITS
-
-// i18n
 const { t } = useI18n();
 
 // REFS
@@ -214,31 +211,25 @@ const removeMaterial = (index: number) => {
   materials.value.splice(index, 1);
 };
 
-// 驗證材料資料
-const validateMaterials = () => {
-  const errors: Record<number, string> = {};
-  let isValid = true;
-
-  (materials.value || []).forEach((material, index) => {
-    if (material.name.trim() !== '') {
-      // 如果有填寫名稱，則需要驗證數量和單價
-      if (material.quantity === null || material.quantity <= 0) {
-        errors[index] = '數量必須大於 0';
-        isValid = false;
-      } else if (material.unitPrice === null || material.unitPrice < 0) {
-        errors[index] = '單價不能為負數';
-        isValid = false;
-      }
-    }
-  });
-
-  materialErrors.value = errors;
-  return isValid;
+// 清除材料驗證錯誤
+const clearMaterialErrors = () => {
+  materialErrors.value = {};
 };
 
-// 提供驗證方法給父組件
+// 驗證材料資料 - 現在使用 Zod 的驗證邏輯
+const validateMaterials = () => {
+  // 清除之前的錯誤
+  clearMaterialErrors();
+
+  // 所有驗證都由 vee-validate 和 Zod 處理
+  // 因此我們只需要確保材料數據格式正確
+  return true;
+};
+
+// 提供方法給父組件
 defineExpose({
   validateMaterials,
+  clearMaterialErrors,
   focusInput: () => {
     nextTick(() => {
       inputRef.value?.focus();

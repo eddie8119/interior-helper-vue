@@ -70,25 +70,24 @@ const editingStateStore = useEditingStateStore();
 // 初始化任務數據
 const tasks = ref<TaskData[]>([]);
 
-// Task操作功能
-const { addNewTask } = useTaskActions(tasks, updateTasksContainer);
-
 // 更新任務容器
-function updateTasksContainer() {
+const updateTasksContainer = () => {
   // 通知父組件任務已更新
   emit('update:tasks', tasks.value);
-}
-
-// 更新任務
-function updateTasks(updatedTasks: TaskData[]) {
-  tasks.value = updatedTasks;
-  updateTasksContainer();
-}
+};
+// Task操作功能
+const { addNewTask } = useTaskActions(tasks, updateTasksContainer);
 
 // 使用計算屬性來判斷當前容器是否處於編輯狀態
 const isEditing = computed(() => {
   return editingStateStore.isEditing('container', props.id);
 });
+
+// 更新任務
+const updateTasks = (updatedTasks: TaskData[]) => {
+  tasks.value = updatedTasks;
+  updateTasksContainer();
+};
 
 // 開始編輯任務
 const startEditing = () => {

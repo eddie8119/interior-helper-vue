@@ -1,8 +1,8 @@
 // 材料
 export interface Material {
   name: string;
-  quantity: number | null;
-  unitPrice: number | null;
+  quantity: number | undefined;
+  unitPrice: number | undefined;
 }
 
 // 任務

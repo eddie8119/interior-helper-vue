@@ -65,9 +65,10 @@ const { isSubmitting, handleSubmit, errors, setValues } = useForm({
 const onAddTask = handleSubmit(async (values) => {
   if (!taskFormRef.value) return;
 
-  const areMaterialsValid = await taskFormRef.value.validateMaterials();
-  if (!areMaterialsValid) return;
+  // 清除任何材料驗證錯誤
+  taskFormRef.value.clearMaterialErrors();
 
+  // 過濾掉空的材料行
   const filteredMaterials = (values.materials || []).filter((m) => m.name && m.name.trim() !== '');
 
   const newTask: CreateTaskSchema = {

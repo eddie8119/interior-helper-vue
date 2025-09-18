@@ -58,8 +58,9 @@ export const getTasksByProjectId = async (req: Request, res: Response) => {
     // 處理任務數據，將材料整合到任務中
     const processedTasks = tasks.map((task) => {
       const { TaskMaterials, ...taskData } = task;
+      const { user_id, ...safeTask } = taskData;
       return {
-        ...taskData,
+        ...safeTask,
         materials: TaskMaterials || [],
       };
     });
@@ -115,8 +116,10 @@ export const getTaskById = async (req: Request, res: Response) => {
 
     // 處理任務數據，將材料整合到任務中
     const { TaskMaterials, ...taskData } = task;
+    // 在返回前移除敏感欄位
+    const { user_id, ...safeTask } = taskData;
     const processedTask = {
-      ...taskData,
+      ...safeTask,
       materials: TaskMaterials || [],
     };
 
@@ -227,8 +230,9 @@ export const createTask = async (req: Request, res: Response) => {
     }
 
     // 組合返回數據
+    const { user_id, ...safeTask } = task;
     const taskWithMaterials = {
-      ...task,
+      ...safeTask,
       materials: taskMaterials,
     };
 
@@ -353,8 +357,9 @@ export const updateTask = async (req: Request, res: Response) => {
     }
 
     // 組合返回數據
+    const { user_id, ...safeTask } = updatedTask;
     const taskWithMaterials = {
-      ...updatedTask,
+      ...safeTask,
       materials: taskMaterials,
     };
 

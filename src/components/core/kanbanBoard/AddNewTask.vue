@@ -56,7 +56,7 @@ const { isSubmitting, handleSubmit, errors, setValues } = useForm({
     description: '',
     materials: [],
     reminderDatetime: undefined,
-    type: props.constructionName,
+    constructionType: props.constructionName,
     projectId: props.projectId,
     status: 'todo',
   },

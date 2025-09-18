@@ -35,7 +35,7 @@ export const createTaskSchema = z.object({
         })
     )
     .optional(),
-  type: z.string(),
+  constructionType: z.string(),
   projectId: z.string(),
   status: z.enum(['todo', 'inProgress', 'done']).optional(),
 });

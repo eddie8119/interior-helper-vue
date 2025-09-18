@@ -10,8 +10,12 @@ export interface TaskData {
   id: string;
   title: string;
   description: string;
-  materials: Material[];
   reminderDatetime: Date | null;
-  type: string;
-  order: number | undefined;
+  createdAt: string;
+  projectId: string;
+  userId: string;
+  constructionType: string;
+  updatedAt: string;
+  status: string;
+  materials: Material[];
 }

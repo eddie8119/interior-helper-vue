@@ -9,7 +9,6 @@ export function useTaskActions(tasks: Ref<TaskData[]>, updateTaskContainer: () =
       tasks.value.push({
         ...newTaskData,
         id: `task-${Date.now()}`,
-        order: tasks.value.length,
       } as TaskData);
 
       updateTaskContainer();
@@ -19,11 +18,6 @@ export function useTaskActions(tasks: Ref<TaskData[]>, updateTaskContainer: () =
   // 刪除任務
   const deleteTask = (index: number) => {
     tasks.value.splice(index, 1);
-
-    // 重新排序
-    tasks.value.forEach((task, idx) => {
-      task.order = idx;
-    });
 
     updateTaskContainer();
   };

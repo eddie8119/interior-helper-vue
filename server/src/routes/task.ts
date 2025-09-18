@@ -8,7 +8,7 @@ import {
   updateTask,
   updateTasks,
 } from '@/controllers/task';
-import { authMiddleware } from '@/middleware/auth';
+import { authMiddleware, requireUserId } from '@/middleware/auth';
 
 const router = express.Router();
 
@@ -16,13 +16,13 @@ const router = express.Router();
 router.use(authMiddleware);
 
 // 批次任務操作
-router.get('/:projectId', getTasksByProjectId);
-router.patch('/:projectId', updateTasks);
+router.get('/:projectId', requireUserId, getTasksByProjectId);
+router.patch('/:projectId', requireUserId, updateTasks);
 
 // 單個任務操作
-router.post('/:projectId', createTask);
-router.get('/detail/:id', getTaskById);
-router.patch('/detail/:id', updateTask);
-router.delete('/:id', deleteTask);
+router.post('/:projectId', requireUserId, createTask);
+router.get('/detail/:id', requireUserId, getTaskById);
+router.patch('/detail/:id', requireUserId, updateTask);
+router.delete('/:id', requireUserId, deleteTask);
 
 export default router;

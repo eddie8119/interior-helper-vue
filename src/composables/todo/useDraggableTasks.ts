@@ -57,9 +57,9 @@ export function useDraggableTasks(props: any, emit: any) {
     }
 
     // 更新所有任務的順序
-    result.forEach((task, index) => {
-      task.order = index;
-    });
+    // result.forEach((task, index) => {
+    //   task.order = index;
+    // });
 
     // 更新任務列表
     tasks.value = result;

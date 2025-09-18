@@ -45,12 +45,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
+import type { TaskData } from '@/types/task';
+import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
+
 import ContainerBody from '@/components/core/kanbanBoard/ContainerBody.vue';
 import ContainerHeader from '@/components/core/kanbanBoard/ContainerHeader.vue';
-import { useEditingStateStore } from '@/stores/editingState';
 import { useTaskActions } from '@/composables/useTaskActions';
-import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
-import type { TaskData } from '@/types/task';
+import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{
   id: string;

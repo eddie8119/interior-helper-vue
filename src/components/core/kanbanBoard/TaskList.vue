@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import { Container, Draggable } from 'vue3-smooth-dnd';
+
 import type { TaskData } from '@/types/task';
 
 const props = defineProps<{

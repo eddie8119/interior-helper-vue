@@ -1,19 +1,25 @@
 <template>
   <div class="flex flex-col space-y-3">
     <!-- 基本信息輸入 -->
-    <input
-      ref="inputRef"
-      v-model="taskData.title"
-      type="text"
-      class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-      :placeholder="t('placeholder.project.task')"
-    />
-    <textarea
-      ref="textareaRef"
-      v-model="taskData.description"
-      class="block h-[120px] w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-      :placeholder="t('placeholder.project.taskDescription')"
-    />
+    <div>
+      <input
+        ref="inputRef"
+        v-model="title"
+        type="text"
+        class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+        :placeholder="t('placeholder.project.task')"
+      />
+      <span v-if="errors.title" class="text-sm text-red-500">{{ errors.title }}</span>
+    </div>
+    <div>
+      <textarea
+        ref="textareaRef"
+        v-model="description"
+        class="block h-[120px] w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+        :placeholder="t('placeholder.project.taskDescription')"
+      />
+      <span v-if="errors.description" class="text-sm text-red-500">{{ errors.description }}</span>
+    </div>
 
     <!-- 展開更多設定按鈕 -->
     <div class="flex items-center justify-center">
@@ -45,11 +51,7 @@
       <!-- 材料 -->
       <div class="space-y-2">
         <h3 class="font-medium text-gray-700">材料 (可選)</h3>
-        <div
-          v-for="(material, index) in taskData.materials"
-          :key="index"
-          class="flex flex-col space-y-2"
-        >
+        <div v-for="(material, index) in materials" :key="index" class="flex flex-col space-y-2">
           <div class="flex items-center gap-2">
             <input
               v-model="material.name"
@@ -129,16 +131,14 @@
       <!-- 提醒 -->
       <div class="space-y-2">
         <h3 class="font-medium text-gray-700">設定提醒 (可選)</h3>
-        <div class="flex items-center gap-2">
-          <el-date-picker
-            v-model="taskData.reminderDatetime"
-            type="datetime"
-            format="YYYY-MM-DD HH:mm:ss"
-            value-format="x"
-            placeholder="選擇日期和時間"
-            class="w-full"
-          />
-        </div>
+        <el-date-picker
+          v-model="reminderDatetime"
+          type="datetime"
+          format="YYYY-MM-DD HH:mm:ss"
+          value-format="x"
+          placeholder="選擇日期和時間"
+          class="w-full"
+        />
       </div>
     </div>
   </div>
@@ -146,62 +146,52 @@
 
 <script setup lang="ts">
 import { ElDatePicker } from 'element-plus';
-import { nextTick, onBeforeMount, ref, watch } from 'vue';
+import { useField } from 'vee-validate';
+import { nextTick, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { TaskData } from '@/types/task';
-import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
+import type { Material, TaskData } from '@/types/task';
 
-const { t } = useI18n();
-
+// PROPS
 const props = defineProps<{
   initialData?: TaskData;
   constructionName: string;
+  errors: {
+    title?: string;
+    description?: string;
+  };
 }>();
 
-const emit = defineEmits<{
-  (e: 'update:task-data', task: CreateTaskSchema): void;
-}>();
+// EMITS
 
+// i18n
+const { t } = useI18n();
+
+// REFS
 const inputRef = ref<HTMLInputElement | null>(null);
 const showMoreSettings = ref(false);
-
-// 材料驗證錯誤記錄
 const materialErrors = ref<Record<number, string>>({});
 
-// 初始化任務數據
-const taskData = ref<CreateTaskSchema>({
-  title: props.initialData?.title || '',
-  description: props.initialData?.description || '',
-  materials: props.initialData?.materials || [],
-  reminderDatetime: props.initialData?.reminderDatetime || undefined,
-  type: props.constructionName,
-  order: props.initialData?.order || undefined,
-});
-
-// 監聽任務數據變化，向父組件發出更新事件
-watch(
-  taskData,
-  () => {
-    emit('update:task-data', taskData.value);
-  },
-  { deep: true }
-);
+// VEE-VALIDATE
+const { value: title } = useField<string>('title');
+const { value: description } = useField<string>('description');
+const { value: materials } = useField<Material[]>('materials');
+const { value: reminderDatetime } = useField<number | undefined>('reminderDatetime');
 
 // 切換顯示更多設定
 const toggleMoreSettings = () => {
   // 如果要關閉更多設定區域，先清除內容
   if (showMoreSettings.value) {
     // 清除材料列表
-    taskData.value.materials = [];
+    materials.value = [];
     // 清除提醒日期時間
-    taskData.value.reminderDatetime = undefined;
+    reminderDatetime.value = undefined;
     // 清除驗證錯誤
     materialErrors.value = {};
   } else if (props.initialData?.materials?.length || props.initialData?.reminderDatetime) {
     // 如果是打開更多設定，且有初始數據，則恢復初始數據
-    taskData.value.materials = props.initialData.materials || [];
-    taskData.value.reminderDatetime = props.initialData.reminderDatetime || undefined;
+    materials.value = props.initialData.materials || [];
+    reminderDatetime.value = props.initialData.reminderDatetime || undefined;
   }
 
   // 切換顯示狀態
@@ -210,7 +200,10 @@ const toggleMoreSettings = () => {
 
 // 添加材料
 const addMaterial = () => {
-  taskData.value.materials.push({
+  if (!materials.value) {
+    materials.value = [];
+  }
+  materials.value.push({
     name: '',
     quantity: undefined,
     unitPrice: undefined,
@@ -219,7 +212,7 @@ const addMaterial = () => {
 
 // 移除材料
 const removeMaterial = (index: number) => {
-  taskData.value.materials.splice(index, 1);
+  materials.value.splice(index, 1);
 };
 
 // 驗證材料資料
@@ -227,7 +220,7 @@ const validateMaterials = () => {
   const errors: Record<number, string> = {};
   let isValid = true;
 
-  taskData.value.materials.forEach((material, index) => {
+  (materials.value || []).forEach((material, index) => {
     if (material.name.trim() !== '') {
       // 如果有填寫名稱，則需要驗證數量和單價
       if (material.quantity === null || material.quantity <= 0) {

@@ -1,11 +1,7 @@
 <template>
   <div class="flex flex-col space-y-3">
     <!-- 使用可重用的 TaskForm 組件 -->
-    <TaskForm
-      ref="taskFormRef"
-      :construction-name="constructionName"
-      @update:task-data="updateTaskData"
-    />
+    <TaskForm ref="taskFormRef" :construction-name="constructionName" :errors="errors" />
 
     <!-- 按鈕區域 -->
     <div class="flex justify-between">
@@ -53,75 +49,48 @@ const emit = defineEmits<{
 const taskFormRef = ref<InstanceType<typeof TaskForm> | null>(null);
 
 // 使用 vee-validate 和 zod 進行表單驗證
-const { handleSubmit } = useForm({
+const { isSubmitting, handleSubmit, errors, setValues } = useForm({
   validationSchema: toTypedSchema(createTaskSchema),
+  initialValues: {
+    title: '',
+    description: '',
+    materials: [],
+    reminderDatetime: undefined,
+    type: props.constructionName,
+    projectId: props.projectId,
+  },
 });
-
-// 當前任務數據
-const taskData = ref<CreateTaskSchema>({
-  title: '',
-  description: '',
-  materials: [],
-  reminderDatetime: undefined,
-  type: props.constructionName,
-  projectId: props.projectId,
-});
-
-// 更新任務數據
-const updateTaskData = (newTaskData: CreateTaskSchema) => {
-  taskData.value = newTaskData;
-};
 
 // 提交狀態
-const isSubmitting = ref(false);
+const onAddTask = handleSubmit(async (values) => {
+  if (!taskFormRef.value) return;
+
+  const areMaterialsValid = await taskFormRef.value.validateMaterials();
+  if (!areMaterialsValid) return;
+
+  const filteredMaterials = (values.materials || []).filter((m) => m.name && m.name.trim() !== '');
+
+  const newTask: CreateTaskSchema = {
+    ...values,
+    materials: filteredMaterials,
+  };
+
+  emit('add-task', newTask);
+
+  setValues({
+    title: '',
+    description: '',
+    materials: [],
+    reminderDatetime: undefined,
+  });
+
+  taskFormRef.value.focusInput();
+});
 
 // 關閉表單
 const onClose = () => {
   emit('close');
 };
-
-// 添加新任務
-const onAddTask = handleSubmit(async () => {
-  isSubmitting.value = true;
-
-  try {
-    // 驗證材料
-    if (taskFormRef.value && !taskFormRef.value.validateMaterials()) {
-      isSubmitting.value = false;
-      return;
-    }
-
-    // 過濾空材料
-    const filteredMaterials = taskData.value.materials.filter((m) => m.name.trim() !== '');
-
-    // 創建任務對象
-    const newTask: CreateTaskSchema = {
-      title: taskData.value.title.trim(),
-      description: taskData.value.description.trim(),
-      materials: filteredMaterials,
-      reminderDatetime: taskData.value.reminderDatetime,
-      type: props.constructionName,
-      projectId: props.projectId,
-    };
-
-    emit('add-task', newTask);
-
-    // 重置表單
-    taskData.value = {
-      title: '',
-      description: '',
-      materials: [],
-      reminderDatetime: undefined,
-      type: props.constructionName,
-      projectId: props.projectId,
-    };
-
-    // 聚焦回輸入框
-    taskFormRef.value?.focusInput();
-  } finally {
-    isSubmitting.value = false;
-  }
-});
 </script>
 
 <style scoped></style>

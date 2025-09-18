@@ -1,25 +1,26 @@
 <template>
-  <div>
-    <!-- 空容器提示 -->
-    <div
-      v-if="!isEditing"
-      class="flex h-[100px] items-center justify-center rounded-md border border-gray-200 bg-white"
-    >
-      <span class="text-gray-400">尚無施作項目</span>
-    </div>
+  <!-- 空容器提示 -->
+  <div
+    v-if="!isEditing"
+    class="flex h-[100px] items-center justify-center rounded-md border border-gray-200 bg-white"
+  >
+    <span class="text-gray-400">尚無施作項目</span>
+  </div>
 
-    <div v-else-if="isEditing">
-      <AddNewTask
-        :construction-name="constructionName"
-        :project-id="projectId"
-        @add-task="handleAddNewTask"
-        @close="stopEditing"
-      />
-    </div>
+  <!-- 編輯區 -->
 
-    <div v-else>
-      <TaskList :tasks="tasks" />
-    </div>
+  <div v-else-if="isEditing">
+    <AddNewTask
+      :construction-name="constructionName"
+      :project-id="projectId"
+      @add-task="handleAddNewTask"
+      @close="stopEditing"
+    />
+  </div>
+
+  <!-- 展示區 -->
+  <div v-else>
+    <TaskList :tasks="tasks" />
   </div>
 </template>
 
@@ -59,6 +60,7 @@ const stopEditing = () => {
 
 // 處理添加新任務
 const handleAddNewTask = (newTaskData: CreateTaskSchema) => {
+  console.log(1111, newTaskData);
   emit('add-task', newTaskData);
   stopEditing();
 };

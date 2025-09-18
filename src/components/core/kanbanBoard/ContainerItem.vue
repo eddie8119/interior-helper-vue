@@ -98,25 +98,6 @@ onMounted(async () => {
   // 如果本地沒有數據，嘗試從 API 獲取
   if (tasks.value.length === 0) {
     try {
-      const response = await taskApi.getTasksByProjectId(props.projectId);
-      if (response.success && response.data) {
-        // 篩選出屬於當前工程類型的任務
-        const filteredTasks = response.data
-          .filter((task) => task.constructionType === props.constructionName)
-          .map((task) => ({
-            id: task.id,
-            title: task.title,
-            description: task.description || '',
-            materials: task.materials || [],
-            reminderDatetime: task.dueDateTime ? new Date(task.dueDateTime) : null,
-            type: task.constructionType,
-            order: 0, // 預設順序
-          }));
-
-        if (filteredTasks.length > 0) {
-          tasks.value = filteredTasks;
-        }
-      }
     } catch (error) {
       console.error('獲取任務數據失敗:', error);
     }

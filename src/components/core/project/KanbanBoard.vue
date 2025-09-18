@@ -80,18 +80,7 @@ const { localTasks, hasChanges, initLocalTasks, saveToLocalStorage } = useTaskLo
 );
 
 // 獲取任務數據
-const fetchTasks = async () => {
-  try {
-    const response = await taskApi.getTasksByProjectId(props.projectId);
-    if (response.success && response.data) {
-      fetchedTasks.value = response.data;
-      // 初始化本地任務數據
-      initLocalTasks();
-    }
-  } catch (error) {
-    console.error('獲取任務數據失敗:', error);
-  }
-};
+const fetchTasks = async () => {};
 
 // 保存任務數據到服務器
 const saveTasksToServer = async () => {

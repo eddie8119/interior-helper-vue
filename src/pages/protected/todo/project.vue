@@ -23,7 +23,7 @@
 import { computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 
-import type { ProjectResponse } from '@/types/response';
+import type { ProjectResponse, TaskResponse } from '@/types/response';
 
 import Loading from '@/components/core/loading/Loading.vue';
 import KanbanBoard from '@/components/core/project/KanbanBoard.vue';
@@ -31,7 +31,9 @@ import ProjectHeader from '@/components/core/project/ProjectHeader.vue';
 import ProjectSettings from '@/components/core/project/ProjectSettings.vue';
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
 import { useProject } from '@/composables/useProject';
+import { useTasks } from '@/composables/useTasks';
 import { useProjectLocalStorage } from '@/composables/todo/useProjectLocalStorage';
+import { useTaskLocalStorage } from '@/composables/todo/useTaskLocalStorage';
 import { useUpdateTime } from '@/composables/useUpdateTime';
 import { adjustTimeZone, formatDateTimeWithMinutes } from '@/utils/dateTime';
 
@@ -40,20 +42,34 @@ const projectId = route.params.id as string;
 
 // 獲取專案資料
 const { isLoadingProject, fetchedProject, updateProject } = useProject(projectId);
+const { isLoadingTasks, fetchedTasks, updateProjectTasks } = useTasks(projectId);
 
 // 獲取本地專案數據
 const { localProject, hasChanges, initLocalProject, saveToLocalStorage } = useProjectLocalStorage(
   projectId,
   fetchedProject
 );
+const {
+  localTasks,
+  hasChanges: hasTasksChanges,
+  initLocalTasks,
+  saveToLocalStorage: saveTasksToLocalStorage,
+} = useTaskLocalStorage(projectId, fetchedTasks);
+
 const { lastUpdateTime, updateLastUpdateTime } = useUpdateTime();
 
 // 監聽資料庫數據變化並初始化本地數據
 watch(
-  () => fetchedProject.value,
-  (newVal: ProjectResponse | null) => {
-    if (newVal) {
+  [() => fetchedProject.value, () => fetchedTasks.value],
+  ([newProject, newTasks]) => {
+    // 如果項目數據更新，初始化本地項目數據
+    if (newProject) {
       initLocalProject();
+    }
+
+    // 如果任務數據更新，初始化本地任務數據
+    if (newTasks) {
+      initLocalTasks();
     }
   },
   { immediate: true }

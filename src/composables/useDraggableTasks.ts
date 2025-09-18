@@ -1,8 +1,11 @@
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 import type { TaskData } from '@/types/task';
+import { saveTaskToLocalStorage } from '@/utils/storage/taskStorage';
 
 export function useDraggableTasks(props: any, emit: any) {
+  // 獲取項目ID
+  const projectId = props.projectId;
   const tasks = ref<TaskData[]>([]);
 
   // 初始化任務
@@ -21,6 +24,11 @@ export function useDraggableTasks(props: any, emit: any) {
     // 根據 order 排序
     const sortedtasks = [...tasks.value].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     emit('update:task', sortedtasks);
+
+    // 保存到本地存儲
+    if (projectId) {
+      saveTaskToLocalStorage(projectId, tasks.value);
+    }
   };
 
   // 拖拽相關函數
@@ -60,6 +68,17 @@ export function useDraggableTasks(props: any, emit: any) {
     // 這會觸發父組件中的 updateTask 方法，該方法會保存數據到 localStorage
     updateTask();
   };
+
+  // 監聽任務變化，自動保存到本地存儲
+  watch(
+    tasks,
+    () => {
+      if (projectId && tasks.value.length > 0) {
+        saveTaskToLocalStorage(projectId, tasks.value);
+      }
+    },
+    { deep: true }
+  );
 
   return {
     tasks,

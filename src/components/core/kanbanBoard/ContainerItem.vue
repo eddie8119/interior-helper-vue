@@ -11,7 +11,7 @@
       :construction-name="props.constructionName"
       :project-id="props.projectId"
       :tasks="tasks"
-      @add-task="handleAddNewTask"
+      @add-task="addNewTask"
       @update:tasks="updateTasks"
     />
 
@@ -43,15 +43,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
+import { onMounted } from 'vue';
 
+import { taskApi } from '@/api/task';
 import type { TaskData } from '@/types/task';
 import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
+import type { TaskResponse } from '@/types/response';
 
 import ContainerBody from '@/components/core/kanbanBoard/ContainerBody.vue';
 import ContainerHeader from '@/components/core/kanbanBoard/ContainerHeader.vue';
 import { useTaskActions } from '@/composables/useTaskActions';
 import { useEditingStateStore } from '@/stores/editingState';
+import { useDraggableTasks } from '@/composables/useDraggableTasks';
+import { getTaskStorageKey } from '@/utils/storage/taskStorage';
 
 const props = defineProps<{
   id: string;
@@ -65,15 +70,67 @@ const emit = defineEmits<{
   (e: 'update:tasks', tasks: TaskData[]): void;
 }>();
 
-const editingStateStore = useEditingStateStore();
+// 使用 useDraggableTasks 管理任務拖拉和本地儲存
+const { tasks, initializeTask, updateTask } = useDraggableTasks(props, emit);
 
 // 初始化任務數據
-const tasks = ref<TaskData[]>([]);
+onMounted(async () => {
+  // 嘗試從本地存儲加載任務數據
+  const storageKey = getTaskStorageKey(props.projectId);
+  const storedData = localStorage.getItem(storageKey);
+
+  if (storedData) {
+    try {
+      const parsedData = JSON.parse(storedData);
+      if (Array.isArray(parsedData) && parsedData.length > 0) {
+        // 篩選出屬於當前工程類型的任務
+        const filteredTasks = parsedData.filter((task) => task.type === props.constructionName);
+
+        if (filteredTasks.length > 0) {
+          tasks.value = filteredTasks;
+        }
+      }
+    } catch (error) {
+      console.error('讀取本地任務數據失敗:', error);
+    }
+  }
+
+  // 如果本地沒有數據，嘗試從 API 獲取
+  if (tasks.value.length === 0) {
+    try {
+      const response = await taskApi.getTasksByProjectId(props.projectId);
+      if (response.success && response.data) {
+        // 篩選出屬於當前工程類型的任務
+        const filteredTasks = response.data
+          .filter((task) => task.constructionType === props.constructionName)
+          .map((task) => ({
+            id: task.id,
+            title: task.title,
+            description: task.description || '',
+            materials: task.materials || [],
+            reminderDatetime: task.dueDateTime ? new Date(task.dueDateTime) : null,
+            type: task.constructionType,
+            order: 0, // 預設順序
+          }));
+
+        if (filteredTasks.length > 0) {
+          tasks.value = filteredTasks;
+        }
+      }
+    } catch (error) {
+      console.error('獲取任務數據失敗:', error);
+    }
+  }
+});
+
+const editingStateStore = useEditingStateStore();
 
 // 更新任務容器
 const updateTasksContainer = () => {
   // 通知父組件任務已更新
   emit('update:tasks', tasks.value);
+  // 使用 useDraggableTasks 中的 updateTask 方法保存到本地存儲
+  updateTask();
 };
 // Task操作功能
 const { addNewTask } = useTaskActions(tasks, updateTasksContainer);
@@ -102,11 +159,5 @@ const updateConstructionName = (newName: string) => {
 // 處理刪除工程類型
 const handleDeleteConstruction = () => {
   emit('delete-container');
-};
-
-// 處理添加新任務
-const handleAddNewTask = (newTaskData: CreateTaskSchema) => {
-  addNewTask(newTaskData);
-  updateTasksContainer();
 };
 </script>

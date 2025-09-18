@@ -58,6 +58,7 @@ const { isSubmitting, handleSubmit, errors, setValues } = useForm({
     reminderDatetime: undefined,
     type: props.constructionName,
     projectId: props.projectId,
+    status: 'todo',
   },
 });
 
@@ -83,6 +84,7 @@ const onAddTask = handleSubmit(async (values) => {
     description: '',
     materials: [],
     reminderDatetime: undefined,
+    status: 'todo',
   });
 
   taskFormRef.value.focusInput();

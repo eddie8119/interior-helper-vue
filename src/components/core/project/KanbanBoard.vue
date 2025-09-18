@@ -33,9 +33,9 @@ import { Container, Draggable } from 'vue3-smooth-dnd';
 import { taskApi } from '@/api/task';
 import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
 import ContainerItem from '@/components/core/kanbanBoard/ContainerItem.vue';
-import { useConstructionActions } from '@/composables/useConstructionActions';
-import { useDraggableConstructions } from '@/composables/useDraggableConstructions';
-import { useTaskLocalStorage } from '@/composables/useTaskLocalStorage';
+import { useConstructionActions } from '@/composables/todo/useConstructionActions';
+import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
+import { useTaskLocalStorage } from '@/composables/todo/useTaskLocalStorage';
 import type { TaskResponse } from '@/types/response';
 import { setupBeforeUnloadHandler } from '@/utils/storage/taskStorage';
 

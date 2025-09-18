@@ -31,7 +31,7 @@ import ProjectHeader from '@/components/core/project/ProjectHeader.vue';
 import ProjectSettings from '@/components/core/project/ProjectSettings.vue';
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
 import { useProject } from '@/composables/useProject';
-import { useProjectLocalStorage } from '@/composables/useProjectLocalStorage';
+import { useProjectLocalStorage } from '@/composables/todo/useProjectLocalStorage';
 import { useUpdateTime } from '@/composables/useUpdateTime';
 import { adjustTimeZone, formatDateTimeWithMinutes } from '@/utils/dateTime';
 

@@ -53,9 +53,9 @@ import type { TaskResponse } from '@/types/response';
 
 import ContainerBody from '@/components/core/kanbanBoard/ContainerBody.vue';
 import ContainerHeader from '@/components/core/kanbanBoard/ContainerHeader.vue';
-import { useTaskActions } from '@/composables/useTaskActions';
+import { useTaskActions } from '@/composables/todo/useTaskActions';
 import { useEditingStateStore } from '@/stores/editingState';
-import { useDraggableTasks } from '@/composables/useDraggableTasks';
+import { useDraggableTasks } from '@/composables/todo/useDraggableTasks';
 import { getTaskStorageKey } from '@/utils/storage/taskStorage';
 
 const props = defineProps<{

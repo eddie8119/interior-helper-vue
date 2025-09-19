@@ -30,13 +30,14 @@
 import { onMounted, ref, watch } from 'vue';
 import { Container, Draggable } from 'vue3-smooth-dnd';
 
+import type { TaskResponse } from '@/types/response';
+
 import { taskApi } from '@/api/task';
 import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
 import ContainerItem from '@/components/core/kanbanBoard/ContainerItem.vue';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { useTaskLocalStorage } from '@/composables/todo/useTaskLocalStorage';
-import type { TaskResponse } from '@/types/response';
 import { setupBeforeUnloadHandler } from '@/utils/storage/taskStorage';
 
 const props = defineProps<{

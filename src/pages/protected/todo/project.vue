@@ -30,10 +30,10 @@ import KanbanBoard from '@/components/core/project/KanbanBoard.vue';
 import ProjectHeader from '@/components/core/project/ProjectHeader.vue';
 import ProjectSettings from '@/components/core/project/ProjectSettings.vue';
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
-import { useProject } from '@/composables/useProject';
-import { useTasks } from '@/composables/useTasks';
 import { useProjectLocalStorage } from '@/composables/todo/useProjectLocalStorage';
 import { useTaskLocalStorage } from '@/composables/todo/useTaskLocalStorage';
+import { useProject } from '@/composables/useProject';
+import { useTasks } from '@/composables/useTasks';
 import { useUpdateTime } from '@/composables/useUpdateTime';
 import { adjustTimeZone, formatDateTimeWithMinutes } from '@/utils/dateTime';
 

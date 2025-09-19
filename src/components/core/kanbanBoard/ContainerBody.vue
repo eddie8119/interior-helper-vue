@@ -26,11 +26,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+import type { TaskData } from '@/types/task';
+import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
+
 import AddNewTask from '@/components/core/kanbanBoard/AddNewTask.vue';
 import TaskList from '@/components/core/kanbanBoard/TaskList.vue';
 import { useEditingStateStore } from '@/stores/editingState';
-import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
-import type { TaskData } from '@/types/task';
 
 const props = defineProps<{
   id: string;

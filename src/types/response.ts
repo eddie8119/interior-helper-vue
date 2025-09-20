@@ -29,7 +29,7 @@ export interface TaskResponse {
   description: string;
   constructionType: string;
   status: string;
-  dueDateTime: number | null;
+  reminderDatetime: number | null;
   createdAt: Date;
   updatedAt: Date;
   materials: TaskMaterialResponse[];

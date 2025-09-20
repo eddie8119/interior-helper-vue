@@ -4,6 +4,7 @@
       orientation="horizontal"
       drag-handle-selector=".container-drag-handle"
       :get-child-payload="getConstructionContainerPayload"
+      group-name="construction-containers"
       class="flex overflow-x-auto pt-4"
       @drop="onConstructionContainerDrop"
     >

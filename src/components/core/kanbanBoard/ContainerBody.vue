@@ -88,9 +88,9 @@ const handleTaskDrop = (dropResult: any) => {
 };
 
 // 判斷是否接受拖曳
-const shouldAcceptDrop = (_sourceContainerOptions: any, _payload: any) => {
-  // 無條件允許所有拖曳操作
-  return true;
+const shouldAcceptDrop = (sourceContainerOptions: any) => {
+  // 只接受來自 'tasks' 群組的拖曳物件
+  return sourceContainerOptions.groupName === 'tasks';
 };
 
 // 更新任務狀態

@@ -1,48 +1,63 @@
 <template>
-  <div>
-    <!-- 空容器提示 -->
-    <div
-      v-if="!isEditing"
-      class="flex h-[100px] items-center justify-center rounded-md border border-gray-200 bg-white"
-    >
-      <span class="text-gray-400">尚無施作項目</span>
-    </div>
-
-    <div v-else-if="isEditing">
-      <AddNewTask
-        :construction-name="constructionName"
-        :project-id="projectId"
-        @add-task="handleAddNewTask"
-        @close="stopEditing"
-      />
-    </div>
-
-    <div v-else>
-      <TaskList :tasks="tasks" />
-    </div>
+  <!-- 沒有任務，顯示空容器提示 -->
+  <div
+    v-if="tasks.length === 0"
+    class="flex h-[100px] items-center justify-center rounded-md border border-gray-200 bg-white"
+  >
+    <span class="text-gray-400">尚無施作項目</span>
+  </div>
+  <!-- 任務列表 -->
+  <Container
+    v-else
+    group-name="tasks"
+    orientation="vertical"
+    :get-child-payload="getTaskPayload"
+    @drop="handleTaskDrop"
+    :should-accept-drop="shouldAcceptDrop"
+    :drag-begin-delay="0"
+    :animation-duration="150"
+    :auto-scroll-enabled="true"
+    :behaviour="'move'"
+    class="task-container"
+  >
+    <!-- 任務列表 -->
+    <Draggable v-for="task in tasks" :key="task.id">
+      <TaskCard :task="task" @update:status="updateTaskStatus" />
+    </Draggable>
+  </Container>
+  <!-- 編輯模式：添加新任務 -->
+  <div v-show="isEditing">
+    <AddNewTask
+      :construction-name="constructionName"
+      :project-id="projectId"
+      @add-task="handleAddNewTask"
+      @close="stopEditing"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { Container, Draggable } from 'vue3-smooth-dnd';
 
-import type { TaskData } from '@/types/task';
+import type { TaskResponse } from '@/types/response';
 import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 import AddNewTask from '@/components/core/kanbanBoard/AddNewTask.vue';
-import TaskList from '@/components/core/kanbanBoard/TaskList.vue';
+import TaskCard from '@/components/core/kanbanBoard/TaskCard.vue';
 import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{
   id: string;
   constructionName: string;
   projectId: string;
-  tasks: TaskData[];
+  tasks: TaskResponse[];
 }>();
 
 const emit = defineEmits<{
   (e: 'add-task', newTaskData: CreateTaskSchema): void;
-  (e: 'update:tasks', tasks: TaskData[]): void;
+  (e: 'update:tasks', tasks: TaskResponse[]): void;
+  (e: 'task-drop', dropData: any): void;
 }>();
 
 const editingStateStore = useEditingStateStore();
@@ -57,10 +72,132 @@ const stopEditing = () => {
   editingStateStore.stopEditing();
 };
 
+// 獲取任務 payload
+const getTaskPayload = (index: number) => {
+  return props.tasks[index];
+};
+
+// 處理任務拖曳
+const handleTaskDrop = (dropResult: any) => {
+  const { removedIndex, addedIndex, payload } = dropResult;
+
+  if (removedIndex === null && addedIndex === null) return;
+
+  // 創建任務副本
+  let updatedTasks = [...props.tasks];
+  let sourceTask = null; // 記錄被移除的任務
+
+  // 如果有任務被移除
+  if (removedIndex !== null) {
+    // 儲存被移除的任務信息，用於跨容器拖曳
+    sourceTask = { ...updatedTasks[removedIndex] };
+
+    // 從原位置移除任務
+    updatedTasks.splice(removedIndex, 1);
+  }
+
+  // 如果有任務被添加
+  if (addedIndex !== null) {
+    // 確保有 payload
+    if (payload) {
+      // 更新任務的 constructionType 為新容器的名稱
+      const updatedPayload = {
+        ...payload,
+        constructionType: props.constructionName,
+      };
+
+      // 添加任務到新位置
+      updatedTasks.splice(addedIndex, 0, updatedPayload);
+    }
+  }
+
+  // 將更新後的任務列表和原始任務信息發送給 KanbanBoard
+  emit('task-drop', {
+    updatedTasks,
+    constructionType: props.constructionName,
+    sourceTask, // 增加原始任務信息
+  });
+
+  // 同時也發送 update:tasks 事件
+  emit('update:tasks', updatedTasks);
+};
+
+// 判斷是否接受拖曳
+const shouldAcceptDrop = (_sourceContainerOptions: any, _payload: any) => {
+  // 無條件允許所有拖曳操作
+  return true;
+};
+
+// 更新任務狀態
+const updateTaskStatus = (taskId: string, status: string) => {
+  const updatedTasks = props.tasks.map((task: TaskResponse) => {
+    if (task.id === taskId) {
+      return { ...task, status };
+    }
+    return task;
+  });
+
+  emit('update:tasks', updatedTasks);
+};
+
 // 處理添加新任務
 const handleAddNewTask = (newTaskData: CreateTaskSchema) => {
-  console.log(1111, newTaskData);
   emit('add-task', newTaskData);
   stopEditing();
 };
 </script>
+
+<style scoped>
+.task-container {
+  min-height: 100px;
+  padding: 8px 0;
+}
+
+.task-item {
+  cursor: grab;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.task-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.task-item:active {
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+
+/* 動態空位效果樣式 */
+.task-ghost {
+  opacity: 0.5;
+  background-color: #f3f4f6;
+  transform: scale(0.98);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.task-ghost-drop {
+  transition: all 0.3s ease;
+  border: 2px dashed #60a5fa;
+  background-color: rgba(96, 165, 250, 0.1);
+  margin: 8px 0;
+  border-radius: 8px;
+  min-height: 60px;
+}
+
+/* 動畫效果 */
+.smooth-dnd-container > .smooth-dnd-draggable-wrapper {
+  transition: transform 0.25s ease;
+}
+
+/* 空白區域動畫 */
+.smooth-dnd-container.vertical > .smooth-dnd-drop-preview-default-class {
+  border: 2px dashed #60a5fa;
+  background-color: rgba(96, 165, 250, 0.1);
+  margin: 8px 0;
+  border-radius: 8px;
+  min-height: 60px;
+}
+</style>

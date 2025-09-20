@@ -4,4 +4,3 @@ export interface Material {
   quantity: number | undefined;
   unitPrice: number | undefined;
 }
-

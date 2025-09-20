@@ -19,7 +19,7 @@
       :construction-container="localProject?.constructionContainer || []"
       :tasks="localTasks"
       @update:construction-container="updateConstructionContainer"
-      @update:task-container="updateTaskContainer"
+      @update:project-all-tasks="updateProjectAllTasks"
     />
   </div>
 </template>
@@ -49,10 +49,12 @@ const { isLoadingProject, fetchedProject, updateProject } = useProject(projectId
 const { isLoadingTasks, fetchedTasks, updateProjectTasks } = useTasks(projectId);
 
 // 獲取本地專案數據-省api-操作時都先存在本地 最後才送api
-const { localProject, hasChanges, initLocalProject, saveToLocalStorage } = useProjectLocalStorage(
-  projectId,
-  fetchedProject
-);
+const {
+  localProject,
+  hasChanges: hasProjectChanges,
+  initLocalProject,
+  saveToLocalStorage: saveProjectToLocalStorage,
+} = useProjectLocalStorage(projectId, fetchedProject);
 const {
   localTasks,
   hasChanges: hasTasksChanges,
@@ -95,7 +97,7 @@ const formattedUpdateTime = computed(() => {
 const updateProjectTitle = (newTitle: string) => {
   if (localProject.value) {
     localProject.value.title = newTitle;
-    saveToLocalStorage();
+    saveProjectToLocalStorage();
     updateLastUpdateTime();
   }
 };
@@ -104,21 +106,23 @@ const updateProjectTitle = (newTitle: string) => {
 const updateConstructionContainer = (containers: string[]) => {
   if (localProject.value) {
     localProject.value.constructionContainer = containers;
-    saveToLocalStorage();
+    saveProjectToLocalStorage();
     updateLastUpdateTime();
   }
 };
 
-// 更新專案任務
-const updateTaskContainer = () => {
+// 更新專案下所有任務
+const updateProjectAllTasks = (updatedTasksData: TaskResponse[]) => {
   if (localTasks.value) {
+    localTasks.value = updatedTasksData;
     saveTasksToLocalStorage();
     updateLastUpdateTime();
   }
 };
+
 // 處理窗口關閉事件
 const handleBeforeUnload = async (event: BeforeUnloadEvent): Promise<void> => {
-  if (hasChanges.value && localProject.value) {
+  if (hasProjectChanges.value && localProject.value) {
     try {
       // 使用 sendBeacon 進行非同步請求
       const url = `/api/projects/${projectId}`;
@@ -128,7 +132,7 @@ const handleBeforeUnload = async (event: BeforeUnloadEvent): Promise<void> => {
       // 同時嘗試使用 updateProject 保存數據
       updateProject(localProject.value)
         .then(() => {
-          hasChanges.value = false;
+          hasProjectChanges.value = false;
         })
         .catch((error) => {
           console.error('保存數據失敗:', error);
@@ -141,18 +145,22 @@ const handleBeforeUnload = async (event: BeforeUnloadEvent): Promise<void> => {
 
 // 頁面銷毀前保存數據
 onBeforeUnmount(async () => {
-  if (hasChanges.value && localProject.value) {
+  if (hasProjectChanges.value && localProject.value) {
     await updateProject(localProject.value);
-    hasChanges.value = false;
+    hasProjectChanges.value = false;
+  }
+  if (hasTasksChanges.value && localTasks.value) {
+    await updateProjectTasks(localTasks.value);
+    hasTasksChanges.value = false;
   }
 });
 
 // 路由離開前保存數據 - 直接調用 updateProject
 onBeforeRouteLeave(async (_, __, next: any) => {
-  if (hasChanges.value && localProject.value && localTasks.value) {
+  if (hasProjectChanges.value && localProject.value && localTasks.value) {
     await updateProject(localProject.value);
     await updateProjectTasks(localTasks.value);
-    hasChanges.value = false;
+    hasProjectChanges.value = false;
     hasTasksChanges.value = false;
   }
   next();
@@ -185,9 +193,9 @@ onMounted(() => {
   // 設置定期保存
   autoSaveInterval = window.setInterval(
     async () => {
-      if (hasChanges.value && localProject.value) {
+      if (hasProjectChanges.value && localProject.value) {
         await updateProject(localProject.value);
-        hasChanges.value = false;
+        hasProjectChanges.value = false;
       }
       if (hasTasksChanges.value && localTasks.value) {
         await updateProjectTasks(localTasks.value);

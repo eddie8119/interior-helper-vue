@@ -38,7 +38,10 @@ import type { TaskResponse } from '@/types/response';
 import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
 import ContainerItem from '@/components/core/kanbanBoard/ContainerItem.vue';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
-import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
+import {
+  useDraggableConstructions,
+  type ConstructionContainer,
+} from '@/composables/todo/useDraggableConstructions';
 import { useTaskDragAndDrop, type DraggableTask } from '@/composables/todo/useDraggableTasks';
 
 const props = defineProps<{
@@ -52,28 +55,39 @@ const emit = defineEmits<{
   (e: 'update:projectAllTasks', value: DraggableTask[]): void;
 }>();
 
-//  管理容器拖拽功能
-const {
-  constructionContainers,
-  initializeConstructionContainers,
-  getConstructionContainerPayload,
-  onConstructionContainerDrop,
-  updateConstructionContainer,
-} = useDraggableConstructions(props, emit);
+// 管理容器狀態
+const constructionContainers = ref<ConstructionContainer[]>([]);
 
-// 監聽 props 變化
-watch(
-  () => props.constructionContainer,
-  () => {
-    initializeConstructionContainers();
-  },
-  { immediate: true }
+// 初始化容器
+const initializeConstructionContainers = () => {
+  constructionContainers.value =
+    props.constructionContainer?.map((name: string, index: number) => ({
+      id: `container-${index}`,
+      name,
+    })) || [];
+};
+
+// 監聽 props 變化以重新初始化
+watch(() => props.constructionContainer, initializeConstructionContainers, { immediate: true });
+
+// 容器更新回調
+const onContainerUpdate = (newContainers: ConstructionContainer[]) => {
+  emit(
+    'update:constructionContainer',
+    newContainers.map((c) => c.name)
+  );
+};
+
+// 拖曳邏輯
+const { getConstructionContainerPayload, onConstructionContainerDrop } = useDraggableConstructions(
+  constructionContainers,
+  onContainerUpdate
 );
 
-// Construction容器的操作
+// 容器操作邏輯
 const { deleteConstruction, addNewConstruction, updateConstructionName } = useConstructionActions(
   constructionContainers,
-  updateConstructionContainer
+  onContainerUpdate
 );
 
 // 為任務列表創建一個本地的、可排序的副本
@@ -119,7 +133,7 @@ const filterTasksByConstructionType = (constructionName: string) => {
     .sort((a: DraggableTask, b: DraggableTask) => (a.order ?? 0) - (b.order ?? 0));
 };
 
-// 使用新的 composable 處理任務拖曳
+// 處理任務任務拖曳
 const { handleTaskDrop } = useTaskDragAndDrop(localTasks, (updatedTasks: DraggableTask[]) => {
   emit('update:projectAllTasks', updatedTasks);
 });

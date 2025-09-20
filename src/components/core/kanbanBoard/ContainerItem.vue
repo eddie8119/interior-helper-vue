@@ -104,12 +104,8 @@ const addNewTask = (taskData: any) => {
 };
 
 // 更新任務
-const updateTasks = (updatedTasks: TaskResponse[]) => {
-  // 將更新後的任務列表發送給 KanbanBoard
-  const dropResult = { updatedTasks };
-
-  // 同時發送兩種事件，確保完整的資料流
+const updateTasks = (dropResult: any) => {
+  // 直接將從 ContainerBody 收到的 dropResult 轉發給父組件
   emit('task-drop', dropResult, props.constructionName);
-  emit('update:tasks', updatedTasks);
 };
 </script>

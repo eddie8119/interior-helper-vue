@@ -1,14 +1,13 @@
 <template>
   <!-- 沒有任務，顯示空容器提示 -->
-  <div
+  <!-- <div
     v-if="tasks.length === 0"
     class="flex h-[100px] items-center justify-center rounded-md border border-gray-200 bg-white"
   >
     <span class="text-gray-400">尚無施作項目</span>
-  </div>
+  </div> -->
   <!-- 任務列表 -->
   <Container
-    v-else
     group-name="tasks"
     orientation="vertical"
     :get-child-payload="getTaskPayload"
@@ -79,47 +78,13 @@ const getTaskPayload = (index: number) => {
 
 // 處理任務拖曳
 const handleTaskDrop = (dropResult: any) => {
-  const { removedIndex, addedIndex, payload } = dropResult;
+  const { removedIndex, addedIndex } = dropResult;
 
+  // 如果沒有發生任何移動，則不執行任何操作
   if (removedIndex === null && addedIndex === null) return;
 
-  // 創建任務副本
-  let updatedTasks = [...props.tasks];
-  let sourceTask = null; // 記錄被移除的任務
-
-  // 如果有任務被移除
-  if (removedIndex !== null) {
-    // 儲存被移除的任務信息，用於跨容器拖曳
-    sourceTask = { ...updatedTasks[removedIndex] };
-
-    // 從原位置移除任務
-    updatedTasks.splice(removedIndex, 1);
-  }
-
-  // 如果有任務被添加
-  if (addedIndex !== null) {
-    // 確保有 payload
-    if (payload) {
-      // 更新任務的 constructionType 為新容器的名稱
-      const updatedPayload = {
-        ...payload,
-        constructionType: props.constructionName,
-      };
-
-      // 添加任務到新位置
-      updatedTasks.splice(addedIndex, 0, updatedPayload);
-    }
-  }
-
-  // 將更新後的任務列表和原始任務信息發送給 KanbanBoard
-  emit('task-drop', {
-    updatedTasks,
-    constructionType: props.constructionName,
-    sourceTask, // 增加原始任務信息
-  });
-
-  // 同時也發送 update:tasks 事件
-  emit('update:tasks', updatedTasks);
+  // 直接將原始的 dropResult 事件向上傳遞
+  emit('task-drop', dropResult);
 };
 
 // 判斷是否接受拖曳

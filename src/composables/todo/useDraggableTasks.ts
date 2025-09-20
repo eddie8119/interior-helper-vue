@@ -1,91 +1,104 @@
-import { ref, watch } from 'vue';
+import type { Ref } from 'vue';
+import type { TaskResponse } from '@/types/response';
 
-import type { TaskData } from '@/types/task';
+// 擴展 TaskResponse 類型以包含用於排序的 order 屬性，使其可選
+export type DraggableTask = TaskResponse & { order?: number };
 
-import { saveTaskToLocalStorage } from '@/utils/storage/taskStorage';
+/**
+ * @composable useTaskDragAndDrop
+ *
+ * @description
+ * 處理看板中任務卡片的拖放邏輯。
+ * 負責更新任務的順序和所屬的工程類型。
+ *
+ * @param {Ref<DraggableTask[] | null>} allTasksRef - 包含所有任務的響應式引用。
+ * @param {(updatedTasks: DraggableTask[]) => void} updateCallback - 數據更新後的回調函數。
+ *
+ * @returns {{ handleTaskDrop: (dropResult: any, targetConstructionType: string) => void }}
+ */
+export function useTaskDragAndDrop(
+  allTasksRef: Ref<DraggableTask[] | null>,
+  updateCallback: (updatedTasks: DraggableTask[]) => void
+) {
+  const handleTaskDrop = (dropResult: any, targetConstructionType: string) => {
+    const { removedIndex, addedIndex, payload } = dropResult;
 
-export function useDraggableTasks(props: any, emit: any) {
-  // 獲取項目ID
-  const projectId = props.projectId;
-  const tasks = ref<TaskData[]>([]);
-
-  // 初始化任務
-  const initializeTask = () => {
-    if (props.task && props.task.length > 0) {
-      tasks.value = props.task.map((task: Partial<TaskData>, index: number) => ({
-        id: `task-${index}`,
-        ...task,
-        order: index,
-      }));
-    }
-  };
-
-  // 更新父組件的 task
-  const updateTask = () => {
-    // 根據 order 排序
-    const sortedtasks = [...tasks.value].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-    emit('update:task', sortedtasks);
-
-    // 保存到本地存儲
-    if (projectId) {
-      saveTaskToLocalStorage(projectId, tasks.value);
-    }
-  };
-
-  // 拖拽相關函數
-  const getTaskPayload = (index: number) => {
-    return tasks.value[index];
-  };
-
-  const onTaskDrop = (dropResult: any) => {
-    const { removedIndex, addedIndex } = dropResult;
-
-    // 如果沒有移除或添加，則不做任何處理
-    if (removedIndex === null && addedIndex === null) return;
-
-    // 如果最後一個元素是「添加新工程類型」按鈕，則不允許拖拽
-    if (removedIndex === tasks.value.length || addedIndex === tasks.value.length) return;
-
-    // 創建新的容器陣列
-    const result = [...tasks.value];
-
-    // 如果有元素被移除
-    const itemToAdd = removedIndex !== null ? result.splice(removedIndex, 1)[0] : null;
-
-    // 如果有元素被添加
-    if (addedIndex !== null && itemToAdd) {
-      result.splice(addedIndex, 0, itemToAdd);
+    if (allTasksRef.value === null || (removedIndex === null && addedIndex === null)) {
+      return;
     }
 
-    // 更新所有任務的順序
-    // result.forEach((task, index) => {
-    //   task.order = index;
-    // });
+    // 創建一個工作副本
+    const workingTasks = [...allTasksRef.value];
 
-    // 更新任務列表
-    tasks.value = result;
+    // 找到被拖動的任務
+    const draggedTask = workingTasks.find((task) => task.id === payload.id);
+    if (!draggedTask) return;
 
-    // 確保在拖拽操作後立即更新 task 陣列
-    // 這會觸發父組件中的 updateTask 方法，該方法會保存數據到 localStorage
-    updateTask();
-  };
+    // 1. 從工作副本中「移除」被拖動的任務，以便後續插入
+    const taskIndex = workingTasks.findIndex((t) => t.id === draggedTask.id);
+    if (taskIndex > -1) {
+      workingTasks.splice(taskIndex, 1);
+    }
 
-  // 監聽任務變化，自動保存到本地存儲
-  watch(
-    tasks,
-    () => {
-      if (projectId && tasks.value.length > 0) {
-        saveTaskToLocalStorage(projectId, tasks.value);
+    // 2. 更新任務的工程類型
+    draggedTask.constructionType = targetConstructionType;
+
+    // 3. 找到目標容器中，插入點之後的第一個任務
+    const tasksInTargetContainer = workingTasks
+      .filter((t) => t.constructionType === targetConstructionType)
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+    const taskAfter = tasksInTargetContainer[addedIndex];
+
+    let insertIndex = -1;
+    if (taskAfter) {
+      // 如果找到了後面的任務，就插入到它前面
+      insertIndex = workingTasks.findIndex((t) => t.id === taskAfter.id);
+    } else {
+      // 如果沒找到（即拖曳到末尾），則找到目標容器最後一個任務的位置
+      if (tasksInTargetContainer.length > 0) {
+        const lastTask = tasksInTargetContainer[tasksInTargetContainer.length - 1];
+        insertIndex = workingTasks.findIndex((t) => t.id === lastTask.id) + 1;
+      } else {
+        // 如果目標容器是空的，則需要找到容器本身的位置，這裡簡化處理，先放在末尾
+        // 一個更穩健的方法是需要知道容器的順序
+        insertIndex = workingTasks.length;
       }
-    },
-    { deep: true }
-  );
+    }
+
+    // 在計算出的位置插入任務
+    if (insertIndex !== -1) {
+      workingTasks.splice(insertIndex, 0, draggedTask);
+    } else {
+      workingTasks.push(draggedTask); // Fallback
+    }
+
+    // 4. 重新計算所有容器的 order
+    const reorderAll = (tasks: DraggableTask[]) => {
+      const containerMap: { [key: string]: DraggableTask[] } = {};
+
+      tasks.forEach((task) => {
+        const type = task.constructionType || 'uncategorized';
+        if (!containerMap[type]) {
+          containerMap[type] = [];
+        }
+        containerMap[type].push(task);
+      });
+
+      Object.values(containerMap).forEach((group) => {
+        group.forEach((task, index) => {
+          task.order = index;
+        });
+      });
+    };
+
+    reorderAll(workingTasks);
+
+    // 5. 觸發回調
+    updateCallback(workingTasks);
+  };
 
   return {
-    tasks,
-    initializeTask,
-    getTaskPayload,
-    onTaskDrop,
-    updateTask,
+    handleTaskDrop,
   };
 }

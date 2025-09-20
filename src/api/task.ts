@@ -10,7 +10,7 @@ export const taskApi = {
     return request.get(`/tasks/${projectId}`);
   },
   updateProjectTasks: (
-    data: Partial<CreateTaskSchema>,
+    data: TaskResponse[],
     projectId: string
   ): Promise<ApiResponse<TaskResponse[]>> => {
     return request.patch(`/tasks/${projectId}`, data);

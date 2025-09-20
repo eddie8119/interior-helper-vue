@@ -13,20 +13,23 @@ import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 import { taskApi } from '@/api/task';
 
 interface UseTasksReturn {
-  // 獲取專案任務列表
+  // 批次
+  // 批次獲取專案任務列表
   isLoadingTasks: Ref<boolean>;
   error: Ref<Error | null>;
   fetchedTasks: Ref<TaskResponse[] | null>;
   tasksUpdatedAt: Ref<number>;
   refetchTasks: () => Promise<void>;
+  // 批次更新專案任務
+  updateProjectTasks: (data: TaskResponse[]) => Promise<TaskResponse[] | null>;
+  isUpdating: Ref<boolean>;
+  updateError: Ref<Error | null>;
+
+  // 個別更新專案任務
   // 創建任務
   createTask: (data: CreateTaskSchema) => Promise<TaskResponse | null>;
   isCreating: Ref<boolean>;
   createError: Ref<Error | null>;
-  // 更新專案任務
-  updateProjectTasks: (data: Partial<CreateTaskSchema>) => Promise<TaskResponse[] | null>;
-  isUpdating: Ref<boolean>;
-  updateError: Ref<Error | null>;
 }
 
 export function useTasks(projectId: string): UseTasksReturn {
@@ -86,9 +89,9 @@ export function useTasks(projectId: string): UseTasksReturn {
     }
   };
 
-  // 更新專案任務 mutation
+  // 批次更新專案任務 mutation
   const { mutateAsync: mutateUpdateProjectTasks } = useMutation({
-    mutationFn: async (data: Partial<CreateTaskSchema>) => {
+    mutationFn: async (data: TaskResponse[]) => {
       const response = await taskApi.updateProjectTasks(data, projectId);
       return response.data;
     },
@@ -97,10 +100,8 @@ export function useTasks(projectId: string): UseTasksReturn {
     },
   });
 
-  // 更新專案任務方法
-  const updateProjectTasks = async (
-    data: Partial<CreateTaskSchema>
-  ): Promise<TaskResponse[] | null> => {
+  // 批次更新專案任務方法
+  const updateProjectTasks = async (data: TaskResponse[]): Promise<TaskResponse[] | null> => {
     try {
       isUpdating.value = true;
       updateError.value = null;
@@ -123,13 +124,13 @@ export function useTasks(projectId: string): UseTasksReturn {
     fetchedTasks: fetchedTasks as Ref<TaskResponse[] | null>,
     tasksUpdatedAt,
     refetchTasks,
+    // 批次更新專案任務
+    updateProjectTasks,
+    isUpdating,
+    updateError,
     // 創建任務
     createTask,
     isCreating,
     createError,
-    // 更新專案任務
-    updateProjectTasks,
-    isUpdating,
-    updateError,
   };
 }

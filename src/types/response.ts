@@ -12,7 +12,7 @@ export interface AuthResponse {
 }
 
 export interface ProjectResponse {
-  constructionContainer: string[];
+  constructionContainer: string[] | null;
   id: string;
   title: string;
   type: ProjectType;

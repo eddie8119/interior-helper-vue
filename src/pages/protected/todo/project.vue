@@ -1,20 +1,25 @@
 <template>
-  <div v-if="isLoadingProject" class="flex h-full w-full items-center justify-center">
+  <div
+    v-if="isLoadingProject && isLoadingTasks"
+    class="flex h-full w-full items-center justify-center"
+  >
     <Loading />
   </div>
   <div v-else class="relative h-full w-full">
     <div class="mb-2 flex flex-col md:flex-row md:justify-between">
-      <ProjectHeader :title="localProject?.title" @update:title="updateProjectTitle" />
+      <ProjectHeader :title="localProject?.title || ''" @update:title="updateProjectTitle" />
 
       <div class="flex items-center gap-4">
-        <ProjectSettings :project-title="localProject?.title" :project-id="projectId" />
+        <ProjectSettings :project-title="localProject?.title || ''" :project-id="projectId" />
         <ShowUpdateTime :last-update-time="formattedUpdateTime" />
       </div>
     </div>
     <KanbanBoard
       :project-id="projectId"
-      :construction-container="localProject?.constructionContainer"
+      :construction-container="localProject?.constructionContainer || []"
+      :tasks="localTasks"
       @update:construction-container="updateConstructionContainer"
+      @update:task-container="updateTaskContainer"
     />
   </div>
 </template>
@@ -22,8 +27,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
-
-import type { ProjectResponse, TaskResponse } from '@/types/response';
 
 import Loading from '@/components/core/loading/Loading.vue';
 import KanbanBoard from '@/components/core/project/KanbanBoard.vue';
@@ -36,15 +39,16 @@ import { useProject } from '@/composables/useProject';
 import { useTasks } from '@/composables/useTasks';
 import { useUpdateTime } from '@/composables/useUpdateTime';
 import { adjustTimeZone, formatDateTimeWithMinutes } from '@/utils/dateTime';
+import type { TaskResponse } from '@/types/response';
 
 const route = useRoute();
 const projectId = route.params.id as string;
 
-// 獲取專案資料
+// 獲取專案資料-互動api
 const { isLoadingProject, fetchedProject, updateProject } = useProject(projectId);
 const { isLoadingTasks, fetchedTasks, updateProjectTasks } = useTasks(projectId);
 
-// 獲取本地專案數據
+// 獲取本地專案數據-省api-操作時都先存在本地 最後才送api
 const { localProject, hasChanges, initLocalProject, saveToLocalStorage } = useProjectLocalStorage(
   projectId,
   fetchedProject
@@ -89,9 +93,11 @@ const formattedUpdateTime = computed(() => {
 
 // 更新專案標題的方法
 const updateProjectTitle = (newTitle: string) => {
-  localProject.value.title = newTitle;
-  saveToLocalStorage();
-  updateLastUpdateTime();
+  if (localProject.value) {
+    localProject.value.title = newTitle;
+    saveToLocalStorage();
+    updateLastUpdateTime();
+  }
 };
 
 // 更新工程容器的方法
@@ -103,6 +109,13 @@ const updateConstructionContainer = (containers: string[]) => {
   }
 };
 
+// 更新專案任務
+const updateTaskContainer = () => {
+  if (localTasks.value) {
+    saveTasksToLocalStorage();
+    updateLastUpdateTime();
+  }
+};
 // 處理窗口關閉事件
 const handleBeforeUnload = async (event: BeforeUnloadEvent): Promise<void> => {
   if (hasChanges.value && localProject.value) {
@@ -136,9 +149,11 @@ onBeforeUnmount(async () => {
 
 // 路由離開前保存數據 - 直接調用 updateProject
 onBeforeRouteLeave(async (_, __, next: any) => {
-  if (hasChanges.value && localProject.value) {
+  if (hasChanges.value && localProject.value && localTasks.value) {
     await updateProject(localProject.value);
+    await updateProjectTasks(localTasks.value);
     hasChanges.value = false;
+    hasTasksChanges.value = false;
   }
   next();
 });
@@ -150,6 +165,7 @@ onMounted(() => {
   // 確保數據已經初始化
   if (fetchedProject.value && !localProject.value) {
     initLocalProject();
+    initLocalTasks();
   }
 
   // 強制重新渲染一次，確保頁面元素可以響應點擊
@@ -159,6 +175,11 @@ onMounted(() => {
       localProject.value = null;
       localProject.value = temp;
     }
+    if (localTasks.value) {
+      const temp = { ...localTasks.value };
+      localTasks.value = null;
+      localTasks.value = temp;
+    }
   }, 100);
 
   // 設置定期保存
@@ -167,6 +188,10 @@ onMounted(() => {
       if (hasChanges.value && localProject.value) {
         await updateProject(localProject.value);
         hasChanges.value = false;
+      }
+      if (hasTasksChanges.value && localTasks.value) {
+        await updateProjectTasks(localTasks.value);
+        hasTasksChanges.value = false;
       }
     },
     5 * 60 * 1000

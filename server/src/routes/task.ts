@@ -1,11 +1,13 @@
 import express from 'express';
 
 import {
+  // 個別
   createTask,
   deleteTask,
   getTaskById,
-  getTasksByProjectId,
   updateTask,
+  // 批次
+  getTasksByProjectId,
   updateTasks,
 } from '@/controllers/task';
 import { authMiddleware, requireUserId } from '@/middleware/auth';

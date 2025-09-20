@@ -40,6 +40,7 @@ import { useTasks } from '@/composables/useTasks';
 import { useUpdateTime } from '@/composables/useUpdateTime';
 import { adjustTimeZone, formatDateTimeWithMinutes } from '@/utils/dateTime';
 import type { TaskResponse } from '@/types/response';
+import type { CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
 
 const route = useRoute();
 const projectId = route.params.id as string;
@@ -130,13 +131,14 @@ const handleBeforeUnload = async (event: BeforeUnloadEvent): Promise<void> => {
       navigator.sendBeacon(url, data);
 
       // 同時嘗試使用 updateProject 保存數據
-      updateProject(localProject.value)
+      updateProject(localProject.value as Partial<CreateProjectSchema>)
         .then(() => {
           hasProjectChanges.value = false;
         })
         .catch((error) => {
           console.error('保存數據失敗:', error);
         });
+      
     } catch (error) {
       console.error('窗口關閉或刷新時保存數據失敗:', error);
     }
@@ -146,7 +148,7 @@ const handleBeforeUnload = async (event: BeforeUnloadEvent): Promise<void> => {
 // 頁面銷毀前保存數據
 onBeforeUnmount(async () => {
   if (hasProjectChanges.value && localProject.value) {
-    await updateProject(localProject.value);
+    await updateProject(localProject.value as Partial<CreateProjectSchema>);
     hasProjectChanges.value = false;
   }
   if (hasTasksChanges.value && localTasks.value) {
@@ -158,7 +160,7 @@ onBeforeUnmount(async () => {
 // 路由離開前保存數據 - 直接調用 updateProject
 onBeforeRouteLeave(async (_, __, next: any) => {
   if (hasProjectChanges.value && localProject.value && localTasks.value) {
-    await updateProject(localProject.value);
+    await updateProject(localProject.value as Partial<CreateProjectSchema>);
     await updateProjectTasks(localTasks.value);
     hasProjectChanges.value = false;
     hasTasksChanges.value = false;
@@ -194,7 +196,7 @@ onMounted(() => {
   autoSaveInterval = window.setInterval(
     async () => {
       if (hasProjectChanges.value && localProject.value) {
-        await updateProject(localProject.value);
+        await updateProject(localProject.value as Partial<CreateProjectSchema>);
         hasProjectChanges.value = false;
       }
       if (hasTasksChanges.value && localTasks.value) {

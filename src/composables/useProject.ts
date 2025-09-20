@@ -73,7 +73,7 @@ export function useProject(id: string): UseProjectsReturn {
         updateData = {
           title: data.title ?? currentProject.title,
           type: data.type ?? currentProject.type,
-          constructionContainer: data.constructionContainer ?? currentProject.constructionContainer,
+          constructionContainer: data.constructionContainer ?? currentProject.constructionContainer ?? [],
         };
       } else {
         // 如果沒有現有數據，則直接使用更新數據

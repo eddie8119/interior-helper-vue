@@ -28,15 +28,14 @@ export function useTaskLocalStorage(projectId: string, fetchedTasks: Ref<TaskRes
         try {
           const parsedData = JSON.parse(storedData) as TaskResponse[];
 
-
           // 進行更精確的合併邏輯
           const mergedTasks = new Map<string, TaskResponse>();
 
           // 1. 先將所有本地任務放入 Map
-          parsedData.forEach(task => mergedTasks.set(task.id, task));
+          parsedData.forEach((task) => mergedTasks.set(task.id, task));
 
           // 2. 遍歷伺服器任務，進行比較和合併
-          fetchedTasks.value.forEach(fetchedTask => {
+          fetchedTasks.value.forEach((fetchedTask) => {
             const localTask = mergedTasks.get(fetchedTask.id);
             // 如果本地不存在，或伺服器版本較新，則使用伺服器版本
             if (!localTask || new Date(localTask.updatedAt) < new Date(fetchedTask.updatedAt)) {

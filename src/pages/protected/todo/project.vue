@@ -138,7 +138,6 @@ const handleBeforeUnload = async (event: BeforeUnloadEvent): Promise<void> => {
         .catch((error) => {
           console.error('保存數據失敗:', error);
         });
-      
     } catch (error) {
       console.error('窗口關閉或刷新時保存數據失敗:', error);
     }

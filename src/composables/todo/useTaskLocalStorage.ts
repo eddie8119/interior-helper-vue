@@ -28,38 +28,25 @@ export function useTaskLocalStorage(projectId: string, fetchedTasks: Ref<TaskRes
         try {
           const parsedData = JSON.parse(storedData) as TaskResponse[];
 
-          // 檢查版本是否一致 - 對於任務列表，我們需要比較每個任務
-          // 如果有任何一個任務在資料庫中更新了，就使用資料庫數據
-          let useDatabase = false;
 
-          // 創建一個映射以便快速查找
-          const parsedTaskMap = new Map<string, TaskResponse>();
-          parsedData.forEach((task) => parsedTaskMap.set(task.id, task));
+          // 進行更精確的合併邏輯
+          const mergedTasks = new Map<string, TaskResponse>();
 
-          // 檢查是否有任何資料庫任務比本地更新
-          if (
-            fetchedTasks.value.some((fetchedTask) => {
-              const localTask = parsedTaskMap.get(fetchedTask.id);
-              return !localTask || new Date(localTask.updatedAt) < new Date(fetchedTask.updatedAt);
-            })
-          ) {
-            useDatabase = true;
-          }
+          // 1. 先將所有本地任務放入 Map
+          parsedData.forEach(task => mergedTasks.set(task.id, task));
 
-          if (useDatabase) {
-            // 資料庫數據更新，使用資料庫數據
-            localTasks.value = JSON.parse(JSON.stringify(fetchedTasks.value));
-            localStorage.setItem(storageTasksKey, JSON.stringify(localTasks.value));
-          } else {
-            // 本地數據更新，使用本地數據
-            // 但需要合併資料庫中新增的任務
-            const fetchedTaskIds = new Set(fetchedTasks.value.map((task) => task.id));
-            const missingTasks = parsedData.filter((task) => !fetchedTaskIds.has(task.id));
+          // 2. 遍歷伺服器任務，進行比較和合併
+          fetchedTasks.value.forEach(fetchedTask => {
+            const localTask = mergedTasks.get(fetchedTask.id);
+            // 如果本地不存在，或伺服器版本較新，則使用伺服器版本
+            if (!localTask || new Date(localTask.updatedAt) < new Date(fetchedTask.updatedAt)) {
+              mergedTasks.set(fetchedTask.id, fetchedTask);
+            }
+            // 否則，保留本地較新的版本（已在 Map 中）
+          });
 
-            // 合併本地和資料庫數據
-            localTasks.value = [...fetchedTasks.value, ...missingTasks];
-            shouldUseLocalData = true;
-          }
+          localTasks.value = Array.from(mergedTasks.values());
+          shouldUseLocalData = true;
         } catch (e) {
           // 解析錯誤，使用資料庫數據
           localTasks.value = JSON.parse(JSON.stringify(fetchedTasks.value));

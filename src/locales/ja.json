@@ -146,32 +146,6 @@
     "back_to_login": "ログインに戻る",
     "register": "登録する"
   },
-  "management": {
-    "inviteMember": "メンバーを招待",
-    "collaborator": "共同編集者",
-    "membersList": "メンバー一覧",
-    "role": "役割",
-    "send": "送信",
-    "invite": "招待",
-    "remove": "削除",
-    "status": {
-      "pending": "保留中",
-      "joined": "参加済み"
-    },
-    "roles": {
-      "owner": "オーナー",
-      "admin": "管理者",
-      "editor": "編集者",
-      "viewer": "閲覧者"
-    },
-    "messages": {
-      "inviteSent": "招待が正常に送信されました"
-    },
-    "errors": {
-      "emailExists": "このメールアドレスは既に存在します",
-      "inviteFailed": "メンバーの招待に失敗しました"
-    }
-  },
   "message": {
     "dialog": {
       "activation_success": "アクティベーションに成功しました！",
@@ -264,6 +238,32 @@
       "luxury": "豪邸",
       "commercial": "商業",
       "office": "事務所"
+    }
+  },
+  "setting": {
+    "inviteMember": "メンバーを招待",
+    "collaborator": "共同編集者",
+    "membersList": "メンバー一覧",
+    "role": "役割",
+    "send": "送信",
+    "invite": "招待",
+    "remove": "削除",
+    "status": {
+      "pending": "保留中",
+      "joined": "参加済み"
+    },
+    "roles": {
+      "owner": "オーナー",
+      "admin": "管理者",
+      "editor": "編集者",
+      "viewer": "閲覧者"
+    },
+    "messages": {
+      "inviteSent": "招待が正常に送信されました"
+    },
+    "errors": {
+      "emailExists": "このメールアドレスは既に存在します",
+      "inviteFailed": "メンバーの招待に失敗しました"
     }
   }
 }

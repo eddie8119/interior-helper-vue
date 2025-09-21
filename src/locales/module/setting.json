@@ -1,6 +1,6 @@
 {
   "en": {
-    "management": {
+    "setting": {
       "inviteMember": "Invite Member",
       "collaborator": "Collaborator",
       "membersList": "Members List",
@@ -28,7 +28,7 @@
     }
   },
   "zh-TW": {
-    "management": {
+    "setting": {
       "roles": {
         "owner": "擁有者",
         "admin": "管理員",
@@ -55,7 +55,7 @@
     }
   },
   "ja": {
-    "management": {
+    "setting": {
       "inviteMember": "メンバーを招待",
       "collaborator": "共同編集者",
       "membersList": "メンバー一覧",

@@ -1,13 +1,13 @@
 <template>
   <div class="panel-container">
-    <H2Title :title="t('management.inviteMember')" />
+    <H2Title :title="t('setting.inviteMember')" />
     <form
       class="flex flex-col gap-6 lg:flex-row lg:items-end"
       @submit.prevent="handleSubmit(onSubmit)"
     >
       <div class="flex w-full flex-col lg:w-auto">
         <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-          {{ t('management.collaborator') }}
+          {{ t('setting.collaborator') }}
         </label>
         <div class="h-[38px]">
           <FormInput
@@ -26,7 +26,7 @@
 
       <div class="flex w-full flex-col lg:w-auto">
         <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-          {{ t('management.role') }}
+          {{ t('setting.role') }}
         </label>
         <div class="h-[38px]">
           <select
@@ -40,7 +40,7 @@
               :key="roleOption.value"
               :value="roleOption.value"
             >
-              {{ t(`management.roles.${roleOption.value}`) }}
+              {{ t(`setting.roles.${roleOption.value}`) }}
             </option>
           </select>
         </div>
@@ -54,7 +54,7 @@
           size="md"
           class="h-[40px] w-full px-8 lg:w-auto"
         >
-          {{ t('management.invite') }}
+          {{ t('setting.invite') }}
         </TextButton>
       </div>
     </form>
@@ -99,7 +99,7 @@ const onSubmit = async (values: { email: string; role: Role }) => {
   try {
     // 檢查 email 是否已存在
     if (props.members.some((m) => m.email.toLowerCase() === values.email.toLowerCase())) {
-      errors.value.email = t('management.errors.emailExists');
+      errors.value.email = t('setting.errors.emailExists');
       return;
     }
 
@@ -118,9 +118,9 @@ const onSubmit = async (values: { email: string; role: Role }) => {
     email.value = '';
     role.value = Role.VIEWER;
 
-    ElMessage.success(t('management.messages.inviteSent'));
+    ElMessage.success(t('setting.messages.inviteSent'));
   } catch (error) {
-    ElMessage.error(t('management.errors.inviteFailed'));
+    ElMessage.error(t('setting.errors.inviteFailed'));
     console.error('Failed to invite member:', error);
   }
 };

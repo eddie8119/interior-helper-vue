@@ -184,31 +184,6 @@
     "back_to_login": "返回登入",
     "register": "註冊"
   },
-  "management": {
-    "roles": {
-      "owner": "擁有者",
-      "admin": "管理員",
-      "editor": "編輯者",
-      "viewer": "檢視者"
-    },
-    "inviteMember": "邀請成員",
-    "collaborator": "協作者",
-    "role": "角色",
-    "send": "發送",
-    "invite": "邀請",
-    "remove": "移除",
-    "status": {
-      "pending": "待處理",
-      "joined": "已加入"
-    },
-    "messages": {
-      "inviteSent": "邀請已發送"
-    },
-    "errors": {
-      "emailExists": "電子郵件已存在",
-      "inviteFailed": "邀請失敗"
-    }
-  },
   "message": {
     "dialog": {
       "activation_success": "啟用成功！",
@@ -308,7 +283,11 @@
     "project": {
       "project_name": "輸入專案名稱",
       "project_type": "選擇專案類型",
-      "construction": "選擇工程案類型"
+      "construction": "選擇工程案類型",
+      "addContainer": "請輸入容器",
+      "task": "請輸入任務",
+      "taskDescription": "請輸入任務描述",
+      "add_new_construction": "新增工程類型"
     }
   },
   "project": {
@@ -319,6 +298,31 @@
       "luxury": "豪宅",
       "commercial": "商用",
       "office": "辦公"
+    }
+  },
+  "setting": {
+    "roles": {
+      "owner": "擁有者",
+      "admin": "管理員",
+      "editor": "編輯者",
+      "viewer": "檢視者"
+    },
+    "inviteMember": "邀請成員",
+    "collaborator": "協作者",
+    "role": "角色",
+    "send": "發送",
+    "invite": "邀請",
+    "remove": "移除",
+    "status": {
+      "pending": "待處理",
+      "joined": "已加入"
+    },
+    "messages": {
+      "inviteSent": "邀請已發送"
+    },
+    "errors": {
+      "emailExists": "電子郵件已存在",
+      "inviteFailed": "邀請失敗"
     }
   },
   "tab": {
@@ -334,6 +338,7 @@
     "reset_password": "重設密碼",
     "overview": "總覽",
     "todo": "待辦任務",
+    "setting": "設定",
     "share": "分享",
     "delete_confirm": "刪除確認",
     "create_project": "新增專案",

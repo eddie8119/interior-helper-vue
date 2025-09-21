@@ -20,7 +20,8 @@
         "construction": "Please select construction",
         "addContainer": "Please enter container",
         "task": "Please enter task",
-        "taskDescription": "Please enter task description"
+        "taskDescription": "Please enter task description",
+        "add_new_construction": "Add a new construction"
       }
     }
   },
@@ -42,7 +43,11 @@
       "project": {
         "project_name": "輸入專案名稱",
         "project_type": "選擇專案類型",
-        "construction": "選擇工程案類型"
+        "construction": "選擇工程案類型",
+        "addContainer": "請輸入容器",
+        "task": "請輸入任務",
+        "taskDescription": "請輸入任務描述",
+        "add_new_construction": "新增工程類型"
       }
     }
   },

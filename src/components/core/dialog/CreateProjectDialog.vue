@@ -42,7 +42,7 @@
         <el-option :value="newConstructionItem" class="flex items-center gap-2">
           <el-input
             v-model="newConstructionItem"
-            :placeholder="t('placeholder.project.new_construction')"
+            :placeholder="t('placeholder.project.add_new_construction')"
             size="small"
             @keyup.enter="updateCommonData('construction')"
             @click.stop

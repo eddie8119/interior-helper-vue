@@ -186,32 +186,6 @@
     "back_to_login": "Back to Login",
     "register": "Register"
   },
-  "management": {
-    "inviteMember": "Invite Member",
-    "collaborator": "Collaborator",
-    "membersList": "Members List",
-    "role": "Role",
-    "send": "Send",
-    "invite": "Invite",
-    "remove": "Remove",
-    "status": {
-      "pending": "Pending",
-      "joined": "Joined"
-    },
-    "roles": {
-      "owner": "Owner",
-      "admin": "Admin",
-      "editor": "Editor",
-      "viewer": "Viewer"
-    },
-    "messages": {
-      "inviteSent": "Invite sent successfully"
-    },
-    "errors": {
-      "emailExists": "Email already exists",
-      "inviteFailed": "Failed to invite member"
-    }
-  },
   "message": {
     "dialog": {
       "activation_success": "Activation successful!",
@@ -319,7 +293,8 @@
       "construction": "Please select construction",
       "addContainer": "Please enter container",
       "task": "Please enter task",
-      "taskDescription": "Please enter task description"
+      "taskDescription": "Please enter task description",
+      "add_new_construction": "Add a new construction"
     }
   },
   "project": {
@@ -330,6 +305,32 @@
       "luxury": "Luxury",
       "commercial": "Commercial",
       "office": "Office"
+    }
+  },
+  "setting": {
+    "inviteMember": "Invite Member",
+    "collaborator": "Collaborator",
+    "membersList": "Members List",
+    "role": "Role",
+    "send": "Send",
+    "invite": "Invite",
+    "remove": "Remove",
+    "status": {
+      "pending": "Pending",
+      "joined": "Joined"
+    },
+    "roles": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "editor": "Editor",
+      "viewer": "Viewer"
+    },
+    "messages": {
+      "inviteSent": "Invite sent successfully"
+    },
+    "errors": {
+      "emailExists": "Email already exists",
+      "inviteFailed": "Failed to invite member"
     }
   },
   "tab": {
@@ -345,6 +346,7 @@
     "reset_password": "Reset Password",
     "overview": "Overview",
     "todo": "To Do",
+    "setting": "Setting",
     "share": "Share",
     "manage_collaborators": "Manage Collaborators",
     "delete_confirm": "Delete Confirm",

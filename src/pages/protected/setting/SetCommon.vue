@@ -1,11 +1,18 @@
 <template>
   <div class="flex flex-col gap-4">
-    <InviteMember />
+    <EditConstruction 
+    :newConstructionItem="newConstructionItem"
+    :localConstructionItems="localConstructionItems"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import InviteMember from '@/components/management/InviteMember.vue';
+import EditConstruction from '@/components/management/EditConstruction.vue';
+import { useCommonAction } from '@/composables/useCommonAction';
+
+const { newConstructionItem, localConstructionItems, updateCommonData } = useCommonAction();
+
 </script>
 
 <style scoped></style>

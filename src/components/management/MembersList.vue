@@ -1,6 +1,6 @@
 <template>
   <div class="panel-container">
-    <H2Title :title="t('management.membersList')" />
+    <H2Title :title="t('setting.membersList')" />
 
     <!-- 桌面版表格 -->
     <div class="hidden md:block">
@@ -28,17 +28,17 @@
                   :key="roleOption.value"
                   :value="roleOption.value"
                 >
-                  {{ t(`management.roles.${roleOption.value}`) }}
+                  {{ t(`setting.roles.${roleOption.value}`) }}
                 </option>
               </select>
-              <span v-else>{{ t(`management.roles.${member.role}`) }}</span>
+              <span v-else>{{ t(`setting.roles.${member.role}`) }}</span>
             </td>
             <td>
               <span
                 class="inline-flex rounded-full px-2 text-xs font-semibold leading-5"
                 :class="getStatusClass(member.status)"
               >
-                {{ t(`management.status.${member.status}`) }}
+                {{ t(`setting.status.${member.status}`) }}
               </span>
             </td>
             <td>
@@ -47,7 +47,7 @@
                 class="text-secondary-red hover:text-red-900"
                 @click="handleRemoveMember(member)"
               >
-                {{ t('management.remove') }}
+                {{ t('setting.remove') }}
               </button>
             </td>
           </tr>
@@ -68,7 +68,7 @@
             class="inline-flex rounded-full px-2 text-xs font-semibold leading-5"
             :class="getStatusClass(member.status)"
           >
-            {{ t(`management.status.${member.status}`) }}
+            {{ t(`setting.status.${member.status}`) }}
           </span>
         </div>
 
@@ -86,10 +86,10 @@
                 :key="roleOption.value"
                 :value="roleOption.value"
               >
-                {{ t(`management.roles.${roleOption.value}`) }}
+                {{ t(`setting.roles.${roleOption.value}`) }}
               </option>
             </select>
-            <span v-else class="text-sm">{{ t(`management.roles.${member.role}`) }}</span>
+            <span v-else class="text-sm">{{ t(`setting.roles.${member.role}`) }}</span>
           </div>
         </div>
 

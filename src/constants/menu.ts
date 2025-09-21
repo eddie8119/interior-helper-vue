@@ -30,14 +30,19 @@ export const menu: Menu[] = [
     ],
   },
   {
-    group: 'nav.group.management',
+    group: 'nav.group.setting',
     items: [
       {
-        key: 0,
+        label: 'Set Common',
+        name: 'set-common',
+        icon: 'ChartPieSlice',
+        route: '/setting/set-common',
+      },
+      {
         label: 'Set Member',
         name: 'set-member',
         icon: 'ChartPieSlice',
-        route: '/management/set-member',
+        route: '/setting/set-member',
       },
     ],
   },

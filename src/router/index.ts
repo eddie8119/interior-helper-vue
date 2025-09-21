@@ -111,13 +111,18 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: '/management',
+    path: '/setting',
     component: AppLayout,
     children: [
       {
+        name: 'set-common',
+        path: 'set-common',
+        component: () => import('../pages/protected/setting/SetCommon.vue'),
+      },
+      {
         name: 'set-member',
         path: 'set-member',
-        component: () => import('../pages/protected/management/SetMember.vue'),
+        component: () => import('../pages/protected/setting/SetMember.vue'),
       },
     ],
   },

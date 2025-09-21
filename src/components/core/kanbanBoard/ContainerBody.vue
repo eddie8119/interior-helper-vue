@@ -1,11 +1,13 @@
 <template>
-  <!-- 沒有任務，顯示空容器提示 -->
-  <!-- <div
-    v-if="tasks.length === 0"
-    class="flex h-[100px] items-center justify-center rounded-md border border-gray-200 bg-white"
-  >
-    <span class="text-gray-400">尚無施作項目</span>
-  </div> -->
+  <!-- 編輯模式：添加新任務 -->
+  <div v-show="isEditing" class="mb-6 rounded-md border border-dashed border-brand-primary p-1">
+    <AddNewTask
+      :construction-name="constructionName"
+      :project-id="projectId"
+      @add-task="handleAddNewTask"
+      @close="stopEditing"
+    />
+  </div>
   <!-- 任務列表 -->
   <Container
     group-name="tasks"
@@ -17,22 +19,13 @@
     :animation-duration="150"
     :auto-scroll-enabled="true"
     :behaviour="'move'"
-    class="task-container"
+    class="max-h-[330px] overflow-y-auto"
   >
     <!-- 任務列表 -->
     <Draggable v-for="task in tasks" :key="task.id">
       <TaskCard :task="task" @update:status="updateTaskStatus" />
     </Draggable>
   </Container>
-  <!-- 編輯模式：添加新任務 -->
-  <div v-show="isEditing">
-    <AddNewTask
-      :construction-name="constructionName"
-      :project-id="projectId"
-      @add-task="handleAddNewTask"
-      @close="stopEditing"
-    />
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -113,11 +106,6 @@ const handleAddNewTask = (newTaskData: CreateTaskSchema) => {
 </script>
 
 <style scoped>
-.task-container {
-  min-height: 100px;
-  padding: 8px 0;
-}
-
 .task-item {
   cursor: grab;
   transition: all 0.2s ease;
@@ -134,15 +122,6 @@ const handleAddNewTask = (newTaskData: CreateTaskSchema) => {
   cursor: grabbing;
   transform: scale(0.98);
 }
-
-/* 動態空位效果樣式 */
-.task-ghost {
-  opacity: 0.5;
-  background-color: #f3f4f6;
-  transform: scale(0.98);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
 .task-ghost-drop {
   transition: all 0.3s ease;
   border: 2px dashed #60a5fa;
@@ -155,14 +134,5 @@ const handleAddNewTask = (newTaskData: CreateTaskSchema) => {
 /* 動畫效果 */
 .smooth-dnd-container > .smooth-dnd-draggable-wrapper {
   transition: transform 0.25s ease;
-}
-
-/* 空白區域動畫 */
-.smooth-dnd-container.vertical > .smooth-dnd-drop-preview-default-class {
-  border: 2px dashed #60a5fa;
-  background-color: rgba(96, 165, 250, 0.1);
-  margin: 8px 0;
-  border-radius: 8px;
-  min-height: 60px;
 }
 </style>

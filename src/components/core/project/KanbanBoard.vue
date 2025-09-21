@@ -20,11 +20,8 @@
           @task-drop="handleTaskDrop($event, container.name)"
         />
       </Draggable>
-
-      <!-- 添加新工程類型按鈕 -->
-      <Draggable>
-        <AddNewConstruction id="new-container" @add-container="addNewConstruction" />
-      </Draggable>
+      <!-- 添加新工程類型 -->
+      <AddNewConstruction id="new-container" @add-container="addNewConstruction" />
     </Container>
   </div>
 </template>

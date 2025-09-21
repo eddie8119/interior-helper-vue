@@ -3,22 +3,7 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center">
         <!-- 拖曳控制點（裝飾性） -->
-        <div class="mr-2 flex items-center text-gray-400">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 8h16M4 16h16"
-            />
-          </svg>
-        </div>
+        <DragHandle :size="4" />
         <h3 class="font-medium">{{ task.title }}</h3>
       </div>
     </div>
@@ -45,19 +30,17 @@
       </div>
     </div>
 
-    <!-- 狀態選取按鈕 -->
+    <!-- 狀態選取 -->
     <div class="mt-2 flex justify-end">
-      <div class="relative">
+      <el-dropdown @command="updateStatus" trigger="click">
         <button
-          @click="toggleStatusMenu"
           class="status-badge flex items-center px-3 py-1.5 transition-all duration-200 hover:shadow-sm"
           :class="statusClass"
         >
           {{ statusText }}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="ml-1.5 h-4 w-4 transition-transform duration-200"
-            :class="{ 'rotate-180': showStatusMenu }"
+            class="ml-1.5 h-4 w-4"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -66,50 +49,33 @@
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M5 15l7-7 7 7"
+              d="M19 9l-7 7-7-7"
             />
           </svg>
         </button>
-
-        <!-- 狀態選擇選單，從下往上展開 -->
-        <div
-          v-if="showStatusMenu"
-          class="absolute bottom-full right-0 z-50 mb-1 w-40 rounded-md bg-white shadow-lg"
-        >
-          <div class="py-2">
-            <button
-              @click="updateStatus('todo')"
-              class="block w-full border-l-4 border-transparent px-4 py-3 text-left text-sm text-gray-700 transition-colors duration-150 hover:bg-gray-50"
-              :class="{ 'border-gray-400 bg-gray-50 font-medium': task.status === 'todo' }"
-            >
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item command="todo">
               <div class="flex items-center">
                 <div class="mr-3 h-3 w-3 rounded-full bg-gray-400"></div>
                 <span class="text-gray-800">待辦</span>
               </div>
-            </button>
-            <button
-              @click="updateStatus('in_progress')"
-              class="block w-full border-l-4 border-transparent px-4 py-3 text-left text-sm text-gray-700 transition-colors duration-150 hover:bg-blue-50"
-              :class="{ 'border-blue-400 bg-blue-50 font-medium': task.status === 'in_progress' }"
-            >
+            </el-dropdown-item>
+            <el-dropdown-item command="in_progress">
               <div class="flex items-center">
                 <div class="mr-3 h-3 w-3 rounded-full bg-blue-400"></div>
                 <span class="text-blue-800">進行中</span>
               </div>
-            </button>
-            <button
-              @click="updateStatus('completed')"
-              class="block w-full border-l-4 border-transparent px-4 py-3 text-left text-sm text-gray-700 transition-colors duration-150 hover:bg-green-50"
-              :class="{ 'border-green-400 bg-green-50 font-medium': task.status === 'completed' }"
-            >
+            </el-dropdown-item>
+            <el-dropdown-item command="completed">
               <div class="flex items-center">
                 <div class="mr-3 h-3 w-3 rounded-full bg-green-400"></div>
                 <span class="text-green-800">已完成</span>
               </div>
-            </button>
-          </div>
-        </div>
-      </div>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </div>
   </div>
 </template>
@@ -118,6 +84,7 @@
 import { computed, ref } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
+import DragHandle from '@/components/ui/DragHandle.vue';
 
 const props = defineProps<{
   task: TaskResponse;
@@ -127,31 +94,6 @@ const emit = defineEmits<{
   (e: 'update:status', taskId: string, status: string): void;
   (e: 'task-drop', dropData: any): void;
 }>();
-
-// 狀態選單顯示控制
-const showStatusMenu = ref(false);
-
-// 切換狀態選單顯示/隱藏
-const toggleStatusMenu = (event: MouseEvent) => {
-  event.stopPropagation(); // 阻止事件冒泡
-  showStatusMenu.value = !showStatusMenu.value;
-};
-
-// 點擊其他地方關閉選單
-const handleDocumentClick = (event: MouseEvent) => {
-  const target = event.target as HTMLElement;
-  if (!target.closest('.status-badge') && showStatusMenu.value) {
-    showStatusMenu.value = false;
-  }
-};
-
-// 添加點擊事件
-document.addEventListener('click', handleDocumentClick);
-
-// 組件卸載時移除事件
-document.addEventListener('beforeunload', () => {
-  document.removeEventListener('click', handleDocumentClick);
-});
 
 // 格式化日期
 const formatDate = (dateString: string | Date | number | null) => {
@@ -187,7 +129,6 @@ const statusText = computed(() => {
 // 更新任務狀態
 const updateStatus = (status: string) => {
   emit('update:status', props.task.id, status);
-  showStatusMenu.value = false; // 選擇後關閉選單
 };
 </script>
 

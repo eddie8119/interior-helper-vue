@@ -4,14 +4,14 @@ import { computed } from 'vue';
 import { commonApi } from '@/api/common';
 import type { CreateCommonSchema } from '@/utils/schemas/createCommonSchema';
 
-const QUERY_KEY = ['commons'];
+const QUERY_KEY = ['common'];
 
 export function useCommon() {
   const queryClient = useQueryClient();
 
   // 查詢
   const {
-    data: commons,
+    data: common,
     isLoading,
     error,
   } = useQuery({
@@ -24,17 +24,17 @@ export function useCommon() {
 
   // 分離 construction 和 unit
   const constructionItems = computed<string[]>(() => {
-    if (!commons.value || !commons.value.length) return [];
+    if (!common.value || !common.value.length) return [];
 
     // Get all construction arrays and flatten them
-    const allConstructions = commons.value.flatMap((common) => common.construction || []);
+    const allConstructions = common.value.flatMap((common) => common.construction || []);
     // Remove duplicates and return as array
     return [...new Set(allConstructions)];
   });
 
   const unitItems = computed(() => {
-    if (!commons.value) return [];
-    return [...new Set(commons.value.flatMap((common) => common.unit || []))];
+    if (!common.value) return [];
+    return [...new Set(common.value.flatMap((common) => common.unit || []))];
   });
 
   // 新增
@@ -64,7 +64,7 @@ export function useCommon() {
 
   return {
     // state
-    commons,
+    common,
     isLoading,
     error,
     constructionItems,

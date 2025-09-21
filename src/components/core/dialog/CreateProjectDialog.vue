@@ -32,11 +32,28 @@
       <el-select
         v-model="constructionContainer"
         multiple
+        filterable
+        allow-create
+        default-first-option
+        :reserve-keyword="false"
         :placeholder="t('placeholder.project.construction')"
         @blur="handleBlurConstructionContainer"
       >
+        <el-option :value="newConstructionItem" class="flex items-center gap-2">
+          <el-input
+            v-model="newConstructionItem"
+            :placeholder="t('placeholder.project.new_construction')"
+            size="small"
+            @keyup.enter="updateCommonData('construction')"
+            @click.stop
+          >
+            <template #append>
+              <el-button :icon="Plus" size="small" @click.stop="updateCommonData('construction')" />
+            </template>
+          </el-input>
+        </el-option>
         <el-option
-          v-for="item in constructionItems"
+          v-for="item in localConstructionItems"
           :key="item"
           :label="item + '工程'"
           :value="item"
@@ -47,19 +64,19 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { Plus } from '@element-plus/icons-vue';
 import { toTypedSchema } from '@vee-validate/zod';
 import { useField, useForm } from 'vee-validate';
-import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-
 import { projectApi } from '@/api/project';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
 import { PROJECT_TYPES } from '@/constants/selection';
 import { createProjectSchema, type CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
-import { useCommon } from '@/composables/useCommon';
+import { useCommonAction } from '@/composables/useCommonAction';
 
 const { t } = useI18n();
-const { constructionItems } = useCommon();
+const { newConstructionItem, localConstructionItems, updateCommonData } = useCommonAction();
 
 const props = defineProps<{
   modelValue: boolean;

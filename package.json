@@ -21,6 +21,7 @@
     "locales:build": "node scripts/build-locales.js"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
     "@headlessui/vue": "^1.7.23",
     "@primevue/themes": "^4.3.3",
     "@tanstack/vue-query": "^5.83.0",
@@ -41,8 +42,8 @@
     "vue-chartjs": "^5.3.2",
     "vue-i18n": "^9.14.0",
     "vue-router": "^4.5.0",
-    "zod": "^3.24.2",
-    "vue3-smooth-dnd": "^0.0.5"
+    "vue3-smooth-dnd": "^0.0.5",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.27.2",

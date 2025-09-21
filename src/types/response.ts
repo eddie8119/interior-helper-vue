@@ -11,6 +11,12 @@ export interface AuthResponse {
   refresh_token: string;
 }
 
+export interface CommonResponse {
+  id: string;
+  construction: string[];
+  unit: string[];
+}
+
 export interface ProjectResponse {
   constructionContainer: string[] | null;
   id: string;

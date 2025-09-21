@@ -36,10 +36,10 @@
         @blur="handleBlurConstructionContainer"
       >
         <el-option
-          v-for="item in CONSTRUCTION_CONTAINER"
-          :key="item.type"
-          :label="item.type + ' 工程'"
-          :value="item.type"
+          v-for="item in constructionItems"
+          :key="item"
+          :label="item + '工程'"
+          :value="item"
         />
       </el-select>
     </el-form-item>
@@ -54,10 +54,12 @@ import { useI18n } from 'vue-i18n';
 
 import { projectApi } from '@/api/project';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
-import { CONSTRUCTION_CONTAINER, PROJECT_TYPES } from '@/constants/selection';
+import { PROJECT_TYPES } from '@/constants/selection';
 import { createProjectSchema, type CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
+import { useCommon } from '@/composables/useCommon';
 
 const { t } = useI18n();
+const { constructionItems } = useCommon();
 
 const props = defineProps<{
   modelValue: boolean;

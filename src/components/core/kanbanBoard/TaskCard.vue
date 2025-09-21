@@ -1,9 +1,8 @@
 <template>
-  <div class="task-card mb-2 cursor-move rounded bg-white p-2 shadow-sm">
+  <div class="task-card mb-2 rounded bg-white p-2 shadow-sm">
     <div class="flex items-center justify-between">
       <div class="flex items-center">
-        <!-- 拖曳控制點（裝飾性） -->
-        <DragHandle :size="4" />
+        <DragHandle :size="4" handle-class="task-drag-handle" />
         <h3 class="font-medium">{{ task.title }}</h3>
       </div>
     </div>

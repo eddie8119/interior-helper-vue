@@ -19,6 +19,7 @@
     :animation-duration="150"
     :auto-scroll-enabled="true"
     :behaviour="'move'"
+    :drag-handle-selector="'.task-drag-handle'"
     class="max-h-[330px] overflow-y-auto"
   >
     <!-- 任務列表 -->

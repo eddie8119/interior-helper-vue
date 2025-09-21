@@ -1,7 +1,7 @@
 <template>
   <div class="mb-3 flex items-center justify-between">
     <div class="flex items-center">
-      <DragHandle />
+      <DragHandle handle-class="container-drag-handle" />
       <ContainerTitle
         :construction-name="constructionName"
         @update:construction-name="updateConstructionName"

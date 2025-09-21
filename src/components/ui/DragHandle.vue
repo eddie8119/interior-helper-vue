@@ -1,5 +1,5 @@
 <template>
-  <div class="mr-2 cursor-grab rounded-full p-1 hover:bg-gray-200">
+  <div :class="[handleClass, 'mr-2 cursor-grab rounded-full p-1 hover:bg-gray-200']">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       :class="iconClass"
@@ -23,9 +23,11 @@ import { computed } from 'vue';
 const props = withDefaults(
   defineProps<{
     size?: number;
+    handleClass?: string;
   }>(),
   {
     size: 5,
+    handleClass: '',
   }
 );
 

@@ -1,6 +1,5 @@
-import type { Ref } from 'vue';
-
 import type { ConstructionContainer } from './useDraggableConstructions';
+import type { Ref } from 'vue';
 
 export function useConstructionActions(
   containersRef: Ref<ConstructionContainer[]>,

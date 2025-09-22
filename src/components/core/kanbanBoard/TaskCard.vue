@@ -31,7 +31,7 @@
 
     <!-- 狀態選取 -->
     <div class="mt-2 flex justify-end">
-      <el-dropdown @command="updateStatus" trigger="click">
+      <el-dropdown trigger="click" @command="updateStatus">
         <button
           class="status-badge flex items-center px-3 py-1.5 transition-all duration-200 hover:shadow-sm"
           :class="statusClass"
@@ -56,19 +56,19 @@
           <el-dropdown-menu>
             <el-dropdown-item command="todo">
               <div class="flex items-center">
-                <div class="mr-3 h-3 w-3 rounded-full bg-gray-400"></div>
+                <div class="mr-3 h-3 w-3 rounded-full bg-gray-400" />
                 <span class="text-gray-800">待辦</span>
               </div>
             </el-dropdown-item>
             <el-dropdown-item command="in_progress">
               <div class="flex items-center">
-                <div class="mr-3 h-3 w-3 rounded-full bg-blue-400"></div>
+                <div class="mr-3 h-3 w-3 rounded-full bg-blue-400" />
                 <span class="text-blue-800">進行中</span>
               </div>
             </el-dropdown-item>
             <el-dropdown-item command="completed">
               <div class="flex items-center">
-                <div class="mr-3 h-3 w-3 rounded-full bg-green-400"></div>
+                <div class="mr-3 h-3 w-3 rounded-full bg-green-400" />
                 <span class="text-green-800">已完成</span>
               </div>
             </el-dropdown-item>
@@ -83,6 +83,7 @@
 import { computed, ref } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
+
 import DragHandle from '@/components/ui/DragHandle.vue';
 
 const props = defineProps<{

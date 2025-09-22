@@ -2,6 +2,7 @@
   // .el-dialog {}
   .el-dialog__header {
     @apply flex items-center justify-center;
+
     padding: 10px 32px;
     border-bottom: 1px solid var(--el-border-color-lighter);
   }

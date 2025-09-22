@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { computed } from 'vue';
 
-import { commonApi } from '@/api/common';
 import type { CreateCommonSchema } from '@/utils/schemas/createCommonSchema';
+
+import { commonApi } from '@/api/common';
 
 const QUERY_KEY = ['common'];
 

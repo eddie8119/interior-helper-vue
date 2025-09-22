@@ -1,11 +1,6 @@
 import express from 'express';
 
-import {
-  getCommon,
-  createCommon,
-  updateCommon,
-  deleteCommon,
-} from '@/controllers/common';
+import { createCommon, deleteCommon, getCommon, updateCommon } from '@/controllers/common';
 import { authMiddleware, requireUserId } from '@/middleware/auth';
 
 const router = express.Router();

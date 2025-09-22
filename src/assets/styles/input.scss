@@ -18,6 +18,7 @@
     .el-input-number__decrease,
     .el-input-number__increase {
       @apply border-brand-primary bg-transparent text-brand-primary;
+
       border-left: 2px solid var(--el-border-color);
 
       &:hover {
@@ -35,6 +36,7 @@
 .el-input {
   .el-input__wrapper {
     @apply bg-black-100 dark:bg-gray-500;
+
     border-radius: 8px;
     padding: 4px 8px;
     transition: border-color 0.3s ease;
@@ -42,22 +44,26 @@
 
     &:hover {
       @apply border-brand-primary;
+
       box-shadow: none;
     }
 
     &.is-focus {
       @apply border-brand-primary;
+
       box-shadow: none;
     }
   }
 
   .el-input__inner {
     @apply text-black-900 dark:text-white;
+
     font-size: 14px;
     height: 30px;
 
     &::placeholder {
       @apply text-black-400 dark:text-black-300;
+
       font-size: 14px;
     }
   }

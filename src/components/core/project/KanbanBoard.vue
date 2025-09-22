@@ -36,10 +36,10 @@ import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction
 import ContainerItem from '@/components/core/kanbanBoard/ContainerItem.vue';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import {
-  useDraggableConstructions,
   type ConstructionContainer,
+  useDraggableConstructions,
 } from '@/composables/todo/useDraggableConstructions';
-import { useTaskDragAndDrop, type DraggableTask } from '@/composables/todo/useDraggableTasks';
+import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
 
 const props = defineProps<{
   constructionContainer: string[] | null;

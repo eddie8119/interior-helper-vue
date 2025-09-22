@@ -45,6 +45,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import type { TaskResponse } from '@/types/response';
 
 import ContainerBody from '@/components/core/kanbanBoard/ContainerBody.vue';

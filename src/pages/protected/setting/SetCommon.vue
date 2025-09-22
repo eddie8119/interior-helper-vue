@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col gap-4">
-    <EditConstruction 
-    :newConstructionItem="newConstructionItem"
-    :localConstructionItems="localConstructionItems"
+    <EditConstruction
+      :new-construction-item="newConstructionItem"
+      :local-construction-items="localConstructionItems"
     />
   </div>
 </template>
@@ -12,7 +12,6 @@ import EditConstruction from '@/components/management/EditConstruction.vue';
 import { useCommonAction } from '@/composables/useCommonAction';
 
 const { newConstructionItem, localConstructionItems, updateCommonData } = useCommonAction();
-
 </script>
 
 <style scoped></style>

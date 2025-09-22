@@ -13,7 +13,6 @@
     group-name="tasks"
     orientation="vertical"
     :get-child-payload="getTaskPayload"
-    @drop="handleTaskDrop"
     :should-accept-drop="shouldAcceptDrop"
     :drag-begin-delay="0"
     :animation-duration="150"
@@ -21,6 +20,7 @@
     :behaviour="'move'"
     :drag-handle-selector="'.task-drag-handle'"
     class="max-h-[330px] overflow-y-auto"
+    @drop="handleTaskDrop"
   >
     <!-- 任務列表 -->
     <Draggable v-for="task in tasks" :key="task.id">

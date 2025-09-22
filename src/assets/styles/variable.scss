@@ -13,11 +13,11 @@
   --color-black-900: #1c1c1c; /* 100% */
 
   /* White Colors */
-  --color-white-100: #ffffff; /* 100% */
+  --color-white-100: #fff; /* 100% */
   --color-white-200: #f2f2f2; /* 80% */
   --color-white-300: #e6e6e6; /* 40% */
   --color-white-400: #d9d9d9; /* 20% */
-  --color-white-500: #cccccc; /* 10% */
+  --color-white-500: #ccc; /* 10% */
   --color-white-900: #f9f9f9; /* 5% */
 
   /* Primary Colors */
@@ -25,7 +25,7 @@
   --color-primary-blue: #e3f5ff;
   --color-primary-purple: #e5ecf6;
   --color-primary-purple-50: #edf2f8;
-  --color-primary-brand: #000000;
+  --color-primary-brand: #000;
 
   /* Secondary Colors */
   --color-secondary-purple-a: #95a4fc;
@@ -51,6 +51,6 @@
   --va-background-border: var(--color-white-300);
   --va-text-primary: var(--color-black-900);
   --va-text-inverted: var(--color-white-100);
-  --va-shadow: rgba(0, 0, 0, 0.1);
+  --va-shadow: rgb(0 0 0 / 10%);
   --va-focus: var(--color-secondary-blue-a);
 }

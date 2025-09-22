@@ -28,6 +28,9 @@
 import { computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 
+import type { TaskResponse } from '@/types/response';
+import type { CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
+
 import Loading from '@/components/core/loading/Loading.vue';
 import KanbanBoard from '@/components/core/project/KanbanBoard.vue';
 import ProjectHeader from '@/components/core/project/ProjectHeader.vue';
@@ -39,8 +42,6 @@ import { useProject } from '@/composables/useProject';
 import { useTasks } from '@/composables/useTasks';
 import { useUpdateTime } from '@/composables/useUpdateTime';
 import { adjustTimeZone, formatDateTimeWithMinutes } from '@/utils/dateTime';
-import type { TaskResponse } from '@/types/response';
-import type { CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
 
 const route = useRoute();
 const projectId = route.params.id as string;

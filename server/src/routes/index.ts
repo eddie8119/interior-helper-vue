@@ -1,9 +1,9 @@
 import express from 'express';
 
 import authRoutes from './auth';
+import commonRoutes from './common';
 import companyRoutes from './company';
 import contractRoutes from './contract';
-import commonRoutes from './common';
 import invoiceRoutes from './invoice';
 import projectRoutes from './project';
 import taskRoutes from './task';

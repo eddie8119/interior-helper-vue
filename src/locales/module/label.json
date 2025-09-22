@@ -30,6 +30,9 @@
         "project_name": "Project Name",
         "project_type": "Project Type",
         "construction": "Construction"
+      },
+      "setting": {
+        "list": "List"
       }
     }
   },
@@ -64,6 +67,9 @@
         "project_name": "專案名稱",
         "project_type": "專案類型",
         "construction": "工程"
+      },
+      "setting": {
+        "list": "列表"
       }
     }
   },

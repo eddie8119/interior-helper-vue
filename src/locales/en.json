@@ -32,6 +32,7 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "save": "Save",
+    "add": "Add",
     "delete": "Delete",
     "edit": "Edit",
     "back": "Back",
@@ -177,6 +178,9 @@
       "project_name": "Project Name",
       "project_type": "Project Type",
       "construction": "Construction"
+    },
+    "setting": {
+      "list": "List"
     }
   },
   "link": {
@@ -308,6 +312,7 @@
     }
   },
   "setting": {
+    "construction": "Construction",
     "inviteMember": "Invite Member",
     "collaborator": "Collaborator",
     "membersList": "Members List",

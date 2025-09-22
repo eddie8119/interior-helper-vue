@@ -30,6 +30,7 @@
     "confirm": "確認",
     "cancel": "取消",
     "save": "儲存",
+    "add": "新增",
     "delete": "刪除",
     "edit": "編輯",
     "back": "返回",
@@ -175,6 +176,9 @@
       "project_name": "專案名稱",
       "project_type": "專案類型",
       "construction": "工程"
+    },
+    "setting": {
+      "list": "列表"
     }
   },
   "link": {
@@ -301,6 +305,7 @@
     }
   },
   "setting": {
+    "construction": "工程",
     "roles": {
       "owner": "擁有者",
       "admin": "管理員",

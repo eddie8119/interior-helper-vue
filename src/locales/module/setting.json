@@ -1,6 +1,7 @@
 {
   "en": {
     "setting": {
+      "construction": "Construction",
       "inviteMember": "Invite Member",
       "collaborator": "Collaborator",
       "membersList": "Members List",
@@ -29,6 +30,7 @@
   },
   "zh-TW": {
     "setting": {
+      "construction": "工程",
       "roles": {
         "owner": "擁有者",
         "admin": "管理員",

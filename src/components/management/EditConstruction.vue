@@ -3,9 +3,7 @@
     <H2Title :title="t('setting.construction')" />
 
     <div class="flex w-full flex-col lg:w-auto">
-      <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-        {{ t('label.construction_list') }}
-      </label>
+      <Label :label="t('label.setting.list')" />
 
       <div class="flex flex-wrap gap-2">
         <span
@@ -35,14 +33,16 @@
     <div class="mt-6 flex gap-2">
       <el-form-item
         :label="t('placeholder.project.add_new_construction')"
-        :error="newConstructionItemError"
+        :error="inputValueError"
+        class="mb-0"
       >
         <el-input
-          v-model="newConstructionItem"
+          v-model="inputValue"
           :placeholder="t('placeholder.project.add_new_construction')"
           size="small"
           class="w-52"
-          @keyup.enter="handleAddConstruction"
+          @blur="handleBlurInputValue"
+          @keyup.enter="onSubmit"
         />
       </el-form-item>
       <TextButton
@@ -50,9 +50,9 @@
         :loading="isSubmitting"
         variant="primary"
         size="sm"
-        class="h-[40px] w-full px-8 lg:w-auto"
-        :disabled="isSubmitting || !newConstructionItem.trim()"
-        @click="handleAddConstruction"
+        class="h-[40px] px-8 lg:w-auto"
+        :disabled="isSubmitting || !inputValue.trim()"
+        @click="onSubmit"
       >
         {{ t('common.add') }}
       </TextButton>
@@ -61,15 +61,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { toTypedSchema } from '@vee-validate/zod';
+import { useField, useForm } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 
 import TextButton from '@/components/core/button/TextButton.vue';
 import H2Title from '@/components/core/title/H2Title.vue';
+import Label from '@/components/core/title/Label.vue';
+import { inputStringSchema } from '@/utils/schemas/inputStringSchema';
 
 const { t } = useI18n();
 
-const props = defineProps<{
+defineProps<{
   localConstructionItems: string[];
 }>();
 
@@ -78,25 +81,26 @@ const emit = defineEmits<{
   'add-construction': [newItem: string];
 }>();
 
-const newConstructionItem = ref<string>('');
-const newConstructionItemError = ref<string>('');
-const isSubmitting = ref<boolean>(false);
+const { handleSubmit, isSubmitting, resetForm } = useForm({
+  validationSchema: toTypedSchema(inputStringSchema),
+  initialValues: { inputValue: '' },
+});
+
+const {
+  value: inputValue,
+  handleBlur: handleBlurInputValue,
+  errorMessage: inputValueError,
+} = useField('inputValue');
+
+const onSubmit = handleSubmit(async (values: { inputValue: string }) => {
+  const value = values.inputValue.trim();
+  emit('add-construction', value);
+
+  resetForm();
+});
 
 const handleDeleteConstruction = (index: string) => {
   emit('delete-construction', index);
-};
-const handleAddConstruction = async () => {
-  if (isSubmitting.value) return;
-
-  const value = newConstructionItem.value.trim();
-
-  try {
-    isSubmitting.value = true;
-    emit('add-construction', value);
-    newConstructionItem.value = '';
-  } finally {
-    isSubmitting.value = false;
-  }
 };
 </script>
 

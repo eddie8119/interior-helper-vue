@@ -4,7 +4,7 @@ import { useCommon } from './useCommon';
 
 export function useCommonAction() {
   const { common, constructionItems, updateCommon } = useCommon();
-  const newConstructionItem = ref('');
+  const newConstructionItem = ref<string>('');
   const localConstructionItems = ref<string[]>([]);
 
   // Initialize local construction items
@@ -18,29 +18,38 @@ export function useCommonAction() {
     { immediate: true }
   );
 
-  const updateCommonData = async (type: 'construction' | 'unit' | 'all') => {
+  // 針對construction更新
+  const addConstructionData = async () => {
+    const item = newConstructionItem.value.trim();
+    if (!item || localConstructionItems.value.includes(item)) return false;
+
+    const updatedConstructions = [...localConstructionItems.value, item];
+    await updateCommonData('construction', { construction: updatedConstructions });
+    newConstructionItem.value = '';
+  };
+
+  const updateConstructionData = async (updatedConstructions: string[]) => {
+    await updateCommonData('construction', { construction: updatedConstructions });
+  };
+
+  const updateCommonData = async (type: 'construction' | 'unit' | 'all', updateData: any) => {
     switch (type) {
       // 針對construction更新
       case 'construction':
-        const item = newConstructionItem.value.trim();
-        if (!item || localConstructionItems.value.includes(item)) return false;
-
         try {
-          const updatedConstructions = [...localConstructionItems.value, item];
-
           if (common.value && common.value.length > 0) {
             const commonItem = common.value[0];
 
             await updateCommon({
               id: commonItem.id,
               data: {
-                construction: updatedConstructions,
+                construction: updateData.construction,
                 unit: commonItem.unit,
               },
             });
 
-            localConstructionItems.value = updatedConstructions;
-            newConstructionItem.value = '';
+            localConstructionItems.value = updateData.construction;
+
             return true;
           }
         } catch (error) {
@@ -61,5 +70,7 @@ export function useCommonAction() {
     newConstructionItem,
     localConstructionItems,
     updateCommonData,
+    addConstructionData,
+    updateConstructionData,
   };
 }

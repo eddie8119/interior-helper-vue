@@ -67,7 +67,7 @@
 import { Plus } from '@element-plus/icons-vue';
 import { toTypedSchema } from '@vee-validate/zod';
 import { useField, useForm } from 'vee-validate';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { projectApi } from '@/api/project';

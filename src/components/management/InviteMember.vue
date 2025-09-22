@@ -67,9 +67,8 @@ import { ElMessage } from 'element-plus';
 import { useField, useForm } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 
-import FormInput from '../core/input/FormInput.vue';
-
 import TextButton from '@/components/core/button/TextButton.vue';
+import FormInput from '@/components/core/input/FormInput.vue';
 import H2Title from '@/components/core/title/H2Title.vue';
 import { availableRoles, type Member, Role } from '@/types/role';
 import { emailSchema } from '@/utils/schemas/emailSchema';

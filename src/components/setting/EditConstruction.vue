@@ -17,33 +17,38 @@
       </div>
     </div>
 
-    <!-- Add New Construction -->
-    <div class="mt-6 flex gap-2">
-      <el-form-item
-        :label="t('placeholder.project.add_new_construction')"
-        :error="inputValueError"
-        class="mb-0"
-      >
-        <el-input
-          v-model="inputValue"
-          :placeholder="t('placeholder.project.add_new_construction')"
-          size="small"
-          class="w-52"
-          @blur="handleBlurInputValue"
-          @keyup.enter="onSubmit"
-        />
-      </el-form-item>
-      <TextButton
-        type="submit"
-        :loading="isSubmitting"
-        variant="primary"
-        size="sm"
-        class="h-[40px] px-8 lg:w-auto"
-        :disabled="isSubmitting || !inputValue.trim()"
-        @click="onSubmit"
-      >
-        {{ t('common.add') }}
-      </TextButton>
+    <!-- Add New -->
+    <div class="mt-6">
+      <Label :label="t('placeholder.project.add_new_construction')" />
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end">
+        <el-form-item
+          :error="inputValueError"
+          class="mb-0"
+          :class="{ 'has-error': inputValueError }"
+        >
+          <el-input
+            v-model="inputValue"
+            :placeholder="t('placeholder.project.add_new_construction')"
+            size="small"
+            class="w-[250px]"
+            @blur="handleBlurInputValue"
+            @keyup.enter="onSubmit"
+          />
+        </el-form-item>
+        <div class="shrink-0">
+          <TextButton
+            type="submit"
+            :loading="isSubmitting"
+            variant="primary"
+            size="sm"
+            class="h-10 w-full px-6 sm:w-auto"
+            :disabled="isSubmitting || !inputValue.trim()"
+            @click="onSubmit"
+          >
+            {{ t('common.add') }}
+          </TextButton>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -62,7 +67,6 @@ import { inputStringSchema } from '@/utils/schemas/inputStringSchema';
 const { t } = useI18n();
 
 defineProps<{
-  /** List of existing construction items */
   localConstructionItems: string[];
 }>();
 

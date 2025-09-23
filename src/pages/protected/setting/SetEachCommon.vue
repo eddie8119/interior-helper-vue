@@ -20,29 +20,14 @@
       @add-item="handleAddProjectType"
     />
   </div>
-  <TextButton
-    variant="primary"
-    size="md"
-    class="h-[30px] w-full max-w-[60px] lg:w-auto"
-    @click="showCreateCommonDialog = true"
-  >
-    {{ t('common.create_common') }}
-  </TextButton>
-
-  <!-- 建立專案對話框 -->
-  <CreateCommonDialog v-model="showCreateCommonDialog" />
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { type Ref } from 'vue';
 
-import TextButton from '@/components/core/button/TextButton.vue';
-import CreateCommonDialog from '@/components/core/dialog/CreateCommonDialog.vue';
 import EditArea from '@/components/setting/EditArea.vue';
 import { useCommonAction } from '@/composables/useCommonAction';
 
-const { t } = useI18n();
 const {
   // construction
   localConstructionItems,
@@ -88,8 +73,6 @@ const { handleAdd: handleAddProjectType, handleDelete: handleDeleteProjectType }
   localProjectTypeItems,
   updateProjectTypeData
 );
-
-const showCreateCommonDialog = ref(false);
 </script>
 
 <style scoped></style>

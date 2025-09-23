@@ -13,6 +13,12 @@
       @delete-item="handleDeleteUnit"
       @add-item="handleAddUnit"
     />
+    <EditArea
+      title="projectType"
+      :local-items="localProjectTypeItems"
+      @delete-item="handleDeleteProjectType"
+      @add-item="handleAddProjectType"
+    />
   </div>
   <TextButton
     variant="primary"
@@ -28,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import TextButton from '@/components/core/button/TextButton.vue';
@@ -44,25 +50,44 @@ const {
   // unit
   localUnitItems,
   updateUnitData,
+  // projectType
+  localProjectTypeItems,
+  updateProjectTypeData,
 } = useCommonAction();
 
-const handleAddConstruction = (newItem: string) => {
-  updateConstructionData([...localConstructionItems.value, newItem]);
+// Composition function to handle common add/delete operations
+const useItemHandlers = (items: Ref<string[]>, updateFn: (items: string[]) => Promise<void>) => {
+  const handleAdd = (newItem: string) => {
+    updateFn([...items.value, newItem]);
+  };
+
+  const handleDelete = (index: string) => {
+    const updatedItems = items.value.filter((item: string) => item !== index);
+    items.value = updatedItems;
+    updateFn(updatedItems);
+  };
+
+  return {
+    handleAdd,
+    handleDelete,
+  };
 };
 
-const handleDeleteConstruction = (index: string) => {
-  localConstructionItems.value = localConstructionItems.value.filter((item) => item !== index);
-  updateConstructionData(localConstructionItems.value);
-};
+// Construction handlers
+const { handleAdd: handleAddConstruction, handleDelete: handleDeleteConstruction } =
+  useItemHandlers(localConstructionItems, updateConstructionData);
 
-const handleAddUnit = (newItem: string) => {
-  updateUnitData([...localUnitItems.value, newItem]);
-};
+// Unit handlers
+const { handleAdd: handleAddUnit, handleDelete: handleDeleteUnit } = useItemHandlers(
+  localUnitItems,
+  updateUnitData
+);
 
-const handleDeleteUnit = (index: string) => {
-  localUnitItems.value = localUnitItems.value.filter((item) => item !== index);
-  updateUnitData(localUnitItems.value);
-};
+// Project type handlers
+const { handleAdd: handleAddProjectType, handleDelete: handleDeleteProjectType } = useItemHandlers(
+  localProjectTypeItems,
+  updateProjectTypeData
+);
 
 const showCreateCommonDialog = ref(false);
 </script>

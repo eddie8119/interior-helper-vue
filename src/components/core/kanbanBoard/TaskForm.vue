@@ -51,7 +51,7 @@
     <!-- 更多設定區域 -->
     <div v-if="showMoreSettings" class="space-y-4 rounded-md border border-gray-200 bg-gray-50 p-3">
       <!-- 材料 -->
-      <ArrayInput
+      <MaterialInput
         v-model="materials"
         :item-errors="materialErrors"
         @add="handleAddMaterial"
@@ -81,7 +81,7 @@ import { useI18n } from 'vue-i18n';
 
 import type { Material, TaskData } from '@/types/task';
 
-import ArrayInput from '@/components/core/input/ArrayInput.vue';
+import MaterialInput from '@/components/core/input/MaterialInput.vue';
 
 // PROPS
 const props = defineProps<{

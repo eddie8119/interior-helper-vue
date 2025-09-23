@@ -9,7 +9,7 @@
         class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
         :placeholder="t('placeholder.project.task')"
       />
-      <span v-if="errors.title" class="text-sm text-red-500">{{ errors.title }}</span>
+      <span v-if="props.errors.title" class="text-sm text-red-500">{{ props.errors.title }}</span>
     </div>
     <div>
       <textarea
@@ -18,7 +18,9 @@
         class="block h-[120px] w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
         :placeholder="t('placeholder.project.taskDescription')"
       />
-      <span v-if="errors.description" class="text-sm text-red-500">{{ errors.description }}</span>
+      <span v-if="props.errors.description" class="text-sm text-red-500">
+        {{ props.errors.description }}
+      </span>
     </div>
 
     <!-- 展開更多設定按鈕 -->
@@ -49,84 +51,12 @@
     <!-- 更多設定區域 -->
     <div v-if="showMoreSettings" class="space-y-4 rounded-md border border-gray-200 bg-gray-50 p-3">
       <!-- 材料 -->
-      <div class="space-y-2">
-        <h3 class="font-medium text-gray-700">材料 (可選)</h3>
-        <div v-for="(material, index) in materials" :key="index" class="flex flex-col space-y-2">
-          <div class="flex items-center gap-2">
-            <input
-              v-model="material.name"
-              type="text"
-              class="flex-1 rounded-md border border-gray-300 p-1 text-sm"
-              placeholder="材料名稱"
-            />
-            <button
-              class="text-red-500 hover:text-red-700"
-              title="移除材料"
-              @click="removeMaterial(index)"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-          <div class="flex items-center gap-2">
-            <div class="flex items-center">
-              <span class="mr-1 text-xs text-gray-500">數量:</span>
-              <input
-                v-model.number="material.quantity"
-                type="number"
-                min="1"
-                class="w-16 rounded-md border border-gray-300 p-1 text-sm"
-                placeholder="輸入數量"
-              />
-            </div>
-            <div class="flex items-center">
-              <span class="mr-1 text-xs text-gray-500">單價:</span>
-              <input
-                v-model.number="material.unitPrice"
-                type="number"
-                min="0"
-                class="w-20 rounded-md border border-gray-300 p-1 text-sm"
-                placeholder="輸入單價"
-              />
-            </div>
-          </div>
-          <div v-if="materialErrors[index]" class="text-xs text-red-500">
-            {{ materialErrors[index] }}
-          </div>
-        </div>
-        <button
-          class="flex w-full items-center justify-center rounded-md border border-dashed border-gray-300 py-1 text-sm text-gray-500 hover:bg-gray-100"
-          @click="addMaterial"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="mr-1 h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
-          添加材料
-        </button>
-      </div>
+      <ArrayInput
+        v-model="materials"
+        :item-errors="materialErrors"
+        @add="handleAddMaterial"
+        @remove="handleRemoveMaterial"
+      />
 
       <!-- 提醒 -->
       <div class="space-y-2">
@@ -151,6 +81,8 @@ import { useI18n } from 'vue-i18n';
 
 import type { Material, TaskData } from '@/types/task';
 
+import ArrayInput from '@/components/core/input/ArrayInput.vue';
+
 // PROPS
 const props = defineProps<{
   initialData?: TaskData;
@@ -165,6 +97,7 @@ const { t } = useI18n();
 
 // REFS
 const inputRef = ref<HTMLInputElement | null>(null);
+const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const showMoreSettings = ref(false);
 const materialErrors = ref<Record<number, string>>({});
 
@@ -194,21 +127,31 @@ const toggleMoreSettings = () => {
   showMoreSettings.value = !showMoreSettings.value;
 };
 
-// 添加材料
-const addMaterial = () => {
-  if (!materials.value) {
-    materials.value = [];
-  }
-  materials.value.push({
-    name: '',
-    quantity: undefined,
-    unitPrice: undefined,
-  });
+// 材料相關處理方法
+const handleAddMaterial = () => {
+  // 可以在這裡添加額外的邏輯，如果需要的話
+  clearMaterialErrors();
 };
 
-// 移除材料
-const removeMaterial = (index: number) => {
-  materials.value.splice(index, 1);
+const handleRemoveMaterial = (index: number) => {
+  // 移除對應的錯誤信息
+  if (materialErrors.value[index]) {
+    const newErrors = { ...materialErrors.value };
+    delete newErrors[index];
+
+    // 重新調整索引
+    const adjustedErrors: Record<number, string> = {};
+    Object.keys(newErrors).forEach((key) => {
+      const numKey = parseInt(key);
+      if (numKey > index) {
+        adjustedErrors[numKey - 1] = newErrors[numKey];
+      } else {
+        adjustedErrors[numKey] = newErrors[numKey];
+      }
+    });
+
+    materialErrors.value = adjustedErrors;
+  }
 };
 
 // 清除材料驗證錯誤
@@ -235,6 +178,8 @@ defineExpose({
       inputRef.value?.focus();
     });
   },
+  handleAddMaterial,
+  handleRemoveMaterial,
 });
 
 // 在組件掛載後聚焦輸入框

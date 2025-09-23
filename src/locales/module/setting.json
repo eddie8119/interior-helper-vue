@@ -2,6 +2,8 @@
   "en": {
     "setting": {
       "construction": "Construction",
+      "unit": "Unit",
+      "projectType": "Project Type",
       "inviteMember": "Invite Member",
       "collaborator": "Collaborator",
       "membersList": "Members List",
@@ -31,6 +33,8 @@
   "zh-TW": {
     "setting": {
       "construction": "工程",
+      "unit": "單位",
+      "projectType": "專案類型",
       "roles": {
         "owner": "擁有者",
         "admin": "管理員",

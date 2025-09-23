@@ -20,7 +20,7 @@
     <!-- Add New -->
     <div class="mt-6">
       <Label :label="t('placeholder.project.add_new')" />
-      <div class="flex flex-col gap-4 sm:flex-row sm:items-end">
+      <div class="flex gap-4">
         <el-form-item
           :error="inputValueError"
           class="mb-0"
@@ -41,7 +41,7 @@
             :loading="isSubmitting"
             variant="primary"
             size="sm"
-            class="h-10 w-full px-6 sm:w-auto"
+            class="h-10 px-6 sm:w-auto"
             :disabled="isSubmitting || !inputValue.trim()"
             @click="onSubmit"
           >

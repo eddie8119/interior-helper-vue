@@ -178,7 +178,7 @@
       "construction": "工程"
     },
     "setting": {
-      "list": "列表"
+      "existing_list": "現有列表"
     }
   },
   "link": {
@@ -291,7 +291,8 @@
       "addContainer": "請輸入容器",
       "task": "請輸入任務",
       "taskDescription": "請輸入任務描述",
-      "add_new_construction": "新增工程類型"
+      "add_new_construction": "新增工程類型",
+      "add_new": "新增"
     }
   },
   "project": {
@@ -306,6 +307,8 @@
   },
   "setting": {
     "construction": "工程",
+    "unit": "單位",
+    "projectType": "專案類型",
     "roles": {
       "owner": "擁有者",
       "admin": "管理員",

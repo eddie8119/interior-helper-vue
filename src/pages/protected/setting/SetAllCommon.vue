@@ -1,6 +1,6 @@
 <template>
   <div class="panel-container">
-    <form class="space-y-8" @submit.prevent="onSubmit">
+    <div class="space-y-8">
       <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
         <!-- Construction Input -->
         <div>
@@ -11,7 +11,9 @@
             :name-placeholder="t('placeholder.project.add_construction')"
             :add-button-text="t('common.add')"
           />
-          <span v-if="constructionError" class="mt-1 text-sm text-red-500">{{ constructionError }}</span>
+          <span v-if="constructionError" class="mt-1 text-sm text-red-500">{{
+            constructionError
+          }}</span>
         </div>
 
         <!-- Unit Input -->
@@ -35,24 +37,26 @@
             :name-placeholder="t('placeholder.project.add_project_type')"
             :add-button-text="t('common.add')"
           />
-          <span v-if="projectTypeError" class="mt-1 text-sm text-red-500">{{ projectTypeError }}</span>
+          <span v-if="projectTypeError" class="mt-1 text-sm text-red-500">{{
+            projectTypeError
+          }}</span>
         </div>
       </div>
 
       <!-- Submit Button -->
       <div class="flex justify-end">
         <TextButton
-          type="submit"
           variant="primary"
           size="md"
           class="h-10 px-6 sm:w-auto"
           :loading="isSubmitting"
           :disabled="isSubmitting || !construction.length || !unit.length || !projectType.length"
+          @click="onSubmit"
         >
           {{ t('common.save') }}
         </TextButton>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -123,17 +127,18 @@ watch(
 );
 
 // Form submission handler
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async (values: CreateCommonSchema) => {
   syncToForm(); // Sync local changes to form state before submitting
   try {
     if (!common.value || common.value.length === 0) {
       ElMessage.error(t('message.no_common_data_exists'));
       return;
     }
+    console.log(111, values);
+    console.log(construction.value, unit.value, projectType.value);
 
-    const commonId = common.value[0].id;
     await updateCommon({
-      id: commonId,
+      id: common.value[0].id,
       data: {
         construction: construction.value,
         unit: unit.value,
@@ -149,5 +154,4 @@ const onSubmit = handleSubmit(async (values) => {
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

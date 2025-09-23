@@ -100,10 +100,8 @@ export function useCommonAction() {
   }) => {
     try {
       if (common.value && common.value.length > 0) {
-        const commonItem = common.value[0];
-
         await updateCommon({
-          id: commonItem.id,
+          id: common.value[0].id,
           data: {
             construction: updateData.construction,
             unit: updateData.unit,

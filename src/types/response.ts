@@ -15,6 +15,7 @@ export interface CommonResponse {
   id: string;
   construction: string[];
   unit: string[];
+  projectType: string[];
 }
 
 export interface ProjectResponse {

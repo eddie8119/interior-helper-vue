@@ -38,6 +38,11 @@ export function useCommon() {
     return [...new Set(common.value.flatMap((common) => common.unit || []))];
   });
 
+  const projectTypeItems = computed(() => {
+    if (!common.value) return [];
+    return [...new Set(common.value.flatMap((common) => common.projectType || []))];
+  });
+
   // 新增
   const { mutate: createCommon, isPending: isCreating } = useMutation({
     mutationFn: (data: Partial<CreateCommonSchema>) => commonApi.createCommon(data),
@@ -70,6 +75,7 @@ export function useCommon() {
     error,
     constructionItems,
     unitItems,
+    projectTypeItems,
 
     // mutations
     createCommon,

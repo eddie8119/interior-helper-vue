@@ -13,7 +13,7 @@ export const getCommon = async (req: Request, res: Response) => {
   try {
     const { data, error } = await supabase
       .from('Common')
-      .select('id, construction, unit')
+      .select('id, construction, unit, project_type')
       .eq('user_id', userId);
 
     if (error) {
@@ -36,18 +36,18 @@ export const createCommon = async (req: Request, res: Response) => {
     return res.status(401).json({ success: false, message: 'Unauthorized' });
   }
 
-  const { construction, unit } = req.body;
+  const { construction, unit, project_type } = req.body;
 
-  if (!construction && !unit) {
+  if (!construction && !unit && !project_type) {
     return res
       .status(400)
-      .json({ success: false, message: 'Either construction or unit must be provided.' });
+      .json({ success: false, message: 'Either construction or unit or project_type must be provided.' });
   }
 
   try {
     const { data, error } = await supabase
       .from('Common')
-      .insert([snakecaseKeys({ userId, construction, unit })])
+      .insert([snakecaseKeys({ userId, construction, unit, project_type })])
       .select()
       .single();
 
@@ -68,22 +68,22 @@ export const createCommon = async (req: Request, res: Response) => {
 export const updateCommon = async (req: Request, res: Response) => {
   const userId = req.user?.id;
   const { id } = req.params;
-  const { construction, unit } = req.body;
+  const { construction, unit, project_type } = req.body;
 
   if (!userId) {
     return res.status(401).json({ success: false, message: 'Unauthorized' });
   }
 
-  if (!construction && !unit) {
+  if (!construction && !unit && !project_type) {
     return res
       .status(400)
-      .json({ success: false, message: 'Either construction or unit must be provided.' });
+      .json({ success: false, message: 'Either construction or unit or project_type must be provided.' });
   }
 
   try {
     const { data, error } = await supabase
       .from('Common')
-      .update(snakecaseKeys({ construction, unit }))
+      .update(snakecaseKeys({ construction, unit, project_type }))
       .eq('id', id)
       .eq('user_id', userId)
       .select()

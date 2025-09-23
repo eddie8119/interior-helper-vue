@@ -26,7 +26,7 @@ import { useI18n } from 'vue-i18n';
 
 import TextButton from '@/components/core/button/TextButton.vue';
 import CreateCommonDialog from '@/components/core/dialog/CreateCommonDialog.vue';
-import EditConstruction from '@/components/management/EditConstruction.vue';
+import EditConstruction from '@/components/setting/EditConstruction.vue';
 import { useCommonAction } from '@/composables/useCommonAction';
 
 const { t } = useI18n();

@@ -5,15 +5,12 @@ import snakecaseKeys from 'snakecase-keys';
 import { supabase } from '@/lib/supabase';
 
 export const getCommon = async (req: Request, res: Response) => {
-  const userId = req.user?.id;
-  if (!userId) {
-    return res.status(401).json({ success: false, message: 'Unauthorized' });
-  }
-
   try {
+    const userId = (req as any).userId;
+
     const { data, error } = await supabase
       .from('Common')
-      .select('id, construction, unit, project_type')
+      .select('*')
       .eq('user_id', userId);
 
     if (error) {
@@ -23,10 +20,12 @@ export const getCommon = async (req: Request, res: Response) => {
         .json({ success: false, message: 'Failed to fetch common items', error: error.message });
     }
 
-    res.status(200).json({ success: true, data: camelcaseKeys(data) });
+    const safeCommon = data.map(({ user_id, ...rest }) => rest);
+
+    return res.status(200).json({ success: true, data: camelcaseKeys(safeCommon) });
   } catch (error) {
     console.error('Server error fetching commons:', error);
-    res.status(500).json({ success: false, message: 'An unexpected error occurred' });
+    return res.status(500).json({ success: false, message: 'An unexpected error occurred' });
   }
 };
 

@@ -31,71 +31,67 @@ export function useCommonAction() {
     { immediate: true }
   );
 
-  // 針對construction更新
-  const addConstructionData = async () => {
-    const item = newConstructionItem.value.trim();
-    if (!item || localConstructionItems.value.includes(item)) return false;
+  type DataType = 'construction' | 'unit' | 'projectType';
 
-    const updatedConstructions = [...localConstructionItems.value, item];
-    await updateCommonData({
-      construction: updatedConstructions,
-      unit: localUnitItems.value,
-      projectType: localProjectTypeItems.value,
-    });
-    newConstructionItem.value = '';
+  // 通用的新增資料方法
+  const addData = async (type: DataType) => {
+    // 根據類型選擇對應的資料和引用
+    const dataMap = {
+      construction: {
+        newItem: newConstructionItem,
+        localItems: localConstructionItems,
+      },
+      unit: {
+        newItem: newUnitItem,
+        localItems: localUnitItems,
+      },
+      projectType: {
+        newItem: newProjectTypeItem,
+        localItems: localProjectTypeItems,
+      },
+    };
+
+    const { newItem, localItems } = dataMap[type];
+    const item = newItem.value.trim();
+
+    // 驗證
+    if (!item || localItems.value.includes(item)) return false;
+
+    // 更新資料
+    const updatedItems = [...localItems.value, item];
+    await updateData(type, updatedItems);
+
+    // 清空輸入
+    newItem.value = '';
+    return true;
   };
 
-  const updateConstructionData = async (updatedConstructions: string[]) => {
-    await updateCommonData({
-      construction: updatedConstructions,
-      unit: localUnitItems.value,
-      projectType: localProjectTypeItems.value,
-    });
+  // 通用的更新資料方法
+  const updateData = async (type: DataType, updatedItems: string[]) => {
+    // 準備更新資料
+    const updatePayload = {
+      construction: type === 'construction' ? updatedItems : localConstructionItems.value,
+      unit: type === 'unit' ? updatedItems : localUnitItems.value,
+      projectType: type === 'projectType' ? updatedItems : localProjectTypeItems.value,
+    };
+
+    // 更新資料
+    await updateCommonData(updatePayload);
+
+    // 更新本地狀態
+    if (type === 'construction') localConstructionItems.value = updatedItems;
+    if (type === 'unit') localUnitItems.value = updatedItems;
+    if (type === 'projectType') localProjectTypeItems.value = updatedItems;
   };
 
-  // 針對unit更新
-  const addUnitData = async () => {
-    const item = newUnitItem.value.trim();
-    if (!item || localUnitItems.value.includes(item)) return false;
+  const addConstructionData = () => addData('construction');
+  const updateConstructionData = (items: string[]) => updateData('construction', items);
 
-    const updatedUnits = [...localUnitItems.value, item];
-    await updateCommonData({
-      construction: localConstructionItems.value,
-      unit: updatedUnits,
-      projectType: localProjectTypeItems.value,
-    });
-    newUnitItem.value = '';
-  };
+  const addUnitData = () => addData('unit');
+  const updateUnitData = (items: string[]) => updateData('unit', items);
 
-  const updateUnitData = async (updatedUnits: string[]) => {
-    await updateCommonData({
-      construction: localConstructionItems.value,
-      unit: updatedUnits,
-      projectType: localProjectTypeItems.value,
-    });
-  };
-
-  // 針對projectType更新
-  const addProjectTypeData = async () => {
-    const item = newProjectTypeItem.value.trim();
-    if (!item || localProjectTypeItems.value.includes(item)) return false;
-
-    const updatedProjectTypes = [...localProjectTypeItems.value, item];
-    await updateCommonData({
-      construction: localConstructionItems.value,
-      unit: localUnitItems.value,
-      projectType: updatedProjectTypes,
-    });
-    newProjectTypeItem.value = '';
-  };
-
-  const updateProjectTypeData = async (updatedProjectTypes: string[]) => {
-    await updateCommonData({
-      construction: localConstructionItems.value,
-      unit: localUnitItems.value,
-      projectType: updatedProjectTypes,
-    });
-  };
+  const addProjectTypeData = () => addData('projectType');
+  const updateProjectTypeData = (items: string[]) => updateData('projectType', items);
 
   const updateCommonData = async (updateData: {
     construction: string[];
@@ -111,15 +107,19 @@ export function useCommonAction() {
           data: {
             construction: updateData.construction,
             unit: updateData.unit,
+            projectType: updateData.projectType,
           },
         });
 
+        // 更新本地狀態
         localConstructionItems.value = updateData.construction;
+        localUnitItems.value = updateData.unit;
+        localProjectTypeItems.value = updateData.projectType;
 
         return true;
       }
     } catch (error) {
-      console.error('Failed to update construction items:', error);
+      console.error('Failed to update common data:', error);
       return false;
     }
   };

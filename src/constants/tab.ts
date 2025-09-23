@@ -24,3 +24,14 @@ export const toDoTabList: Tab[] = [
     name: 'projects',
   },
 ];
+
+export const settingCommonTabList: Tab[] = [
+  {
+    label: 'Common All',
+    name: 'all',
+  },
+  {
+    label: 'Common Each',
+    name: 'each',
+  },
+];

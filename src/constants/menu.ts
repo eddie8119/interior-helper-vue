@@ -36,7 +36,7 @@ export const menu: Menu[] = [
         label: 'Set Common',
         name: 'set-common',
         icon: 'ChartPieSlice',
-        route: '/setting/set-common',
+        route: '/setting/common',
       },
       {
         label: 'Set Member',

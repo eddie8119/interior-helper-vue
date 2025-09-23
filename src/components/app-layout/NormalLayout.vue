@@ -24,7 +24,7 @@ import type { Tab as TabType } from '@/types/layout';
 
 import Tab from '@/components/core/tab/Tab.vue';
 import H1Title from '@/components/core/title/H1Title.vue';
-import { toDoTabList, userTabList } from '@/constants/tab';
+import { settingCommonTabList, toDoTabList, userTabList } from '@/constants/tab';
 
 const props = defineProps<{
   subject: string;
@@ -35,6 +35,7 @@ const props = defineProps<{
 const tabListMap: Record<string, TabType[]> = {
   user: userTabList,
   toDo: toDoTabList,
+  settingCommon: settingCommonTabList,
 };
 
 const tabsList = computed(() => tabListMap[props.subject] ?? []);

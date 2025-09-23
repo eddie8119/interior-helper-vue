@@ -1,25 +1,25 @@
 <template>
   <div class="panel-container">
-    <H2Title :title="t('setting.construction')" />
+    <H2Title :title="t('setting.' + title)" />
 
     <div class="flex w-full flex-col lg:w-auto">
       <Label :label="t('label.setting.existing_list')" />
 
       <div class="flex flex-wrap gap-2">
         <span
-          v-for="item in localConstructionItems"
+          v-for="item in localItems"
           :key="item"
           class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1.5 text-sm font-medium"
         >
           {{ item }}
-          <DeleteButton @click="handleDeleteConstruction(item)" />
+          <DeleteButton @click="handleDeleteItem(item)" />
         </span>
       </div>
     </div>
 
     <!-- Add New -->
     <div class="mt-6">
-      <Label :label="t('placeholder.project.add_new_construction')" />
+      <Label :label="t('placeholder.project.add_new')" />
       <div class="flex flex-col gap-4 sm:flex-row sm:items-end">
         <el-form-item
           :error="inputValueError"
@@ -28,7 +28,7 @@
         >
           <el-input
             v-model="inputValue"
-            :placeholder="t('placeholder.project.add_new_construction')"
+            :placeholder="t('placeholder.project.add_new')"
             size="small"
             class="w-[250px]"
             @blur="handleBlurInputValue"
@@ -67,12 +67,13 @@ import { inputStringSchema } from '@/utils/schemas/inputStringSchema';
 const { t } = useI18n();
 
 defineProps<{
-  localConstructionItems: string[];
+  title: string;
+  localItems: string[];
 }>();
 
 const emit = defineEmits<{
-  'delete-construction': [index: string];
-  'add-construction': [newItem: string];
+  'delete-item': [index: string];
+  'add-item': [newItem: string];
 }>();
 
 const { handleSubmit, isSubmitting, resetForm } = useForm({
@@ -88,13 +89,13 @@ const {
 
 const onSubmit = handleSubmit(async (values: { inputValue: string }) => {
   const value = values.inputValue.trim();
-  emit('add-construction', value);
+  emit('add-item', value);
 
   resetForm();
 });
 
-const handleDeleteConstruction = (index: string) => {
-  emit('delete-construction', index);
+const handleDeleteItem = (index: string) => {
+  emit('delete-item', index);
 };
 </script>
 

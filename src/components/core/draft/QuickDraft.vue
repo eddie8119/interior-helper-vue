@@ -24,6 +24,7 @@
     <TodoList
       v-else
       :todos="filteredTodos"
+      @change-state="updateTodoDraft"
       class="max-h-[calc(100vh-350px)] overflow-y-auto pr-1"
     />
   </div>
@@ -50,8 +51,16 @@ const addTodoDraft = (todo: TodoItemDraft) => {
   quickDraftStore.setTodoDraft(newTodos);
 };
 
+const updateTodoDraft = (id: string, event: Event) => {
+  const isChecked = (event.target as HTMLInputElement).checked;
+  const updatedTodos = getTodosDraft.value.map((todo: TodoItemDraft) =>
+    todo.id === id ? { ...todo, completed: isChecked } : todo
+  );
+  quickDraftStore.setTodoDraft(updatedTodos);
+};
+
 const clearDone = () => {
-  const filtered = getTodosDraft.value.filter((todo) => !todo.completed);
+  const filtered = getTodosDraft.value.filter((todo: TodoItemDraft) => !todo.completed);
   quickDraftStore.setTodoDraft(filtered);
 };
 
@@ -59,9 +68,9 @@ const filter = ref('all');
 const filteredTodos = computed(() => {
   switch (filter.value) {
     case 'done':
-      return getTodosDraft.value.filter((todo) => todo.completed);
+      return getTodosDraft.value.filter((todo: TodoItemDraft) => todo.completed);
     case 'todo':
-      return getTodosDraft.value.filter((todo) => !todo.completed);
+      return getTodosDraft.value.filter((todo: TodoItemDraft) => !todo.completed);
     default:
       return getTodosDraft.value;
   }

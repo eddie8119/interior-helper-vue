@@ -5,7 +5,7 @@
       :key="todo.id"
       :todo-item="todo"
       class="todo-list-item"
-      @change-state="todo.completed = $event.target.checked"
+      @change-state="emit('change-state', todo.id, $event)"
     />
   </transition-group>
 </template>
@@ -21,6 +21,8 @@ defineProps({
     required: true,
   },
 });
+
+const emit = defineEmits<{ (e: 'change-state', id: string, event: Event): void }>();
 </script>
 
 <style scoped>

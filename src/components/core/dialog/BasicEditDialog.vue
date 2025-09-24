@@ -5,7 +5,6 @@
     :title="title"
     :close-on-click-modal="true"
     :close-on-press-escape="true"
-    center
     align-center
     @close="onCancel"
   >
@@ -83,5 +82,25 @@ const onCancel = () => {
 <style lang="scss" scoped>
 .flex-grow {
   flex-grow: 1;
+}
+</style>
+<style>
+.el-dialog__header {
+  display: flex;
+  justify-content: center;
+
+  position: relative;
+}
+
+.el-dialog__title {
+  flex: none;
+  margin-left: 30px;
+}
+
+.el-dialog__headerbtn {
+  position: absolute;
+  right: -3%;
+  top: 30%;
+  transform: translateY(-50%);
 }
 </style>

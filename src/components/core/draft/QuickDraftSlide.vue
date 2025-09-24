@@ -25,7 +25,7 @@ import { storeToRefs } from 'pinia';
 import QuickDraft from './QuickDraft.vue';
 
 // import CloseIcon from '@/components/icons/CloseIcon.vue';
-import { useQuickDraftStore } from '@/stores/todo';
+import { useQuickDraftStore } from '@/stores/quickDraft';
 
 const quickDraftStore = useQuickDraftStore();
 const { isQuickDraftSlideVisible } = storeToRefs(quickDraftStore);

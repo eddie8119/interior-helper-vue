@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { useQuickDraftStore } from '@/stores/todo';
+import { useQuickDraftStore } from '@/stores/quickDraft';
 
 const quickDraftStore = useQuickDraftStore();
 const { toggleQuickDraftSlide } = quickDraftStore;

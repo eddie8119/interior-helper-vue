@@ -4,7 +4,7 @@
   >
     <H1Title title="工地待辦事項速記" class-name="text-center mb-6" />
 
-    <TodoAdd class="mb-6" @add-todo="addTodo" />
+    <TodoAdd class="mb-6" @add-todo-draft="addTodoDraft" />
 
     <TodoFilter
       :selected="filter"
@@ -37,33 +37,33 @@ import TodoAdd from './TodoAdd.vue';
 import TodoFilter from './TodoFilter.vue';
 import TodoList from './TodoList.vue';
 
-import type { TodoItem } from '@/stores/todo';
+import type { TodoItemDraft } from '@/stores/quickDraft';
 
 import H1Title from '@/components/core/title/H1Title.vue';
-import { useTodoStore } from '@/stores/todo';
+import { useQuickDraftStore } from '@/stores/quickDraft';
 
-const todoStore = useTodoStore();
-const { todo: getTodos } = storeToRefs(todoStore);
+const quickDraftStore = useQuickDraftStore();
+const { todo: getTodosDraft } = storeToRefs(quickDraftStore);
 
-const addTodo = (todo: TodoItem) => {
-  const newTodos = [...getTodos.value, todo];
-  todoStore.setTodo(newTodos);
+const addTodoDraft = (todo: TodoItemDraft) => {
+  const newTodos = [...getTodosDraft.value, todo];
+  quickDraftStore.setTodoDraft(newTodos);
 };
 
 const clearDone = () => {
-  const filtered = getTodos.value.filter((todo) => !todo.completed);
-  todoStore.setTodo(filtered);
+  const filtered = getTodosDraft.value.filter((todo) => !todo.completed);
+  quickDraftStore.setTodoDraft(filtered);
 };
 
 const filter = ref('all');
 const filteredTodos = computed(() => {
   switch (filter.value) {
     case 'done':
-      return getTodos.value.filter((todo) => todo.completed);
+      return getTodosDraft.value.filter((todo) => todo.completed);
     case 'todo':
-      return getTodos.value.filter((todo) => !todo.completed);
+      return getTodosDraft.value.filter((todo) => !todo.completed);
     default:
-      return getTodos.value;
+      return getTodosDraft.value;
   }
 });
 </script>

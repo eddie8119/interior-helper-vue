@@ -40,11 +40,11 @@
 </template>
 
 <script setup lang="ts">
-import type { TodoItem } from '@/stores/todo';
+import type { TodoItemDraft } from '@/stores/quickDraft';
 
 defineProps({
   todoItem: {
-    type: Object as () => TodoItem,
+    type: Object as () => TodoItemDraft,
     required: true,
   },
 });

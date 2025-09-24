@@ -13,11 +13,11 @@
 <script setup lang="ts">
 import TodoItem from './TodoItem.vue';
 
-import type { TodoItem as TodoItemType } from '@/stores/todo';
+import type { TodoItemDraft as TodoItemDraftType } from '@/stores/quickDraft';
 
 defineProps({
   todos: {
-    type: Array as () => TodoItemType[],
+    type: Array as () => TodoItemDraftType[],
     required: true,
   },
 });

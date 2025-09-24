@@ -22,10 +22,10 @@ export const menu: Menu[] = [
         route: '/todo/projects',
       },
       {
-        label: 'draft',
-        name: 'draft',
+        label: 'quick-draft',
+        name: 'quick-draft',
         icon: 'ChartPieSlice',
-        route: '/todo/draft',
+        route: '/todo/quick-draft',
       },
       {
         label: 'pH',

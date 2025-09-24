@@ -5,7 +5,7 @@ import type { CreateCommonSchema } from '@/utils/schemas/createCommonSchema';
 import request from '@/utils/request';
 
 export const commonApi = {
-  getCommon: (): Promise<ApiResponse<CommonResponse[]>> => {
+  getCommon: (): Promise<ApiResponse<CommonResponse>> => {
     return request.get('/common');
   },
   createCommon: (data: Partial<CreateCommonSchema>): Promise<ApiResponse<CommonResponse>> => {

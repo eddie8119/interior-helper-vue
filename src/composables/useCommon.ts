@@ -1,13 +1,46 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { computed } from 'vue';
 
+import type { CommonResponse } from '@/types/response';
 import type { CreateCommonSchema } from '@/utils/schemas/createCommonSchema';
+import type { UseMutationReturnType } from '@tanstack/vue-query';
+import type { ComputedRef, Ref } from 'vue';
 
 import { commonApi } from '@/api/common';
 
 const QUERY_KEY = ['common'];
 
-export function useCommon() {
+interface UseCommonReturnType {
+  // State from useQuery
+  common: Ref<CommonResponse | undefined>;
+  isLoading: Ref<boolean>;
+  error: Ref<Error | null>;
+
+  // Computed properties
+  constructionItems: ComputedRef<string[]>;
+  unitItems: ComputedRef<string[]>;
+  projectTypeItems: ComputedRef<string[]>;
+
+  // Mutations from useMutation
+  createCommon: UseMutationReturnType<
+    CommonResponse,
+    Error,
+    Partial<CreateCommonSchema>,
+    unknown
+  >['mutate'];
+  isCreating: Ref<boolean>;
+  updateCommon: UseMutationReturnType<
+    CommonResponse,
+    Error,
+    { id: string; data: Partial<CreateCommonSchema> },
+    unknown
+  >['mutate'];
+  isUpdating: Ref<boolean>;
+  deleteCommon: UseMutationReturnType<void, Error, string, unknown>['mutate'];
+  isDeleting: Ref<boolean>;
+}
+
+export function useCommon(): UseCommonReturnType {
   const queryClient = useQueryClient();
 
   // 查詢
@@ -19,33 +52,30 @@ export function useCommon() {
     queryKey: QUERY_KEY,
     queryFn: async () => {
       const res = await commonApi.getCommon();
+      console.log(res.data);
       return res.data;
     },
   });
 
   // 分離 construction 和 unit
   const constructionItems = computed<string[]>(() => {
-    if (!common.value || !common.value.length) return [];
-
-    // Get all construction arrays and flatten them
-    const allConstructions = common.value.flatMap((common) => common.construction || []);
-    // Remove duplicates and return as array
-    return [...new Set(allConstructions)];
+    return common.value?.construction || [];
   });
 
   const unitItems = computed(() => {
-    if (!common.value) return [];
-    return [...new Set(common.value.flatMap((common) => common.unit || []))];
+    return common.value?.unit || [];
   });
 
   const projectTypeItems = computed(() => {
-    if (!common.value) return [];
-    return [...new Set(common.value.flatMap((common) => common.projectType || []))];
+    return common.value?.projectType || [];
   });
 
   // 新增
   const { mutate: createCommon, isPending: isCreating } = useMutation({
-    mutationFn: (data: Partial<CreateCommonSchema>) => commonApi.createCommon(data),
+    mutationFn: async (data: Partial<CreateCommonSchema>) => {
+      const response = await commonApi.createCommon(data);
+      return response.data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
     },
@@ -53,8 +83,10 @@ export function useCommon() {
 
   // 更新
   const { mutate: updateCommon, isPending: isUpdating } = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<CreateCommonSchema> }) =>
-      commonApi.updateCommon(id, data),
+    mutationFn: async ({ id, data }: { id: string; data: Partial<CreateCommonSchema> }) => {
+      const response = await commonApi.updateCommon(id, data);
+      return response.data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
     },
@@ -62,7 +94,10 @@ export function useCommon() {
 
   // 刪除
   const { mutate: deleteCommon, isPending: isDeleting } = useMutation({
-    mutationFn: (id: string) => commonApi.deleteCommon(id),
+    mutationFn: async (id: string) => {
+      const response = await commonApi.deleteCommon(id);
+      return response.data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY });
     },

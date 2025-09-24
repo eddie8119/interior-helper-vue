@@ -67,9 +67,10 @@ import { useField, useForm } from 'vee-validate';
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type { Item } from '@/components/core/input/BasicArrayInput.vue';
+
 import TextButton from '@/components/core/button/TextButton.vue';
 import BasicArrayInput from '@/components/core/input/BasicArrayInput.vue';
-import type { Item } from '@/components/core/input/BasicArrayInput.vue';
 import { useCommon } from '@/composables/useCommon';
 import { createCommonSchema, type CreateCommonSchema } from '@/utils/schemas/createCommonSchema';
 
@@ -80,9 +81,9 @@ const { common, updateCommon } = useCommon();
 const { handleSubmit, isSubmitting, setValues } = useForm({
   validationSchema: toTypedSchema(createCommonSchema),
   initialValues: {
-    construction: common.value?.[0]?.construction || [],
-    unit: common.value?.[0]?.unit || [],
-    projectType: common.value?.[0]?.projectType || [],
+    construction: common.value?.construction || [],
+    unit: common.value?.unit || [],
+    projectType: common.value?.projectType || [],
   },
 });
 
@@ -114,11 +115,11 @@ const syncToForm = () => {
 watch(
   common,
   (newCommon) => {
-    if (newCommon && newCommon.length > 0) {
+    if (newCommon) {
       setValues({
-        construction: newCommon[0].construction || [],
-        unit: newCommon[0].unit || [],
-        projectType: newCommon[0].projectType || [],
+        construction: newCommon.construction || [],
+        unit: newCommon.unit || [],
+        projectType: newCommon.projectType || [],
       });
       syncToLocal(); // Update local state when form state changes
     }
@@ -130,7 +131,7 @@ watch(
 const onSubmit = handleSubmit(async (values: CreateCommonSchema) => {
   syncToForm(); // Sync local changes to form state before submitting
   try {
-    if (!common.value || common.value.length === 0) {
+    if (!common.value) {
       ElMessage.error(t('message.no_common_data_exists'));
       return;
     }
@@ -138,7 +139,7 @@ const onSubmit = handleSubmit(async (values: CreateCommonSchema) => {
     console.log(construction.value, unit.value, projectType.value);
 
     await updateCommon({
-      id: common.value[0].id,
+      id: common.value.id,
       data: {
         construction: construction.value,
         unit: unit.value,

@@ -8,8 +8,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import InviteMember from '@/components/management/InviteMember.vue';
-import MembersList from '@/components/management/MembersList.vue';
+import InviteMember from '@/components/setting/InviteMember.vue';
+import MembersList from '@/components/setting/MembersList.vue';
 import { type Member, Role } from '@/types/role';
 
 const members = ref<Member[]>([

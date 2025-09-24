@@ -88,6 +88,17 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
+    path: '/draft',
+    component: AppLayout,
+    children: [
+      {
+        name: 'draft',
+        path: 'draft',
+        component: () => import('../pages/protected/draft/index.vue'),
+      },
+    ],
+  },
+  {
     path: '/todo',
     component: AppLayout,
     children: [
@@ -107,6 +118,11 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import('../pages/protected/todo/project.vue'),
           },
         ],
+      },
+      {
+        name: 'draft',
+        path: 'draft',
+        component: () => import('../pages/protected/draft/index.vue'),
       },
     ],
   },
@@ -139,7 +155,6 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
-
   {
     path: '/observation',
     component: AppLayout,

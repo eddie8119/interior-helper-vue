@@ -52,7 +52,6 @@ export function useCommon(): UseCommonReturnType {
     queryKey: QUERY_KEY,
     queryFn: async () => {
       const res = await commonApi.getCommon();
-      console.log(res.data);
       return res.data;
     },
   });

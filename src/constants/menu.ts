@@ -22,6 +22,12 @@ export const menu: Menu[] = [
         route: '/todo/projects',
       },
       {
+        label: 'draft',
+        name: 'draft',
+        icon: 'ChartPieSlice',
+        route: '/todo/draft',
+      },
+      {
         label: 'pH',
         name: 'ph',
         icon: 'PH',
@@ -42,7 +48,7 @@ export const menu: Menu[] = [
         label: 'Set Member',
         name: 'set-member',
         icon: 'ChartPieSlice',
-        route: '/setting/set-member',
+        route: '/setting/member',
       },
     ],
   },

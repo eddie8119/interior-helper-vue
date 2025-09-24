@@ -5,21 +5,25 @@
  */
 
 import { useQuery } from '@tanstack/vue-query';
-import { type Ref } from 'vue';
+import { type Ref, watch } from 'vue';
 
 import type { ProjectResponse } from '@/types/response';
+import type { SimplifiedProject } from '@/stores/projects';
 
 import { projectApi } from '@/api/project';
+import { useProjectsStore } from '@/stores/projects';
 
 interface UseProjectsReturn {
   isLoadingProjects: Ref<boolean>;
   error: Ref<Error | null>;
-  fetchedProjects: Ref<ProjectResponse[]>;
+  fetchedProjects: Ref<ProjectResponse[] | undefined>;
   refetchProjects: () => Promise<void>;
   projectsUpdatedAt: Ref<number>;
 }
 
 export function useProjects(): UseProjectsReturn {
+  const projectsStore = useProjectsStore();
+
   const {
     data: fetchedProjects,
     isLoading: isLoadingProjects,
@@ -36,6 +40,22 @@ export function useProjects(): UseProjectsReturn {
     gcTime: 1000 * 60 * 5,
   });
 
+  // Watch for changes in fetchedProjects and update the store
+  watch(
+    fetchedProjects,
+    (newProjects) => {
+      if (newProjects) {
+        const simplified: SimplifiedProject[] = newProjects.map((p) => ({
+          id: p.id,
+          title: p.title,
+          constructionContainer: p.constructionContainer || [],
+        }));
+        projectsStore.setProjects(simplified);
+      }
+    },
+    { immediate: true }
+  );
+
   const refetchProjects = async (): Promise<void> => {
     await refetchQueryProjects();
   };
@@ -43,7 +63,7 @@ export function useProjects(): UseProjectsReturn {
   return {
     isLoadingProjects,
     error,
-    fetchedProjects: fetchedProjects as Ref<ProjectResponse[]>,
+    fetchedProjects,
     refetchProjects,
     projectsUpdatedAt,
   };

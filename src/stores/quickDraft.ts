@@ -25,7 +25,7 @@ export const useQuickDraftStore = defineStore('quickDraft', () => {
     localStorage.setItem('myDraft', JSON.stringify(data));
   }
 
-  //
+  //slide
   function toggleQuickDraftSlide() {
     isQuickDraftSlideVisible.value = !isQuickDraftSlideVisible.value;
   }

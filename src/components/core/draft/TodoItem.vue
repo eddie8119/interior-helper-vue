@@ -35,12 +35,31 @@
       >
         {{ todoItem.content }}
       </span>
+
+      <TextButton
+        variant="ghost"
+        size="sm"
+        class="h-[30px] w-full max-w-[60px] lg:w-auto"
+        @click="showMoveToProjectDialog = true"
+      >
+        {{ t('common.move_to_project') }}
+      </TextButton>
     </label>
   </div>
+
+  <MoveDialog v-model="showMoveToProjectDialog" />
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
 import type { TodoItemDraft } from '@/stores/quickDraft';
+
+import TextButton from '@/components/core/button/TextButton.vue';
+import MoveDialog from '@/components/core/dialog/MoveDialog.vue';
+
+const { t } = useI18n();
 
 defineProps({
   todoItem: {
@@ -50,4 +69,6 @@ defineProps({
 });
 
 defineEmits(['change-state']);
+
+const showMoveToProjectDialog = ref(false);
 </script>

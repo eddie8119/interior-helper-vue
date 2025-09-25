@@ -21,12 +21,18 @@
         filter === 'all' ? '沒有待辦事項' : filter === 'done' ? '沒有已完成事項' : '沒有未完成事項'
       }}
     </div>
-    <TodoList
-      v-else
-      :todos="filteredTodos"
-      class="max-h-[calc(100vh-350px)] overflow-y-auto pr-1"
-      @change-state="updateTodoDraft"
-    />
+
+    <div class="max-h-[calc(100vh-350px)] overflow-y-auto pr-1">
+      <transition-group name="todo-list" tag="div" class="space-y-3">
+        <TodoItemComponent
+          v-for="todo in filteredTodos"
+          :key="todo.id"
+          :todo-item="todo"
+          class="todo-list-item"
+          @change-state="updateTodoDraft(todo.id, $event)"
+        />
+      </transition-group>
+    </div>
   </div>
 </template>
 
@@ -35,7 +41,7 @@ import { computed, onActivated, onDeactivated, ref, watch } from 'vue';
 
 import TodoAdd from './TodoAdd.vue';
 import TodoFilter from './TodoFilter.vue';
-import TodoList from './TodoList.vue';
+import TodoItemComponent from './TodoItem.vue';
 
 import type { DraftResponse } from '@/types/response';
 import type { TodoFilterType, TodoItem } from '@/types/todo';
@@ -49,8 +55,6 @@ const LOCAL_STORAGE_KEY = 'quick_draft_todos';
 const { draft, createDraft, updateDraft } = useDraft();
 
 const { state: todos } = useLocalStorageRef<TodoItem[]>(LOCAL_STORAGE_KEY, []);
-
-// 本組件的 localStorage 論理已由 useLocalStorageRef 負責
 
 onActivated(() => {
   // 監聽來自 API 的草稿數據

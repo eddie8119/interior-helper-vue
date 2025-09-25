@@ -50,29 +50,19 @@ export const createDraft = async (req: Request, res: Response) => {
   }
 };
 
-// Get all drafts
-export const getDrafts = async (req: Request, res: Response) => {
-  try {
-    const { data, error } = await supabase.from('Draft').select('*');
-
-    if (error) {
-      console.error('Error fetching drafts:', error);
-      return res.status(500).json({ success: false, message: 'Failed to fetch drafts' });
-    }
-
-    return res.status(200).json({ success: true, data: camelcaseKeys(data, { deep: true }) });
-  } catch (error: any) {
-    console.error('Unexpected error in getDrafts:', error);
-    return res.status(500).json({ success: false, message: error.message || 'An unexpected error occurred' });
-  }
-};
-
 // Get a single draft by ID
 export const getDraft = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const userId = (req as any).userId;
 
-    const { data, error } = await supabase.from('Draft').select('*').eq('id', id).single();
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'User not authenticated',
+      });
+    }
+
+    const { data, error } = await supabase.from('Draft').select('*').eq('user_id', userId);
 
     if (error) {
       if (error.code === 'PGRST116') {
@@ -82,9 +72,14 @@ export const getDraft = async (req: Request, res: Response) => {
       return res.status(500).json({ success: false, message: 'Failed to fetch draft' });
     }
 
-    const { user_id, ...rest } = data;
-
-    return res.status(200).json({ success: true, data: camelcaseKeys(rest, { deep: true }) });
+    if (data && data.length > 0) {
+      const { user_id, ...rest } = data[0];
+      return res.status(200).json({
+        success: true,
+        data: camelcaseKeys(rest),
+      });
+    }
+    return res.status(200).json({ success: true, data: camelcaseKeys(data, { deep: true }) });
   } catch (error: any) {
     console.error('Unexpected error in getDraft:', error);
     return res.status(500).json({ success: false, message: error.message || 'An unexpected error occurred' });

@@ -7,23 +7,8 @@ export interface TodoItemDraft {
   completed: boolean;
 }
 
-function loadTodoDraft(): TodoItemDraft[] {
-  try {
-    const saved = localStorage.getItem('myDraft');
-    return saved ? JSON.parse(saved) : [];
-  } catch {
-    return [];
-  }
-}
-
 export const useQuickDraftStore = defineStore('quickDraft', () => {
-  const todo = ref<TodoItemDraft[]>(loadTodoDraft());
   const isQuickDraftSlideVisible = ref(false);
-
-  function setTodoDraft(data: TodoItemDraft[]) {
-    todo.value = data;
-    localStorage.setItem('myDraft', JSON.stringify(data));
-  }
 
   //slide
   function toggleQuickDraftSlide() {
@@ -39,9 +24,6 @@ export const useQuickDraftStore = defineStore('quickDraft', () => {
   }
 
   return {
-    todo,
-    setTodoDraft,
-
     isQuickDraftSlideVisible,
     toggleQuickDraftSlide,
     showQuickDraftSlide,

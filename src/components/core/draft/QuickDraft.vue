@@ -31,48 +31,110 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, onActivated, onDeactivated, ref, watch } from 'vue';
 
 import TodoAdd from './TodoAdd.vue';
 import TodoFilter from './TodoFilter.vue';
 import TodoList from './TodoList.vue';
 
-import type { TodoItemDraft } from '@/stores/quickDraft';
+import type { DraftResponse } from '@/types/response';
 
 import H1Title from '@/components/core/title/H1Title.vue';
-import { useQuickDraftStore } from '@/stores/quickDraft';
+import { useDraft } from '@/composables/useDraft';
 
-const quickDraftStore = useQuickDraftStore();
-const { todo: getTodosDraft } = storeToRefs(quickDraftStore);
+interface TodoItem {
+  id: string;
+  content: string;
+  completed: boolean;
+}
 
-const addTodoDraft = (todo: TodoItemDraft) => {
-  const newTodos = [...getTodosDraft.value, todo];
-  quickDraftStore.setTodoDraft(newTodos);
+const LOCAL_STORAGE_KEY = 'quick_draft_todos';
+
+const { draft, createDraft, updateDraft } = useDraft();
+
+const todos = ref<TodoItem[]>([]);
+
+// 從 localStorage 加載初始數據
+const loadFromLocalStorage = () => {
+  const localData = localStorage.getItem(LOCAL_STORAGE_KEY);
+  if (localData) {
+    try {
+      todos.value = JSON.parse(localData);
+    } catch (e) {
+      console.error('無法解析 localStorage 中的草稿數據:', e);
+      todos.value = [];
+    }
+  }
+};
+
+// 監聽 todos 變化並同步到 localStorage
+watch(
+  todos,
+  (newTodos) => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTodos));
+  },
+  { deep: true }
+);
+
+onActivated(() => {
+  loadFromLocalStorage();
+
+  // 監聽來自 API 的草稿數據
+  const unwatch = watch(draft, (newDraft) => {
+    if (newDraft) {
+      // 如果本地沒有數據，或後端數據較新，則使用後端數據
+      // 這裡簡化為：如果本地為空，則使用後端數據
+      if (todos.value.length === 0 && newDraft.tasks) {
+        todos.value = newDraft.tasks as unknown as TodoItem[];
+      }
+      // 停止監聽，避免覆蓋本地的後續更改
+      unwatch();
+    }
+  });
+});
+
+onDeactivated(async () => {
+  const localData = todos.value;
+  if (!localData) return;
+
+  const payload: Partial<DraftResponse> = {
+    tasks: localData as unknown as JSON[],
+  };
+
+  if (draft.value && draft.value.id) {
+    // 如果存在草稿 ID，則更新
+    await updateDraft(draft.value.id, payload);
+  } else if (localData.length > 0) {
+    // 否則，如果本地有數據，則創建新草稿
+    await createDraft(payload);
+  }
+});
+
+const addTodoDraft = (todo: TodoItem) => {
+  todos.value.push(todo);
 };
 
 const updateTodoDraft = (id: string, event: Event) => {
   const isChecked = (event.target as HTMLInputElement).checked;
-  const updatedTodos = getTodosDraft.value.map((todo: TodoItemDraft) =>
-    todo.id === id ? { ...todo, completed: isChecked } : todo
-  );
-  quickDraftStore.setTodoDraft(updatedTodos);
+  const todo = todos.value.find((t) => t.id === id);
+  if (todo) {
+    todo.completed = isChecked;
+  }
 };
 
 const clearDone = () => {
-  const filtered = getTodosDraft.value.filter((todo: TodoItemDraft) => !todo.completed);
-  quickDraftStore.setTodoDraft(filtered);
+  todos.value = todos.value.filter((todo) => !todo.completed);
 };
 
 const filter = ref('all');
 const filteredTodos = computed(() => {
   switch (filter.value) {
     case 'done':
-      return getTodosDraft.value.filter((todo: TodoItemDraft) => todo.completed);
+      return todos.value.filter((todo) => todo.completed);
     case 'todo':
-      return getTodosDraft.value.filter((todo: TodoItemDraft) => !todo.completed);
+      return todos.value.filter((todo) => !todo.completed);
     default:
-      return getTodosDraft.value;
+      return todos.value;
   }
 });
 </script>

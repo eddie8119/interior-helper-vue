@@ -18,6 +18,17 @@ export interface CommonResponse {
   projectType: string[];
 }
 
+export interface DraftResponse {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  tasks: {
+    id: string;
+    content: string;
+    completed: boolean;
+  }[];
+}
+
 export interface ProjectResponse {
   constructionContainer: string[] | null;
   id: string;

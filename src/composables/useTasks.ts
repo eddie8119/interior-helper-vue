@@ -4,7 +4,7 @@
  * @returns {Object}
  */
 
-import { useMutation, useQuery } from '@tanstack/vue-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { type Ref, ref } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
@@ -27,12 +27,18 @@ interface UseTasksReturn {
 
   // 個別更新專案任務
   // 創建任務
-  createTask: (data: CreateTaskSchema) => Promise<TaskResponse | null>;
+  createTask: (payload: CreateTaskPayload) => Promise<TaskResponse | null>;
   isCreating: Ref<boolean>;
   createError: Ref<Error | null>;
 }
 
-export function useTasks(projectId: string): UseTasksReturn {
+// The data for the mutation, including the dynamic projectId
+interface CreateTaskPayload {
+  taskData: CreateTaskSchema;
+  projectId: string;
+}
+
+export function useTasks(projectId?: string): UseTasksReturn {
   // 用於追蹤任務狀態
   const isCreating = ref(false);
   const createError = ref<Error | null>(null);
@@ -49,9 +55,10 @@ export function useTasks(projectId: string): UseTasksReturn {
   } = useQuery({
     queryKey: ['tasks', projectId],
     queryFn: async () => {
-      const response = await taskApi.getTasksByProjectId(projectId);
+      const response = await taskApi.getTasksByProjectId(projectId!);
       return response.data;
     },
+    enabled: !!projectId, // Only run the query if projectId is available
     staleTime: 1000 * 10 * 3, // 30秒
     gcTime: 1000 * 60 * 5, // 5分鐘
   });
@@ -61,24 +68,29 @@ export function useTasks(projectId: string): UseTasksReturn {
     await refetchQueryTasks();
   };
 
+  const queryClient = useQueryClient();
+
   // 創建任務 mutation
-  const { mutateAsync: mutateCreateTask } = useMutation({
-    mutationFn: async (data: CreateTaskSchema) => {
-      const response = await taskApi.createTask(data, projectId);
+  const { mutateAsync: mutateCreateTask } = useMutation<TaskResponse, Error, CreateTaskPayload>({
+    // Specify types for better safety
+    mutationFn: async (payload: CreateTaskPayload) => {
+      const { taskData, projectId: dynamicProjectId } = payload;
+      const response = await taskApi.createTask(taskData, dynamicProjectId);
       return response.data;
     },
-    onSuccess: () => {
-      refetchQueryTasks();
+    onSuccess: (_data, variables) => {
+      // Invalidate the query for the specific project's tasks
+      queryClient.invalidateQueries({ queryKey: ['tasks', variables.projectId] });
     },
   });
 
   // 創建任務方法
-  const createTask = async (data: CreateTaskSchema): Promise<TaskResponse | null> => {
+  const createTask = async (payload: CreateTaskPayload): Promise<TaskResponse | null> => {
     try {
       isCreating.value = true;
       createError.value = null;
 
-      const result = await mutateCreateTask(data);
+      const result = await mutateCreateTask(payload);
       return result || null;
     } catch (err: unknown) {
       createError.value = err instanceof Error ? err : new Error(String(err));
@@ -92,6 +104,7 @@ export function useTasks(projectId: string): UseTasksReturn {
   // 批次更新專案任務 mutation
   const { mutateAsync: mutateUpdateProjectTasks } = useMutation({
     mutationFn: async (data: TaskResponse[]) => {
+      if (!projectId) throw new Error('Project ID is not provided');
       const response = await taskApi.updateProjectTasks(data, projectId);
       return response.data;
     },

@@ -24,8 +24,8 @@
     <TodoList
       v-else
       :todos="filteredTodos"
-      @change-state="updateTodoDraft"
       class="max-h-[calc(100vh-350px)] overflow-y-auto pr-1"
+      @change-state="updateTodoDraft"
     />
   </div>
 </template>
@@ -38,47 +38,21 @@ import TodoFilter from './TodoFilter.vue';
 import TodoList from './TodoList.vue';
 
 import type { DraftResponse } from '@/types/response';
+import type { TodoFilterType, TodoItem } from '@/types/todo';
 
 import H1Title from '@/components/core/title/H1Title.vue';
 import { useDraft } from '@/composables/useDraft';
-
-interface TodoItem {
-  id: string;
-  content: string;
-  completed: boolean;
-}
+import { useLocalStorageRef } from '@/composables/useLocalStorage';
 
 const LOCAL_STORAGE_KEY = 'quick_draft_todos';
 
 const { draft, createDraft, updateDraft } = useDraft();
 
-const todos = ref<TodoItem[]>([]);
+const { state: todos } = useLocalStorageRef<TodoItem[]>(LOCAL_STORAGE_KEY, []);
 
-// 從 localStorage 加載初始數據
-const loadFromLocalStorage = () => {
-  const localData = localStorage.getItem(LOCAL_STORAGE_KEY);
-  if (localData) {
-    try {
-      todos.value = JSON.parse(localData);
-    } catch (e) {
-      console.error('無法解析 localStorage 中的草稿數據:', e);
-      todos.value = [];
-    }
-  }
-};
-
-// 監聽 todos 變化並同步到 localStorage
-watch(
-  todos,
-  (newTodos) => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTodos));
-  },
-  { deep: true }
-);
+// 本組件的 localStorage 論理已由 useLocalStorageRef 負責
 
 onActivated(() => {
-  loadFromLocalStorage();
-
   // 監聽來自 API 的草稿數據
   const unwatch = watch(draft, (newDraft) => {
     if (newDraft) {
@@ -126,7 +100,7 @@ const clearDone = () => {
   todos.value = todos.value.filter((todo) => !todo.completed);
 };
 
-const filter = ref('all');
+const filter = ref<TodoFilterType>('all');
 const filteredTodos = computed(() => {
   switch (filter.value) {
     case 'done':

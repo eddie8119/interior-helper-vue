@@ -44,10 +44,10 @@
       >
         {{ t('common.move_to_project') }}
       </TextButton>
+      <!--  -->
+      <MoveDialog v-model="showMoveToProjectDialog" :target="todoItem" />
     </label>
   </div>
-
-  <MoveDialog v-model="showMoveToProjectDialog" />
 </template>
 
 <script setup lang="ts">

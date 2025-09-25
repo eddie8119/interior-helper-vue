@@ -2,7 +2,7 @@
   <BasicEditDialog
     v-model="dialogVisible"
     :title="t('title.move_note')"
-    :is-submitting="isSubmitting"
+    :is-submitting="isCreating"
     :error-message="errorMessage"
     @submit="onSubmit"
     @cancel="dialogVisible = false"
@@ -49,6 +49,8 @@ import { storeToRefs } from 'pinia';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
 import { useProjectsStore } from '@/stores/projects';
 import { useProjects } from '@/composables/useProjects';
+import { useTasks } from '@/composables/useTasks';
+import type { TodoItemDraft } from '@/stores/quickDraft';
 
 const { t } = useI18n();
 const projectsStore = useProjectsStore();
@@ -56,10 +58,11 @@ const { projects } = storeToRefs(projectsStore);
 
 // Get refetchProjects from useProjects
 const { refetchProjects } = useProjects();
+const { createTask, isCreating, createError } = useTasks();
 
 const props = defineProps<{
   modelValue: boolean;
-  target: string;
+  target: TodoItemDraft;
   subject?: string;
 }>();
 
@@ -78,13 +81,16 @@ const emit = defineEmits<{
   confirm: [];
 }>();
 
-const errorMessage = ref<string>('');
 const isSubmitting = ref(false);
+const errorMessage = ref<string>('');
 const selectedProject = ref<string | null>(null);
 const selectedConstruction = ref<string | null>(null);
+// 為了生成createTask
+const selectedProjectId = ref<string | undefined>(undefined);
 
 watch(selectedProject, () => {
   selectedConstruction.value = null;
+  selectedProjectId.value = projects.value.find((p) => p.title === selectedProject.value)?.id;
 });
 
 const constructionContainerOptions = computed(() => {
@@ -100,15 +106,39 @@ const dialogVisible = computed({
 });
 
 const onSubmit = async () => {
+  if (!selectedProjectId.value || !selectedConstruction.value) {
+    errorMessage.value = '請選擇專案和施工項目';
+    return;
+  }
+
+  isSubmitting.value = true;
+  errorMessage.value = '';
+
   try {
-    isSubmitting.value = true;
-    // 觸發確認刪除事
+    const { content, completed } = props.target;
+
+    await createTask({
+      taskData: {
+        title: '待辦事項速記',
+        description: content,
+        constructionType: selectedConstruction.value!,
+        status: completed ? 'done' : 'todo',
+        projectId: selectedProjectId.value!,
+      },
+      projectId: selectedProjectId.value!,
+    });
+
+    if (createError.value) {
+      throw createError.value;
+    }
+
+    // 觸發確認事件
     emit('confirm');
     // 關閉彈窗
     dialogVisible.value = false;
   } catch (error) {
-    console.error('Failed to delete item:', error);
-    errorMessage.value = '刪除失敗，請重試';
+    console.error('Failed to create task:', error);
+    errorMessage.value = '建立任務失敗，請重試';
   } finally {
     isSubmitting.value = false;
   }

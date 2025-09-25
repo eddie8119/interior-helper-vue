@@ -8,8 +8,6 @@ import { useQuery } from '@tanstack/vue-query';
 import { type Ref, watch } from 'vue';
 
 import type { ProjectResponse } from '@/types/response';
-import type { SimplifiedProject } from '@/stores/projects';
-
 import { projectApi } from '@/api/project';
 import { useProjectsStore } from '@/stores/projects';
 
@@ -45,12 +43,14 @@ export function useProjects(): UseProjectsReturn {
     fetchedProjects,
     (newProjects) => {
       if (newProjects) {
-        const simplified: SimplifiedProject[] = newProjects.map((p) => ({
-          id: p.id,
-          title: p.title,
-          constructionContainer: p.constructionContainer || [],
-        }));
-        projectsStore.setProjects(simplified);
+        // const simplified: SimplifiedProject[] = newProjects.map((p) => ({
+        //   id: p.id,
+        //   title: p.title,
+        //   constructionContainer: p.constructionContainer
+        //     ? p.constructionContainer.map((c) => ({ id: c.id, name: c.name }))
+        //     : [],
+        // }));
+        projectsStore.setProjects(newProjects);
       }
     },
     { immediate: true }

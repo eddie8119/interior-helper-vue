@@ -1,18 +1,19 @@
 import { defineStore } from 'pinia';
 import { ref, type Ref } from 'vue';
+import type { ProjectResponse } from '@/types/response';
 
-export interface SimplifiedProject {
-  id: string;
-  title: string;
-  constructionContainer: string[];
-}
+// export interface SimplifiedProject {
+//   id: string;
+//   title: string;
+//   constructionContainer: string[];
+// }
 
 export const useProjectsStore = defineStore('projects', () => {
   // State to hold the projects
-  const projects: Ref<SimplifiedProject[]> = ref([]);
+  const projects: Ref<ProjectResponse[]> = ref([]);
 
   // Action to set the projects
-  function setProjects(newProjects: SimplifiedProject[]) {
+  function setProjects(newProjects: ProjectResponse[]) {
     projects.value = newProjects;
   }
 

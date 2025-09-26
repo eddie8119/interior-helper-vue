@@ -12,6 +12,12 @@
       <span class="font-semibold text-secondary-red">{{ props.subject }} -{{ props.target }}</span>
       ？
     </p>
+    <div v-if="props.isCrucial" class="text-center text-lg text-red-500">
+      <!-- {{ t('dialog.delete_crucial') }} -->
+      <el-form-item :label="t('label.project.project_name')" :error="titleError">
+        <el-input v-model="title" :placeholder="t('placeholder.project.project_name')" />
+      </el-form-item>
+    </div>
   </BasicEditDialog>
 </template>
 
@@ -25,6 +31,7 @@ const { t } = useI18n();
 
 const props = defineProps<{
   modelValue: boolean;
+  isCrucial?: boolean;
   target: string;
   subject?: string;
 }>();

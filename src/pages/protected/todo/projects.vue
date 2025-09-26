@@ -2,7 +2,7 @@
   <TextButton
     variant="primary"
     size="md"
-    class="h-[30px] w-full max-w-[60px] lg:w-auto"
+    class="mb-4 h-[30px] w-full lg:w-auto"
     @click="showCreateProjectDialog = true"
   >
     {{ t('common.create_project') }}

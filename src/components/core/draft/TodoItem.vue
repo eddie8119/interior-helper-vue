@@ -9,7 +9,12 @@
           type="checkbox"
           class="peer sr-only"
           :checked="todoItem.completed"
-          @change="$emit('change-state', $event)"
+          @change="
+            emit('update:todo-item', {
+              ...props.todoItem,
+              completed: ($event.target as HTMLInputElement).checked,
+            })
+          "
         />
         <div
           class="h-6 w-6 rounded-md border-2 border-gray-300 bg-white transition-colors peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-focus:ring-2 peer-focus:ring-blue-200"
@@ -40,12 +45,17 @@
         variant="ghost"
         size="sm"
         class="h-[30px] w-full max-w-[120px] lg:w-auto"
+        :disabled="todoItem.isMoved"
         @click="showMoveToProjectDialog = true"
       >
-        {{ t('button.move_to_project') }}
+        {{ t('button.' + (todoItem.isMoved ? 'moved_to_project' : 'move_to_project')) }}
       </TextButton>
       <!--  -->
-      <MoveDialog v-model="showMoveToProjectDialog" :target="todoItem" />
+      <MoveDialog
+        v-model="showMoveToProjectDialog"
+        :target="todoItem"
+        @update:target="emit('update:todo-item', $event)"
+      />
     </label>
   </div>
 </template>
@@ -61,14 +71,13 @@ import MoveDialog from '@/components/core/dialog/MoveDialog.vue';
 
 const { t } = useI18n();
 
-defineProps({
-  todoItem: {
-    type: Object as () => TodoItemDraft,
-    required: true,
-  },
-});
+const props = defineProps<{
+  todoItem: TodoItemDraft;
+}>();
 
-defineEmits(['change-state']);
+const emit = defineEmits<{
+  (e: 'update:todo-item', todo: TodoItemDraft): void;
+}>();
 
 const showMoveToProjectDialog = ref(false);
 </script>

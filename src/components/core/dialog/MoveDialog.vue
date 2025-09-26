@@ -79,6 +79,7 @@ watch(
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean];
+  'update:target': [value: TodoItemDraft];
   confirm: [];
 }>();
 
@@ -132,6 +133,9 @@ const onSubmit = async () => {
     if (createError.value) {
       throw createError.value;
     }
+
+    // 更新 isMoved 狀態並觸發更新
+    emit('update:target', { ...props.target, isMoved: true });
 
     // 觸發確認事件
     emit('confirm');

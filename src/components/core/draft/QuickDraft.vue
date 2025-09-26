@@ -24,12 +24,12 @@
 
     <div class="max-h-[calc(100vh-350px)] overflow-y-auto pr-1">
       <transition-group name="todo-list" tag="div" class="space-y-3">
-        <TodoItemComponent
+        <TodoItem
           v-for="todo in filteredTodos"
           :key="todo.id"
           :todo-item="todo"
           class="todo-list-item"
-          @change-state="updateTodoDraft(todo.id, $event)"
+          @update:todo-item="updateTodo"
         />
       </transition-group>
     </div>
@@ -41,7 +41,7 @@ import { computed, onActivated, onDeactivated, ref, watch } from 'vue';
 
 import TodoAdd from './TodoAdd.vue';
 import TodoFilter from './TodoFilter.vue';
-import TodoItemComponent from './TodoItem.vue';
+import TodoItem from './TodoItem.vue';
 
 import type { DraftResponse } from '@/types/response';
 import type { TodoFilterType, TodoItemDraft } from '@/types/todo';
@@ -92,11 +92,10 @@ const addTodoDraft = (todo: TodoItemDraft) => {
   todos.value.push(todo);
 };
 
-const updateTodoDraft = (id: string, event: Event) => {
-  const isChecked = (event.target as HTMLInputElement).checked;
-  const todo = todos.value.find((t) => t.id === id);
-  if (todo) {
-    todo.completed = isChecked;
+const updateTodo = (updatedTodo: TodoItemDraft) => {
+  const index = todos.value.findIndex((t) => t.id === updatedTodo.id);
+  if (index !== -1) {
+    todos.value[index] = { ...todos.value[index], ...updatedTodo };
   }
 };
 

@@ -27,7 +27,7 @@
 
         <TextButton
           variant="primary"
-          :disabled="isSubmitting"
+          :disabled="isSubmitting || isInvalid"
           :loading="isSubmitting"
           size="md"
           @click="onSubmit"
@@ -52,6 +52,7 @@ const props = withDefaults(
     isSubmitting: boolean;
     errorMessage?: string;
     showFooterButton?: boolean;
+    isInvalid?: boolean;
   }>(),
   {
     modelValue: false,

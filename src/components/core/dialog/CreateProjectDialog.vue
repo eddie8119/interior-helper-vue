@@ -4,6 +4,7 @@
     :title="t('title.create_project')"
     :is-submitting="isSubmitting"
     :error-message="errorMessage"
+    :is-invalid="isInvalid"
     @submit="onSubmit"
     @cancel="onCancel"
   >
@@ -67,7 +68,7 @@
 import { Plus } from '@element-plus/icons-vue';
 import { toTypedSchema } from '@vee-validate/zod';
 import { useField, useForm } from 'vee-validate';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { projectApi } from '@/api/project';
@@ -96,10 +97,12 @@ const dialogVisible = computed({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { handleSubmit, errors, isSubmitting } = useForm({
+const { handleSubmit, isSubmitting, meta } = useForm({
   validationSchema: toTypedSchema(createProjectSchema),
   initialValues: { title: '', type: 'residential', constructionContainer: [] },
 });
+
+const isInvalid = computed(() => !meta.value.valid);
 
 const { value: title, handleBlur: handleBlurTitle, errorMessage: titleError } = useField('title');
 const { value: type, handleBlur: handleBlurType, errorMessage: typeError } = useField('type');

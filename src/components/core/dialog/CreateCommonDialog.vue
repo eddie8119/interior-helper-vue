@@ -4,6 +4,7 @@
     :title="t('title.create_project')"
     :is-submitting="isSubmitting"
     :error-message="errorMessage"
+    :is-invalid="isInvalid"
     @submit="onSubmit"
     @cancel="onCancel"
   >
@@ -96,10 +97,12 @@ const dialogVisible = computed({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { handleSubmit, errors, isSubmitting } = useForm({
+const { handleSubmit, isSubmitting, meta } = useForm({
   validationSchema: toTypedSchema(createProjectSchema),
   initialValues: { title: '', type: 'residential', constructionContainer: [] },
 });
+
+const isInvalid = computed(() => !meta.value.valid);
 
 const { value: title, handleBlur: handleBlurTitle, errorMessage: titleError } = useField('title');
 const { value: type, handleBlur: handleBlurType, errorMessage: typeError } = useField('type');

@@ -4,6 +4,7 @@
     :title="t('title.move_note')"
     :is-submitting="isCreating"
     :error-message="errorMessage"
+    :is-invalid="isInvalid"
     @submit="onSubmit"
     @cancel="dialogVisible = false"
   >
@@ -94,6 +95,8 @@ watch(selectedProject, () => {
   selectedConstruction.value = null;
   selectedProjectId.value = projects.value.find((p) => p.title === selectedProject.value)?.id;
 });
+
+const isInvalid = computed(() => !selectedProject.value || !selectedConstruction.value);
 
 const constructionContainerOptions = computed(() => {
   if (selectedProject.value) {

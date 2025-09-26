@@ -27,12 +27,6 @@ export const menu: Menu[] = [
         icon: 'ChartPieSlice',
         route: '/todo/quick-draft',
       },
-      {
-        label: 'pH',
-        name: 'ph',
-        icon: 'PH',
-        route: '/observation/ph/devices',
-      },
     ],
   },
   {

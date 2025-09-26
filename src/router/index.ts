@@ -144,55 +144,6 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
-  {
-    path: '/observation',
-    component: AppLayout,
-    children: [
-      {
-        path: ':observationType',
-        component: () => import('../pages/protected/observation/index.vue'),
-        props: true,
-        redirect: (to) => {
-          return {
-            name: 'observation-devices',
-            params: { observationType: to.params.observationType },
-          };
-        },
-        children: [
-          {
-            name: 'observation-devices',
-            path: 'devices',
-            component: () => import('../pages/protected/observation/devices.vue'),
-            props: true,
-          },
-          {
-            name: 'observation-alarm-setting',
-            path: 'alarm-setting',
-            component: () => import('../pages/protected/observation/alarm-setting.vue'),
-            props: true,
-          },
-          {
-            name: 'observation-alarm-history',
-            path: 'alarm-history',
-            component: () => import('../pages/protected/observation/alarm-history.vue'),
-            props: true,
-          },
-          {
-            name: 'observation-reagent',
-            path: 'reagent',
-            component: () => import('../pages/protected/observation/reagent.vue'),
-            props: true,
-          },
-          {
-            name: 'observation-device',
-            path: 'device/:id',
-            component: () => import('../pages/protected/observation/device.vue'),
-            props: true,
-          },
-        ],
-      },
-    ],
-  },
 ];
 
 const router = createRouter({

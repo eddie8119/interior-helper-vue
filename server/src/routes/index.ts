@@ -4,11 +4,11 @@ import authRoutes from './auth';
 import commonRoutes from './common';
 import companyRoutes from './company';
 import contractRoutes from './contract';
+import draftRoutes from './draft';
 import invoiceRoutes from './invoice';
 import projectRoutes from './project';
 import taskRoutes from './task';
 import userRoutes from './user';
-import draftRoutes from './draft';
 
 const app = express();
 

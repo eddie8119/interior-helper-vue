@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/vue-query';
 import { type Ref, watch } from 'vue';
 
 import type { ProjectResponse } from '@/types/response';
+
 import { projectApi } from '@/api/project';
 import { useProjectsStore } from '@/stores/projects';
 

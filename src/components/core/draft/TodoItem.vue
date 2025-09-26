@@ -39,10 +39,10 @@
       <TextButton
         variant="ghost"
         size="sm"
-        class="h-[30px] w-full max-w-[60px] lg:w-auto"
+        class="h-[30px] w-full max-w-[120px] lg:w-auto"
         @click="showMoveToProjectDialog = true"
       >
-        {{ t('common.move_to_project') }}
+        {{ t('button.move_to_project') }}
       </TextButton>
       <!--  -->
       <MoveDialog v-model="showMoveToProjectDialog" :target="todoItem" />
@@ -54,7 +54,7 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { TodoItemDraft } from '@/stores/quickDraft';
+import type { TodoItemDraft } from '@/types/todo';
 
 import TextButton from '@/components/core/button/TextButton.vue';
 import MoveDialog from '@/components/core/dialog/MoveDialog.vue';

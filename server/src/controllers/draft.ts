@@ -23,7 +23,9 @@ export const createDraft = async (req: Request, res: Response) => {
     }
 
     if (existingDraft) {
-      return res.status(409).json({ success: false, message: 'Draft already exists for this user.' });
+      return res
+        .status(409)
+        .json({ success: false, message: 'Draft already exists for this user.' });
     }
 
     // Create a new draft
@@ -46,7 +48,9 @@ export const createDraft = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.error('Unexpected error in createDraft:', error);
-    return res.status(500).json({ success: false, message: error.message || 'An unexpected error occurred' });
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || 'An unexpected error occurred' });
   }
 };
 
@@ -82,7 +86,9 @@ export const getDraft = async (req: Request, res: Response) => {
     return res.status(200).json({ success: true, data: camelcaseKeys(data, { deep: true }) });
   } catch (error: any) {
     console.error('Unexpected error in getDraft:', error);
-    return res.status(500).json({ success: false, message: error.message || 'An unexpected error occurred' });
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || 'An unexpected error occurred' });
   }
 };
 
@@ -123,7 +129,9 @@ export const updateDraft = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.error('Unexpected error updating draft:', error);
-    return res.status(500).json({ success: false, message: error.message || 'An unexpected error occurred' });
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || 'An unexpected error occurred' });
   }
 };
 
@@ -142,6 +150,8 @@ export const deleteDraft = async (req: Request, res: Response) => {
     return res.status(200).json({ success: true, message: 'Draft deleted successfully' });
   } catch (error: any) {
     console.error('Unexpected error deleting draft:', error);
-    return res.status(500).json({ success: false, message: error.message || 'An unexpected error occurred' });
+    return res
+      .status(500)
+      .json({ success: false, message: error.message || 'An unexpected error occurred' });
   }
 };

@@ -44,7 +44,7 @@ import TodoFilter from './TodoFilter.vue';
 import TodoItemComponent from './TodoItem.vue';
 
 import type { DraftResponse } from '@/types/response';
-import type { TodoFilterType, TodoItem } from '@/types/todo';
+import type { TodoFilterType, TodoItemDraft } from '@/types/todo';
 
 import H1Title from '@/components/core/title/H1Title.vue';
 import { useDraft } from '@/composables/useDraft';
@@ -54,7 +54,7 @@ const LOCAL_STORAGE_KEY = 'quick_draft_todos';
 
 const { draft, createDraft, updateDraft } = useDraft();
 
-const { state: todos } = useLocalStorageRef<TodoItem[]>(LOCAL_STORAGE_KEY, []);
+const { state: todos } = useLocalStorageRef<TodoItemDraft[]>(LOCAL_STORAGE_KEY, []);
 
 onActivated(() => {
   // 監聽來自 API 的草稿數據
@@ -63,7 +63,7 @@ onActivated(() => {
       // 如果本地沒有數據，或後端數據較新，則使用後端數據
       // 這裡簡化為：如果本地為空，則使用後端數據
       if (todos.value.length === 0 && newDraft.tasks) {
-        todos.value = newDraft.tasks as unknown as TodoItem[];
+        todos.value = newDraft.tasks as unknown as TodoItemDraft[];
       }
       // 停止監聽，避免覆蓋本地的後續更改
       unwatch();
@@ -88,7 +88,7 @@ onDeactivated(async () => {
   }
 });
 
-const addTodoDraft = (todo: TodoItem) => {
+const addTodoDraft = (todo: TodoItemDraft) => {
   todos.value.push(todo);
 };
 

@@ -42,15 +42,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+import type { TodoItemDraft } from '@/types/todo';
 
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
-import { useProjectsStore } from '@/stores/projects';
 import { useProjects } from '@/composables/useProjects';
 import { useTasks } from '@/composables/useTasks';
-import type { TodoItemDraft } from '@/stores/quickDraft';
+import { useProjectsStore } from '@/stores/projects';
 
 const { t } = useI18n();
 const projectsStore = useProjectsStore();

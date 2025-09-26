@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { provide, ref, computed } from 'vue';
+import { computed, provide, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 import QuickDraftSlide from '@/components/core/draft/QuickDraftSlide.vue';

@@ -1,12 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, type Ref } from 'vue';
-import type { ProjectResponse } from '@/types/response';
 
-// export interface SimplifiedProject {
-//   id: string;
-//   title: string;
-//   constructionContainer: string[];
-// }
+import type { ProjectResponse } from '@/types/response';
 
 export const useProjectsStore = defineStore('projects', () => {
   // State to hold the projects

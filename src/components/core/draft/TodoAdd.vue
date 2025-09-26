@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import type { TodoItemDraft } from '@/stores/quickDraft';
+import type { TodoItemDraft } from '@/types/todo';
 
 const emit = defineEmits<{ (e: 'add-todo-draft', todo: TodoItemDraft): void }>();
 
@@ -43,6 +43,7 @@ const addTodo = () => {
     id: Date.now().toString(),
     content: todoContent.value.trim(),
     completed: false,
+    isMoved: false,
   };
   todoContent.value = '';
   emit('add-todo-draft', todo);

@@ -120,7 +120,11 @@
     "devices_list_page": "デバイス一覧",
     "show_all_filter": "すべてのフィルターを表示"
   },
-  "dialog": {},
+  "dialog": {
+    "delete_confirm": "削除を確認しますか",
+    "share_project_link": "プロジェクトリンクを共有する",
+    "move_note_to_project": "プロジェクトを選択して、ノートを移動する"
+  },
   "dropdown": {
     "zh-TW": "繁體中文",
     "en": "English",

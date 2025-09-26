@@ -14,6 +14,7 @@
     "send_reset_email": "Send Reset Email",
     "resend_activation_email": "Resend Activation Email",
     "edit_profile": "Edit Profile",
+    "move_to_project": "Move to Project",
     "resend": "Resend",
     "activate": "Activate",
     "try_again": "Try Again",
@@ -128,7 +129,8 @@
   },
   "dialog": {
     "delete_confirm": "Do you confirm the deletion",
-    "share_project_link": "Share Project Link"
+    "share_project_link": "Share Project Link",
+    "move_note_to_project": "Select Project, Move Note"
   },
   "dropdown": {
     "zh-TW": "繁體中文",
@@ -175,6 +177,7 @@
       "member_since": "Member Since"
     },
     "project": {
+      "project": "Project",
       "project_name": "Project Name",
       "project_type": "Project Type",
       "construction": "Construction"
@@ -292,6 +295,7 @@
     "phone": "Phone",
     "search": "Search",
     "project": {
+      "project": "Please select project",
       "project_name": "Please enter project name",
       "project_type": "Please select project type",
       "construction": "Please select construction",
@@ -359,6 +363,7 @@
     "manage_collaborators": "Manage Collaborators",
     "delete_confirm": "Delete Confirm",
     "create_project": "Create Project",
+    "move_note": "Move Note",
     "subTitle": {
       "latest_calibration": "Latest Calibration",
       "statistics": "Statistics",

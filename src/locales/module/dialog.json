@@ -2,16 +2,22 @@
   "en": {
     "dialog": {
       "delete_confirm": "Do you confirm the deletion",
-      "share_project_link": "Share Project Link"
+      "share_project_link": "Share Project Link",
+      "move_note_to_project": "Select Project, Move Note"
     }
   },
   "zh-TW": {
     "dialog": {
       "delete_confirm": "確定要刪除",
-      "share_project_link": "分享專案連結"
+      "share_project_link": "分享專案連結",
+      "move_note_to_project": "選取專案，移動速記"
     }
   },
   "ja": {
-    "dialog": {}
+    "dialog": {
+      "delete_confirm": "削除を確認しますか",
+      "share_project_link": "プロジェクトリンクを共有する",
+      "move_note_to_project": "プロジェクトを選択して、ノートを移動する"
+    }
   }
 }

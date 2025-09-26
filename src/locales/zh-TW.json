@@ -12,6 +12,7 @@
     "send_reset_email": "發送重設密碼郵件",
     "resend_activation_email": "重新發送啟用郵件",
     "edit_profile": "編輯個人資料",
+    "move_to_project": "移動到專案",
     "resend": "重新發送",
     "activate": "啟用",
     "try_again": "再試一次",
@@ -126,7 +127,8 @@
   },
   "dialog": {
     "delete_confirm": "確定要刪除",
-    "share_project_link": "分享專案連結"
+    "share_project_link": "分享專案連結",
+    "move_note_to_project": "選取專案，移動速記"
   },
   "dropdown": {
     "zh-TW": "繁體中文",
@@ -173,6 +175,7 @@
       "member_since": "加入日期"
     },
     "project": {
+      "project": "專案",
       "project_name": "專案名稱",
       "project_type": "專案類型",
       "construction": "工程"
@@ -285,6 +288,7 @@
     "phone": "電話",
     "search": "搜尋",
     "project": {
+      "project": "請選擇專案",
       "project_name": "輸入專案名稱",
       "project_type": "選擇專案類型",
       "construction": "選擇工程案類型",
@@ -350,6 +354,7 @@
     "share": "分享",
     "delete_confirm": "刪除確認",
     "create_project": "新增專案",
+    "move_note": "移動速記",
     "subTitle": {
       "latest_calibration": "最近一次校正",
       "statistics": "統計資料",

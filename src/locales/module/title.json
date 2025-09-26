@@ -14,6 +14,7 @@
       "manage_collaborators": "Manage Collaborators",
       "delete_confirm": "Delete Confirm",
       "create_project": "Create Project",
+      "move_note": "Move Note",
       "subTitle": {
         "latest_calibration": "Latest Calibration",
         "statistics": "Statistics",
@@ -40,6 +41,7 @@
       "share": "分享",
       "delete_confirm": "刪除確認",
       "create_project": "新增專案",
+      "move_note": "移動速記",
       "subTitle": {
         "latest_calibration": "最近一次校正",
         "statistics": "統計資料",

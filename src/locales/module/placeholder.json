@@ -15,6 +15,7 @@
       "phone": "Phone",
       "search": "Search",
       "project": {
+        "project": "Please select project",
         "project_name": "Please enter project name",
         "project_type": "Please select project type",
         "construction": "Please select construction",
@@ -42,6 +43,7 @@
       "phone": "電話",
       "search": "搜尋",
       "project": {
+        "project": "請選擇專案",
         "project_name": "輸入專案名稱",
         "project_type": "選擇專案類型",
         "construction": "選擇工程案類型",

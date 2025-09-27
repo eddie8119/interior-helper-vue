@@ -70,6 +70,7 @@ import { toTypedSchema } from '@vee-validate/zod';
 import { useField, useForm } from 'vee-validate';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useQueryClient } from '@tanstack/vue-query';
 
 import { projectApi } from '@/api/project';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
@@ -78,6 +79,7 @@ import { PROJECT_TYPES } from '@/constants/selection';
 import { createProjectSchema, type CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
 
 const { t } = useI18n();
+const queryClient = useQueryClient();
 const { newConstructionItem, localConstructionItems, updateCommonData, addConstructionData } =
   useCommonAction();
 
@@ -119,7 +121,10 @@ const onSubmit = handleSubmit(async (values: CreateProjectSchema) => {
       errorMessage.value = message ?? '';
       return;
     }
-    if (success) onCancel();
+    if (success) {
+      await queryClient.invalidateQueries({ queryKey: ['projects'] });
+      onCancel();
+    }
   } catch (error) {
     console.error('Failed to update device tag:', error);
   }

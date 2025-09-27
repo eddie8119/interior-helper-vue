@@ -4,19 +4,21 @@
     :title="props.subject + t('title.delete_confirm')"
     :is-submitting="isSubmitting"
     :error-message="errorMessage"
+    :is-invalid="isInvalid"
     @submit="onSubmit"
     @cancel="dialogVisible = false"
   >
     <p class="text-center text-lg">
       {{ t('dialog.delete_confirm') }}
-      <span class="font-semibold text-secondary-red">{{ props.subject }} -{{ props.target }}</span>
-      ？
+      <span class="font-semibold text-secondary-red">{{ props.subject }}: {{ props.target }}</span>
+      ?
     </p>
-    <div v-if="props.isCrucial" class="text-center text-lg text-red-500">
-      <!-- {{ t('dialog.delete_crucial') }} -->
-      <el-form-item :label="t('label.project.project_name')" :error="titleError">
-        <el-input v-model="title" :placeholder="t('placeholder.project.project_name')" />
-      </el-form-item>
+    <div v-if="props.isCrucial" class="mt-2 text-center text-lg">
+      <p>
+        若確認刪除，請在下方輸入 <span class="font-semibold text-red-500">{{ props.target }}</span>
+      </p>
+
+      <el-input v-model="typeCheck" :placeholder="t('placeholder.project.project_name')" />
     </div>
   </BasicEditDialog>
 </template>
@@ -43,11 +45,13 @@ const emit = defineEmits<{
 
 const errorMessage = ref<string>('');
 const isSubmitting = ref(false);
+const typeCheck = ref<string>('');
 
 const dialogVisible = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 });
+const isInvalid = computed(() => typeCheck.value !== props.target);
 
 const onSubmit = async () => {
   try {

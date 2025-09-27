@@ -19,6 +19,7 @@
   <!-- Delete Confirmation Dialog -->
   <DeleteDialog
     v-model="showDeleteDialog"
+    :isCrucial="true"
     :subject="t('project.project')"
     :target="projectTitle"
     @confirm="handleDelete"
@@ -96,8 +97,9 @@ const showCollaboratorsDialog = ref(false);
 // Delete project
 const handleDelete = async () => {
   try {
-    await deleteProject(props.projectId);
+    const result = await deleteProject(props.projectId);
 
+    console.log(55, result);
     // 清除 localStorage 中該項目的儲存
     const storageKey = getProjectStorageKey(props.projectId);
     localStorage.removeItem(storageKey);

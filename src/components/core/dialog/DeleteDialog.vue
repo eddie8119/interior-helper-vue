@@ -4,7 +4,7 @@
     :title="props.subject + t('title.delete_confirm')"
     :is-submitting="isSubmitting"
     :error-message="errorMessage"
-    :is-invalid="isInvalid"
+    :is-invalid="isCrucial ? isInvalid : false"
     @submit="onSubmit"
     @cancel="dialogVisible = false"
   >

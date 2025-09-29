@@ -25,6 +25,7 @@
     "@headlessui/vue": "^1.7.23",
     "@primevue/themes": "^4.3.3",
     "@tanstack/vue-query": "^5.83.0",
+    "@tanstack/vue-query-devtools": "^5.90.2",
     "@vee-validate/zod": "^4.15.0",
     "@vueuse/core": "^13.5.0",
     "axios": "^1.8.3",

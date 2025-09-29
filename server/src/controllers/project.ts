@@ -275,35 +275,43 @@ export const deleteProject = async (req: Request, res: Response) => {
       });
     }
 
-    // 開始一個事務來刪除專案及其相關任務
-    // 1. 首先刪除關聯的任務
-    const { error: tasksDeleteError } = await supabase
-      .from('Tasks')
-      .delete()
-      .eq('project_id', projectId);
+    try {
+      // 1. 首先刪除關聯的任務
+      const { error: tasksDeleteError } = await supabase
+        .from('Tasks')
+        .delete()
+        .eq('project_id', projectId);
 
-    if (tasksDeleteError) {
-      console.error('Error deleting project tasks:', tasksDeleteError);
+      if (tasksDeleteError) {
+        console.error('Error deleting project tasks:', tasksDeleteError);
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to delete project tasks',
+          error: tasksDeleteError.message,
+        });
+      }
+
+      // 2. 然後刪除專案本身
+      const { error: projectDeleteError } = await supabase
+        .from('Projects')
+        .delete()
+        .eq('id', projectId)
+        .eq('user_id', userId);
+
+      if (projectDeleteError) {
+        console.error('Error deleting project:', projectDeleteError);
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to delete project',
+          error: projectDeleteError.message,
+        });
+      }
+    } catch (innerError: any) {
+      console.error('Transaction error:', innerError);
       return res.status(500).json({
         success: false,
-        message: 'Failed to delete project tasks',
-        error: tasksDeleteError.message,
-      });
-    }
-
-    // 2. 然後刪除專案本身
-    const { error: projectDeleteError } = await supabase
-      .from('Projects')
-      .delete()
-      .eq('id', projectId)
-      .eq('user_id', userId);
-
-    if (projectDeleteError) {
-      console.error('Error deleting project:', projectDeleteError);
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to delete project',
-        error: projectDeleteError.message,
+        message: 'Failed to delete project and its tasks',
+        error: innerError.message,
       });
     }
 

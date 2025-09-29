@@ -144,6 +144,17 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: '/notifications',
+    component: AppLayout,
+    children: [
+      {
+        name: 'notifications',
+        path: '',
+        component: () => import('../views/NotificationView.vue'),
+      },
+    ],
+  },
 ];
 
 const router = createRouter({

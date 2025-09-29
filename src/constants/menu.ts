@@ -44,6 +44,12 @@ export const menu: Menu[] = [
         icon: 'ChartPieSlice',
         route: '/setting/member',
       },
+      {
+        label: 'Notifications',
+        name: 'notifications',
+        icon: 'Bell',
+        route: '/notifications',
+      },
     ],
   },
 ];

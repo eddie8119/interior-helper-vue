@@ -5,6 +5,10 @@ import type { CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
 import request from '@/utils/request';
 
 export const projectApi = {
+  // 用於概覽頁面
+  getOverviewProjects: (): Promise<ApiResponse<ProjectResponse[]>> => {
+    return request.get('/projects/overview');
+  },
   getProjects: (): Promise<ApiResponse<ProjectResponse[]>> => {
     return request.get('/projects');
   },

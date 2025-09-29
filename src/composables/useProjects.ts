@@ -13,6 +13,13 @@ import { projectApi } from '@/api/project';
 import { useProjectsStore } from '@/stores/projects';
 
 interface UseProjectsReturn {
+  // 用於概覽頁面
+  isLoadingOverviewProjects: Ref<boolean>;
+  overviewError: Ref<Error | null>;
+  fetchedOverviewProjects: Ref<ProjectResponse[] | undefined>;
+  overviewProjectsUpdatedAt: Ref<number>;
+
+  // 用於專案頁面
   isLoadingProjects: Ref<boolean>;
   error: Ref<Error | null>;
   fetchedProjects: Ref<ProjectResponse[] | undefined>;
@@ -22,6 +29,21 @@ interface UseProjectsReturn {
 
 export function useProjects(): UseProjectsReturn {
   const projectsStore = useProjectsStore();
+
+  const {
+    data: fetchedOverviewProjects,
+    isLoading: isLoadingOverviewProjects,
+    error: overviewError,
+    dataUpdatedAt: overviewProjectsUpdatedAt,
+  } = useQuery({
+    queryKey: ['overview-projects'],
+    queryFn: async () => {
+      const response = await projectApi.getOverviewProjects();
+      return response.data;
+    },
+    staleTime: 1000 * 10 * 3,
+    gcTime: 1000 * 60 * 5,
+  });
 
   const {
     data: fetchedProjects,
@@ -44,13 +66,6 @@ export function useProjects(): UseProjectsReturn {
     fetchedProjects,
     (newProjects) => {
       if (newProjects) {
-        // const simplified: SimplifiedProject[] = newProjects.map((p) => ({
-        //   id: p.id,
-        //   title: p.title,
-        //   constructionContainer: p.constructionContainer
-        //     ? p.constructionContainer.map((c) => ({ id: c.id, name: c.name }))
-        //     : [],
-        // }));
         projectsStore.setProjects(newProjects);
       }
     },
@@ -62,6 +77,13 @@ export function useProjects(): UseProjectsReturn {
   };
 
   return {
+    // 用於概覽頁面
+    isLoadingOverviewProjects,
+    overviewError,
+    fetchedOverviewProjects,
+    overviewProjectsUpdatedAt,
+
+    // 用於專案頁面
     isLoadingProjects,
     error,
     fetchedProjects,

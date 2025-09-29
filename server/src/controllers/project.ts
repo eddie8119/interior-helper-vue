@@ -3,6 +3,59 @@ import { Request, Response } from 'express';
 import snakecaseKeys from 'snakecase-keys';
 
 import { supabase } from '@/lib/supabase';
+// 用於概覽頁面
+export const getOverviewProjects = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).userId;
+
+    // 查詢資料庫中屬於當前用戶的所有專案，並關聯任務
+    const { data: projects, error } = await supabase
+      .from('Projects')
+      .select(`
+        *,
+        Tasks(*)
+      `)
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching projects:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to fetch projects',
+        error: error.message,
+      });
+    }
+
+    // 在返回前處理數據，移除敏感欄位並整合任務
+    const safeProjects = projects?.map((project) => {
+      const { user_id, Tasks, ...safeProject } = project;
+      
+      // 處理任務數據，移除敏感欄位
+      const safeTasks = Tasks ? Tasks.map((task: any) => {
+        const { user_id: taskUserId, ...safeTask } = task;
+        return safeTask;
+      }) : [];
+      
+      return {
+        ...safeProject,
+        tasks: safeTasks
+      };
+    });
+
+    // 轉換為駝峰式命名並返回
+    return res.status(200).json({
+      success: true,
+      data: camelcaseKeys(safeProjects, { deep: true }),
+    });
+  } catch (error: any) {
+    console.error('Unexpected error fetching projects:', error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'An unexpected error occurred',
+    });
+  }
+};
 
 // 獲取當前用戶的所有案件列表
 export const getProjects = async (req: Request, res: Response) => {

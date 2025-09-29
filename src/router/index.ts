@@ -158,16 +158,16 @@ router.beforeEach((to, _from, next) => {
   const publicPages = ['/auth/login', '/auth/register', '/auth/forgot-password'];
   const isPublicPage = publicPages.includes(to.path);
 
-  // if (!isPublicPage && !authStore.isAuthenticated) {
-  //   return next({
-  //     name: 'login',
-  //     query: { redirect: to.fullPath },
-  //   });
-  // }
+  if (!isPublicPage && !authStore.isAuthenticated) {
+    return next({
+      name: 'login',
+      query: { redirect: to.fullPath },
+    });
+  }
 
-  // if (authStore.isAuthenticated && isPublicPage) {
-  //   return next({ name: 'overview' });
-  // }
+  if (authStore.isAuthenticated && isPublicPage) {
+    return next({ name: 'overview' });
+  }
 
   // isAdmin 是 Vue 的 ComputedRef 物件，而不是一個單純的布林值。
   // 在 JavaScript 中，任何物件（包括 ComputedRef 物件）在布林判斷中都會被視為 true

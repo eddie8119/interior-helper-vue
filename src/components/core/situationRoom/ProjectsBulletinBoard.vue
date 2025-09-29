@@ -1,14 +1,14 @@
 <template>
   <div class="relative flex flex-col">
     <Table
-      :data="fetchedProjects"
+      :data="fetchedOverviewProjects"
       :columns="PROJECT_COLUMNS"
-      :loading="isLoadingProjects"
+      :loading="isLoadingOverviewProjects"
       :show-id-column="true"
       :show-actions="false"
       :show-search="true"
       :show-pagination="true"
-      :last-update-time="projectsUpdatedAt"
+      :last-update-time="overviewProjectsUpdatedAt"
       :actions="[]"
       max-height="calc(100vh - 360px)"
       @edit="() => {}"
@@ -31,7 +31,8 @@ import { PROJECT_COLUMNS } from '@/constants/columns/project';
 
 const { t } = useI18n();
 
-const { fetchedProjects, isLoadingProjects, projectsUpdatedAt } = useProjects();
+const { fetchedOverviewProjects, isLoadingOverviewProjects, overviewProjectsUpdatedAt } =
+  useProjects();
 </script>
 
 <style lang="scss" scoped></style>

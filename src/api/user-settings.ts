@@ -1,4 +1,4 @@
-import type { ApiResponse } from '@/types/api';
+import type { ApiResponse } from '@/types/request';
 
 import request from '@/utils/request';
 

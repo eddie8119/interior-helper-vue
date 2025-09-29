@@ -1,10 +1,10 @@
-import type { ApiResponse } from '@/types/api';
+import type { ApiResponse } from '@/types/request';
 import type { TaskResponse } from '@/types/response';
 
 import request from '@/utils/request';
 
 export const notificationApi = {
-  // 手動觸發檢查需要發送的提醒 
+  // 手動觸發檢查需要發送的提醒
   checkReminders: (): Promise<ApiResponse<{ success: boolean; count: number }>> => {
     return request.post('/notifications/check-reminders');
   },

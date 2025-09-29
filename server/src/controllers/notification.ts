@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { reminderService } from '@/services/tasks/check-reminders';
+import { emailDigestScheduler } from '@/services/scheduler/email-digest.scheduler';
 
 // 手動觸發檢查需要發送的提醒
 export const checkReminders = async (req: Request, res: Response) => {
@@ -38,6 +39,25 @@ export const getPendingReminders = async (req: Request, res: Response) => {
   }
 };
 
+// 手動觸發發送每日電子郵件摘要
+export const sendDailyEmailDigest = async (req: Request, res: Response) => {
+  try {
+    const result = await emailDigestScheduler.manualTrigger();
+    
+    return res.status(200).json({
+      success: true,
+      message: `成功發送每日電子郵件摘要，已發送 ${result.count} 封郵件`,
+      data: result,
+    });
+  } catch (error: any) {
+    console.error('發送每日電子郵件摘要失敗:', error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || '發送每日電子郵件摘要時發生錯誤',
+    });
+  }
+};
+
 // 重置任務的提醒狀態
 export const resetReminderStatus = async (req: Request, res: Response) => {
   try {
@@ -71,3 +91,4 @@ export const resetReminderStatus = async (req: Request, res: Response) => {
     });
   }
 };
+

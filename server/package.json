@@ -11,6 +11,7 @@
     "build": "tsc",
     "init-db": "ts-node --project ./tsconfig.json ./scripts/initDatabase.ts",
     "test-reminder": "ts-node -r dotenv/config -r tsconfig-paths/register src/scripts/test-reminder.ts",
+    "test-email": "ts-node -r dotenv/config -r tsconfig-paths/register src/scripts/test-email-digest.ts",
     "start-reminder": "ts-node -r dotenv/config -r tsconfig-paths/register src/server.ts"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "line-notify-nodejs": "^1.0.1",
     "module-alias": "^2.2.3",
     "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.6",
     "snakecase-keys": "^5.4.5",
     "uuid": "^13.0.0",
     "zod": "^3.25.46"
@@ -34,6 +36,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.7",
+    "@types/nodemailer": "^7.0.1",
     "@types/uuid": "^11.0.0",
     "cross-env": "^7.0.3",
     "ts-node": "^10.9.2",

@@ -9,71 +9,71 @@ export const PROJECT_TYPES: ProjectTypeSelection[] = [
 
 export const CONSTRUCTION_CONTAINER: ConstructionSelection[] = [
   {
-    type: '拆除',
-    order: 0,
+    name: '拆除',
+    id: 0,
   },
   {
-    type: '機電',
-    order: 1,
+    name: '機電',
+    id: 1,
   },
   {
-    type: '水電',
-    order: 2,
+    name: '水電',
+    id: 2,
   },
   {
-    type: '地坪',
-    order: 3,
+    name: '地坪',
+    id: 3,
   },
   {
-    type: '泥作',
-    order: 4,
+    name: '泥作',
+    id: 4,
   },
   {
-    type: '門框',
-    order: 5,
+    name: '門框',
+    id: 5,
   },
   {
-    type: '輕隔間',
-    order: 6,
+    name: '輕隔間',
+    id: 6,
   },
   {
-    type: '木作',
-    order: 7,
+    name: '木作',
+    id: 7,
   },
   {
-    type: '金屬',
-    order: 8,
+    name: '金屬',
+    id: 8,
   },
   {
-    type: '玻璃',
-    order: 9,
+    name: '玻璃',
+    id: 9,
   },
   {
-    type: '油漆',
-    order: 10,
+    name: '油漆',
+    id: 10,
   },
   {
-    type: '地板',
-    order: 11,
+    name: '地板',
+    id: 11,
   },
   {
-    type: '防水',
-    order: 12,
+    name: '防水',
+    id: 12,
   },
   {
-    type: '衛浴設備',
-    order: 13,
+    name: '衛浴設備',
+    id: 13,
   },
   {
-    type: '廚具',
-    order: 14,
+    name: '廚具',
+    id: 14,
   },
   {
-    type: '空調',
-    order: 15,
+    name: '空調',
+    id: 15,
   },
   {
-    type: '結構補強',
-    order: 16,
+    name: '結構補強',
+    id: 16,
   },
 ];

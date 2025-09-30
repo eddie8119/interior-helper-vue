@@ -7,7 +7,7 @@
           <BasicArrayInput
             v-model="localConstructionItems"
             :title="t('setting.construction')"
-            :new-item-factory="() => ({ name: '' })"
+            :new-item-factory="createNewConstructionItem"
             :name-placeholder="t('placeholder.project.add_construction')"
             :add-button-text="t('common.add')"
           />
@@ -68,6 +68,7 @@ import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { Item } from '@/components/core/input/BasicArrayInput.vue';
+import type { ConstructionSelection } from '@/types/selection';
 
 import TextButton from '@/components/core/button/TextButton.vue';
 import BasicArrayInput from '@/components/core/input/BasicArrayInput.vue';
@@ -88,27 +89,43 @@ const { handleSubmit, isSubmitting, setValues } = useForm({
 });
 
 // Form fields
-const { value: construction, errorMessage: constructionError } = useField<string[]>('construction');
+const { value: construction, errorMessage: constructionError } = useField<ConstructionSelection[]>('construction');
 const { value: unit, errorMessage: unitError } = useField<string[]>('unit');
 const { value: projectType, errorMessage: projectTypeError } = useField<string[]>('projectType');
 
 // Local copies for array inputs
-const localConstructionItems = ref<Item[]>([]);
+interface ConstructionItem extends Item {
+  id: number;
+}
+const localConstructionItems = ref<ConstructionItem[]>([]);
 const localUnitItems = ref<Item[]>([]);
 const localProjectTypeItems = ref<Item[]>([]);
 
+// Factory function for new construction items
+const createNewConstructionItem = () => {
+  return { name: '', id: Date.now() } as ConstructionItem;
+};
+
 // Sync from form state to local state
 const syncToLocal = () => {
-  localConstructionItems.value = construction.value.map((name) => ({ name }));
-  localUnitItems.value = unit.value.map((name) => ({ name }));
-  localProjectTypeItems.value = projectType.value.map((name) => ({ name }));
+  localConstructionItems.value = construction.value.map((item: ConstructionSelection) => ({ 
+    name: item.name, 
+    id: item.id 
+  }));
+  localUnitItems.value = unit.value.map((name: string) => ({ name }));
+  localProjectTypeItems.value = projectType.value.map((name: string) => ({ name }));
 };
 
 // Sync from local state to form state
 const syncToForm = () => {
-  construction.value = localConstructionItems.value.map((item) => item.name).filter(Boolean);
-  unit.value = localUnitItems.value.map((item) => item.name).filter(Boolean);
-  projectType.value = localProjectTypeItems.value.map((item) => item.name).filter(Boolean);
+  construction.value = localConstructionItems.value
+    .filter((item: ConstructionItem) => item.name)
+    .map((item: ConstructionItem, index: number) => ({ 
+      name: item.name, 
+      id: typeof item.id === 'number' ? item.id : index 
+    }));
+  unit.value = localUnitItems.value.map((item: Item) => item.name).filter(Boolean);
+  projectType.value = localProjectTypeItems.value.map((item: Item) => item.name).filter(Boolean);
 };
 
 // Watch for external changes to common data and update form values

@@ -5,6 +5,7 @@ import type { CommonResponse } from '@/types/response';
 import type { CreateCommonSchema } from '@/utils/schemas/createCommonSchema';
 import type { UseMutationReturnType } from '@tanstack/vue-query';
 import type { ComputedRef, Ref } from 'vue';
+import type { ConstructionSelection } from '@/types/selection';
 
 import { commonApi } from '@/api/common';
 
@@ -17,7 +18,7 @@ interface UseCommonReturnType {
   error: Ref<Error | null>;
 
   // Computed properties
-  constructionItems: ComputedRef<string[]>;
+  constructionItems: ComputedRef<ConstructionSelection[]>;
   unitItems: ComputedRef<string[]>;
   projectTypeItems: ComputedRef<string[]>;
 
@@ -57,7 +58,7 @@ export function useCommon(): UseCommonReturnType {
   });
 
   // 分離 construction 和 unit
-  const constructionItems = computed<string[]>(() => {
+  const constructionItems = computed<ConstructionSelection[]>(() => {
     return common.value?.construction || [];
   });
 

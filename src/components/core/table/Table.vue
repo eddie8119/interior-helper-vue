@@ -40,7 +40,7 @@
         borderBottom: '1px solid var(--color-black-100)',
       }"
     >
-      <el-table-column :width="idColumnLength" fixed="left" align="center">
+      <el-table-column :width="idColumnLength" align="center">
         <template #default="{ $index }">
           {{ $index + 1 }}
         </template>

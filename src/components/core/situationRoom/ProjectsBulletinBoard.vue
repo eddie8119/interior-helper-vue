@@ -16,15 +16,18 @@
       <template #type="{ row }">
         <p>{{ t(`project.type.${row.type}`) }}</p>
       </template>
-      <template #ph_measurement_value="{ row }">
-        <!-- <ProgressBar :value="row.ph ?? 0" :observation-type="props.observationType" /> -->
+      <template #task_progress="{ row }">
+        <ProgressBar
+          :value="row.tasks.filter((t) => t.status === 'completed').length"
+          :showPercentage="true"
+          :total="row.tasks.length || 1"
+        />
       </template>
     </Table>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ProgressBar from '@/components/core/chart/ProgressBar.vue';

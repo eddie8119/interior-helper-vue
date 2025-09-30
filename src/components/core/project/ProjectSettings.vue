@@ -19,7 +19,7 @@
   <!-- Delete Confirmation Dialog -->
   <DeleteDialog
     v-model="showDeleteDialog"
-    :isCrucial="true"
+    :is-crucial="true"
     :subject="t('project.project')"
     :target="projectTitle"
     @confirm="handleDelete"
@@ -71,7 +71,6 @@ import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import { useQueryClient } from '@tanstack/vue-query';
 
 import CollaboratorDialog from '@/components/core/dialog/CollaboratorDialog.vue';
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
@@ -86,7 +85,6 @@ const props = defineProps<{
 
 const { t } = useI18n();
 const router = useRouter();
-const queryClient = useQueryClient();
 const { deleteProject } = useProject(props.projectId);
 
 // Delete project
@@ -104,10 +102,6 @@ const handleDelete = async () => {
     // 清除 localStorage 中該項目的儲存
     const storageKey = getProjectStorageKey(props.projectId);
     localStorage.removeItem(storageKey);
-
-    // 使專案清單快取失效，確保下一個頁面會重新抓取最新資料
-    await queryClient.invalidateQueries({ queryKey: ['projects'] });
-    await queryClient.invalidateQueries({ queryKey: ['tasks', props.projectId] });
 
     ElMessage.success(t('message.project.project_deleted_success'));
     router.push({ name: 'todo-projects' });

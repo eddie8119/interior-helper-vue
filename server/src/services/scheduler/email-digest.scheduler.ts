@@ -2,10 +2,12 @@ import * as cron from 'node-cron';
 import { supabase } from '@/lib/supabase';
 import { emailService } from '../notification/email.service';
 
+type CronJob = ReturnType<typeof cron.schedule>;
+
 // 每日電子郵件摘要排程器
 // 每天 00:00 發送當天所有待辦任務的摘要
 export class EmailDigestScheduler {
-  private scheduledTask: cron.ScheduledTask | null = null;
+        private scheduledTask: CronJob | null = null;
 
   /**
    * 啟動排程器

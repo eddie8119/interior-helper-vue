@@ -1,12 +1,14 @@
-import cron from 'node-cron';
+import * as cron from 'node-cron';
 import { supabase } from '@/lib/supabase';
 import { lineNotificationService } from '../notification/line.service';
+
+type CronJob = ReturnType<typeof cron.schedule>;
 
 
 // 提醒排程服務
 // 負責定期檢查需要發送提醒的任務
 export class ReminderScheduler {
-  private lineReminderJob: cron.ScheduledTask | null = null;
+      private lineReminderJob: CronJob | null = null;
 
   /**
    * 啟動排程服務

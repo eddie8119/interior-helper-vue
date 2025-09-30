@@ -67,9 +67,15 @@ const onSubmit = handleSubmit(async (values) => {
       const { access_token, refresh_token } = apiResponseData;
       setRefreshToken(refresh_token);
       setAccessToken(access_token);
-      // localStorage.setItem('access_role', role);
-      // authStore.login(role);
-      router.replace(route.query.redirect?.toString() || '/overview');
+
+      // 立即標記為已登入，避免導航守衛因未認證而攔截
+      authStore.setAuth(true);
+
+      const redirectParam = route.query.redirect;
+      const redirectTo =
+        typeof redirectParam === 'string' && redirectParam.length > 0 ? redirectParam : '/overview';
+
+      await router.replace(redirectTo);
     }
   } catch (error) {
     handleError(error as AxiosError);

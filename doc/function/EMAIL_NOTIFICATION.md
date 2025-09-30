@@ -17,21 +17,7 @@
 
 ## 安裝設置
 
-### 1. 安裝依賴包
-
-```bash
-cd server
-npm install nodemailer --save
-npm install @types/nodemailer --save-dev
-```
-
 ### 2. 設置環境變量
-
-複製 `reminder.env.example` 文件為 `.env`，並填入電子郵件相關的配置：
-
-```bash
-cp reminder.env.example .env
-```
 
 重要的電子郵件配置項：
 ```
@@ -55,24 +41,6 @@ EMAIL_PORT=587
 EMAIL_SECURE=false
 EMAIL_USER=your_gmail_account@gmail.com
 EMAIL_PASSWORD=your_app_password  # 需要在 Google 帳戶中生成應用專用密碼
-```
-
-#### Outlook/Hotmail
-```
-EMAIL_HOST=smtp.office365.com
-EMAIL_PORT=587
-EMAIL_SECURE=false
-EMAIL_USER=your_outlook_account@outlook.com
-EMAIL_PASSWORD=your_password
-```
-
-#### Yahoo
-```
-EMAIL_HOST=smtp.mail.yahoo.com
-EMAIL_PORT=587
-EMAIL_SECURE=false
-EMAIL_USER=your_yahoo_account@yahoo.com
-EMAIL_PASSWORD=your_password
 ```
 
 ## 使用方法

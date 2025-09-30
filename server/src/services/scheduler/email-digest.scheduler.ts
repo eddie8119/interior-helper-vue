@@ -140,5 +140,4 @@ export class EmailDigestScheduler {
   }
 }
 
-// 導出排程器實例
 export const emailDigestScheduler = new EmailDigestScheduler();

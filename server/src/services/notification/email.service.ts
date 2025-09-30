@@ -1,10 +1,7 @@
 import nodemailer from 'nodemailer';
 import { supabase } from '@/lib/supabase';
 
-/**
- * 電子郵件服務
- * 用於發送任務提醒和每日摘要
- */
+// 用於發送任務提醒和每日摘要
 export class EmailService {
   private transporter: nodemailer.Transporter;
 
@@ -182,5 +179,4 @@ export class EmailService {
   }
 }
 
-// 導出郵件服務實例
 export const emailService = new EmailService();

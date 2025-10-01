@@ -41,7 +41,7 @@ import TaskCard from '@/components/core/kanbanBoard/TaskCard.vue';
 import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{
-  id: string;
+  id: number;
   constructionName: string;
   projectId: string;
   tasks: TaskResponse[];

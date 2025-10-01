@@ -56,7 +56,7 @@ export const useEditingStateStore = defineStore('editingState', () => {
    * @param id ID of the component to check
    * @returns boolean indicating if the component is being edited
    */
-  function isEditing(type: EditingComponentType, id: string): boolean {
+  function isEditing(type: EditingComponentType, id: string | number): boolean {
     return currentEditingState.value.type === type && currentEditingState.value.id === id;
   }
 

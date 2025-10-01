@@ -9,15 +9,15 @@
       @drop="onConstructionContainerDrop"
     >
       <!-- 工程類型容器 -->
-      <Draggable v-for="(container, index) in constructionContainers" :key="container.id">
+      <Draggable v-for="(container, index) in localConstructionContainer" :key="container.id">
         <ContainerItem
           :id="container.id"
           :project-id="projectId"
           :construction-name="container.name"
-          :filtered-tasks="filterTasksByConstructionType(container.name)"
+          :filtered-tasks="filteredTasks(container.id)"
           @delete-container="deleteConstruction(index)"
           @update:construction-name="updateConstructionName(index, $event)"
-          @task-drop="handleTaskDrop($event, container.name)"
+          @task-drop="handleTaskDrop($event, container.id)"
         />
       </Draggable>
       <!-- 添加新工程類型 -->
@@ -36,11 +36,9 @@ import type { ConstructionSelection } from '@/types/selection';
 import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
 import ContainerItem from '@/components/core/kanbanBoard/ContainerItem.vue';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
-import {
-  type ConstructionContainer,
-  useDraggableConstructions,
-} from '@/composables/todo/useDraggableConstructions';
+import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
+import { filterTasksByConstruction } from '@/utils/todo/taskUtils';
 
 const props = defineProps<{
   constructionContainer: ConstructionSelection[] | null;
@@ -53,46 +51,40 @@ const emit = defineEmits<{
   (e: 'update:projectAllTasks', value: DraggableTask[]): void;
 }>();
 
-// 管理容器狀態
-const constructionContainers = ref<ConstructionContainer[]>([]);
+// amount of editing 都會使用本地副本
+const localConstructionContainer = ref<ConstructionSelection[]>([]);
+const localTasks = ref<DraggableTask[]>([]);
 
-// 初始化容器
-const initializeConstructionContainers = () => {
-  constructionContainers.value =
-    props.constructionContainer?.map((item: ConstructionSelection) => ({
-      id: `container-${item.id}`,
-      name: item.name,
-    })) || [];
+const initializelocalConstructionContainer = () => {
+  localConstructionContainer.value = [...(props.constructionContainer || [])];
 };
 
-// 監聽 props 變化以重新初始化
-watch(() => props.constructionContainer, initializeConstructionContainers, { immediate: true });
+watch(() => props.constructionContainer, initializelocalConstructionContainer, { immediate: true });
+
+onMounted(() => {
+  initializelocalConstructionContainer();
+});
 
 // 容器更新回調
-const onContainerUpdate = (newContainers: ConstructionContainer[]) => {
-  emit(
-    'update:constructionContainer',
-    newContainers.map((c, index) => ({
-      id: parseInt(c.id.replace('container-', '')) || index,
-      name: c.name,
-    }))
-  );
+const onContainerUpdate = (newContainers: ConstructionSelection[]) => {
+  emit('update:constructionContainer', newContainers);
 };
 
-// 拖曳邏輯
-const { getConstructionContainerPayload, onConstructionContainerDrop } = useDraggableConstructions(
-  constructionContainers,
-  onContainerUpdate
-);
-
+// usecomposable
 // 容器操作邏輯
 const { deleteConstruction, addNewConstruction, updateConstructionName } = useConstructionActions(
-  constructionContainers,
+  localConstructionContainer,
   onContainerUpdate
 );
-
-// 為任務列表創建一個本地的、可排序的副本
-const localTasks = ref<DraggableTask[]>([]);
+// 拖曳邏輯
+const { getConstructionContainerPayload, onConstructionContainerDrop } = useDraggableConstructions(
+  localConstructionContainer,
+  onContainerUpdate
+);
+// 處理任務任務拖曳 (放在localTasks之後)
+const { handleTaskDrop } = useTaskDragAndDrop(localTasks, (updatedTasks: DraggableTask[]) => {
+  emit('update:projectAllTasks', updatedTasks);
+});
 
 watch(
   () => props.tasks,
@@ -127,26 +119,10 @@ watch(
   { immediate: true, deep: true }
 );
 
-// 根據工程類型過濾任務
-const filterTasksByConstructionType = (constructionName: string) => {
-  // 找到對應的 construction id
-  const construction = props.constructionContainer?.find((c) => c.name === constructionName);
-  const constructionId = construction?.id;
-
-  return localTasks.value
-    .filter((task: DraggableTask) => task.constructionType === constructionId)
-    .sort((a: DraggableTask, b: DraggableTask) => (a.order ?? 0) - (b.order ?? 0));
+// 使用工具函數過濾任務
+const filteredTasks = (constructionId: number) => {
+  return filterTasksByConstruction(localTasks.value, constructionId);
 };
-
-// 處理任務任務拖曳
-const { handleTaskDrop } = useTaskDragAndDrop(localTasks, (updatedTasks: DraggableTask[]) => {
-  emit('update:projectAllTasks', updatedTasks);
-});
-
-// 初始化
-onMounted(() => {
-  initializeConstructionContainers();
-});
 </script>
 
 <style scoped></style>

@@ -1,9 +1,9 @@
-import type { ConstructionContainer } from './useDraggableConstructions';
+import type { ConstructionSelection } from '@/types/selection';
 import type { Ref } from 'vue';
 
 export function useConstructionActions(
-  containersRef: Ref<ConstructionContainer[]>,
-  updateCallback: (newContainers: ConstructionContainer[]) => void
+  containersRef: Ref<ConstructionSelection[]>,
+  updateCallback: (newContainers: ConstructionSelection[]) => void
 ) {
   // 刪除容器
   const deleteConstruction = (index: number) => {
@@ -15,7 +15,7 @@ export function useConstructionActions(
   const addNewConstruction = (newContainerName: string) => {
     if (newContainerName && newContainerName.trim()) {
       containersRef.value.push({
-        id: `container-${Date.now()}`,
+        id: Number(Date.now()),
         name: newContainerName.trim(),
       });
       updateCallback(containersRef.value);

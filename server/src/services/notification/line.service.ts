@@ -6,11 +6,10 @@ interface Task {
   id: string;
   title: string;
   description: string | null;
-  reminder_datetime: string;
   user_id: string;
   project_id: string;
   status: string;
-  construction_type: string | null;
+  construction_type: number | null;
 }
 
 interface UserNotificationSettings {

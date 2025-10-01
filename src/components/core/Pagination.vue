@@ -37,7 +37,7 @@ const pageSize = computed({
 
 <style lang="scss" scoped>
 .pagination-wrapper {
-  @apply sticky bottom-0 z-10 flex justify-center;
+  @apply flex justify-center pt-4;
 
   :deep(.el-pagination) {
     // 總數和每頁條數選擇器

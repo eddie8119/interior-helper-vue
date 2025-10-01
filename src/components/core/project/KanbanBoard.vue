@@ -129,8 +129,12 @@ watch(
 
 // 根據工程類型過濾任務
 const filterTasksByConstructionType = (constructionName: string) => {
+  // 找到對應的 construction id
+  const construction = props.constructionContainer?.find((c) => c.name === constructionName);
+  const constructionId = construction?.id;
+
   return localTasks.value
-    .filter((task: DraggableTask) => task.constructionType === constructionName)
+    .filter((task: DraggableTask) => task.constructionType === constructionId)
     .sort((a: DraggableTask, b: DraggableTask) => (a.order ?? 0) - (b.order ?? 0));
 };
 

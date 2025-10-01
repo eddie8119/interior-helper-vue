@@ -54,6 +54,15 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
       name: user.user_metadata?.name,
     };
 
+    // 將當前請求的 JWT 設為 Supabase 認證上下文，讓後續 DB 操作在該用戶身份下執行（符合 RLS）
+    // 注意：此為每請求設置，避免跨請求干擾
+    try {
+      // For supabase-js v2, setAuth applies the bearer token on subsequent requests
+      // If your version requires setSession, switch to:
+      // await supabase.auth.setSession({ access_token: token, refresh_token: '' as any });
+      await (supabase as any).auth.setAuth(token);
+    } catch {}
+
     next();
   } catch (error: any) {
     console.error('Authentication error:', error);

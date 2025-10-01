@@ -27,7 +27,6 @@ export class EmailDigestScheduler {
         await this.sendDailyDigests();
       },
       {
-        scheduled: true,
         timezone: 'Asia/Taipei', // 使用台灣時區
       }
     );

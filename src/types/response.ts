@@ -45,7 +45,7 @@ export interface TaskResponse {
   projectId: string;
   title: string;
   description: string;
-  constructionType: string;
+  constructionType: number;
   status: string;
   reminderDatetime: number | null;
   createdAt: Date;

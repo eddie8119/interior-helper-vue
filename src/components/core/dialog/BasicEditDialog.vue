@@ -11,6 +11,11 @@
     <el-form label-width="110px" class="device-form" @submit.prevent="onSubmit">
       <slot />
     </el-form>
+
+    <!-- Error Message Display -->
+    <div v-if="errorMessage" class="error-message">
+      <el-alert :title="errorMessage" type="error" show-icon :closable="false" />
+    </div>
     <span class="mt-5 flex items-center gap-3">
       <slot name="footer-left" />
       <div class="flex-grow" />
@@ -83,6 +88,20 @@ const onCancel = () => {
 <style lang="scss" scoped>
 .flex-grow {
   flex-grow: 1;
+}
+
+.error-message {
+  margin: 16px 0;
+
+  :deep(.el-alert) {
+    margin-bottom: 0;
+    border-radius: 4px;
+  }
+
+  :deep(.el-alert__title) {
+    font-size: 14px;
+    line-height: 1.5;
+  }
 }
 </style>
 <style>

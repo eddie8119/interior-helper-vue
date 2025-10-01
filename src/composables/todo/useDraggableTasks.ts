@@ -14,13 +14,13 @@ export type DraggableTask = TaskResponse & { order?: number };
  * @param {Ref<DraggableTask[] | null>} allTasksRef - 包含所有任務的響應式引用。
  * @param {(updatedTasks: DraggableTask[]) => void} updateCallback - 數據更新後的回調函數。
  *
- * @returns {{ handleTaskDrop: (dropResult: any, targetConstructionType: string) => void }}
+ * @returns {{ handleTaskDrop: (dropResult: any, targetConstructionType: number) => void }}
  */
 export function useTaskDragAndDrop(
   allTasksRef: Ref<DraggableTask[] | null>,
   updateCallback: (updatedTasks: DraggableTask[]) => void
 ) {
-  const handleTaskDrop = (dropResult: any, targetConstructionType: string) => {
+  const handleTaskDrop = (dropResult: any, targetConstructionType: number) => {
     const { removedIndex, addedIndex, payload } = dropResult;
 
     if (allTasksRef.value === null || (removedIndex === null && addedIndex === null)) {

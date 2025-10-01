@@ -53,7 +53,7 @@ import ContainerHeader from '@/components/core/kanbanBoard/ContainerHeader.vue';
 import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{
-  id: string;
+  id: number;
   constructionName: string;
   projectId: string;
   filteredTasks: TaskResponse[];

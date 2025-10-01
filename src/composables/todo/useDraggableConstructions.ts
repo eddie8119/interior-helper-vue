@@ -1,9 +1,5 @@
 import type { Ref } from 'vue';
-
-export interface ConstructionContainer {
-  id: string;
-  name: string;
-}
+import type { ConstructionSelection } from '@/types/selection';
 
 /**
  * @composable useDraggableConstructions
@@ -11,19 +7,19 @@ export interface ConstructionContainer {
  * @description
  * 負責處理工程類型容器的拖曳排序功能。
  *
- * @param {Ref<ConstructionContainer[]>} containersRef - 容器陣列的響應式引用。
- * @param {(newContainers: ConstructionContainer[]) => void} updateCallback - 數據更新後的回調函數。
+ * @param {Ref<ConstructionSelection[]>} containersRef - 容器陣列的響應式引用。
+ * @param {(newContainers: ConstructionSelection[]) => void} updateCallback - 數據更新後的回調函數。
  *
  * @returns {
- *   getConstructionContainerPayload: (index: number) => ConstructionContainer;
+ *   getConstructionContainerPayload: (index: number) => ConstructionSelection;
  *   onConstructionContainerDrop: (dropResult: any) => void;
  * }
  */
 export function useDraggableConstructions(
-  containersRef: Ref<ConstructionContainer[]>,
-  updateCallback: (newContainers: ConstructionContainer[]) => void
+  containersRef: Ref<ConstructionSelection[]>,
+  updateCallback: (newContainers: ConstructionSelection[]) => void
 ) {
-  const getConstructionContainerPayload = (index: number): ConstructionContainer => {
+  const getConstructionContainerPayload = (index: number): ConstructionSelection => {
     return containersRef.value[index];
   };
 

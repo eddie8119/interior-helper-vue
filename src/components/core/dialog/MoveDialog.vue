@@ -43,11 +43,13 @@
 </template>
 
 <script setup lang="ts">
+import { ElMessage } from 'element-plus';
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { TodoItemDraft } from '@/types/todo';
+import type { ProjectResponse } from '@/types/response';
 
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
 import { useProjects } from '@/composables/useProjects';
@@ -68,7 +70,7 @@ const props = defineProps<{
   subject?: string;
 }>();
 
-// 如果piani沒有 才用api獲取
+// 獲取所有專案 以及內部工程。如果piani沒有 才用api獲取
 watch(
   () => props.modelValue,
   async (isOpen: boolean) => {
@@ -87,20 +89,24 @@ const emit = defineEmits<{
 const isSubmitting = ref(false);
 const errorMessage = ref<string>('');
 const selectedProject = ref<string | null>(null);
-const selectedConstruction = ref<string | null>(null);
+const selectedConstruction = ref<number | null>(null);
 // 為了生成createTask
 const selectedProjectId = ref<string | undefined>(undefined);
 
 watch(selectedProject, () => {
   selectedConstruction.value = null;
-  selectedProjectId.value = projects.value.find((p) => p.title === selectedProject.value)?.id;
+  selectedProjectId.value = projects.value.find(
+    (p: ProjectResponse) => p.title === selectedProject.value
+  )?.id;
 });
 
+// btn disabled
 const isInvalid = computed(() => !selectedProject.value || !selectedConstruction.value);
 
 const constructionContainerOptions = computed(() => {
   if (selectedProject.value) {
-    return projects.value.find((p) => p.title === selectedProject.value)?.constructionContainer;
+    return projects.value.find((p: ProjectResponse) => p.title === selectedProject.value)
+      ?.constructionContainer;
   }
   return [];
 });
@@ -111,7 +117,7 @@ const dialogVisible = computed({
 });
 
 const onSubmit = async () => {
-  if (!selectedProjectId.value || !selectedConstruction.value) {
+  if (isInvalid.value) {
     errorMessage.value = '請選擇專案和施工項目';
     return;
   }
@@ -122,11 +128,18 @@ const onSubmit = async () => {
   try {
     const { content, completed } = props.target;
 
+    // 確保有施工項目可用
+    if (!constructionContainerOptions.value || constructionContainerOptions.value.length === 0) {
+      errorMessage.value = '所選專案沒有可用的施工項目';
+      isSubmitting.value = false;
+      return;
+    }
+
     await createTask({
       taskData: {
         title: '待辦事項速記',
         description: content,
-        constructionType: selectedConstruction.value!,
+        constructionType: selectedConstruction.value!, // 這裡使用 ID 而不是名稱
         status: completed ? 'done' : 'todo',
         projectId: selectedProjectId.value!,
       },
@@ -134,19 +147,21 @@ const onSubmit = async () => {
     });
 
     if (createError.value) {
-      throw createError.value;
+      console.error('Task creation error:', createError.value);
+      errorMessage.value = `建立任務失敗: ${createError.value.message || '請確認您有權限執行此操作'}`;
+      return;
     }
 
     // 更新 isMoved 狀態並觸發更新
     emit('update:target', { ...props.target, isMoved: true });
 
-    // 觸發確認事件
     emit('confirm');
-    // 關閉彈窗
     dialogVisible.value = false;
+    ElMessage.success(t('message.created_success'));
   } catch (error) {
     console.error('Failed to create task:', error);
     errorMessage.value = '建立任務失敗，請重試';
+    ElMessage.error(t('message.created_failed'));
   } finally {
     isSubmitting.value = false;
   }

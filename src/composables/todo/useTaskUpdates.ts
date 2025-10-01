@@ -1,5 +1,5 @@
-import type { Ref } from 'vue';
 import type { TaskResponse } from '@/types/response';
+import type { Ref } from 'vue';
 
 export function useTaskUpdates(
   tasks: Ref<TaskResponse[] | null>,

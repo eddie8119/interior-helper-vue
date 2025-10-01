@@ -6,7 +6,7 @@
 declare module 'line-notify-nodejs' {
   export default class LineNotify {
     constructor(token: string);
-    
+
     send(options: {
       message: string;
       imageThumbnail?: string;
@@ -23,7 +23,7 @@ declare namespace cron {
     start: () => void;
     stop: () => void;
   }
-  
+
   interface ScheduleOptions {
     scheduled?: boolean;
     timezone?: string;
@@ -36,6 +36,6 @@ declare module 'node-cron' {
     func: () => void,
     options?: cron.ScheduleOptions
   ): cron.ScheduledTask;
-  
+
   export function validate(expression: string): boolean;
 }

@@ -6,8 +6,8 @@ import draftRoutes from './draft';
 import notificationRoutes from './notification';
 import projectRoutes from './project';
 import taskRoutes from './task';
-import userSettingsRoutes from './user-settings';
 import userRoutes from './user';
+import userSettingsRoutes from './user-settings';
 
 const app = express();
 

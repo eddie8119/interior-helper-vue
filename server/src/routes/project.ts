@@ -3,10 +3,10 @@ import express from 'express';
 import {
   createProject,
   deleteProject,
+  getOverviewProjects,
   getProject,
   getProjects,
   updateProject,
-  getOverviewProjects,
 } from '@/controllers/project';
 import { authMiddleware, requireUserId } from '@/middleware/auth';
 

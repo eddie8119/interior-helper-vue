@@ -1,6 +1,6 @@
 import './app';
-import { reminderScheduler } from './services/scheduler/reminder.scheduler';
 import { emailDigestScheduler } from './services/scheduler/email-digest.scheduler';
+import { reminderScheduler } from './services/scheduler/reminder.scheduler';
 
 // 啟動提醒排程服務
 reminderScheduler.start();

@@ -1,14 +1,15 @@
 import * as cron from 'node-cron';
-import { supabase } from '@/lib/supabase';
+
 import { lineNotificationService } from '../notification/line.service';
 
-type CronJob = ReturnType<typeof cron.schedule>;
+import { supabase } from '@/lib/supabase';
 
+type CronJob = ReturnType<typeof cron.schedule>;
 
 // 提醒排程服務
 // 負責定期檢查需要發送提醒的任務
 export class ReminderScheduler {
-      private lineReminderJob: CronJob | null = null;
+  private lineReminderJob: CronJob | null = null;
 
   /**
    * 啟動排程服務
@@ -44,7 +45,7 @@ export class ReminderScheduler {
       const now = new Date();
       // 計算 30 分鐘後的時間
       const thirtyMinutesLater = new Date(now.getTime() + 30 * 60 * 1000);
-      
+
       // 查詢符合條件的任務:
       // 1. reminder_datetime 在當前時間到 30 分鐘後之間
       // 2. line_reminder_sent 為 false (尚未發送提醒)

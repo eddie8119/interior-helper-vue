@@ -1,6 +1,7 @@
-import { watch, onMounted } from 'vue';
-import type { Ref } from 'vue';
+import { onMounted, watch } from 'vue';
+
 import type { ProjectResponse, TaskResponse } from '@/types/response';
+import type { Ref } from 'vue';
 
 export function useProjectInitialization(
   fetchedProject: Ref<ProjectResponse | null>,

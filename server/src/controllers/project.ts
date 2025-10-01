@@ -11,10 +11,12 @@ export const getOverviewProjects = async (req: Request, res: Response) => {
     // 查詢資料庫中屬於當前用戶的所有專案，並關聯任務
     const { data: projects, error } = await supabase
       .from('Projects')
-      .select(`
+      .select(
+        `
         *,
         Tasks(*)
-      `)
+      `
+      )
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
 
@@ -30,16 +32,18 @@ export const getOverviewProjects = async (req: Request, res: Response) => {
     // 在返回前處理數據，移除敏感欄位並整合任務
     const safeProjects = projects?.map((project) => {
       const { user_id, Tasks, ...safeProject } = project;
-      
+
       // 處理任務數據，移除敏感欄位
-      const safeTasks = Tasks ? Tasks.map((task: any) => {
-        const { user_id: taskUserId, ...safeTask } = task;
-        return safeTask;
-      }) : [];
-      
+      const safeTasks = Tasks
+        ? Tasks.map((task: any) => {
+            const { user_id: taskUserId, ...safeTask } = task;
+            return safeTask;
+          })
+        : [];
+
       return {
         ...safeProject,
-        tasks: safeTasks
+        tasks: safeTasks,
       };
     });
 

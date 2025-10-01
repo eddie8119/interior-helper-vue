@@ -2,10 +2,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { computed } from 'vue';
 
 import type { CommonResponse } from '@/types/response';
+import type { ConstructionSelection } from '@/types/selection';
 import type { CreateCommonSchema } from '@/utils/schemas/createCommonSchema';
 import type { UseMutationReturnType } from '@tanstack/vue-query';
 import type { ComputedRef, Ref } from 'vue';
-import type { ConstructionSelection } from '@/types/selection';
 
 import { commonApi } from '@/api/common';
 

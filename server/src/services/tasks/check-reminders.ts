@@ -1,5 +1,6 @@
-import { supabase } from '@/lib/supabase';
 import { lineNotificationService } from '../notification/line.service';
+
+import { supabase } from '@/lib/supabase';
 
 // 檢查並處理需要提醒的任務
 export class ReminderService {
@@ -11,7 +12,7 @@ export class ReminderService {
     try {
       const now = new Date();
       const thirtyMinutesLater = new Date(now.getTime() + 30 * 60 * 1000);
-      
+
       // 查詢符合條件的任務
       const { data: tasks, error } = await supabase
         .from('Tasks')
@@ -50,14 +51,16 @@ export class ReminderService {
     try {
       const now = new Date();
       const twentyFourHoursLater = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-      
+
       // 查詢未來 24 小時內需要提醒的任務
       const { data: tasks, error } = await supabase
         .from('Tasks')
-        .select(`
+        .select(
+          `
           *,
           Projects(title)
-        `)
+        `
+        )
         .gte('reminder_datetime', now.toISOString())
         .lte('reminder_datetime', twentyFourHoursLater.toISOString())
         .not('reminder_datetime', 'is', null)
@@ -86,7 +89,7 @@ export class ReminderService {
         .update({
           line_reminder_sent: false,
           email_reminder_sent: false,
-          last_reminder_sent_at: null
+          last_reminder_sent_at: null,
         })
         .eq('id', taskId);
 

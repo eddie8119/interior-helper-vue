@@ -28,20 +28,18 @@
 import { computed } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 
-import type { TaskResponse } from '@/types/response';
-
 import Loading from '@/components/core/loading/Loading.vue';
 import KanbanBoard from '@/components/core/project/KanbanBoard.vue';
 import ProjectHeader from '@/components/core/project/ProjectHeader.vue';
 import ProjectSettings from '@/components/core/project/ProjectSettings.vue';
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
-import { useProjectLocalStorage } from '@/composables/todo/useProjectLocalStorage';
-import { useTaskLocalStorage } from '@/composables/todo/useTaskLocalStorage';
-import { useProject } from '@/composables/useProject';
 import { useProjectInitialization } from '@/composables/todo/useProjectInitialization';
+import { useProjectLocalStorage } from '@/composables/todo/useProjectLocalStorage';
 import { useProjectSaving } from '@/composables/todo/useProjectSaving';
 import { useProjectUpdates } from '@/composables/todo/useProjectUpdates';
+import { useTaskLocalStorage } from '@/composables/todo/useTaskLocalStorage';
 import { useTaskUpdates } from '@/composables/todo/useTaskUpdates';
+import { useProject } from '@/composables/useProject';
 import { useTasks } from '@/composables/useTasks';
 import { useUpdateTime } from '@/composables/useUpdateTime';
 import { adjustTimeZone, formatDateTimeWithMinutes } from '@/utils/dateTime';

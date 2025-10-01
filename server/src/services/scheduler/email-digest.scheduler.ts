@@ -1,13 +1,15 @@
 import * as cron from 'node-cron';
-import { supabase } from '@/lib/supabase';
+
 import { emailService } from '../notification/email.service';
+
+import { supabase } from '@/lib/supabase';
 
 type CronJob = ReturnType<typeof cron.schedule>;
 
 // 每日電子郵件摘要排程器
 // 每天 00:00 發送當天所有待辦任務的摘要
 export class EmailDigestScheduler {
-        private scheduledTask: CronJob | null = null;
+  private scheduledTask: CronJob | null = null;
 
   /**
    * 啟動排程器
@@ -123,10 +125,7 @@ export class EmailDigestScheduler {
             .in('id', taskIds);
 
           if (updateError) {
-            console.error(
-              `[EmailDigestScheduler] 更新用戶 ${userId} 的任務狀態失敗:`,
-              updateError
-            );
+            console.error(`[EmailDigestScheduler] 更新用戶 ${userId} 的任務狀態失敗:`, updateError);
           }
         }
       }

@@ -82,10 +82,7 @@ export const updateUserSettings = async (req: Request, res: Response) => {
 
     if (existingSettings) {
       // 更新現有設置
-      result = await supabase
-        .from('UserSettings')
-        .update(settings)
-        .eq('user_id', userId);
+      result = await supabase.from('UserSettings').update(settings).eq('user_id', userId);
     } else {
       // 創建新設置
       result = await supabase.from('UserSettings').insert(settings);

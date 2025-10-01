@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+
 import { supabase } from '@/lib/supabase';
 
 // 用於發送任務提醒和每日摘要
@@ -16,10 +17,11 @@ export class EmailService {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
-    
+
     // 測試郵件傳輸器連接
     if (process.env.NODE_ENV !== 'test') {
-      this.transporter.verify()
+      this.transporter
+        .verify()
         .then(() => console.log('郵件服務連接成功'))
         .catch((err) => console.error('郵件服務連接失敗:', err));
     }

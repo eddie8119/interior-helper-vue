@@ -89,7 +89,8 @@ const { handleSubmit, isSubmitting, setValues } = useForm({
 });
 
 // Form fields
-const { value: construction, errorMessage: constructionError } = useField<ConstructionSelection[]>('construction');
+const { value: construction, errorMessage: constructionError } =
+  useField<ConstructionSelection[]>('construction');
 const { value: unit, errorMessage: unitError } = useField<string[]>('unit');
 const { value: projectType, errorMessage: projectTypeError } = useField<string[]>('projectType');
 
@@ -108,9 +109,9 @@ const createNewConstructionItem = () => {
 
 // Sync from form state to local state
 const syncToLocal = () => {
-  localConstructionItems.value = construction.value.map((item: ConstructionSelection) => ({ 
-    name: item.name, 
-    id: item.id 
+  localConstructionItems.value = construction.value.map((item: ConstructionSelection) => ({
+    name: item.name,
+    id: item.id,
   }));
   localUnitItems.value = unit.value.map((name: string) => ({ name }));
   localProjectTypeItems.value = projectType.value.map((name: string) => ({ name }));
@@ -120,9 +121,9 @@ const syncToLocal = () => {
 const syncToForm = () => {
   construction.value = localConstructionItems.value
     .filter((item: ConstructionItem) => item.name)
-    .map((item: ConstructionItem, index: number) => ({ 
-      name: item.name, 
-      id: typeof item.id === 'number' ? item.id : index 
+    .map((item: ConstructionItem, index: number) => ({
+      name: item.name,
+      id: typeof item.id === 'number' ? item.id : index,
     }));
   unit.value = localUnitItems.value.map((item: Item) => item.name).filter(Boolean);
   projectType.value = localProjectTypeItems.value.map((item: Item) => item.name).filter(Boolean);

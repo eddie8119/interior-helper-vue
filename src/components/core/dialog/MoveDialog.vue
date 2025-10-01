@@ -33,9 +33,9 @@
       >
         <el-option
           v-for="item in constructionContainerOptions"
-          :key="item"
-          :label="item"
-          :value="item"
+          :key="item.id"
+          :label="item.name + '工程'"
+          :value="item.name"
         />
       </el-select>
     </el-form-item>

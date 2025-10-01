@@ -34,10 +34,9 @@
         v-model="constructionContainer"
         multiple
         filterable
-        allow-create
-        default-first-option
         :reserve-keyword="false"
         :placeholder="t('placeholder.project.construction')"
+        value-key="id"
         @blur="handleBlurConstructionContainer"
       >
         <el-option :value="newConstructionItem" class="flex items-center gap-2">
@@ -49,14 +48,14 @@
             @click.stop
           >
             <template #append>
-              <el-button :icon="Plus" size="small" @click.stop="updateCommonData('construction')" />
+              <el-button :icon="Plus" size="small" @click.stop="addConstructionData" />
             </template>
           </el-input>
         </el-option>
         <el-option
           v-for="item in localConstructionItems"
-          :key="item"
-          :label="item + '工程'"
+          :key="item.id"
+          :label="item.name + '工程'"
           :value="item"
         />
       </el-select>
@@ -78,8 +77,7 @@ import { PROJECT_TYPES } from '@/constants/selection';
 import { createProjectSchema, type CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
 
 const { t } = useI18n();
-const { newConstructionItem, localConstructionItems, updateCommonData, addConstructionData } =
-  useCommonAction();
+const { newConstructionItem, localConstructionItems, addConstructionData } = useCommonAction();
 
 const props = defineProps<{
   modelValue: boolean;

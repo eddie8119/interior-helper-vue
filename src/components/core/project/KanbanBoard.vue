@@ -31,6 +31,7 @@ import { onMounted, ref, watch } from 'vue';
 import { Container, Draggable } from 'vue3-smooth-dnd';
 
 import type { TaskResponse } from '@/types/response';
+import type { ConstructionSelection } from '@/types/selection';
 
 import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
 import ContainerItem from '@/components/core/kanbanBoard/ContainerItem.vue';
@@ -42,13 +43,13 @@ import {
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
 
 const props = defineProps<{
-  constructionContainer: string[] | null;
+  constructionContainer: ConstructionSelection[] | null;
   projectId: string;
   tasks: TaskResponse[] | null;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:constructionContainer', value: string[]): void;
+  (e: 'update:constructionContainer', value: ConstructionSelection[]): void;
   (e: 'update:projectAllTasks', value: DraggableTask[]): void;
 }>();
 
@@ -58,9 +59,9 @@ const constructionContainers = ref<ConstructionContainer[]>([]);
 // 初始化容器
 const initializeConstructionContainers = () => {
   constructionContainers.value =
-    props.constructionContainer?.map((name: string, index: number) => ({
-      id: `container-${index}`,
-      name,
+    props.constructionContainer?.map((item: ConstructionSelection) => ({
+      id: `container-${item.id}`,
+      name: item.name,
     })) || [];
 };
 
@@ -71,7 +72,10 @@ watch(() => props.constructionContainer, initializeConstructionContainers, { imm
 const onContainerUpdate = (newContainers: ConstructionContainer[]) => {
   emit(
     'update:constructionContainer',
-    newContainers.map((c) => c.name)
+    newContainers.map((c, index) => ({
+      id: parseInt(c.id.replace('container-', '')) || index,
+      name: c.name,
+    }))
   );
 };
 

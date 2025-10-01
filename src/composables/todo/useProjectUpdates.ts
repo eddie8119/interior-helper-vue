@@ -1,5 +1,6 @@
-import type { Ref } from 'vue';
 import type { ProjectResponse } from '@/types/response';
+import type { ConstructionSelection } from '@/types/selection';
+import type { Ref } from 'vue';
 
 export function useProjectUpdates(
   project: Ref<ProjectResponse | null>,
@@ -12,7 +13,7 @@ export function useProjectUpdates(
       // 只更新標題屬性，不影響其他屬性
       project.value = {
         ...project.value,
-        title: newTitle
+        title: newTitle,
       };
       saveProjectToLocalStorage();
       updateLastUpdateTime();
@@ -20,12 +21,12 @@ export function useProjectUpdates(
   };
 
   // 更新工程容器的方法
-  const updateConstructionContainer = (containers: string[]) => {
+  const updateConstructionContainer = (containers: ConstructionSelection[]) => {
     if (project.value) {
       // 只更新工程容器屬性，不影響其他屬性
       project.value = {
         ...project.value,
-        constructionContainer: containers
+        constructionContainer: containers,
       };
       saveProjectToLocalStorage();
       updateLastUpdateTime();

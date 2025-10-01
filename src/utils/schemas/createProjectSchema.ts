@@ -1,14 +1,11 @@
 import { z } from 'zod';
 
-// const constructionSelectionSchema = z.object({
-//   type: z.string(),
-//   order: z.number(),
-// });
+import { constructionSelectionSchema } from './createCommonSchema';
 
 export const createProjectSchema = z.object({
   title: z.string().min(1, '請輸入專案標題').max(10, '標題不能超過10個字'),
   type: z.enum(['residential', 'luxury', 'commercial', 'office']),
-  constructionContainer: z.array(z.string()).min(1, '至少選擇一個施工項目'),
+  constructionContainer: z.array(constructionSelectionSchema).min(1, '至少選擇一個施工項目'),
 });
 
 export const createProjectDetailSchema = createProjectSchema.extend({

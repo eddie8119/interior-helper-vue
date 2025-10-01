@@ -38,6 +38,7 @@
         default-first-option
         :reserve-keyword="false"
         :placeholder="t('placeholder.project.construction')"
+        value-key="id"
         @blur="handleBlurConstructionContainer"
       >
         <el-option :value="newConstructionItem" class="flex items-center gap-2">
@@ -49,14 +50,14 @@
             @click.stop
           >
             <template #append>
-              <el-button :icon="Plus" size="small" @click.stop="updateCommonData('construction')" />
+              <el-button :icon="Plus" size="small" @click.stop="addConstructionData" />
             </template>
           </el-input>
         </el-option>
         <el-option
           v-for="item in localConstructionItems"
-          :key="item"
-          :label="item + '工程'"
+          :key="item.id"
+          :label="item.name + '工程'"
           :value="item"
         />
       </el-select>
@@ -66,11 +67,11 @@
 
 <script setup lang="ts">
 import { Plus } from '@element-plus/icons-vue';
+import { useQueryClient } from '@tanstack/vue-query';
 import { toTypedSchema } from '@vee-validate/zod';
 import { useField, useForm } from 'vee-validate';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useQueryClient } from '@tanstack/vue-query';
 
 import { projectApi } from '@/api/project';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
@@ -80,8 +81,7 @@ import { createProjectSchema, type CreateProjectSchema } from '@/utils/schemas/c
 
 const { t } = useI18n();
 const queryClient = useQueryClient();
-const { newConstructionItem, localConstructionItems, updateCommonData, addConstructionData } =
-  useCommonAction();
+const { newConstructionItem, localConstructionItems, addConstructionData } = useCommonAction();
 
 const props = defineProps<{
   modelValue: boolean;
@@ -122,7 +122,7 @@ const onSubmit = handleSubmit(async (values: CreateProjectSchema) => {
       return;
     }
     if (success) {
-      await queryClient.invalidateQueries({ queryKey: ['projects'] });
+      await queryClient.invalidateQueries({ queryKey: ['overview-projects'] });
       onCancel();
     }
   } catch (error) {

@@ -2,11 +2,13 @@ import { ref, watch } from 'vue';
 
 import { useCommon } from './useCommon';
 
+import type { ConstructionSelection } from '@/types/selection';
+
 export function useCommonAction() {
   const { common, constructionItems, updateCommon, unitItems, projectTypeItems } = useCommon();
   // construction
   const newConstructionItem = ref<string>('');
-  const localConstructionItems = ref<string[]>([]);
+  const localConstructionItems = ref<ConstructionSelection[]>([]);
   // unit
   const newUnitItem = ref<string>('');
   const localUnitItems = ref<string[]>([]);
@@ -16,16 +18,16 @@ export function useCommonAction() {
 
   // Initialize local construction items
   watch(
-    () => [constructionItems.value, unitItems.value, projectTypeItems.value],
-    ([constructionItems, unitItems, projectTypeItems]) => {
-      if (constructionItems) {
-        localConstructionItems.value = [...constructionItems];
+    () => [constructionItems.value, unitItems.value, projectTypeItems.value] as const,
+    ([newConstructionItems, newUnitItems, newProjectTypeItems]) => {
+      if (newConstructionItems) {
+        localConstructionItems.value = [...newConstructionItems] as ConstructionSelection[];
       }
-      if (unitItems) {
-        localUnitItems.value = [...unitItems];
+      if (newUnitItems) {
+        localUnitItems.value = [...newUnitItems] as string[];
       }
-      if (projectTypeItems) {
-        localProjectTypeItems.value = [...projectTypeItems];
+      if (newProjectTypeItems) {
+        localProjectTypeItems.value = [...newProjectTypeItems] as string[];
       }
     },
     { immediate: true }
@@ -55,11 +57,28 @@ export function useCommonAction() {
     const item = newItem.value.trim();
 
     // 驗證
-    if (!item || localItems.value.includes(item)) return false;
+    if (type === 'construction') {
+      const constructionItems = localItems.value as ConstructionSelection[];
+      if (!item || constructionItems.some((c) => c.name === item)) return false;
+    } else {
+      if (!item || (localItems.value as string[]).includes(item)) return false;
+    }
 
     // 更新資料
-    const updatedItems = [...localItems.value, item];
-    await updateData(type, updatedItems);
+    if (type === 'construction') {
+      const maxId = (localItems.value as ConstructionSelection[]).reduce(
+        (max, item) => Math.max(max, item.id),
+        -1
+      );
+      const updatedItems = [
+        ...(localItems.value as ConstructionSelection[]),
+        { name: item, id: maxId + 1 },
+      ];
+      await updateData(type, updatedItems);
+    } else {
+      const updatedItems = [...(localItems.value as string[]), item];
+      await updateData(type, updatedItems);
+    }
 
     // 清空輸入
     newItem.value = '';
@@ -67,25 +86,31 @@ export function useCommonAction() {
   };
 
   // 通用的更新資料方法
-  const updateData = async (type: DataType, updatedItems: string[]) => {
+  const updateData = async (type: DataType, updatedItems: ConstructionSelection[] | string[]) => {
     // 準備更新資料
     const updatePayload = {
-      construction: type === 'construction' ? updatedItems : localConstructionItems.value,
-      unit: type === 'unit' ? updatedItems : localUnitItems.value,
-      projectType: type === 'projectType' ? updatedItems : localProjectTypeItems.value,
+      construction:
+        type === 'construction'
+          ? (updatedItems as ConstructionSelection[])
+          : localConstructionItems.value,
+      unit: type === 'unit' ? (updatedItems as string[]) : localUnitItems.value,
+      projectType:
+        type === 'projectType' ? (updatedItems as string[]) : localProjectTypeItems.value,
     };
 
     // 更新資料
     await updateCommonData(updatePayload);
 
     // 更新本地狀態
-    if (type === 'construction') localConstructionItems.value = updatedItems;
-    if (type === 'unit') localUnitItems.value = updatedItems;
-    if (type === 'projectType') localProjectTypeItems.value = updatedItems;
+    if (type === 'construction')
+      localConstructionItems.value = updatedItems as ConstructionSelection[];
+    if (type === 'unit') localUnitItems.value = updatedItems as string[];
+    if (type === 'projectType') localProjectTypeItems.value = updatedItems as string[];
   };
 
   const addConstructionData = () => addData('construction');
-  const updateConstructionData = (items: string[]) => updateData('construction', items);
+  const updateConstructionData = (items: ConstructionSelection[]) =>
+    updateData('construction', items);
 
   const addUnitData = () => addData('unit');
   const updateUnitData = (items: string[]) => updateData('unit', items);
@@ -94,14 +119,14 @@ export function useCommonAction() {
   const updateProjectTypeData = (items: string[]) => updateData('projectType', items);
 
   const updateCommonData = async (updateData: {
-    construction: string[];
+    construction: ConstructionSelection[];
     unit: string[];
     projectType: string[];
   }) => {
     try {
-      if (common.value && common.value.length > 0) {
+      if (common.value && common.value.id) {
         await updateCommon({
-          id: common.value[0].id,
+          id: common.value.id,
           data: {
             construction: updateData.construction,
             unit: updateData.unit,

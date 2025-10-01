@@ -1,10 +1,8 @@
 import { z } from 'zod';
 
-import type { ConstructionSelection } from '@/types/selection';
-
-const constructionSelectionSchema = z.object({
+export const constructionSelectionSchema = z.object({
   id: z.number(),
-  name: z.string()
+  name: z.string(),
 });
 
 export const createCommonSchema = z.object({

@@ -1,4 +1,4 @@
-import type { ProjectType, ConstructionSelection } from './selection';
+import type { ConstructionSelection, ProjectType } from './selection';
 
 export interface AuthResponse {
   user: {
@@ -30,7 +30,7 @@ export interface DraftResponse {
 }
 
 export interface ProjectResponse {
-  constructionContainer: string[] | null;
+  constructionContainer: ConstructionSelection[] | null;
   id: string;
   title: string;
   type: ProjectType;

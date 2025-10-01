@@ -130,11 +130,6 @@ const routes: Array<RouteRecordRaw> = [
             path: 'all',
             component: () => import('../pages/protected/setting/SetAllCommon.vue'),
           },
-          {
-            name: 'each',
-            path: 'each',
-            component: () => import('../pages/protected/setting/SetEachCommon.vue'),
-          },
         ],
       },
       {

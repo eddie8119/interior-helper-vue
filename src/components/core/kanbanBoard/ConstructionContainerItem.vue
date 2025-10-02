@@ -16,7 +16,7 @@
       @task-drop="handleTaskDrop"
     />
 
-    <!-- 添加施作項目按鈕 -->
+    <!-- 添加task按鈕 -->
     <div class="mt-3 flex justify-center">
       <button
         v-if="!isEditing"
@@ -46,11 +46,14 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
+  // container events
   (e: 'delete-container'): void;
   (e: 'update:construction-name', name: string): void;
+  // task events
+  (e: 'delete-task', taskId: string): void;
+  (e: 'update:task', taskId: string, updatedTask: Partial<TaskResponse>): void;
+  (e: 'add-task', tasks: TaskResponse): void;
   (e: 'task-drop', dropResult: any, constructionType: string): void;
-  (e: 'add-task', taskData: any, constructionType: string): void;
-  (e: 'update:tasks', tasks: TaskResponse[]): void;
 }>();
 
 const editingStateStore = useEditingStateStore();

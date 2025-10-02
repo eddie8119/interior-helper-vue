@@ -15,8 +15,11 @@
           :project-id="projectId"
           :construction-name="container.name"
           :filtered-tasks="filteredTasks(container.id)"
-          @delete-container="deleteConstruction(index)"
+          @delete-container="deleteConstruction"
           @update:construction-name="updateConstructionName(index, $event)"
+          @add-task="addNewTask"
+          @delete-task="deleteTask"
+          @update:task="updateTask"
           @task-drop="handleTaskDrop($event, container.id)"
         />
       </Draggable>
@@ -38,6 +41,7 @@ import ConstructionContainerItem from '@/components/core/kanbanBoard/Constructio
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
+import { useTaskActions } from '@/composables/todo/useTaskActions';
 import { filterTasksByConstruction } from '@/utils/todo/taskUtils';
 
 const props = defineProps<{
@@ -48,12 +52,12 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:constructionContainer', value: ConstructionSelection[]): void;
-  (e: 'update:projectAllTasks', value: DraggableTask[]): void;
+  (e: 'update:projectAllTasks', value: TaskResponse[]): void;
 }>();
 
 // amount of editing 都會使用本地副本
 const localConstructionContainer = ref<ConstructionSelection[]>([]);
-const localTasks = ref<DraggableTask[]>([]);
+const localTasks = ref<TaskResponse[]>([]);
 
 const initializelocalConstructionContainer = () => {
   localConstructionContainer.value = [...(props.constructionContainer || [])];
@@ -69,6 +73,9 @@ onMounted(() => {
 const onContainerUpdate = (newContainers: ConstructionSelection[]) => {
   emit('update:constructionContainer', newContainers);
 };
+const onTaskUpdate = (newTasks: TaskResponse[]) => {
+  emit('update:projectAllTasks', newTasks);
+};
 
 // usecomposable
 // 容器操作邏輯
@@ -76,6 +83,9 @@ const { deleteConstruction, addNewConstruction, updateConstructionName } = useCo
   localConstructionContainer,
   onContainerUpdate
 );
+// 任務操作邏輯
+const { deleteTask, addNewTask, updateTask } = useTaskActions(localTasks, onTaskUpdate);
+
 // 拖曳邏輯
 const { getConstructionContainerPayload, onConstructionContainerDrop } = useDraggableConstructions(
   localConstructionContainer,

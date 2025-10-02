@@ -1,10 +1,13 @@
 <template>
-  <div class="task-card mb-2 rounded bg-white p-2 shadow-sm">
+  <div
+    class="task-card group mb-2 rounded bg-white p-2 shadow-sm transition-colors duration-200 hover:bg-gray-50"
+  >
     <div class="flex items-center justify-between">
       <div class="flex items-center">
         <DragHandle :size="4" handle-class="task-drag-handle" />
         <h3 class="font-medium">{{ task.title }}</h3>
       </div>
+      <TrashButton class="invisible group-hover:visible" @click="handleDeleteTask" />
     </div>
     <p class="mt-1 text-sm text-gray-600">{{ task.description }}</p>
 
@@ -81,10 +84,13 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { TaskResponse } from '@/types/response';
 
+import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
 import DragHandle from '@/components/ui/DragHandle.vue';
+import TrashButton from '@/components/ui/TrashButton.vue';
 
 const props = defineProps<{
   task: TaskResponse;
@@ -94,6 +100,7 @@ const emit = defineEmits<{
   (e: 'update:status', taskId: string, status: string): void;
   (e: 'task-drop', dropData: any): void;
 }>();
+
 
 // 格式化日期
 const formatDate = (dateString: string | Date | number | null) => {
@@ -129,6 +136,12 @@ const statusText = computed(() => {
 // 更新任務狀態
 const updateStatus = (status: string) => {
   emit('update:status', props.task.id, status);
+};
+
+// 處理刪除任務
+const handleDeleteTask = () => {
+  emit('delete-task', props.task.id);
+  showDeleteTaskDialog.value = false;
 };
 </script>
 

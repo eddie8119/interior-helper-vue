@@ -42,14 +42,17 @@ export interface ProjectResponse {
 // 任務
 export interface TaskResponse {
   id: string;
-  projectId: string;
   title: string;
   description: string;
+  status: 'todo' | 'in_progress' | 'done';
+  projectId: string;
   constructionType: number;
-  status: string;
-  reminderDatetime: number | null;
   createdAt: Date;
   updatedAt: Date;
+  reminderDatetime: Date | null;
+  lastReminderSentAt: Date | null;
+  lineReminderSent: boolean;
+  emailReminderSent: boolean;
   materials: TaskMaterialResponse[];
 }
 

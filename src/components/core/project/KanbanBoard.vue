@@ -42,6 +42,7 @@ import { useConstructionActions } from '@/composables/todo/useConstructionAction
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
 import { useTaskActions } from '@/composables/todo/useTaskActions';
+import { provideTaskContext } from '@/composables/todo/useTaskContext';
 import { filterTasksByConstruction } from '@/utils/todo/taskUtils';
 
 const props = defineProps<{
@@ -62,11 +63,22 @@ const localTasks = ref<TaskResponse[]>([]);
 const initializelocalConstructionContainer = () => {
   localConstructionContainer.value = [...(props.constructionContainer || [])];
 };
+const initializelocalTasks = () => {
+  localTasks.value = [...(props.tasks || [])];
+};
 
-watch(() => props.constructionContainer, initializelocalConstructionContainer, { immediate: true });
+watch(
+  () => [props.constructionContainer, props.tasks],
+  () => {
+    initializelocalConstructionContainer();
+    initializelocalTasks();
+  },
+  { immediate: true }
+);
 
 onMounted(() => {
   initializelocalConstructionContainer();
+  initializelocalTasks();
 });
 
 // 容器更新回調
@@ -85,6 +97,25 @@ const { deleteConstruction, addNewConstruction, updateConstructionName } = useCo
 );
 // 任務操作邏輯
 const { deleteTask, addNewTask, updateTask } = useTaskActions(localTasks, onTaskUpdate);
+
+// 提供任務上下文
+provideTaskContext({
+  deleteTask: (taskId: string) => {
+    const taskIndex = localTasks.value.findIndex((task: TaskResponse) => task.id === taskId);
+    if (taskIndex !== -1) {
+      localTasks.value.splice(taskIndex, 1);
+      onTaskUpdate(localTasks.value);
+    }
+  },
+  updateTask: (taskId: string, updatedTask: Partial<TaskResponse>) => {
+    // 根據ID查找並更新任務
+    const taskIndex = localTasks.value.findIndex((task) => task.id === taskId);
+    if (taskIndex !== -1) {
+      localTasks.value[taskIndex] = { ...localTasks.value[taskIndex], ...updatedTask };
+      onTaskUpdate(localTasks.value);
+    }
+  },
+});
 
 // 拖曳邏輯
 const { getConstructionContainerPayload, onConstructionContainerDrop } = useDraggableConstructions(

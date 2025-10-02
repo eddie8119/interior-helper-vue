@@ -91,6 +91,7 @@ import type { TaskResponse } from '@/types/response';
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
 import DragHandle from '@/components/ui/DragHandle.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
+import { useTaskContext } from '@/composables/todo/useTaskContext';
 
 const props = defineProps<{
   task: TaskResponse;
@@ -101,6 +102,18 @@ const emit = defineEmits<{
   (e: 'task-drop', dropData: any): void;
 }>();
 
+// 從上下文中獲取任務操作
+const { deleteTask } = useTaskContext();
+
+// 處理刪除任務
+const handleDeleteTask = () => {
+  deleteTask(props.task.id);
+};
+
+// 更新任務狀態
+const updateStatus = (status: string) => {
+  emit('update:status', props.task.id, status);
+};
 
 // 格式化日期
 const formatDate = (dateString: string | Date | number | null) => {
@@ -132,17 +145,6 @@ const statusText = computed(() => {
       return '待辦';
   }
 });
-
-// 更新任務狀態
-const updateStatus = (status: string) => {
-  emit('update:status', props.task.id, status);
-};
-
-// 處理刪除任務
-const handleDeleteTask = () => {
-  emit('delete-task', props.task.id);
-  showDeleteTaskDialog.value = false;
-};
 </script>
 
 <style scoped>

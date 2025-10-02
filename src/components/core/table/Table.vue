@@ -23,7 +23,7 @@
       :data="paginatedData"
       class="custom-table"
       :border="false"
-      :max-height="props.maxHeight"
+      v-bind="tableAttributes"
       header-row-class-name="table-header"
       highlight-current-row
       :header-cell-style="{
@@ -132,7 +132,7 @@ const props = withDefaults(
     showSearch?: boolean;
     showPagination?: boolean;
     lastUpdateTime?: string | null | number;
-    maxHeight?: string;
+    height?: string;
   }>(),
   {
     data: () => [] as T[],
@@ -144,7 +144,7 @@ const props = withDefaults(
     showSearch: true,
     showPagination: true,
     lastUpdateTime: null,
-    maxHeight: 'calc(100vh - 250px)',
+    height: undefined,
     observationType: '',
   }
 );
@@ -158,6 +158,11 @@ const pageSize = ref<number>(20);
 const idColumnLength: string = '50';
 
 const otherColumns = computed<Column[]>(() => props.columns.slice(1));
+
+// 表格屬性，根據是否有Height來決定是否設置高度
+const tableAttributes = computed(() => {
+  return props.height ? { height: props.height } : { height: 'calc(100vh - 420px)' };
+});
 
 // 過濾和搜索邏輯
 const filteredData = computed(() => {

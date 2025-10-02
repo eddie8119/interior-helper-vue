@@ -9,7 +9,6 @@
       :show-actions="true"
       :show-search="true"
       :last-update-time="lastUpdateTime"
-      max-height="calc(100vh - 250px)"
       @edit="emit('edit', $event)"
     />
   </div>

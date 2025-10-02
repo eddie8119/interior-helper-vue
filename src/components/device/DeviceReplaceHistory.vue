@@ -15,7 +15,6 @@
       :show-actions="false"
       :show-pagination="false"
       :show-search="false"
-      max-height="calc(100vh - 250px)"
     />
   </div>
 </template>

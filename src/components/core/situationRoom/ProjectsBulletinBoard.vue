@@ -10,7 +10,6 @@
       :show-pagination="true"
       :last-update-time="overviewProjectsUpdatedAt"
       :actions="[]"
-      max-height="calc(100vh - 360px)"
       @edit="() => {}"
     >
       <template #type="{ row }">

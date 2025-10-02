@@ -1,14 +1,22 @@
 <template>
-  <p class="w-full text-right text-sm text-black-400">
-    {{ t('common.last_update_time') }}: {{ props.lastUpdateTime }}
+  <p class="absolute right-3 top-3 w-full text-right text-sm text-black-400">
+    {{ t('common.last_update_time') }}: {{ formattedTime }}
   </p>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
-const props = defineProps<{ lastUpdateTime: string | null }>();
-</script>
+const props = defineProps<{ lastUpdateTime: Date | null | number }>();
 
-<style scoped></style>
+const formatTime = (value: Date | number | null): string => {
+  if (!value) return '-';
+
+  const date = new Date(value);
+  return date.toLocaleString();
+};
+
+const formattedTime = computed(() => formatTime(props.lastUpdateTime));
+</script>

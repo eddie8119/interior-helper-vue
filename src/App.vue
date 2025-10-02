@@ -17,7 +17,9 @@ const route = useRoute();
 const authStore = useAuthStore();
 authStore.initializeAuthState();
 
-const isQuickDraftPage = computed(() => route.path === '/todo/quick-draft');
+const isQuickDraftPage = computed(() => {
+  return route.path === '/todo/quick-draft' || route.path.startsWith('/auth/');
+});
 
 // 主題顏色
 const isDarkMode = ref<boolean>(initTheme());

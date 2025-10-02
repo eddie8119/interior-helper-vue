@@ -5,12 +5,41 @@ import type { Ref } from 'vue';
 
 import { getTaskStorageKey, saveTaskToLocalStorage } from '@/utils/storage/taskStorage';
 
-export function useTaskLocalStorage(projectId: string, fetchedTasks: Ref<TaskResponse[] | null>) {
+/**
+ * @composable useTaskLocalStorage
+ *
+ * @description
+ * 這個 composable 用於管理任務數據在 localStorage 中的本地存儲和同步。
+ * 它的主要功能是：
+ * 1. 在本地 localStorage 中緩存從伺服器獲取的任務數據。
+ * 2. 比較本地數據和伺服器數據的版本（通過 `updatedAt` 時間戳），以決定使用哪個版本。
+ * 3. 提供初始化 (`initLocalTasks`) 和保存 (`saveToLocalStorage`) 的方法。
+ * 4. 追蹤本地數據是否有變更 (`hasChanges`)。
+ *
+ * @param {string} projectId - 當前專案的 ID，用於生成 localStorage 的 key。
+ * @param {Ref<TaskResponse[] | null>} fetchedTasks - 從伺服器獲取並傳入的任務數據的響應式引用。
+ *
+ * @returns {{
+ *   localTasks: Ref<TaskResponse[] | null>,
+ *   hasChanges: Ref<boolean>,
+ *   initLocalTasks: () => void,
+ *   saveToLocalStorage: () => void
+ * }}
+ */
+export function useTaskLocalStorage(projectId: string, fetchedTasks: Ref<any[] | null>) {
   const localTasks = ref<TaskResponse[] | null>(null);
   const hasChanges = ref(false);
   const storageTasksKey = getTaskStorageKey(projectId);
 
-  // 初始化本地任務數據
+  /**
+   * @function initLocalTasks
+   * @description 初始化本地任務數據。
+   * 該函數會檢查 localStorage 中是否有已存儲的數據。
+   * - 如果有，它會比較本地數據和伺服器數據的 `updatedAt` 時間戳。
+   *   - 如果伺服器數據較新，則使用伺服器數據並更新 localStorage。
+   *   - 如果本地數據較新或時間戳相同，則使用本地數據。
+   * - 如果沒有本地數據，則直接使用伺服器數據並存入 localStorage。
+   */
   function initLocalTasks() {
     // 類型守衛函數，確保 key 是 TaskResponse 的有效屬性
     function isKeyOfTaskResponse(key: string, obj: TaskResponse): key is keyof TaskResponse {
@@ -32,16 +61,27 @@ export function useTaskLocalStorage(projectId: string, fetchedTasks: Ref<TaskRes
           const mergedTasks = new Map<string, TaskResponse>();
 
           // 1. 先將所有本地任務放入 Map
-          parsedData.forEach((task) => mergedTasks.set(task.id, task));
+          parsedData.forEach((task) => {
+            if (task && task.id) {
+              mergedTasks.set(task.id, task);
+            }
+          });
 
           // 2. 遍歷伺服器任務，進行比較和合併
           fetchedTasks.value.forEach((fetchedTask) => {
-            const localTask = mergedTasks.get(fetchedTask.id);
-            // 如果本地不存在，或伺服器版本較新，則使用伺服器版本
-            if (!localTask || new Date(localTask.updatedAt) < new Date(fetchedTask.updatedAt)) {
-              mergedTasks.set(fetchedTask.id, fetchedTask);
+            if (fetchedTask && fetchedTask.id) {
+              const localTask = mergedTasks.get(fetchedTask.id);
+              // 如果本地不存在，或伺服器版本較新，則使用伺服器版本
+              if (
+                !localTask ||
+                (localTask.updatedAt &&
+                  fetchedTask.updatedAt &&
+                  new Date(localTask.updatedAt) < new Date(fetchedTask.updatedAt))
+              ) {
+                mergedTasks.set(fetchedTask.id, fetchedTask);
+              }
+              // 否則，保留本地較新的版本（已在 Map 中）
             }
-            // 否則，保留本地較新的版本（已在 Map 中）
           });
 
           localTasks.value = Array.from(mergedTasks.values());
@@ -68,7 +108,11 @@ export function useTaskLocalStorage(projectId: string, fetchedTasks: Ref<TaskRes
             Object.entries(fetchedTask).forEach(([key, value]) => {
               if (isKeyOfTaskResponse(key, fetchedTask)) {
                 // 特別處理數組類型
-                if (key === 'materials' && (!localTask[key] || !localTask[key].length) && value) {
+                if (
+                  key === 'materials' &&
+                  (!localTask[key] || !localTask[key].length) &&
+                  Array.isArray(value)
+                ) {
                   localTask[key] = [...value];
                 }
                 // 處理其他屬性
@@ -83,14 +127,18 @@ export function useTaskLocalStorage(projectId: string, fetchedTasks: Ref<TaskRes
         });
       }
     } catch (e) {
-      console.error('初始化本地專案數據失敗:', e);
+      console.error('初始化本地任務數據失敗:', e);
       if (fetchedTasks.value) {
         localTasks.value = JSON.parse(JSON.stringify(fetchedTasks.value));
       }
     }
   }
 
-  // 保存到 localStorage
+  /**
+   * @function saveToLocalStorage
+   * @description 將當前的 `localTasks` 狀態保存到 localStorage。
+   * 如果數據發生了實際變更，它會將 `hasChanges` 標記設置為 true。
+   */
   const saveToLocalStorage = () => {
     if (localTasks.value) {
       const changed = saveTaskToLocalStorage(projectId, localTasks.value);

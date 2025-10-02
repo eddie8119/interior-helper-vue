@@ -60,11 +60,6 @@ const isEditing = computed(() => {
   return editingStateStore.isEditing('container', props.id);
 });
 
-// 獲取任務 payload
-const getTaskPayload = (index: number) => {
-  return props.filteredTasks[index];
-};
-
 // 處理任務拖曳
 const handleTaskDrop = (dropResult: any) => {
   emit('task-drop', dropResult, props.constructionName);

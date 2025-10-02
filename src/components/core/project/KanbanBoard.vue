@@ -10,7 +10,7 @@
     >
       <!-- 工程類型容器 -->
       <Draggable v-for="(container, index) in localConstructionContainer" :key="container.id">
-        <ContainerItem
+        <ConstructionContainerItem
           :id="container.id"
           :project-id="projectId"
           :construction-name="container.name"
@@ -34,7 +34,7 @@ import type { TaskResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
 
 import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
-import ContainerItem from '@/components/core/kanbanBoard/ContainerItem.vue';
+import ConstructionContainerItem from '@/components/core/kanbanBoard/ConstructionContainerItem.vue';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';

@@ -44,6 +44,4 @@ export function useProjectInitialization(
     }
     forceRerender();
   });
-
-  return { forceRerender };
 }

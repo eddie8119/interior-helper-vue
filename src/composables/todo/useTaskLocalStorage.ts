@@ -86,6 +86,9 @@ export function useTaskLocalStorage(projectId: string, fetchedTasks: Ref<any[] |
 
           localTasks.value = Array.from(mergedTasks.values());
           shouldUseLocalData = true;
+          
+          // 重要修復：確保合併後的數據始終保存回 localStorage
+          localStorage.setItem(storageTasksKey, JSON.stringify(localTasks.value));
         } catch (e) {
           // 解析錯誤，使用資料庫數據
           localTasks.value = JSON.parse(JSON.stringify(fetchedTasks.value));

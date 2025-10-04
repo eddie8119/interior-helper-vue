@@ -5,6 +5,7 @@ import type { TaskResponse } from '@/types/response';
 // Define the type for our task context
 interface TaskContext {
   deleteTask: (taskId: string) => void;
+  addNewTask: (newTaskData: Partial<TaskResponse>) => void;
   updateTask: (taskId: string, updatedTask: Partial<TaskResponse>) => void;
 }
 

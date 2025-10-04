@@ -4,7 +4,6 @@
     <AddNewTask
       :construction-name="constructionName"
       :project-id="projectId"
-      @add-task="handleAddNewTask"
       @close="stopEditing"
     />
   </div>
@@ -48,7 +47,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'add-task', newTaskData: Partial<TaskResponse>): void;
   (e: 'update:tasks', tasks: TaskResponse[]): void;
   (e: 'task-drop', dropData: any): void;
 }>();
@@ -97,12 +95,6 @@ const updateTaskStatus = (taskId: string, status: string) => {
   });
 
   emit('update:tasks', updatedTasks);
-};
-
-// 處理添加新任務
-const handleAddNewTask = (newTaskData: CreateTaskSchema) => {
-  emit('add-task', { ...newTaskData, constructionType: props.id });
-  stopEditing();
 };
 </script>
 

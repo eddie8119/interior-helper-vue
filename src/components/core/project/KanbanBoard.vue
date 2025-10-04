@@ -17,9 +17,6 @@
           :filtered-tasks="filteredTasks(container.id)"
           @delete-container="deleteConstruction(index)"
           @update:construction-name="updateConstructionName(index, $event)"
-          @add-task="addNewTask"
-          @delete-task="deleteTask"
-          @update:task="updateTask"
           @task-drop="handleTaskDrop($event, container.id)"
         />
       </Draggable>
@@ -42,7 +39,7 @@ import { useConstructionActions } from '@/composables/todo/useConstructionAction
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
 import { useTaskActions } from '@/composables/todo/useTaskActions';
-import { provideTaskContext } from '@/composables/todo/useTaskContext';
+import { provideTaskContext } from '@/context/useTaskContext';
 import { filterTasksByConstruction } from '@/utils/todo/taskUtils';
 
 const props = defineProps<{
@@ -96,7 +93,7 @@ const { deleteConstruction, addNewConstruction, updateConstructionName } = useCo
   onContainerUpdate
 );
 // 任務操作邏輯
-const { deleteTask, addNewTask, updateTask } = useTaskActions(localTasks, onTaskUpdate);
+// const {  } = useTaskActions(localTasks, onTaskUpdate);
 
 // 提供任務上下文
 provideTaskContext({
@@ -107,9 +104,14 @@ provideTaskContext({
       onTaskUpdate(localTasks.value);
     }
   },
+  addNewTask: (newTaskData: Partial<TaskResponse>) => {
+    console.log(111, newTaskData);
+    // localTasks.value.push(newTaskData);
+    // onTaskUpdate(localTasks.value);
+  },
   updateTask: (taskId: string, updatedTask: Partial<TaskResponse>) => {
     // 根據ID查找並更新任務
-    const taskIndex = localTasks.value.findIndex((task) => task.id === taskId);
+    const taskIndex = localTasks.value.findIndex((task: TaskResponse) => task.id === taskId);
     if (taskIndex !== -1) {
       localTasks.value[taskIndex] = { ...localTasks.value[taskIndex], ...updatedTask };
       onTaskUpdate(localTasks.value);

@@ -11,7 +11,6 @@
       :construction-name="props.constructionName"
       :project-id="props.projectId"
       :tasks="filteredTasks"
-      @add-task="addNewTask"
       @update:tasks="updateTasks"
       @task-drop="handleTaskDrop"
     />
@@ -50,9 +49,6 @@ const emit = defineEmits<{
   (e: 'delete-container'): void;
   (e: 'update:construction-name', name: string): void;
   // task events
-  (e: 'delete-task', taskId: string): void;
-  (e: 'update:task', taskId: string, updatedTask: Partial<TaskResponse>): void;
-  (e: 'add-task', tasks: Partial<TaskResponse>): void;
   (e: 'task-drop', dropResult: any, constructionType: string): void;
 }>();
 
@@ -94,11 +90,6 @@ const updateConstructionName = (newName: string) => {
 // 處理刪除工程類型
 const handleDeleteConstruction = () => {
   emit('delete-container');
-};
-
-// 添加新任務
-const addNewTask = (newTaskData: Partial<TaskResponse>) => {
-  emit('add-task', { ...newTaskData, constructionType: props.id });
 };
 
 // 更新任務

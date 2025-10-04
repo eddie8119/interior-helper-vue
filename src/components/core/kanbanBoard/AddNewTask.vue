@@ -32,8 +32,10 @@ import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 import TaskForm from '@/components/core/kanbanBoard/TaskForm.vue';
 import { createTaskSchema } from '@/utils/schemas/createTaskSchema';
+import { useTaskContext } from '@/context/useTaskContext';
 
 const { t } = useI18n();
+const { addNewTask } = useTaskContext();
 
 const props = defineProps<{
   constructionName: string;
@@ -42,7 +44,6 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'close'): void;
-  (e: 'add-task', task: CreateTaskSchema): void;
 }>();
 
 // 任務表單組件引用
@@ -77,7 +78,7 @@ const onAddTask = handleSubmit(async (values) => {
     materials: filteredMaterials,
   };
 
-  emit('add-task', newTask);
+  addNewTask(newTask);
 
   setValues({
     title: '',

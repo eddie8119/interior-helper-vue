@@ -31,7 +31,7 @@
         type="text"
         class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
         :placeholder="t('placeholder.project.addContainer')"
-        @keyup.enter="AddNewConstruction"
+        @keyup.enter="addNewConstruction"
         @keyup.esc="cancelEditing"
       />
 
@@ -45,7 +45,7 @@
         <button
           class="rounded-md bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
           :disabled="!isValidName"
-          @click="AddNewConstruction"
+          @click="addNewConstruction"
         >
           {{ t('button.add') }}
         </button>
@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { useEditingStateStore } from '@/stores/editingState';
@@ -77,6 +77,19 @@ const isEditing = computed(() => {
   return editingStateStore.isEditing('container', props.id);
 });
 
+// Watch for changes in the global editing state
+watch(
+  () => editingStateStore.currentEditingState,
+  (newState) => {
+    // If this component is in edit mode, but the global state has changed to another component,
+    // cancel the edit for this component.
+    if (isEditing.value && (newState.type !== 'container' || newState.id !== props.id)) {
+      cancelEditing();
+    }
+  },
+  { deep: true }
+);
+
 // 計算屬性：確保名稱有效
 const isValidName = computed(() => newContainerName.value.trim().length > 0);
 
@@ -94,7 +107,7 @@ const startEditing = () => {
 };
 
 // 添加新容器
-const AddNewConstruction = () => {
+const addNewConstruction = () => {
   if (isValidName.value) {
     emit('add-container', newContainerName.value.trim());
     resetForm();

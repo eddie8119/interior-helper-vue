@@ -14,40 +14,27 @@ export interface EditingState {
  */
 export const useEditingStateStore = defineStore('editingState', () => {
   // Current editing state
-  const currentEditingState = ref<EditingState>({
-    type: 'none',
-    id: null,
-  });
+  const currentEditingState = ref<EditingState>({ type: 'none', id: null });
 
   /**
    * Start editing a component
    * @param type Type of component being edited ('container' or 'task')
    * @param id ID of the component (can be container ID or task ID)
-   * @returns boolean indicating if editing was successfully started
    */
-  function startEditing(type: EditingComponentType, id: string): boolean {
+  function startEditing(type: EditingComponentType, id: string | number): void {
     // If already editing this component, do nothing
     if (currentEditingState.value.type === type && currentEditingState.value.id === id) {
-      return true;
+      return;
     }
-
-    // Clear any existing editing state
-    currentEditingState.value = {
-      type,
-      id,
-    };
-
-    return true;
+    // Update to new editing state
+    currentEditingState.value = { type, id };
   }
 
   /**
    * Stop editing the current component
    */
   function stopEditing(): void {
-    currentEditingState.value = {
-      type: 'none',
-      id: null,
-    };
+    currentEditingState.value = { type: 'none', id: null };
   }
 
   /**

@@ -1,4 +1,5 @@
 import { computed, ref, watch } from 'vue';
+import { useEditingStateStore } from '@/stores/editingState';
 
 /**
  * 可編輯標題的共用邏輯
@@ -7,6 +8,8 @@ import { computed, ref, watch } from 'vue';
  * @param titlePropName 標題屬性名稱，默認為 'title'
  */
 export function useEditableTitle(props: Record<string, any>, emit: any, titlePropName = 'title') {
+  const editingStateStore = useEditingStateStore();
+
   const isEditingTitle = ref(false);
   const tempTitle = ref(props[titlePropName] || '');
   const titleInputRef = ref<HTMLInputElement | null>(null);
@@ -14,8 +17,22 @@ export function useEditableTitle(props: Record<string, any>, emit: any, titlePro
   // 計算屬性：確保 title 有值
   const title = computed(() => props[titlePropName] || '');
 
+  // Watch for changes in the global editing state
+  watch(
+    () => editingStateStore.currentEditingState,
+    (newState) => {
+      // If this component is in edit mode, but the global state has changed to another component,
+      // cancel the edit for this component.
+      if (isEditingTitle.value && (newState.type !== 'container' || newState.id !== props.id)) {
+        cancelEdit();
+      }
+    },
+    { deep: true }
+  );
+
   // 開始編輯模式
   const startEditing = async () => {
+    editingStateStore.startEditing('container', props.id);
     isEditingTitle.value = true;
     tempTitle.value = props[titlePropName] || '';
 

@@ -23,14 +23,14 @@
         class="flex items-center justify-center rounded-md bg-blue-100 px-3 py-1 text-blue-700 hover:bg-blue-200"
         @click="startEditing"
       >
-        + 施作項目
+        + 施作任務
       </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
 
@@ -63,6 +63,19 @@ const isEditing = computed(() => {
   return editingStateStore.isEditing('container', props.id);
 });
 
+// Watch for changes in the global editing state
+watch(
+  () => editingStateStore.currentEditingState,
+  (newState) => {
+    // If this component is in edit mode, but the global state has changed to another component,
+    // cancel the edit for this component.
+    if (isEditing.value && (newState.type !== 'container' || newState.id !== props.id)) {
+      editingStateStore.stopEditing();
+    }
+  },
+  { deep: true }
+);
+
 // 處理任務拖曳
 const handleTaskDrop = (dropResult: any) => {
   emit('task-drop', dropResult, props.constructionName);
@@ -84,8 +97,8 @@ const handleDeleteConstruction = () => {
 };
 
 // 添加新任務
-const addNewTask = (taskData: any) => {
-  emit('add-task', taskData, props.constructionName);
+const addNewTask = (newTaskData: Partial<TaskResponse>) => {
+  emit('add-task', newTaskData);
 };
 
 // 更新任務

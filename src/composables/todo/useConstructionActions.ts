@@ -15,7 +15,7 @@ export function useConstructionActions(
   const addNewConstruction = (newContainerName: string) => {
     if (newContainerName && newContainerName.trim()) {
       containersRef.value.push({
-        id: Number(Date.now()),
+        id: Date.now().toString(),
         name: newContainerName.trim(),
       });
       updateCallback(containersRef.value);

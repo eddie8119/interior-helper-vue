@@ -8,7 +8,7 @@ import type { DraggableTask } from '@/composables/todo/useDraggableTasks';
  */
 export function filterTasksByConstruction(
   tasks: DraggableTask[],
-  constructionId: number
+  constructionId: string
 ): DraggableTask[] {
   return tasks
     .filter((task: DraggableTask) => task.constructionType === constructionId)

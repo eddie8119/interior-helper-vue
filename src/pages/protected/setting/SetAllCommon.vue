@@ -96,7 +96,7 @@ const { value: projectType, errorMessage: projectTypeError } = useField<string[]
 
 // Local copies for array inputs
 interface ConstructionItem extends Item {
-  id: number;
+  id: string;
 }
 const localConstructionItems = ref<ConstructionItem[]>([]);
 const localUnitItems = ref<Item[]>([]);
@@ -104,7 +104,7 @@ const localProjectTypeItems = ref<Item[]>([]);
 
 // Factory function for new construction items
 const createNewConstructionItem = () => {
-  return { name: '', id: Date.now() } as ConstructionItem;
+  return { name: '', id: Date.now().toString() } as ConstructionItem;
 };
 
 // Sync from form state to local state
@@ -121,9 +121,9 @@ const syncToLocal = () => {
 const syncToForm = () => {
   construction.value = localConstructionItems.value
     .filter((item: ConstructionItem) => item.name)
-    .map((item: ConstructionItem, index: number) => ({
+    .map((item: ConstructionItem) => ({
       name: item.name,
-      id: typeof item.id === 'number' ? item.id : index,
+      id: item.id,
     }));
   unit.value = localUnitItems.value.map((item: Item) => item.name).filter(Boolean);
   projectType.value = localProjectTypeItems.value.map((item: Item) => item.name).filter(Boolean);

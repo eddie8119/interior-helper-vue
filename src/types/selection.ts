@@ -7,5 +7,5 @@ export interface ProjectTypeSelection {
 
 export interface ConstructionSelection {
   name: string;
-  id: number;
+  id: string;
 }

@@ -46,7 +46,7 @@ export interface TaskResponse {
   description: string;
   status: 'todo' | 'in_progress' | 'done';
   projectId: string;
-  constructionType: number;
+  constructionType: string;
   createdAt: Date;
   updatedAt: Date;
   reminderDatetime: Date | null;

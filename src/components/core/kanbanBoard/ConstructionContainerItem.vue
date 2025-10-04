@@ -39,7 +39,7 @@ import ContainerHeader from '@/components/core/kanbanBoard/ContainerHeader.vue';
 import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{
-  id: number;
+  id: string;
   constructionName: string;
   projectId: string;
   filteredTasks: TaskResponse[];
@@ -52,7 +52,7 @@ const emit = defineEmits<{
   // task events
   (e: 'delete-task', taskId: string): void;
   (e: 'update:task', taskId: string, updatedTask: Partial<TaskResponse>): void;
-  (e: 'add-task', tasks: TaskResponse): void;
+  (e: 'add-task', tasks: Partial<TaskResponse>): void;
   (e: 'task-drop', dropResult: any, constructionType: string): void;
 }>();
 
@@ -98,7 +98,7 @@ const handleDeleteConstruction = () => {
 
 // 添加新任務
 const addNewTask = (newTaskData: Partial<TaskResponse>) => {
-  emit('add-task', newTaskData);
+  emit('add-task', { ...newTaskData, constructionType: props.id });
 };
 
 // 更新任務

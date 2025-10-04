@@ -66,13 +66,11 @@ export function useCommonAction() {
 
     // 更新資料
     if (type === 'construction') {
-      const maxId = (localItems.value as ConstructionSelection[]).reduce(
-        (max, item) => Math.max(max, item.id),
-        -1
-      );
+      // 以時間戳作為字串 ID，避免型別不一致
+      const newId = Date.now().toString();
       const updatedItems = [
         ...(localItems.value as ConstructionSelection[]),
-        { name: item, id: maxId + 1 },
+        { name: item, id: newId },
       ];
       await updateData(type, updatedItems);
     } else {

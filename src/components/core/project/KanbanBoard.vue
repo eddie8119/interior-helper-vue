@@ -161,7 +161,7 @@ watch(
 );
 
 // 使用工具函數過濾任務
-const filteredTasks = (constructionId: number) => {
+const filteredTasks = (constructionId: string) => {
   return filterTasksByConstruction(localTasks.value, constructionId);
 };
 </script>

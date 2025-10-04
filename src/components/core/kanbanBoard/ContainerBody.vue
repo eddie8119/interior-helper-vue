@@ -41,14 +41,14 @@ import TaskCard from '@/components/core/kanbanBoard/TaskCard.vue';
 import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{
-  id: number;
+  id: string;
   constructionName: string;
   projectId: string;
   tasks: TaskResponse[];
 }>();
 
 const emit = defineEmits<{
-  (e: 'add-task', newTaskData: CreateTaskSchema): void;
+  (e: 'add-task', newTaskData: Partial<TaskResponse>): void;
   (e: 'update:tasks', tasks: TaskResponse[]): void;
   (e: 'task-drop', dropData: any): void;
 }>();
@@ -101,7 +101,7 @@ const updateTaskStatus = (taskId: string, status: string) => {
 
 // 處理添加新任務
 const handleAddNewTask = (newTaskData: CreateTaskSchema) => {
-  emit('add-task', newTaskData);
+  emit('add-task', { ...newTaskData, constructionType: props.id });
   stopEditing();
 };
 </script>

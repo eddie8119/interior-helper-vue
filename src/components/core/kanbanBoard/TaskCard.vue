@@ -69,7 +69,7 @@
                 <span class="text-blue-800">進行中</span>
               </div>
             </el-dropdown-item>
-            <el-dropdown-item command="completed">
+            <el-dropdown-item command="done">
               <div class="flex items-center">
                 <div class="mr-3 h-3 w-3 rounded-full bg-green-400" />
                 <span class="text-green-800">已完成</span>
@@ -125,7 +125,7 @@ const formatDate = (dateString: string | Date | number | null) => {
 // 計算狀態樣式
 const statusClass = computed(() => {
   switch (props.task.status) {
-    case 'completed':
+    case 'done':
       return 'bg-green-100 text-green-700';
     case 'in_progress':
       return 'bg-blue-100 text-blue-700';
@@ -137,7 +137,7 @@ const statusClass = computed(() => {
 // 計算狀態文字
 const statusText = computed(() => {
   switch (props.task.status) {
-    case 'completed':
+    case 'done':
       return '已完成';
     case 'in_progress':
       return '進行中';

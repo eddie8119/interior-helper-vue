@@ -10,70 +10,70 @@ export const PROJECT_TYPES: ProjectTypeSelection[] = [
 export const CONSTRUCTION_CONTAINER: ConstructionSelection[] = [
   {
     name: '拆除',
-    id: 0,
+    id: '0',
   },
   {
     name: '機電',
-    id: 1,
+    id: '1',
   },
   {
     name: '水電',
-    id: 2,
+    id: '2',
   },
   {
     name: '地坪',
-    id: 3,
+    id: '3',
   },
   {
     name: '泥作',
-    id: 4,
+    id: '4',
   },
   {
     name: '門框',
-    id: 5,
+    id: '5',
   },
   {
     name: '輕隔間',
-    id: 6,
+    id: '6',
   },
   {
     name: '木作',
-    id: 7,
+    id: '7',
   },
   {
     name: '金屬',
-    id: 8,
+    id: '8',
   },
   {
     name: '玻璃',
-    id: 9,
+    id: '9',
   },
   {
     name: '油漆',
-    id: 10,
+    id: '10',
   },
   {
     name: '地板',
-    id: 11,
+    id: '11',
   },
   {
     name: '防水',
-    id: 12,
+    id: '12',
   },
   {
     name: '衛浴設備',
-    id: 13,
+    id: '13',
   },
   {
     name: '廚具',
-    id: 14,
+    id: '14',
   },
   {
     name: '空調',
-    id: 15,
+    id: '15',
   },
   {
     name: '結構補強',
-    id: 16,
+    id: '16',
   },
 ];

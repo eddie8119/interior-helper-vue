@@ -79,13 +79,13 @@ import { useField } from 'vee-validate';
 import { nextTick, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { Material, TaskData } from '@/types/task';
+import type { Material } from '@/types/task';
+import type { CreateTaskSchema } from '@/types/request';
 
 import MaterialInput from '@/components/core/input/MaterialInput.vue';
 
-// PROPS
 const props = defineProps<{
-  initialData?: TaskData;
+  initialData?: CreateTaskSchema;
   constructionId: string;
   errors: {
     title?: string;
@@ -95,13 +95,11 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
-// REFS
 const inputRef = ref<HTMLInputElement | null>(null);
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const showMoreSettings = ref(false);
 const materialErrors = ref<Record<number, string>>({});
 
-// VEE-VALIDATE
 const { value: title } = useField<string>('title');
 const { value: description } = useField<string>('description');
 const { value: materials } = useField<Material[]>('materials');

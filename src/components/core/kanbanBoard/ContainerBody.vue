@@ -14,7 +14,7 @@
     :auto-scroll-enabled="true"
     :behaviour="'move'"
     :drag-handle-selector="'.task-drag-handle'"
-    class="max-h-[330px] overflow-y-auto"
+    class="grid max-h-[330px] grid-cols-1 gap-3 overflow-y-auto"
     @drop="handleTaskDrop"
   >
     <!-- 任務列表 -->
@@ -29,7 +29,6 @@ import { computed } from 'vue';
 import { Container, Draggable } from 'vue3-smooth-dnd';
 
 import type { TaskResponse } from '@/types/response';
-import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 import AddNewTask from '@/components/core/kanbanBoard/AddNewTask.vue';
 import TaskCard from '@/components/core/kanbanBoard/TaskCard.vue';

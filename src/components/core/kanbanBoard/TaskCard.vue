@@ -1,48 +1,26 @@
 <template>
   <div
-    class="task-card group mb-2 rounded bg-white p-2 shadow-sm transition-colors duration-200 hover:bg-gray-50"
+    v-if="!isEditing"
+    class="task-card group cursor-pointer rounded-md bg-white p-1 shadow-sm duration-200"
+    @dblclick="startEditing"
   >
     <div class="flex items-center justify-between">
       <div class="flex items-center">
         <DragHandle :size="4" handle-class="task-drag-handle" />
-        <h3 class="font-medium">{{ task.title }}</h3>
+        <H3Title :title="task.title" />
       </div>
-      <TrashButton class="invisible group-hover:visible" @click="handleDeleteTask" />
-    </div>
-    <p class="mt-1 text-sm text-gray-600">{{ task.description }}</p>
-
-    <!-- 任務詳細資訊 -->
-    <div class="mt-2 text-xs text-gray-500">
-      <div v-if="task.reminderDatetime" class="flex items-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="mr-1 h-3 w-3"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-          />
-        </svg>
-        <span>{{ formatDate(task.reminderDatetime) }}</span>
+      <div class="flex items-center">
+        <TaskStatusDropdown :status="task.status" @update:status="handleStatusChange" />
+        <TrashButton class="invisible group-hover:visible" @click="handleDeleteTask" />
       </div>
     </div>
-
-    <!-- 狀態選取 -->
-    <div class="mt-2 flex justify-end">
-      <el-dropdown trigger="click" @command="handleStatusChange">
-        <button
-          class="status-badge flex items-center px-3 py-1.5 transition-all duration-200 hover:shadow-sm"
-          :class="statusClass"
-        >
-          {{ statusText }}
+    <div class="p-2">
+      <p class="mt-1 text-lg text-gray-600">{{ task.description }}</p>
+      <div class="mt-2 text-gray-500">
+        <div v-if="task.reminderDatetime" class="flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="ml-1.5 h-4 w-4"
+            class="mr-1 h-3 w-3"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -51,47 +29,47 @@
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M19 9l-7 7-7-7"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
             />
           </svg>
-        </button>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item command="todo">
-              <div class="flex items-center">
-                <div class="mr-3 h-3 w-3 rounded-full bg-gray-400" />
-                <span class="text-gray-800">待辦</span>
-              </div>
-            </el-dropdown-item>
-            <el-dropdown-item command="in_progress">
-              <div class="flex items-center">
-                <div class="mr-3 h-3 w-3 rounded-full bg-blue-400" />
-                <span class="text-blue-800">進行中</span>
-              </div>
-            </el-dropdown-item>
-            <el-dropdown-item command="done">
-              <div class="flex items-center">
-                <div class="mr-3 h-3 w-3 rounded-full bg-green-400" />
-                <span class="text-green-800">已完成</span>
-              </div>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+          <span>{{ formatDate(task.reminderDatetime) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div v-else class="rounded-md border p-2">
+    <TaskForm :initial-data="task" :construction-id="task.constructionType" :errors="{}" />
+    <div class="mt-2 flex justify-end space-x-2">
+      <button
+        @click="cancelEditing"
+        class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+      >
+        取消
+      </button>
+      <button
+        @click="saveTask"
+        class="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+      >
+        儲存
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useForm } from 'vee-validate';
+import { ref } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
 
 import DragHandle from '@/components/ui/DragHandle.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
+import H3Title from '@/components/core/title/H3Title.vue';
+import TaskForm from '@/components/core/kanbanBoard/TaskForm.vue';
+import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import { useTaskContext } from '@/context/useTaskContext';
 import { taskApi } from '@/api/task';
+
 const props = defineProps<{
   task: TaskResponse;
 }>();
@@ -102,7 +80,29 @@ const emit = defineEmits<{
 }>();
 
 // 從上下文中獲取任務操作
-const { deleteTask } = useTaskContext();
+const { deleteTask, updateTask } = useTaskContext();
+
+const isEditing = ref(false);
+const { values, setValues } = useForm<Partial<TaskResponse>>();
+
+const startEditing = () => {
+  setValues({
+    title: props.task.title,
+    description: props.task.description,
+    reminderDatetime: props.task.reminderDatetime,
+    materials: props.task.materials,
+  });
+  isEditing.value = true;
+};
+
+const cancelEditing = () => {
+  isEditing.value = false;
+};
+
+const saveTask = () => {
+  updateTask(props.task.id, values);
+  isEditing.value = false;
+};
 
 // 處理刪除任務
 const handleDeleteTask = async () => {
@@ -113,8 +113,8 @@ const handleDeleteTask = async () => {
 };
 
 // 更新任務狀態
-const handleStatusChange = (status: string) => {
-  emit('update:status', props.task.id, status as 'todo' | 'in_progress' | 'done');
+const handleStatusChange = (status: 'todo' | 'in_progress' | 'done') => {
+  emit('update:status', props.task.id, status);
 };
 
 // 格式化日期
@@ -123,30 +123,6 @@ const formatDate = (dateString: string | Date | number | null) => {
   const date = new Date(dateString);
   return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
 };
-
-// 計算狀態樣式
-const statusClass = computed(() => {
-  switch (props.task.status) {
-    case 'done':
-      return 'bg-green-100 text-green-700';
-    case 'in_progress':
-      return 'bg-blue-100 text-blue-700';
-    default:
-      return 'bg-gray-100 text-gray-700';
-  }
-});
-
-// 計算狀態文字
-const statusText = computed(() => {
-  switch (props.task.status) {
-    case 'done':
-      return '已完成';
-    case 'in_progress':
-      return '進行中';
-    default:
-      return '待辦';
-  }
-});
 </script>
 
 <style scoped>

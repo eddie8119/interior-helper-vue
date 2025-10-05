@@ -2,7 +2,7 @@
   <!-- 編輯模式：添加新任務 -->
   <div v-show="isEditing" class="mb-6 rounded-md border border-dashed border-brand-primary p-1">
     <AddNewTask
-      :construction-name="constructionName"
+      :construction-id="constructionId"
       :project-id="projectId"
       @close="stopEditing"
     />
@@ -40,8 +40,7 @@ import TaskCard from '@/components/core/kanbanBoard/TaskCard.vue';
 import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{
-  id: string;
-  constructionName: string;
+  constructionId: string;
   projectId: string;
   tasks: TaskResponse[];
 }>();
@@ -55,7 +54,7 @@ const editingStateStore = useEditingStateStore();
 
 // 使用計算屬性來判斷當前容器是否處於編輯狀態
 const isEditing = computed(() => {
-  return editingStateStore.isEditing('container', props.id);
+  return editingStateStore.isEditing('container', props.constructionId);
 });
 
 // 停止編輯任務

@@ -185,7 +185,6 @@ const handleStep = async () => {
 watch(
   () => [props.handleStatus, props.handleId],
   ([newStatus, newId]) => {
-    // console.log(555555,newVal)
 
     if (newId !== props.id || !activeStep.value) return;
 

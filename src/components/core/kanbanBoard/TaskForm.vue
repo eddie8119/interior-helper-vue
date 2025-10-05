@@ -86,7 +86,7 @@ import MaterialInput from '@/components/core/input/MaterialInput.vue';
 // PROPS
 const props = defineProps<{
   initialData?: TaskData;
-  constructionName: string;
+  constructionId: string;
   errors: {
     title?: string;
     description?: string;

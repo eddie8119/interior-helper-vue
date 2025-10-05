@@ -7,8 +7,7 @@
     />
 
     <ContainerBody
-      :id="props.id"
-      :construction-name="props.constructionName"
+      :construction-id="props.constructionId"
       :project-id="props.projectId"
       :tasks="filteredTasks"
       @update:tasks="updateTasks"
@@ -38,7 +37,7 @@ import ContainerHeader from '@/components/core/kanbanBoard/ContainerHeader.vue';
 import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{
-  id: string;
+  constructionId: string;
   constructionName: string;
   projectId: string;
   filteredTasks: TaskResponse[];
@@ -56,7 +55,7 @@ const editingStateStore = useEditingStateStore();
 
 // 使用計算屬性來判斷當前容器是否處於編輯狀態
 const isEditing = computed(() => {
-  return editingStateStore.isEditing('container', props.id);
+  return editingStateStore.isEditing('container', props.constructionId);
 });
 
 // Watch for changes in the global editing state
@@ -65,7 +64,7 @@ watch(
   (newState) => {
     // If this component is in edit mode, but the global state has changed to another component,
     // cancel the edit for this component.
-    if (isEditing.value && (newState.type !== 'container' || newState.id !== props.id)) {
+    if (isEditing.value && (newState.type !== 'container' || newState.id !== props.constructionId)) {
       editingStateStore.stopEditing();
     }
   },
@@ -79,7 +78,7 @@ const handleTaskDrop = (dropResult: any) => {
 
 // 開始編輯任務
 const startEditing = () => {
-  editingStateStore.startEditing('container', props.id);
+  editingStateStore.startEditing('container', props.constructionId);
 };
 
 // 處理容器名稱更新

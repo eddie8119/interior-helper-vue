@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col space-y-3">
     <!-- 使用可重用的 TaskForm 組件 -->
-    <TaskForm ref="taskFormRef" :construction-name="constructionName" :errors="errors" />
+    <TaskForm ref="taskFormRef" :construction-id="constructionId" :errors="errors" />
 
     <!-- 按鈕區域 -->
     <div class="flex justify-between">
@@ -38,7 +38,7 @@ const { t } = useI18n();
 const { addNewTask } = useTaskContext();
 
 const props = defineProps<{
-  constructionName: string;
+  constructionId: string;
   projectId: string;
 }>();
 
@@ -57,7 +57,7 @@ const { isSubmitting, handleSubmit, errors, setValues } = useForm({
     description: '',
     materials: [],
     reminderDatetime: undefined,
-    constructionType: props.constructionName,
+    constructionType: props.constructionId,
     projectId: props.projectId,
     status: 'todo',
   },

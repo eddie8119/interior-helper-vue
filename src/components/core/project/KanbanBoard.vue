@@ -11,7 +11,7 @@
       <!-- 工程類型容器 -->
       <Draggable v-for="(container, index) in localConstructionContainer" :key="container.id">
         <ConstructionContainerItem
-          :id="container.id"
+          :construction-id="container.id"
           :project-id="projectId"
           :construction-name="container.name"
           :filtered-tasks="filteredTasks(container.id)"

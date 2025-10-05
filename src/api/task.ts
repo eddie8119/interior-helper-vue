@@ -16,6 +16,12 @@ export const taskApi = {
     return request.patch(`/tasks/${projectId}`, data);
   },
 
+  updateProjectTasksWithBeacon: (data: TaskResponse[], projectId: string): boolean => {
+    const url = `${request.defaults.baseURL}/tasks/${projectId}`;
+    const blob = new Blob([JSON.stringify(data)], { type: 'application/json; charset=UTF-8' });
+    return navigator.sendBeacon(url, blob);
+  },
+
   // 個別任務
   createTask: (data: CreateTaskSchema, projectId: string): Promise<ApiResponse<TaskResponse>> => {
     return request.post(`/tasks/${projectId}`, data);

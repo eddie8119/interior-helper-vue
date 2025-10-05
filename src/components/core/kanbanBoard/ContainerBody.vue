@@ -1,11 +1,7 @@
 <template>
   <!-- 編輯模式：添加新任務 -->
   <div v-show="isEditing" class="mb-6 rounded-md border border-dashed border-brand-primary p-1">
-    <AddNewTask
-      :construction-id="constructionId"
-      :project-id="projectId"
-      @close="stopEditing"
-    />
+    <AddNewTask :construction-id="constructionId" :project-id="projectId" @close="stopEditing" />
   </div>
   <!-- 任務列表 -->
   <Container
@@ -85,7 +81,7 @@ const shouldAcceptDrop = (sourceContainerOptions: any) => {
 };
 
 // 更新任務狀態
-const updateTaskStatus = (taskId: string, status: string) => {
+const updateTaskStatus = (taskId: string, status: 'todo' | 'in_progress' | 'done') => {
   const updatedTasks = props.tasks.map((task: TaskResponse) => {
     if (task.id === taskId) {
       return { ...task, status };

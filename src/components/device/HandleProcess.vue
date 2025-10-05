@@ -185,7 +185,6 @@ const handleStep = async () => {
 watch(
   () => [props.handleStatus, props.handleId],
   ([newStatus, newId]) => {
-
     if (newId !== props.id || !activeStep.value) return;
 
     // 正在執行

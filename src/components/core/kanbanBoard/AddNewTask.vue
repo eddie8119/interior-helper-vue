@@ -29,7 +29,7 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
-
+import { taskApi } from '@/api/task';
 import TaskForm from '@/components/core/kanbanBoard/TaskForm.vue';
 import { createTaskSchema } from '@/utils/schemas/createTaskSchema';
 import { useTaskContext } from '@/context/useTaskContext';
@@ -48,6 +48,7 @@ const emit = defineEmits<{
 
 // 任務表單組件引用
 const taskFormRef = ref<InstanceType<typeof TaskForm> | null>(null);
+const errorMessage = ref<string>('');
 
 // 使用 vee-validate 和 zod 進行表單驗證
 const { isSubmitting, handleSubmit, errors, setValues } = useForm({
@@ -64,7 +65,7 @@ const { isSubmitting, handleSubmit, errors, setValues } = useForm({
 });
 
 // 提交狀態
-const onAddTask = handleSubmit(async (values) => {
+const onAddTask = handleSubmit(async (values: CreateTaskSchema) => {
   if (!taskFormRef.value) return;
 
   // 清除任何材料驗證錯誤
@@ -78,17 +79,19 @@ const onAddTask = handleSubmit(async (values) => {
     materials: filteredMaterials,
   };
 
-  addNewTask(newTask);
-
-  setValues({
-    title: '',
-    description: '',
-    materials: [],
-    reminderDatetime: undefined,
-    status: 'todo',
-  });
-
-  taskFormRef.value.focusInput();
+  try {
+    const { success, message, data } = await taskApi.createTask(newTask, props.projectId);
+    if (!success) {
+      errorMessage.value = message ?? '';
+      return;
+    }
+    if (success) {
+      addNewTask(data);
+      onClose();
+    }
+  } catch (error) {
+    console.error('Failed to add task:', error);
+  }
 });
 
 // 關閉表單

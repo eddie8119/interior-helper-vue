@@ -1,4 +1,5 @@
 import type { ConstructionSelection, ProjectType } from './selection';
+import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 export interface AuthResponse {
   user: {
@@ -40,20 +41,13 @@ export interface ProjectResponse {
 }
 
 // 任務
-export interface TaskResponse {
+export interface TaskResponse extends CreateTaskSchema {
   id: string;
-  title: string;
-  description: string;
-  status: 'todo' | 'in_progress' | 'done';
-  projectId: string;
-  constructionType: string;
   createdAt: Date;
   updatedAt: Date;
-  reminderDatetime: Date | null;
   lastReminderSentAt: Date | null;
   lineReminderSent: boolean;
   emailReminderSent: boolean;
-  materials: TaskMaterialResponse[];
 }
 
 // 任務材料

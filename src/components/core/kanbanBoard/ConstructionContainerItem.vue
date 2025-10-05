@@ -64,7 +64,10 @@ watch(
   (newState) => {
     // If this component is in edit mode, but the global state has changed to another component,
     // cancel the edit for this component.
-    if (isEditing.value && (newState.type !== 'container' || newState.id !== props.constructionId)) {
+    if (
+      isEditing.value &&
+      (newState.type !== 'container' || newState.id !== props.constructionId)
+    ) {
       editingStateStore.stopEditing();
     }
   },

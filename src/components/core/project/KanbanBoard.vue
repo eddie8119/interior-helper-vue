@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import { Container, Draggable } from 'vue3-smooth-dnd';
 
 import type { TaskResponse } from '@/types/response';
@@ -38,6 +38,7 @@ import ConstructionContainerItem from '@/components/core/kanbanBoard/Constructio
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
+import { taskApi } from '@/api/task';
 import { useTaskActions } from '@/composables/todo/useTaskActions';
 import { provideTaskContext } from '@/context/useTaskContext';
 import { filterTasksByConstruction } from '@/utils/todo/taskUtils';
@@ -104,10 +105,9 @@ provideTaskContext({
       onTaskUpdate(localTasks.value);
     }
   },
-  addNewTask: (newTaskData: Partial<TaskResponse>) => {
-    console.log(111, newTaskData);
-    // localTasks.value.push(newTaskData);
-    // onTaskUpdate(localTasks.value);
+  addNewTask: (newTaskData: TaskResponse) => {
+    localTasks.value.push(newTaskData);
+    onTaskUpdate(localTasks.value);
   },
   updateTask: (taskId: string, updatedTask: Partial<TaskResponse>) => {
     // 根據ID查找並更新任務
@@ -166,6 +166,12 @@ watch(
 const filteredTasks = (constructionId: string) => {
   return filterTasksByConstruction(localTasks.value, constructionId);
 };
+
+onBeforeUnmount(() => {
+  if (localTasks.value.length) {
+    taskApi.updateProjectTasksWithBeacon(localTasks.value, props.projectId);
+  }
+});
 </script>
 
 <style scoped></style>

@@ -34,7 +34,7 @@
 
     <!-- 狀態選取 -->
     <div class="mt-2 flex justify-end">
-      <el-dropdown trigger="click" @command="updateStatus">
+      <el-dropdown trigger="click" @command="handleStatusChange">
         <button
           class="status-badge flex items-center px-3 py-1.5 transition-all duration-200 hover:shadow-sm"
           :class="statusClass"
@@ -91,13 +91,13 @@ import type { TaskResponse } from '@/types/response';
 import DragHandle from '@/components/ui/DragHandle.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
 import { useTaskContext } from '@/context/useTaskContext';
-
+import { taskApi } from '@/api/task';
 const props = defineProps<{
   task: TaskResponse;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:status', taskId: string, status: string): void;
+  (e: 'update:status', taskId: string, status: 'todo' | 'in_progress' | 'done'): void;
   (e: 'task-drop', dropData: any): void;
 }>();
 
@@ -105,13 +105,16 @@ const emit = defineEmits<{
 const { deleteTask } = useTaskContext();
 
 // 處理刪除任務
-const handleDeleteTask = () => {
-  deleteTask(props.task.id);
+const handleDeleteTask = async () => {
+  const { success } = await taskApi.deleteTask(props.task.id);
+  if (success) {
+    deleteTask(props.task.id);
+  }
 };
 
 // 更新任務狀態
-const updateStatus = (status: string) => {
-  emit('update:status', props.task.id, status);
+const handleStatusChange = (status: string) => {
+  emit('update:status', props.task.id, status as 'todo' | 'in_progress' | 'done');
 };
 
 // 格式化日期

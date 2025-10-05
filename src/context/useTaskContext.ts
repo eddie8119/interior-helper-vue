@@ -1,11 +1,12 @@
 import { inject, provide, type InjectionKey } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
+import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 // Define the type for our task context
 interface TaskContext {
   deleteTask: (taskId: string) => void;
-  addNewTask: (newTaskData: Partial<TaskResponse>) => void;
+  addNewTask: (newTaskData: TaskResponse) => void;
   updateTask: (taskId: string, updatedTask: Partial<TaskResponse>) => void;
 }
 

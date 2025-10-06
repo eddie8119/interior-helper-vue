@@ -91,6 +91,7 @@ const props = defineProps<{
     title?: string;
     description?: string;
   };
+  showMore?: boolean;
 }>();
 
 const { t } = useI18n();
@@ -99,6 +100,11 @@ const inputRef = ref<HTMLInputElement | null>(null);
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 const showMoreSettings = ref(false);
 const materialErrors = ref<Record<number, string>>({});
+
+// 初始化更多設定顯示狀態
+if (props.showMore) {
+  showMoreSettings.value = true;
+}
 
 const { value: title } = useField<string>('title');
 const { value: description } = useField<string>('description');

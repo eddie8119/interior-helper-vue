@@ -38,7 +38,7 @@
     </div>
   </div>
   <div v-else class="rounded-md border p-2">
-    <TaskForm :initial-data="task" :construction-id="task.constructionType" :errors="{}" />
+    <TaskForm :initial-data="task" :show-more="true" :construction-id="task.constructionType" :errors="{}" />
     <div class="mt-2 flex justify-end space-x-2">
       <button
         @click="cancelEditing"

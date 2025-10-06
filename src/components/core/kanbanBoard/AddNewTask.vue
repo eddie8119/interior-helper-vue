@@ -5,6 +5,7 @@
       ref="taskFormRef"
       :construction-id="props.constructionId"
       :errors="errors"
+      :error-message="errorMessage"
       :on-save="onAddTask"
       :disabled-save-button="isSubmitting"
       :on-cancel="onClose"

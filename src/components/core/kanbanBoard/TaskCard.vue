@@ -10,7 +10,7 @@
         <H3Title :title="task.title" />
       </div>
       <div class="flex items-center">
-        <TaskStatusDropdown :status="task.status" @update:status="handleStatusChange" />
+        <TaskStatusDropdown class="mr-1" :status="task.status" @update:status="handleTaskStatusChange" />
         <TrashButton class="invisible group-hover:visible" @click="handleDeleteTask" />
       </div>
     </div>
@@ -43,7 +43,8 @@
       :show-more="true"
       :construction-id="task.constructionType"
       :errors="{}"
-      :on-save="saveTask"
+      :error-message="errorMessage"
+      :on-save="onUpdateTask"
       :on-cancel="cancelEditing"
     />
   </div>
@@ -54,6 +55,7 @@ import { useForm } from 'vee-validate';
 import { ref } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
+import type { TaskStatus } from '@/types/task';
 
 import DragHandle from '@/components/ui/DragHandle.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
@@ -67,16 +69,17 @@ const props = defineProps<{
   task: TaskResponse;
 }>();
 
-const emit = defineEmits<{
-  (e: 'update:status', taskId: string, status: 'todo' | 'in_progress' | 'done'): void;
-  (e: 'task-drop', dropData: any): void;
-}>();
+// const emit = defineEmits<{
+//   (e: 'update:status', taskId: string, status: 'todo' | 'inProgress' | 'done'): void;
+//   (e: 'task-drop', dropData: any): void;
+// }>();
 
 // 從上下文中獲取任務操作
 const { deleteTask, updateTask } = useTaskContext();
 
 const isEditing = ref(false);
 const { values, setValues } = useForm<Partial<TaskResponse>>();
+const errorMessage = ref<string>('');
 
 const startEditing = () => {
   setValues({
@@ -92,9 +95,20 @@ const cancelEditing = () => {
   isEditing.value = false;
 };
 
-const saveTask = () => {
-  updateTask(props.task.id, values);
-  isEditing.value = false;
+const onUpdateTask = async() => {
+  try {
+    const { success, message, data } = await taskApi.updateTask(props.task.id, values);
+    if (success) {
+      updateTask(props.task.id, data);
+      isEditing.value = false;
+    }
+    if (!success) {
+      errorMessage.value = message;
+      return;
+    }
+  } catch (error) {
+    console.error('Failed to update task:', error);
+  }
 };
 
 // 處理刪除任務
@@ -106,8 +120,19 @@ const handleDeleteTask = async () => {
 };
 
 // 更新任務狀態
-const handleStatusChange = (status: 'todo' | 'in_progress' | 'done') => {
-  emit('update:status', props.task.id, status);
+const handleTaskStatusChange = async (status: TaskStatus) => {
+  try {
+    const { success, message, data } = await taskApi.updateTask(props.task.id, { ...props.task, status });
+    if (success) {
+      updateTask(props.task.id, data);
+    }
+    if (!success) {
+      errorMessage.value = message;
+      return;
+    }
+  } catch (error) {
+    console.error('Failed to update task:', error);
+  }
 };
 
 // 格式化日期

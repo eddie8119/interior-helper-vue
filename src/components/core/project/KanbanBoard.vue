@@ -39,7 +39,6 @@ import { useConstructionActions } from '@/composables/todo/useConstructionAction
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
 import { taskApi } from '@/api/task';
-import { useTaskActions } from '@/composables/todo/useTaskActions';
 import { provideTaskContext } from '@/context/useTaskContext';
 import { filterTasksByConstruction } from '@/utils/todo/taskUtils';
 
@@ -93,8 +92,6 @@ const { deleteConstruction, addNewConstruction, updateConstructionName } = useCo
   localConstructionContainer,
   onContainerUpdate
 );
-// 任務操作邏輯
-// const {  } = useTaskActions(localTasks, onTaskUpdate);
 
 // 提供任務上下文
 provideTaskContext({

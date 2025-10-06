@@ -80,7 +80,7 @@ const shouldAcceptDrop = (sourceContainerOptions: any) => {
 };
 
 // 更新任務狀態
-const updateTaskStatus = (taskId: string, status: 'todo' | 'in_progress' | 'done') => {
+const updateTaskStatus = (taskId: string, status: 'todo' | 'inProgress' | 'done') => {
   const updatedTasks = props.tasks.map((task: TaskResponse) => {
     if (task.id === taskId) {
       return { ...task, status };

@@ -23,7 +23,7 @@
             <span class="text-gray-800">待辦</span>
           </div>
         </el-dropdown-item>
-        <el-dropdown-item command="in_progress">
+        <el-dropdown-item command="inProgress">
           <div class="flex items-center">
             <div class="mr-3 h-3 w-3 rounded-full bg-blue-400" />
             <span class="text-blue-800">進行中</span>
@@ -43,23 +43,25 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-type Status = 'todo' | 'in_progress' | 'done';
+import type { TaskStatus } from '@/types/task';
+import { TaskStatusEnum } from '@/types/task';
+
 
 const props = defineProps<{
-  status: Status;
+  status: TaskStatus;
 }>();
 
-const emit = defineEmits<{ (e: 'update:status', status: Status): void }>();
+const emit = defineEmits<{ (e: 'update:status', status: TaskStatus): void }>();
 
-const handleCommand = (command: Status) => {
+const handleCommand = (command: TaskStatus) => {
   emit('update:status', command);
 };
 
 const statusClass = computed(() => {
   switch (props.status) {
-    case 'done':
+    case TaskStatusEnum.DONE:
       return 'bg-green-100 text-green-700';
-    case 'in_progress':
+    case TaskStatusEnum.IN_PROGRESS:
       return 'bg-blue-100 text-blue-700';
     default:
       return 'bg-gray-100 text-gray-700';
@@ -68,9 +70,9 @@ const statusClass = computed(() => {
 
 const statusText = computed(() => {
   switch (props.status) {
-    case 'done':
+    case TaskStatusEnum.DONE:
       return '已完成';
-    case 'in_progress':
+    case TaskStatusEnum.IN_PROGRESS:
       return '進行中';
     default:
       return '待辦';

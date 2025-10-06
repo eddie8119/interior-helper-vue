@@ -108,6 +108,7 @@ const props = defineProps<{
     title?: string;
     description?: string;
   };
+  errorMessage?: string;
   showMore?: boolean;
   onSave: Function;
   onCancel: Function;

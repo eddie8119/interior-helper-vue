@@ -11,7 +11,7 @@
     <p class="text-center text-lg">
       {{ t('dialog.delete_confirm') }}
       <span class="font-semibold text-secondary-red">{{ props.subject }}: {{ props.target }}</span>
-      ?
+      ? {{ t('dialog.delete_content') }}
     </p>
     <div v-if="props.isCrucial" class="mt-2 text-center text-lg">
       <p>

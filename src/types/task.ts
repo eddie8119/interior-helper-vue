@@ -4,3 +4,12 @@ export interface Material {
   quantity?: number;
   unitPrice?: number;
 }
+
+export enum TaskStatusEnum {
+  TODO = 'todo',
+  IN_PROGRESS = 'inProgress',
+  DONE = 'done',
+}
+
+export type TaskStatus = 'todo' | 'inProgress' | 'done';
+

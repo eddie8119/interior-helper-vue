@@ -132,7 +132,7 @@ const getStatusType = (status: string) => {
   switch (status) {
     case 'completed':
       return 'success';
-    case 'in_progress':
+    case 'inProgress':
       return 'warning';
     case 'pending':
       return 'info';

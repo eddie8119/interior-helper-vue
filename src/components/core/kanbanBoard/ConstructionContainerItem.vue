@@ -1,8 +1,10 @@
 <template>
   <div class="mx-2 min-w-[300px] max-w-[300px] rounded-lg bg-gray-100 p-3 shadow-sm">
     <ContainerHeader
+      v-model:selected-status="selectedStatus"
+      :options="STATUS_FILTER_OPTIONS"
       :construction-name="props.constructionName"
-      :tasks-length="props.filteredTasks.length"
+      :tasks-length="filteredTasks.length"
       @update:construction-name="updateConstructionName"
       @delete-container="handleDeleteConstruction"
     />
@@ -29,19 +31,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
 
 import ContainerBody from '@/components/core/kanbanBoard/ContainerBody.vue';
 import ContainerHeader from '@/components/core/kanbanBoard/ContainerHeader.vue';
 import { useEditingStateStore } from '@/stores/editingState';
+import { STATUS_FILTER_OPTIONS } from '@/constants/selection';
 
 const props = defineProps<{
   constructionId: string;
   constructionName: string;
   projectId: string;
-  filteredTasks: TaskResponse[];
+  tasks: TaskResponse[];
 }>();
 
 const emit = defineEmits<{
@@ -57,6 +60,18 @@ const editingStateStore = useEditingStateStore();
 // 使用計算屬性來判斷當前容器是否處於編輯狀態
 const isEditing = computed(() => {
   return editingStateStore.isEditing('container', props.constructionId);
+});
+
+// 定義任務狀態過濾選項
+type TaskFilterStatus = 'all' | 'todo' | 'inProgress' | 'done';
+
+const selectedStatus = ref<TaskFilterStatus>('all');
+
+const filteredTasks = computed(() => {
+  if (selectedStatus.value === 'all') {
+    return props.tasks;
+  }
+  return props.tasks.filter((task: TaskResponse) => task.status === selectedStatus.value);
 });
 
 // Watch for changes in the global editing state

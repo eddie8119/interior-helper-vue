@@ -14,7 +14,7 @@
           :construction-id="container.id"
           :project-id="projectId"
           :construction-name="container.name"
-          :filtered-tasks="filteredTasks(container.id)"
+          :tasks="filteredTasks(container.id)"
           @delete-container="deleteConstruction(index)"
           @update:construction-name="updateConstructionName(index, $event)"
           @task-drop="handleTaskDrop($event, container.id)"

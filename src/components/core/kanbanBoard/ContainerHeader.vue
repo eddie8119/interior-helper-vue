@@ -8,6 +8,12 @@
       />
       <span class="ml-1">({{ tasksLength }})</span>
     </div>
+
+    <StatusSelector
+      :model-value="selectedStatus"
+      :options="options"
+      @update:modelValue="(v) => emit('update:selected-status', v)"
+    />
     <TrashButton @click="showDeleteConstructionDialog = true" />
 
     <!-- 刪除確認對話框 -->
@@ -27,15 +33,20 @@ import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
 import ContainerTitle from '@/components/core/kanbanBoard/ContainerTitle.vue';
 import DragHandle from '@/components/ui/DragHandle.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
+import StatusSelector from '@/components/ui/OptionSelector.vue';
+import type { SelectorOption } from '@/types/selection';
 
 defineProps<{
   constructionName: string;
   tasksLength: number;
+  selectedStatus: string;
+  options: SelectorOption[];
 }>();
 
 const emit = defineEmits<{
   (e: 'delete-container'): void;
   (e: 'update:construction-name', name: string): void;
+  (e: 'update:selected-status', value: string): void;
 }>();
 
 const { t } = useI18n();

@@ -1,4 +1,8 @@
-import type { ConstructionSelection, ProjectTypeSelection } from '@/types/selection';
+import type {
+  ConstructionSelection,
+  ProjectTypeSelection,
+  SelectorOption,
+} from '@/types/selection';
 
 export const PROJECT_TYPES: ProjectTypeSelection[] = [
   { value: 'residential', label: 'residential' },
@@ -76,4 +80,11 @@ export const CONSTRUCTION_CONTAINER: ConstructionSelection[] = [
     name: '結構補強',
     id: '16',
   },
+];
+
+export const STATUS_FILTER_OPTIONS: SelectorOption[] = [
+  { value: 'all', label: '全部' },
+  { value: 'todo', label: '待辦' },
+  { value: 'inProgress', label: '進行中' },
+  { value: 'done', label: '已完成' },
 ];

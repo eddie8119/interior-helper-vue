@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col space-y-3">
-    <!-- Form fields will go here -->
     <!-- 基本信息輸入 -->
     <div>
       <input
@@ -82,6 +81,7 @@
       </button>
       <button
         @click="() => props.onSave()"
+        :disabled="props.disabledSaveButton"
         class="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
       >
         {{ saveButtonText || '儲存' }}
@@ -112,6 +112,7 @@ const props = defineProps<{
   onSave: Function;
   onCancel: Function;
   saveButtonText?: string;
+  disabledSaveButton?: boolean;
 }>();
 
 const { t } = useI18n();

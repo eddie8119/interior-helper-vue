@@ -6,6 +6,7 @@
       :construction-id="props.constructionId"
       :errors="errors"
       :on-save="onAddTask"
+      :disabled-save-button="isSubmitting"
       :on-cancel="onClose"
       :save-button-text="t('button.add')"
     />
@@ -40,18 +41,19 @@ const emit = defineEmits<{
 const taskFormRef = ref<InstanceType<typeof TaskForm> | null>(null);
 const errorMessage = ref<string>('');
 
-// 使用 vee-validate 和 zod 進行表單驗證
-const { isSubmitting, handleSubmit, errors, setValues } = useForm({
+const getInitialValues = (): CreateTaskSchema => ({
+  title: '',
+  description: '',
+  materials: [],
+  reminderDatetime: undefined,
+  constructionType: props.constructionId,
+  projectId: props.projectId,
+  status: 'todo',
+});
+
+const { isSubmitting, handleSubmit, errors, resetForm } = useForm({
   validationSchema: toTypedSchema(createTaskSchema),
-  initialValues: {
-    title: '',
-    description: '',
-    materials: [],
-    reminderDatetime: undefined,
-    constructionType: props.constructionId,
-    projectId: props.projectId,
-    status: 'todo',
-  },
+  initialValues: getInitialValues(),
 });
 
 // 提交狀態
@@ -81,11 +83,19 @@ const onAddTask = handleSubmit(async (values: CreateTaskSchema) => {
     }
   } catch (error) {
     console.error('Failed to add task:', error);
+  } finally {
+    // 完整重置：值、觸碰狀態、錯誤都清除，避免重新開啟就顯示驗證錯誤
+    resetForm({ values: getInitialValues() });
+    // 清除 TaskForm 內部的材料項目錯誤提示（若之前有）
+    taskFormRef.value?.clearMaterialErrors();
   }
 });
 
 // 關閉表單
 const onClose = () => {
+  // 關閉時也重置，避免再次打開時殘留 touched/errors
+  resetForm({ values: getInitialValues() });
+  taskFormRef.value?.clearMaterialErrors();
   emit('close');
 };
 </script>

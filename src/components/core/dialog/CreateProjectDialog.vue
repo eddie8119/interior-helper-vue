@@ -99,9 +99,15 @@ const dialogVisible = computed({
   set: (value) => emit('update:modelValue', value),
 });
 
-const { handleSubmit, isSubmitting, meta } = useForm({
+const getInitialValues = (): CreateProjectSchema => ({
+  title: '',
+  type: 'residential',
+  constructionContainer: [],
+});
+
+const { handleSubmit, isSubmitting, meta, resetForm } = useForm({
   validationSchema: toTypedSchema(createProjectSchema),
-  initialValues: { title: '', type: 'residential', constructionContainer: [] },
+  initialValues: getInitialValues(),
 });
 
 const isInvalid = computed(() => !meta.value.valid);
@@ -127,6 +133,8 @@ const onSubmit = handleSubmit(async (values: CreateProjectSchema) => {
     }
   } catch (error) {
     console.error('Failed to update device tag:', error);
+  } finally {
+    resetForm({ values: getInitialValues() });
   }
 });
 

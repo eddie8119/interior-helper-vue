@@ -46,7 +46,6 @@ import { computed } from 'vue';
 import type { TaskStatus } from '@/types/task';
 import { TaskStatusEnum } from '@/types/task';
 
-
 const props = defineProps<{
   status: TaskStatus;
 }>();

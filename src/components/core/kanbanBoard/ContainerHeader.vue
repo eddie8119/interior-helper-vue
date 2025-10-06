@@ -6,6 +6,7 @@
         :construction-name="constructionName"
         @update:construction-name="updateConstructionName"
       />
+      <span class="ml-1">({{ tasksLength }})</span>
     </div>
     <TrashButton @click="showDeleteConstructionDialog = true" />
 
@@ -29,6 +30,7 @@ import TrashButton from '@/components/ui/TrashButton.vue';
 
 defineProps<{
   constructionName: string;
+  tasksLength: number;
 }>();
 
 const emit = defineEmits<{

@@ -10,7 +10,11 @@
         <H3Title :title="task.title" />
       </div>
       <div class="flex items-center">
-        <TaskStatusDropdown class="mr-1" :status="task.status" @update:status="handleTaskStatusChange" />
+        <TaskStatusDropdown
+          class="mr-1"
+          :status="task.status"
+          @update:status="handleTaskStatusChange"
+        />
         <TrashButton class="invisible group-hover:visible" @click="handleDeleteTask" />
       </div>
     </div>
@@ -95,7 +99,7 @@ const cancelEditing = () => {
   isEditing.value = false;
 };
 
-const onUpdateTask = async() => {
+const onUpdateTask = async () => {
   try {
     const { success, message, data } = await taskApi.updateTask(props.task.id, values);
     if (success) {
@@ -122,7 +126,10 @@ const handleDeleteTask = async () => {
 // 更新任務狀態
 const handleTaskStatusChange = async (status: TaskStatus) => {
   try {
-    const { success, message, data } = await taskApi.updateTask(props.task.id, { ...props.task, status });
+    const { success, message, data } = await taskApi.updateTask(props.task.id, {
+      ...props.task,
+      status,
+    });
     if (success) {
       updateTask(props.task.id, data);
     }

@@ -19,7 +19,7 @@
   >
     <!-- 任務列表 -->
     <Draggable v-for="task in tasks" :key="task.id">
-      <TaskCard :task="task" @update:status="updateTaskStatus" />
+      <TaskCard :task="task" />
     </Draggable>
   </Container>
 </template>
@@ -77,18 +77,6 @@ const handleTaskDrop = (dropResult: any) => {
 const shouldAcceptDrop = (sourceContainerOptions: any) => {
   // 只接受來自 'tasks' 群組的拖曳物件
   return sourceContainerOptions.groupName === 'tasks';
-};
-
-// 更新任務狀態
-const updateTaskStatus = (taskId: string, status: 'todo' | 'inProgress' | 'done') => {
-  const updatedTasks = props.tasks.map((task: TaskResponse) => {
-    if (task.id === taskId) {
-      return { ...task, status };
-    }
-    return task;
-  });
-
-  emit('update:tasks', updatedTasks);
 };
 </script>
 

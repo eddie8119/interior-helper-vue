@@ -2,6 +2,7 @@
   <div class="mx-2 min-w-[300px] max-w-[300px] rounded-lg bg-gray-100 p-3 shadow-sm">
     <ContainerHeader
       :construction-name="props.constructionName"
+      :tasks-length="props.filteredTasks.length"
       @update:construction-name="updateConstructionName"
       @delete-container="handleDeleteConstruction"
     />

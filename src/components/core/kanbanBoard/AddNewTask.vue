@@ -1,24 +1,14 @@
 <template>
   <div class="flex flex-col space-y-3">
     <!-- 使用可重用的 TaskForm 組件 -->
-    <TaskForm ref="taskFormRef" :construction-id="constructionId" :errors="errors" />
-
-    <!-- 按鈕區域 -->
-    <div class="flex justify-between">
-      <button
-        class="rounded-md bg-gray-200 px-3 py-1 text-gray-700 hover:bg-gray-300"
-        @click="onClose"
-      >
-        {{ t('button.cancel') }}
-      </button>
-      <button
-        class="rounded-md bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
-        :disabled="isSubmitting"
-        @click="onAddTask"
-      >
-        {{ t('button.add') }}
-      </button>
-    </div>
+    <TaskForm
+      ref="taskFormRef"
+      :construction-id="props.constructionId"
+      :errors="errors"
+      :on-save="onAddTask"
+      :on-cancel="onClose"
+      :save-button-text="t('button.add')"
+    />
   </div>
 </template>
 

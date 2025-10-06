@@ -38,21 +38,14 @@
     </div>
   </div>
   <div v-else class="rounded-md border p-2">
-    <TaskForm :initial-data="task" :show-more="true" :construction-id="task.constructionType" :errors="{}" />
-    <div class="mt-2 flex justify-end space-x-2">
-      <button
-        @click="cancelEditing"
-        class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
-      >
-        取消
-      </button>
-      <button
-        @click="saveTask"
-        class="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
-      >
-        儲存
-      </button>
-    </div>
+    <TaskForm
+      :initial-data="task"
+      :show-more="true"
+      :construction-id="task.constructionType"
+      :errors="{}"
+      :on-save="saveTask"
+      :on-cancel="cancelEditing"
+    />
   </div>
 </template>
 

@@ -5,6 +5,7 @@
       :options="STATUS_FILTER_OPTIONS"
       :construction-name="props.constructionName"
       :tasks-length="filteredTasks.length"
+      :is-show-status-filter="isShowStatusFilter"
       @update:construction-name="updateConstructionName"
       @delete-container="handleDeleteConstruction"
     />
@@ -34,6 +35,7 @@
 import { computed, ref, watch } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
+import type { TaskFilterStatus } from '@/constants/selection';
 
 import ContainerBody from '@/components/core/kanbanBoard/ContainerBody.vue';
 import ContainerHeader from '@/components/core/kanbanBoard/ContainerHeader.vue';
@@ -62,9 +64,6 @@ const isEditing = computed(() => {
   return editingStateStore.isEditing('container', props.constructionId);
 });
 
-// 定義任務狀態過濾選項
-type TaskFilterStatus = 'all' | 'todo' | 'inProgress' | 'done';
-
 const selectedStatus = ref<TaskFilterStatus>('all');
 
 const filteredTasks = computed(() => {
@@ -72,6 +71,10 @@ const filteredTasks = computed(() => {
     return props.tasks;
   }
   return props.tasks.filter((task: TaskResponse) => task.status === selectedStatus.value);
+});
+
+const isShowStatusFilter = computed(() => {
+  return props.tasks.some((task: TaskResponse) => task.status !== 'todo');
 });
 
 // Watch for changes in the global editing state

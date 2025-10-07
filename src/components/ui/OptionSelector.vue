@@ -2,7 +2,7 @@
   <select
     :value="modelValue"
     @change="onChange"
-    class="w-1/3 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+    :class="`rounded-md border p-2 text-sm shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200 ${className}`"
   >
     <option v-for="option in options" :key="String(option.value)" :value="option.value">
       {{ option.label }}
@@ -13,9 +13,10 @@
 <script setup lang="ts">
 import type { SelectorOption } from '@/types/selection';
 
-const { modelValue, options } = defineProps<{
+const { modelValue, options, className } = defineProps<{
   modelValue: string;
   options: SelectorOption[];
+  className?: string;
 }>();
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();

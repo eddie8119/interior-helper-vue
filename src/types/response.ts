@@ -1,5 +1,6 @@
 import type { ConstructionSelection, ProjectType } from './selection';
 import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
+import type { TaskStatus } from '@/types/task';
 
 export interface AuthResponse {
   user: {
@@ -48,6 +49,7 @@ export interface TaskResponse extends CreateTaskSchema {
   lastReminderSentAt: Date | null;
   lineReminderSent: boolean;
   emailReminderSent: boolean;
+  status: TaskStatus;
 }
 
 // 任務材料

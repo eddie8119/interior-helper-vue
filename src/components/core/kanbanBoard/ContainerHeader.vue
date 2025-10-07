@@ -9,12 +9,16 @@
       <span class="ml-1">({{ tasksLength }})</span>
     </div>
 
-    <StatusSelector
-      :model-value="selectedStatus"
-      :options="options"
-      @update:modelValue="(v) => emit('update:selected-status', v)"
-    />
-    <TrashButton @click="showDeleteConstructionDialog = true" />
+    <div class="flex items-center gap-1">
+      <OptionSelector
+        v-if="isShowStatusFilter"
+        :model-value="selectedStatus"
+        :options="STATUS_FILTER_OPTIONS"
+        @update:modelValue="(v) => emit('update:selected-status', v)"
+        :className="'w-[90px]'"
+      />
+      <TrashButton @click="showDeleteConstructionDialog = true" />
+    </div>
 
     <!-- 刪除確認對話框 -->
     <DeleteDialog
@@ -28,19 +32,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-
+import type { SelectorOption } from '@/types/selection';
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
 import ContainerTitle from '@/components/core/kanbanBoard/ContainerTitle.vue';
 import DragHandle from '@/components/ui/DragHandle.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
-import StatusSelector from '@/components/ui/OptionSelector.vue';
-import type { SelectorOption } from '@/types/selection';
+import OptionSelector from '@/components/ui/OptionSelector.vue';
+import { STATUS_FILTER_OPTIONS } from '@/constants/selection';
 
 defineProps<{
   constructionName: string;
   tasksLength: number;
   selectedStatus: string;
   options: SelectorOption[];
+  isShowStatusFilter: boolean;
 }>();
 
 const emit = defineEmits<{

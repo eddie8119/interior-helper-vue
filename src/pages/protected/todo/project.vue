@@ -14,6 +14,7 @@
         <ShowUpdateTime :last-update-time="formattedUpdateTime" />
       </div>
     </div>
+
     <KanbanBoard
       :project-id="projectId"
       :construction-container="localProject?.constructionContainer || []"

@@ -1,4 +1,13 @@
 <template>
+  <div class="flex items-center gap-2">
+    <p>全案狀態篩選:</p>
+    <OptionSelector
+      :model-value="selectedStatus"
+      :options="STATUS_FILTER_OPTIONS"
+      @update:modelValue="selectedStatus = $event"
+      :className="'w-[140px]'"
+    />
+  </div>
   <div class="w-full overflow-x-auto">
     <Container
       orientation="horizontal"
@@ -27,20 +36,23 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import { Container, Draggable } from 'vue3-smooth-dnd';
 
 import type { TaskResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
+import type { TaskFilterStatus } from '@/constants/selection';
 
 import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
 import ConstructionContainerItem from '@/components/core/kanbanBoard/ConstructionContainerItem.vue';
+import OptionSelector from '@/components/ui/OptionSelector.vue';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
 import { taskApi } from '@/api/task';
 import { provideTaskContext } from '@/context/useTaskContext';
 import { filterTasksByConstruction } from '@/utils/todo/taskUtils';
+import { STATUS_FILTER_OPTIONS } from '@/constants/selection';
 
 const props = defineProps<{
   constructionContainer: ConstructionSelection[] | null;
@@ -56,6 +68,7 @@ const emit = defineEmits<{
 // amount of editing 都會使用本地副本
 const localConstructionContainer = ref<ConstructionSelection[]>([]);
 const localTasks = ref<TaskResponse[]>([]);
+const selectedStatus = ref<TaskFilterStatus>('all');
 
 const initializelocalConstructionContainer = () => {
   localConstructionContainer.value = [...(props.constructionContainer || [])];
@@ -159,9 +172,16 @@ watch(
   { immediate: true, deep: true }
 );
 
+const filteredTasksByStatus = computed(() => {
+  if (selectedStatus.value === 'all') {
+    return localTasks.value;
+  }
+  return localTasks.value.filter((task: TaskResponse) => task.status === selectedStatus.value);
+});
+
 // 使用工具函數過濾任務
 const filteredTasks = (constructionId: string) => {
-  return filterTasksByConstruction(localTasks.value, constructionId);
+  return filterTasksByConstruction(filteredTasksByStatus.value, constructionId);
 };
 
 onBeforeUnmount(() => {

@@ -83,10 +83,10 @@ export const CONSTRUCTION_CONTAINER: ConstructionSelection[] = [
 ];
 
 export const STATUS_FILTER_OPTIONS: SelectorOption[] = [
-  { value: 'all', label: '全部' },
-  { value: 'todo', label: '待辦' },
-  { value: 'inProgress', label: '進行中' },
-  { value: 'done', label: '已完成' },
+  { value: 'all' },
+  { value: 'todo' },
+  { value: 'inProgress' },
+  { value: 'done' },
 ] as const;
 
 export type TaskFilterStatus = (typeof STATUS_FILTER_OPTIONS)[number]['value'];

@@ -25,7 +25,7 @@
         class="flex items-center justify-center rounded-md bg-blue-100 px-3 py-1 text-blue-700 hover:bg-blue-200"
         @click="startEditing"
       >
-        + 施作任務
+        + {{ t('button.add_task') }}
       </button>
     </div>
   </div>
@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import type { TaskResponse } from '@/types/response';
 import type { TaskFilterStatus } from '@/constants/selection';
 
@@ -58,6 +58,7 @@ const emit = defineEmits<{
 }>();
 
 const editingStateStore = useEditingStateStore();
+const { t } = useI18n();
 
 // 使用計算屬性來判斷當前容器是否處於編輯狀態
 const isEditing = computed(() => {

@@ -5,12 +5,14 @@
     :class="`rounded-md border p-2 text-sm shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200 ${className}`"
   >
     <option v-for="option in options" :key="String(option.value)" :value="option.value">
-      {{ option.label }}
+      {{ t(`option.status.${option.value}`) }}
     </option>
   </select>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
 import type { SelectorOption } from '@/types/selection';
 
 const { modelValue, options, className } = defineProps<{
@@ -20,6 +22,8 @@ const { modelValue, options, className } = defineProps<{
 }>();
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
+
+const { t } = useI18n();
 
 const onChange = (e: Event) => {
   const target = e.target as HTMLSelectElement;

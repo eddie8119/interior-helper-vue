@@ -2,7 +2,9 @@
   "en": {
     "button": {
       "cancel": "Cancel",
+      "save": "Save",
       "add": "Add",
+      "add_task": "Add Task",
       "submit": "Submit",
       "register": "Register",
       "login": "Login",
@@ -24,6 +26,10 @@
   },
   "zh-TW": {
     "button": {
+      "cancel": "取消",
+      "save": "儲存",
+      "add": "添加",
+      "add_task": "施作任務",
       "submit": "提交",
       "register": "註冊",
       "login": "登入",

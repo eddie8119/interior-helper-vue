@@ -3,6 +3,10 @@
     "edit_all": "編輯所有"
   },
   "button": {
+    "cancel": "取消",
+    "save": "儲存",
+    "add": "添加",
+    "add_task": "施作任務",
     "submit": "提交",
     "register": "註冊",
     "login": "登入",
@@ -13,6 +17,7 @@
     "resend_activation_email": "重新發送啟用郵件",
     "edit_profile": "編輯個人資料",
     "move_to_project": "移動到專案",
+    "moved_to_project": "已移到專案",
     "resend": "重新發送",
     "activate": "啟用",
     "try_again": "再試一次",
@@ -24,8 +29,8 @@
     "edit": "編輯",
     "title": "名稱",
     "type": "類型",
-    "createdAt": "建立時間",
-    "updatedAt": "更新時間"
+    "task_progress": "任務進度",
+    "createdAt": "建立時間"
   },
   "common": {
     "confirm": "確認",
@@ -54,76 +59,6 @@
       "hour": "{count} 小時前",
       "day": "{count} 天前"
     }
-  },
-  "device": {
-    "site_name": "點位名稱",
-    "electrodeLife": "電極壽命",
-    "sensor_name": "感測器型號",
-    "sensor_serial": "感測器序號",
-    "customName": "自訂名稱",
-    "edit": "編輯",
-    "action": "行動",
-    "handle": "處理",
-    "sensor_remainingDays": "感測器剩餘天數",
-    "location": "位置",
-    "product_name": "產品型號",
-    "product_serial": "產品序號",
-    "water_area": "水域",
-    "senser_start_date": "感測器啟用日期",
-    "day": "天",
-    "deviceWarning": {
-      "warning": "警告",
-      "cleaning_action": "清潔行為",
-      "regeneration_action": "再生行為",
-      "replacement_action": "更換行為",
-      "_": "_",
-      "action": "操作",
-      "error": "錯誤",
-      "all": "全部"
-    },
-    "measurement": {
-      "ph": "pH",
-      "elec": "Elec(mV)",
-      "zero": "zero",
-      "temperature": "溫度(°C)",
-      "slope": "slope",
-      "humidity": "濕度",
-      "ppm": "ppm",
-      "sensitivity": "電極敏感度",
-      "offset": "偏差度"
-    },
-    "status": {
-      "pending": "未處理",
-      "handled": "已處理",
-      "cleared": "已清除",
-      "running": "運行中",
-      "caution": "注意",
-      "stopped": "停止",
-      "warning": "警告",
-      "resolved": "已解決",
-      "unresolved": "未解決",
-      "idle": "閒置",
-      "undefined": "未定義",
-      "not available": "不可用",
-      "error": "錯誤",
-      "finish": "完成",
-      "failed": "失敗"
-    },
-    "handle_action": {
-      "remote_cleaning": "建議執行遠端清洗校正",
-      "electrode_replacement": "電極部品需更換。請聯絡幸瑋",
-      "electrode_reached_life": "電極達使用壽命。請聯絡幸瑋"
-    },
-    "warning": "警告",
-    "caution": "注意",
-    "running": "運行中",
-    "active": "啟用中",
-    "stop": "停止",
-    "times": "次",
-    "device": "裝置",
-    "devices": "裝置",
-    "devices_list_page": "裝置群",
-    "show_all_filter": "顯示全部篩選"
   },
   "dialog": {
     "delete_confirm": "確定要刪除",
@@ -227,10 +162,6 @@
       "entitySearch": "實體搜尋",
       "devices": "裝置",
       "overview": "概況",
-      "ph": "酸鹼值",
-      "orp": "氧化還原電位",
-      "nh3n": "氨氮",
-      "flouride": "氟鹽",
       "set-member": "成員設定"
     }
   },
@@ -244,29 +175,17 @@
       "time_range_settings": "時間範圍設定"
     }
   },
-  "observation": {
-    "ph": "酸鹼值",
-    "orp": "氧化還原電位",
-    "sqm": "SQM",
-    "mac": "MAC",
-    "nh3n": "氨氮",
-    "flouride": "氟鹽"
-  },
   "option": {
     "alarm": {
       "notice": "通知",
       "caution": "注意",
       "warning": "警告"
     },
-    "waterQuality": {
-      "pure_water": "純水域",
-      "acid_alkali": "酸鹼",
-      "biological_water": "生物水域",
-      "general_acid_alkali": "一般酸鹼",
-      "grinding_water": "研磨水域",
-      "copper_grinding": "銅系研磨",
-      "nh3n_water": "氨氮水域",
-      "hydrofluoric_water": "氫氟水域"
+    "status": {
+      "all": "全部",
+      "todo": "待辦",
+      "inProgress": "進行中",
+      "done": "已完成"
     }
   },
   "pagination": {

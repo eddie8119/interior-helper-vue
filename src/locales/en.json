@@ -4,7 +4,9 @@
   },
   "button": {
     "cancel": "Cancel",
+    "save": "Save",
     "add": "Add",
+    "add_task": "Add Task",
     "submit": "Submit",
     "register": "Register",
     "login": "Login",
@@ -15,6 +17,7 @@
     "resend_activation_email": "Resend Activation Email",
     "edit_profile": "Edit Profile",
     "move_to_project": "Move to Project",
+    "moved_to_project": "Moved to Project",
     "resend": "Resend",
     "activate": "Activate",
     "try_again": "Try Again",
@@ -26,6 +29,7 @@
     "edit": "Edit",
     "title": "Name",
     "type": "Type",
+    "task_progress": "Task Progress",
     "createdAt": "Created At"
   },
   "common": {
@@ -56,76 +60,6 @@
       "hour": "{count} hour",
       "day": "{count} day "
     }
-  },
-  "device": {
-    "site_name": "Tag Name",
-    "electrodeLife": "Electrode Life",
-    "sensor_name": "Sensor Model",
-    "sensor_serial": "Sensor Serial Number",
-    "customName": "Custom Name",
-    "edit": "Edit",
-    "action": "Action",
-    "handle": "Handle",
-    "sensor_remainingDays": "Sensor Remaining Days",
-    "location": "Location",
-    "product_name": "Product",
-    "product_serial": "Product Serial Number",
-    "water_area": "Water Quality",
-    "senser_start_date": "Sensor Start Date",
-    "day": "day",
-    "deviceWarning": {
-      "warning": "Warning",
-      "cleaning_action": "Cleaning Warning",
-      "regeneration_action": "Regeneration Warning",
-      "replacement_action": "Replacement Warning",
-      "_": "_",
-      "action": "Action",
-      "error": "Error",
-      "all": "All"
-    },
-    "measurement": {
-      "ph": "pH",
-      "elec": "Elec(mV)",
-      "zero": "Zero",
-      "temperature": "Temperature(°C)",
-      "slope": "Slope",
-      "humidity": "Humidity",
-      "ppm": "ppm",
-      "sensitivity": "sensitivity",
-      "offset": "offset"
-    },
-    "status": {
-      "pending": "Pending",
-      "handled": "Handled",
-      "cleared": "Cleared",
-      "running": "Running",
-      "caution": "Caution",
-      "stopped": "Stopped",
-      "warning": "Warning",
-      "resolved": "Resolved",
-      "unresolved": "Unresolved",
-      "idle": "Idle",
-      "undefined": "Undefined",
-      "not available": "Not Available",
-      "error": "Error",
-      "finish": "finish",
-      "failed": "Failed"
-    },
-    "handle_action": {
-      "remote_cleaning": "Suggested to perform remote cleaning and calibration",
-      "electrode_replacement": "Electrode component replacement. Please contact HSWE",
-      "electrode_reached_life": "Electrode has reached its service life. Please contact HSWE"
-    },
-    "warning": "Warning",
-    "caution": "Caution",
-    "running": "Running",
-    "active": "Active",
-    "stop": "Stop",
-    "times": "times",
-    "device": "device",
-    "devices": "devices",
-    "devices_list_page": "devices list page",
-    "show_all_filter": "show all filter"
   },
   "dialog": {
     "delete_confirm": "Do you confirm the deletion",
@@ -232,12 +166,6 @@
       "entitySearch": "Entity Search",
       "devices": "Devices",
       "overview": "Overview",
-      "ph": "pH",
-      "orp": "ORP",
-      "sqm": "SQM",
-      "mac": "MAC",
-      "nh3n": "NH3-N",
-      "flouride": "F-",
       "set-member": "Set Member"
     }
   },
@@ -251,29 +179,17 @@
       "time_range_settings": "Time Range Settings"
     }
   },
-  "observation": {
-    "ph": "pH",
-    "orp": "ORP",
-    "sqm": "SQM",
-    "mac": "MAC",
-    "nh3n": "NH3-N",
-    "flouride": "F-"
-  },
   "option": {
     "alarm": {
       "notice": "Notice",
       "caution": "Caution",
       "warning": "Warning"
     },
-    "waterQuality": {
-      "pure_water": "Pure Water",
-      "acid_alkali": "Acid Alkali",
-      "biological_water": "Biological Water",
-      "general_acid_alkali": "General Acid Alkali",
-      "grinding_water": "Grinding Water",
-      "copper_grinding": "Copper Grinding",
-      "nh3n_water": "NH3-N Water",
-      "hydrofluoric_water": "Hydrofluoric Water"
+    "status": {
+      "all": "All",
+      "todo": "Todo",
+      "inProgress": "In Progress",
+      "done": "Done"
     }
   },
   "pagination": {

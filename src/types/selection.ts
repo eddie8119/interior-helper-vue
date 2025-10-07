@@ -12,5 +12,4 @@ export interface ConstructionSelection {
 
 export interface SelectorOption<T = string> {
   value: T;
-  label: string;
 }

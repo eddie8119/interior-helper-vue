@@ -4,7 +4,7 @@
       class="status-badge flex items-center px-3 py-1.5 transition-all duration-200 hover:shadow-sm"
       :class="statusClass"
     >
-      {{ statusText }}
+      {{ t(`option.status.${props.status}`) }}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="ml-1.5 h-4 w-4"
@@ -17,22 +17,14 @@
     </button>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item command="todo">
+        <el-dropdown-item
+          v-for="option in statusOptions"
+          :key="option.value"
+          :command="option.value"
+        >
           <div class="flex items-center">
-            <div class="mr-3 h-3 w-3 rounded-full bg-gray-400" />
-            <span class="text-gray-800">待辦</span>
-          </div>
-        </el-dropdown-item>
-        <el-dropdown-item command="inProgress">
-          <div class="flex items-center">
-            <div class="mr-3 h-3 w-3 rounded-full bg-blue-400" />
-            <span class="text-blue-800">進行中</span>
-          </div>
-        </el-dropdown-item>
-        <el-dropdown-item command="done">
-          <div class="flex items-center">
-            <div class="mr-3 h-3 w-3 rounded-full bg-green-400" />
-            <span class="text-green-800">已完成</span>
+            <div :class="['mr-3 h-3 w-3 rounded-full', option.color]" />
+            <span :class="option.textColor">{{ t(`option.status.${option.value}`) }}</span>
           </div>
         </el-dropdown-item>
       </el-dropdown-menu>
@@ -42,6 +34,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { TaskStatus } from '@/types/task';
 import { TaskStatusEnum } from '@/types/task';
@@ -49,6 +42,14 @@ import { TaskStatusEnum } from '@/types/task';
 const props = defineProps<{
   status: TaskStatus;
 }>();
+
+const { t } = useI18n();
+
+const statusOptions = [
+  { value: TaskStatusEnum.TODO, color: 'bg-gray-400', textColor: 'text-gray-800' },
+  { value: TaskStatusEnum.IN_PROGRESS, color: 'bg-blue-400', textColor: 'text-blue-800' },
+  { value: TaskStatusEnum.DONE, color: 'bg-green-400', textColor: 'text-green-800' },
+];
 
 const emit = defineEmits<{ (e: 'update:status', status: TaskStatus): void }>();
 

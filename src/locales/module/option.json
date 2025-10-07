@@ -5,6 +5,12 @@
         "notice": "Notice",
         "caution": "Caution",
         "warning": "Warning"
+      },
+      "status": {
+        "all": "All",
+        "todo": "Todo",
+        "inProgress": "In Progress",
+        "done": "Done"
       }
     }
   },
@@ -14,6 +20,12 @@
         "notice": "通知",
         "caution": "注意",
         "warning": "警告"
+      },
+      "status": {
+        "all": "全部",
+        "todo": "待辦",
+        "inProgress": "進行中",
+        "done": "已完成"
       }
     }
   },

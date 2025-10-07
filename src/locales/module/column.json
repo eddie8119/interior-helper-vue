@@ -4,6 +4,7 @@
       "edit": "Edit",
       "title": "Name",
       "type": "Type",
+      "task_progress": "Task Progress",
       "createdAt": "Created At"
     }
   },
@@ -12,8 +13,8 @@
       "edit": "編輯",
       "title": "名稱",
       "type": "類型",
-      "createdAt": "建立時間",
-      "updatedAt": "更新時間"
+      "task_progress": "任務進度",
+      "createdAt": "建立時間"
     }
   },
   "ja": {
@@ -21,8 +22,8 @@
       "edit": "編集",
       "title": "名前",
       "type": "タイプ",
-      "createdAt": "作成日",
-      "updatedAt": "更新日"
+      "task_progress": "タスク進行状況",
+      "createdAt": "作成日"
     }
   }
 }

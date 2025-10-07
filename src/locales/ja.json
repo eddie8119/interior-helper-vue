@@ -20,8 +20,8 @@
     "edit": "編集",
     "title": "名前",
     "type": "タイプ",
-    "createdAt": "作成日",
-    "updatedAt": "更新日"
+    "task_progress": "タスク進行状況",
+    "createdAt": "作成日"
   },
   "common": {
     "confirm": "確認",
@@ -49,76 +49,6 @@
       "hour": "{count} 時間",
       "day": "{count} 日"
     }
-  },
-  "device": {
-    "site_name": "測定地点名",
-    "electrodeLife": "電極寿命",
-    "sensor_name": "センサー型番",
-    "sensor_serial": "セリアル番号（センサー）",
-    "customName": "カスタム名",
-    "edit": "編集",
-    "action": "行動",
-    "handle": "対応",
-    "sensor_remainingDays": "センサー残日数",
-    "location": "設置場所",
-    "product_name": "製品型番",
-    "product_serial": "セリアル番号（製品）",
-    "water_area": "水域",
-    "senser_start_date": "センサー開始日",
-    "day": "日",
-    "deviceWarning": {
-      "warning": "警告",
-      "cleaning_action": "清掃対応",
-      "regeneration_action": "再生対応",
-      "replacement_action": "交換対応",
-      "_": "_",
-      "action": "操作",
-      "error": "エラー",
-      "all": "すべて"
-    },
-    "measurement": {
-      "ph": "pH",
-      "elec": "Elec(mV)",
-      "zero": "zero",
-      "temperature": "温度（°C）",
-      "slope": "slope",
-      "humidity": "湿度",
-      "ppm": "ppm",
-      "sensitivity": "でんきょくかんど",
-      "offset": "オフセット"
-    },
-    "status": {
-      "pending": "未対応",
-      "handled": "対応済み",
-      "cleared": "クリア済み",
-      "running": "稼働中",
-      "caution": "注意",
-      "stopped": "停止中",
-      "warning": "警告",
-      "resolved": "解決済み",
-      "unresolved": "未解決",
-      "idle": "空闲",
-      "undefined": "未定義",
-      "not available": "利用不可",
-      "error": "エラー",
-      "finish": "完成",
-      "failed": "失敗"
-    },
-    "handle_action": {
-      "remote_cleaning": "遠隔洗浄・校正の実行を推奨",
-      "electrode_replacement": "電極部品の交換。幸瑋にご連絡ください",
-      "electrode_reached_life": "電極の使用寿命に達しました。幸瑋にご連絡ください"
-    },
-    "warning": "警告",
-    "caution": "注意",
-    "running": "稼働中",
-    "active": "有効",
-    "stop": "停止",
-    "times": "回",
-    "device": "デバイス",
-    "devices": "デバイス群",
-    "devices_list_page": "デバイス一覧",
-    "show_all_filter": "すべてのフィルターを表示"
   },
   "dialog": {
     "delete_confirm": "削除を確認しますか",
@@ -186,12 +116,6 @@
       "entitySearch": "エンティティ検索",
       "devices": "デバイス一覧",
       "overview": "概要",
-      "ph": "酸性度",
-      "orp": "酸化還元電位",
-      "sqm": "SQM",
-      "mac": "MAC",
-      "nh3n": "アンモニウム",
-      "flouride": "フッ化物",
       "set-member": "メンバー設定"
     }
   },
@@ -205,29 +129,11 @@
       "time_range_settings": "時間範囲設定"
     }
   },
-  "observation": {
-    "ph": "酸性度",
-    "orp": "酸化還原電位",
-    "sqm": "SQM",
-    "mac": "MAC",
-    "nh3n": "アンモニウム",
-    "flouride": "フッ化物"
-  },
   "option": {
     "alarm": {
       "notice": "通知",
       "caution": "注意",
       "warning": "警告"
-    },
-    "waterQuality": {
-      "pure_water": "純水",
-      "acid_alkali": "酸・アルカリ水",
-      "biological_water": "生物用水",
-      "general_acid_alkali": "一般酸・アルカリ水",
-      "grinding_water": "研磨水",
-      "copper_grinding": "銅研磨水",
-      "nh3n_water": "NH3-N水",
-      "hydrofluoric_water": "フッ酸水"
     }
   },
   "pagination": {

@@ -84,17 +84,12 @@ const onAddTask = handleSubmit(async (values: CreateTaskSchema) => {
     }
   } catch (error) {
     console.error('Failed to add task:', error);
-  } finally {
-    // 完整重置：值、觸碰狀態、錯誤都清除，避免重新開啟就顯示驗證錯誤
-    resetForm({ values: getInitialValues() });
-    // 清除 TaskForm 內部的材料項目錯誤提示（若之前有）
-    taskFormRef.value?.clearMaterialErrors();
   }
 });
 
 // 關閉表單
 const onClose = () => {
-  // 關閉時也重置，避免再次打開時殘留 touched/errors
+  // 關閉時統一重置，避免再次打開時殘留 touched/errors
   resetForm({ values: getInitialValues() });
   taskFormRef.value?.clearMaterialErrors();
   emit('close');

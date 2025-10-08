@@ -1,7 +1,6 @@
 import { inject, provide, type InjectionKey } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
-import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 // Define the type for our task context
 interface TaskContext {

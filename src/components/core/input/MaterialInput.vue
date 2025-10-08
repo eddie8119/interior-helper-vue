@@ -1,7 +1,7 @@
 <template>
   <BasicArrayInput
     :model-value="modelValue"
-    :title="material"
+    :title="titleText"
     :new-item-factory="newItemFactory"
     :name-placeholder="namePlaceholder"
     :add-button-text="addButtonText"
@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import BasicArrayInput from './BasicArrayInput.vue';
+import { useI18n } from 'vue-i18n';
 
 import type { Item as BasicItem } from './BasicArrayInput.vue';
 
@@ -45,10 +46,11 @@ export interface Item extends BasicItem {
   unitPrice?: number;
 }
 
+const { t } = useI18n();
+
 withDefaults(
   defineProps<{
     modelValue: Item[];
-    title: string;
     namePlaceholder?: string;
     quantityLabel?: string;
     quantityPlaceholder?: string;
@@ -81,6 +83,8 @@ const newItemFactory = (): Item => ({
 const onUpdate = (value: Item[]) => {
   emit('update:modelValue', value);
 };
+
+const titleText = t('label.materials');
 </script>
 
 <style scoped></style>

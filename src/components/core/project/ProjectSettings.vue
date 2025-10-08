@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-1">
+  <div class="mr-60 flex items-center gap-1">
     <!-- 分享 -->
     <el-button type="primary" size="medium" circle @click="showShareDialog = true">
       <el-icon><Share /></el-icon>

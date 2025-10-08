@@ -6,7 +6,7 @@
         :construction-name="constructionName"
         @update:construction-name="updateConstructionName"
       />
-      <span class="ml-1">({{ tasksLength }})</span>
+      <span>({{ tasksLength }})</span>
     </div>
 
     <div class="flex items-center gap-1">

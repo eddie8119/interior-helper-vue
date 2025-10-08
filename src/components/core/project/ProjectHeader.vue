@@ -1,10 +1,11 @@
 <template>
   <div v-if="!isEditingTitle">
     <button
-      class="inline-block rounded-md py-2 text-2xl font-bold transition-all duration-300 ease-in-out hover:bg-slate-200"
+      class="inline-flex items-center gap-2 rounded-md px-3 py-2 text-2xl font-bold transition-all duration-300 ease-in-out hover:bg-slate-200"
       @click="startEditing"
     >
-      {{ title }} 工程案
+      <span>{{ title }} 工程案</span>
+      <EditIcon />
     </button>
   </div>
 
@@ -25,6 +26,7 @@
 
 <script setup lang="ts">
 import { useEditableTitle } from '@/composables/useEditableTitle';
+import EditIcon from '@/components/ui/EditIcon.vue';
 
 const props = defineProps<{
   title: string;

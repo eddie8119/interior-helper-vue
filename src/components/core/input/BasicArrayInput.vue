@@ -53,8 +53,6 @@
 </template>
 
 <script setup lang="ts" generic="T extends Item">
-import { watch } from 'vue';
-
 import Label from '@/components/core/title/Label.vue';
 
 export interface Item {
@@ -83,15 +81,9 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: T[]): void;
 }>();
 
-// Watch for deep changes in modelValue and emit them
-// This ensures parent components are updated when nested properties of items change
-watch(
-  () => props.modelValue,
-  (newValue) => {
-    emit('update:modelValue', newValue);
-  },
-  { deep: true }
-);
+// Note: Avoid re-emitting on deep prop changes to prevent recursive updates.
+// Parent components will receive updates explicitly via addItem/removeItem,
+// and by direct v-model binding on nested fields when desired.
 
 const addItem = () => {
   const newItems = [...props.modelValue, props.newItemFactory()];

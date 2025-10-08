@@ -1,17 +1,17 @@
 <template>
   <div class="mr-60 flex items-center gap-1">
     <!-- 分享 -->
-    <el-button type="primary" size="medium" circle @click="showShareDialog = true">
+    <el-button type="primary" size="default" circle @click="showShareDialog = true">
       <el-icon><Share /></el-icon>
     </el-button>
 
     <!-- 協作者 -->
-    <el-button type="info" size="medium" circle @click="showCollaboratorsDialog = true">
+    <el-button type="info" size="default" circle @click="showCollaboratorsDialog = true">
       <el-icon><User /></el-icon>
     </el-button>
 
     <!-- 刪除 -->
-    <el-button type="danger" size="medium" circle @click="showDeleteDialog = true">
+    <el-button type="danger" size="default" circle @click="showDeleteDialog = true">
       <el-icon><Delete /></el-icon>
     </el-button>
   </div>

@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col space-y-3">
-    <!-- 使用可重用的 TaskForm 組件 -->
     <TaskForm
       ref="taskFormRef"
       :construction-id="props.constructionId"

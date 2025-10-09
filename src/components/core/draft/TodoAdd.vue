@@ -13,18 +13,7 @@
       aria-label="添加待辦事項"
       @click="addTodo"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-5 w-5"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-          clip-rule="evenodd"
-        />
-      </svg>
+      <PlusIcon />
     </button>
   </div>
 </template>
@@ -34,9 +23,11 @@ import { ref } from 'vue';
 
 import type { TodoItemDraft } from '@/types/todo';
 
+import PlusIcon from '@/components/ui/PlusIcon.vue';
+
 const emit = defineEmits<{ (e: 'add-todo-draft', todo: TodoItemDraft): void }>();
 
-const todoContent = ref('');
+const todoContent = ref<string>('');
 const addTodo = () => {
   if (todoContent.value.trim() === '') return;
   const todo: TodoItemDraft = {

@@ -73,11 +73,6 @@ const props = defineProps<{
   task: TaskResponse;
 }>();
 
-// const emit = defineEmits<{
-//   (e: 'update:status', taskId: string, status: 'todo' | 'inProgress' | 'done'): void;
-//   (e: 'task-drop', dropData: any): void;
-// }>();
-
 // 從上下文中獲取任務操作
 const { deleteTask, updateTask } = useTaskContext();
 

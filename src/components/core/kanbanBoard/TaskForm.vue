@@ -65,7 +65,7 @@
           v-model="reminderDatetime"
           type="datetime"
           format="YYYY-MM-DD HH:mm:ss"
-          placeholder="選擇日期和時間"
+          :placeholder="t('placeholder.select_date_and_time')"
           class="w-full"
         />
       </div>

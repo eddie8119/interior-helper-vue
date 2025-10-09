@@ -2,10 +2,8 @@
   <div
     class="panel-container h-full w-full max-w-md rounded-xl p-6 shadow-lg transition-all duration-300 hover:shadow-xl sm:p-8"
   >
-    <H1Title title="工地待辦事項速記" class-name="text-center mb-6" />
-
+    <H1Title :title="t('title.quick_draft')" class-name="text-center mb-6" />
     <TodoAdd class="mb-6" @add-todo-draft="addTodoDraft" />
-
     <TodoFilter
       :selected="filter"
       class="mb-4"
@@ -18,7 +16,11 @@
       class="flex h-40 items-center justify-center text-gray-400"
     >
       {{
-        filter === 'all' ? '沒有待辦事項' : filter === 'done' ? '沒有已完成事項' : '沒有未完成事項'
+        filter === 'all'
+          ? t('message.no_todo')
+          : filter === 'done'
+            ? t('message.no_done')
+            : t('message.no_undone')
       }}
     </div>
 
@@ -38,6 +40,7 @@
 
 <script setup lang="ts">
 import { computed, onActivated, onDeactivated, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import TodoAdd from './TodoAdd.vue';
 import TodoFilter from './TodoFilter.vue';
@@ -52,8 +55,8 @@ import { useLocalStorageRef } from '@/composables/useLocalStorage';
 
 const LOCAL_STORAGE_KEY = 'quick_draft_todos';
 
+const { t } = useI18n();
 const { draft, createDraft, updateDraft } = useDraft();
-
 const { state: todos } = useLocalStorageRef<TodoItemDraft[]>(LOCAL_STORAGE_KEY, []);
 
 onActivated(() => {

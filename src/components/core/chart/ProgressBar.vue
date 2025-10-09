@@ -27,7 +27,7 @@ const progressWidth = computed(() => {
 
 const displayText = computed(() => {
   if (props.showPercentage) {
-    const percentage = props.total === 0 ? 0 : ((props.value / props.total) * 100);
+    const percentage = props.total === 0 ? 0 : (props.value / props.total) * 100;
     return `${percentage.toFixed(1)}%`;
   }
   return props.value;

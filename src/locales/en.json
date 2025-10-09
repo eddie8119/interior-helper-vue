@@ -15,6 +15,7 @@
     "edit_profile": "Edit Profile",
     "move_to_project": "Move to Project",
     "moved_to_project": "Moved to Project",
+    "delete_completed": "Delete Completed",
     "resend": "Resend",
     "activate": "Activate",
     "try_again": "Try Again",
@@ -84,7 +85,7 @@
   "label": {
     "time": "Time",
     "status": "Status",
-    "device": "Device",
+    "materials": "Materials",
     "detail": "Detail",
     "action": "Action",
     "note": "Note",
@@ -220,6 +221,9 @@
       "taskDescription": "Enter task description",
       "add_new_construction": "Add a new construction",
       "add_new": "Add a new"
+    },
+    "draft": {
+      "todo": "Enter todo"
     }
   },
   "project": {

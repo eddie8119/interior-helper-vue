@@ -25,6 +25,9 @@
         "taskDescription": "Enter task description",
         "add_new_construction": "Add a new construction",
         "add_new": "Add a new"
+      },
+      "draft": {
+        "todo": "Enter todo"
       }
     }
   },
@@ -54,6 +57,9 @@
         "taskDescription": "請輸入任務描述",
         "add_new_construction": "新增工程類型",
         "add_new": "新增"
+      },
+      "draft": {
+        "todo": "輸入待辦事項"
       }
     }
   },

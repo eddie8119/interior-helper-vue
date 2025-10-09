@@ -3,7 +3,7 @@
     "label": {
       "time": "Time",
       "status": "Status",
-      "device": "Device",
+      "materials": "Materials",
       "detail": "Detail",
       "action": "Action",
       "note": "Note",
@@ -41,7 +41,7 @@
     "label": {
       "time": "時間",
       "status": "狀態",
-      "device": "裝置",
+      "materials": "材料",
       "detail": "詳情",
       "action": "操作",
       "note": "備註",

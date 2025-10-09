@@ -90,3 +90,9 @@ export const STATUS_FILTER_OPTIONS: SelectorOption[] = [
 ] as const;
 
 export type TaskFilterStatus = (typeof STATUS_FILTER_OPTIONS)[number]['value'];
+
+export const TODO_FILTER: SelectorOption[] = [
+  { value: 'all' },
+  { value: 'done' },
+  { value: 'todo' },
+] as const;

@@ -15,6 +15,7 @@
     "edit_profile": "編輯個人資料",
     "move_to_project": "移動到專案",
     "moved_to_project": "已移到專案",
+    "delete_completed": "刪除已完成",
     "resend": "重新發送",
     "activate": "啟用",
     "try_again": "再試一次",
@@ -83,7 +84,7 @@
   "label": {
     "time": "時間",
     "status": "狀態",
-    "device": "裝置",
+    "materials": "材料",
     "detail": "詳情",
     "action": "操作",
     "note": "備註",
@@ -216,6 +217,9 @@
       "taskDescription": "請輸入任務描述",
       "add_new_construction": "新增工程類型",
       "add_new": "新增"
+    },
+    "draft": {
+      "todo": "輸入待辦事項"
     }
   },
   "project": {

@@ -3,7 +3,7 @@
     <input
       v-model="todoContent"
       type="text"
-      placeholder="輸入待辦事項"
+      :placeholder="t('placeholder.draft.todo')"
       class="w-full rounded-lg border-2 border-gray-200 bg-gray-50 px-4 py-3 pr-12 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:border-blue-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-100"
       @keyup.enter="addTodo"
     />
@@ -20,12 +20,15 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { TodoItemDraft } from '@/types/todo';
 
 import PlusIcon from '@/components/ui/PlusIcon.vue';
 
 const emit = defineEmits<{ (e: 'add-todo-draft', todo: TodoItemDraft): void }>();
+
+const { t } = useI18n();
 
 const todoContent = ref<string>('');
 const addTodo = () => {

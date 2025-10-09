@@ -74,15 +74,15 @@
     <!-- Action Buttons -->
     <div class="mt-4 flex justify-end space-x-2">
       <button
-        @click="() => props.onCancel()"
         class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+        @click="() => props.onCancel()"
       >
         {{ t('button.cancel') }}
       </button>
       <button
-        @click="() => props.onSave()"
         :disabled="props.disabledSaveButton"
         class="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+        @click="() => props.onSave()"
       >
         {{ saveButtonText || t('button.save') }}
       </button>

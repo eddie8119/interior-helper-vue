@@ -21,10 +21,11 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
+
 import { taskApi } from '@/api/task';
 import TaskForm from '@/components/core/kanbanBoard/TaskForm.vue';
-import { createTaskSchema } from '@/utils/schemas/createTaskSchema';
 import { useTaskContext } from '@/context/useTaskContext';
+import { createTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 const { t } = useI18n();
 const { addNewTask } = useTaskContext();

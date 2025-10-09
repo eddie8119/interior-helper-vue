@@ -4,8 +4,8 @@
     <OptionSelector
       :model-value="selectedStatus"
       :options="STATUS_FILTER_OPTIONS"
-      @update:modelValue="selectedStatus = $event"
-      :className="'w-[140px]'"
+      :class-name="'w-[140px]'"
+      @update:model-value="selectedStatus = $event"
     />
   </div>
   <div class="w-full overflow-x-auto">
@@ -36,23 +36,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { Container, Draggable } from 'vue3-smooth-dnd';
 
+import type { TaskFilterStatus } from '@/constants/selection';
 import type { TaskResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
-import type { TaskFilterStatus } from '@/constants/selection';
 
+import { taskApi } from '@/api/task';
 import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
 import ConstructionContainerItem from '@/components/core/kanbanBoard/ConstructionContainerItem.vue';
 import OptionSelector from '@/components/ui/OptionSelector.vue';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
-import { taskApi } from '@/api/task';
+import { STATUS_FILTER_OPTIONS } from '@/constants/selection';
 import { provideTaskContext } from '@/context/useTaskContext';
 import { filterTasksByConstruction } from '@/utils/todo/taskUtils';
-import { STATUS_FILTER_OPTIONS } from '@/constants/selection';
 
 const props = defineProps<{
   constructionContainer: ConstructionSelection[] | null;

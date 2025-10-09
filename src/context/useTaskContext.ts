@@ -1,4 +1,4 @@
-import { inject, provide, type InjectionKey } from 'vue';
+import { inject, type InjectionKey, provide } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
 

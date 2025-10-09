@@ -25,8 +25,8 @@
 </template>
 
 <script setup lang="ts">
-import { useEditableTitle } from '@/composables/useEditableTitle';
 import EditIcon from '@/components/ui/EditIcon.vue';
+import { useEditableTitle } from '@/composables/useEditableTitle';
 
 const props = defineProps<{
   constructionName: string;

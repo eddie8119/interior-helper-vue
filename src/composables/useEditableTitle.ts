@@ -1,4 +1,5 @@
 import { computed, ref, watch } from 'vue';
+
 import { useEditingStateStore } from '@/stores/editingState';
 
 /**

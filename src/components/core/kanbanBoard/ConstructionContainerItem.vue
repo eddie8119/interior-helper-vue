@@ -34,13 +34,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { TaskResponse } from '@/types/response';
+
 import type { TaskFilterStatus } from '@/constants/selection';
+import type { TaskResponse } from '@/types/response';
 
 import ContainerBody from '@/components/core/kanbanBoard/ContainerBody.vue';
 import ContainerHeader from '@/components/core/kanbanBoard/ContainerHeader.vue';
-import { useEditingStateStore } from '@/stores/editingState';
 import { STATUS_FILTER_OPTIONS } from '@/constants/selection';
+import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{
   constructionId: string;

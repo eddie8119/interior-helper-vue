@@ -36,8 +36,9 @@
 </template>
 
 <script setup lang="ts">
-import BasicArrayInput from './BasicArrayInput.vue';
 import { useI18n } from 'vue-i18n';
+
+import BasicArrayInput from './BasicArrayInput.vue';
 
 import type { Item as BasicItem } from './BasicArrayInput.vue';
 

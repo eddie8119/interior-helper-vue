@@ -48,8 +48,8 @@ import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { TodoItemDraft } from '@/types/todo';
 import type { ProjectResponse } from '@/types/response';
+import type { TodoItemDraft } from '@/types/todo';
 
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
 import { useProjects } from '@/composables/useProjects';

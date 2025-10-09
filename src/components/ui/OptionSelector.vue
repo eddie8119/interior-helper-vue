@@ -1,8 +1,8 @@
 <template>
   <select
     :value="modelValue"
-    @change="onChange"
     :class="`rounded-md border p-2 text-sm shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200 ${className}`"
+    @change="onChange"
   >
     <option v-for="option in options" :key="String(option.value)" :value="option.value">
       {{ t(`option.status.${option.value}`) }}

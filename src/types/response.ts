@@ -1,6 +1,6 @@
 import type { ConstructionSelection, ProjectType } from './selection';
-import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 import type { TaskStatus } from '@/types/task';
+import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 export interface AuthResponse {
   user: {

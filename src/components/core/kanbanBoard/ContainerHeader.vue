@@ -14,8 +14,8 @@
         v-if="isShowStatusFilter"
         :model-value="selectedStatus"
         :options="STATUS_FILTER_OPTIONS"
-        @update:modelValue="(v) => emit('update:selected-status', v)"
-        :className="'w-[90px]'"
+        :class-name="'w-[90px]'"
+        @update:model-value="(v) => emit('update:selected-status', v)"
       />
       <TrashButton @click="showDeleteConstructionDialog = true" />
     </div>
@@ -32,12 +32,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
 import type { SelectorOption } from '@/types/selection';
+
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
 import ContainerTitle from '@/components/core/kanbanBoard/ContainerTitle.vue';
 import DragHandle from '@/components/ui/DragHandle.vue';
-import TrashButton from '@/components/ui/TrashButton.vue';
 import OptionSelector from '@/components/ui/OptionSelector.vue';
+import TrashButton from '@/components/ui/TrashButton.vue';
 import { STATUS_FILTER_OPTIONS } from '@/constants/selection';
 
 defineProps<{

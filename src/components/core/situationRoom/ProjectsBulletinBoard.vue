@@ -17,9 +17,9 @@
       </template>
       <template #task_progress="{ row }">
         <ProgressBar
-          :value="row.tasks.filter((t) => t.status === 'completed').length"
+          :value="row.tasks.filter((t) => t.status === 'done').length"
           :show-percentage="true"
-          :total="row.tasks.length || 1"
+          :total="row.tasks.length"
         />
       </template>
     </Table>

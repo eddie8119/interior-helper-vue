@@ -14,14 +14,15 @@
       "name": "Name",
       "phone": "Phone",
       "search": "Search",
+      "select_date_and_time": "Select date and time",
       "project": {
         "project": "Please select project",
-        "project_name": "Please enter project name",
-        "project_type": "Please select project type",
-        "construction": "Please select construction",
-        "addContainer": "Please enter container",
-        "task": "Please enter task",
-        "taskDescription": "Please enter task description",
+        "project_name": "Project name",
+        "project_type": "Project type",
+        "construction": "Select construction",
+        "addContainer": "Add container",
+        "task": "Enter task",
+        "taskDescription": "Enter task description",
         "add_new_construction": "Add a new construction",
         "add_new": "Add a new"
       }
@@ -42,6 +43,7 @@
       "name": "姓名",
       "phone": "電話",
       "search": "搜尋",
+      "select_date_and_time": "選擇日期和時間",
       "project": {
         "project": "請選擇專案",
         "project_name": "輸入專案名稱",

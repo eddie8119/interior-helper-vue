@@ -12,7 +12,9 @@
         "change_password_failed": "Failed to change password, please try again later"
       },
       "sign": {
-        "loading_weather_data": "Loading weather data...",
+        "no_todo": "No todo",
+        "no_done": "No done",
+        "no_undone": "No undone",
         "no_change": "No change",
         "no_alarm": "No alarm"
       },
@@ -41,7 +43,9 @@
         "change_password_failed": "密碼變更失敗，請稍後再試"
       },
       "sign": {
-        "loading_weather_data": "正在載入天氣資料...",
+        "no_todo": "無待辦事項",
+        "no_done": "無已完成事項",
+        "no_undone": "無未完成事項",
         "no_change": "無變更",
         "no_alarm": "無警報"
       },

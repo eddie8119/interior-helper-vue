@@ -3,21 +3,35 @@
     <div class="h-4 w-24 overflow-hidden rounded-full bg-black-200">
       <div
         class="h-full rounded-full bg-secondary-blue-a"
-        :style="{ width: `${(props.value / props.total) * 100}%` }"
+        :style="{ width: `${progressWidth}%` }"
       />
     </div>
     <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs">
-      {{ props.showPercentage ? `${props.value}%` : props.value }}
+      {{ displayText }}
     </span>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 const props = defineProps<{
   value: number;
   showPercentage?: boolean;
   total: number;
 }>();
+
+const progressWidth = computed(() => {
+  return props.total === 0 ? 0 : (props.value / props.total) * 100;
+});
+
+const displayText = computed(() => {
+  if (props.showPercentage) {
+    const percentage = props.total === 0 ? 0 : ((props.value / props.total) * 100);
+    return `${percentage.toFixed(1)}%`;
+  }
+  return props.value;
+});
 </script>
 
 <style scoped></style>

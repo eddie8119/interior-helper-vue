@@ -1,24 +1,23 @@
 <template>
   <div v-if="materials && materials.length > 0" class="mt-1">
-    <div class="space-y-1">
+    <div class="space-y-1 text-gray-500">
       <div v-for="material in materials" :key="material.id" class="flex items-center gap-1">
-        <span class="mr-1 text-gray-600">•</span>
+        <span class="mr-1">•</span>
         <span class="mr-1 font-medium">{{ material.name }}:</span>
         <span>{{ material.quantity }} x ${{ material.unitPrice }}</span>
         <span>=</span>
         <span>${{ calculatePrice(material) }}</span>
       </div>
     </div>
-    <div
-      v-if="showTotal && materials.length > 1"
-      class="mt-2 border-t pt-1 text-sm font-semibold text-gray-800"
-    >
-      總計: ${{ calculateTotal() }}
+    <div class="mt-2 flex justify-end text-sm">
+      <span>{{ t('label.total') }}: ${{ calculateTotal() }}</span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
 interface Material {
   id?: string;
   name: string;
@@ -38,6 +37,8 @@ const props = withDefaults(
     showTotal: false,
   }
 );
+
+const { t } = useI18n();
 
 const calculatePrice = (material: Material) => {
   const quantity = material.quantity || 0;

@@ -9,12 +9,14 @@
         <DragHandle :size="4" handle-class="task-drag-handle" />
         <H3Title :title="task.title" />
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center gap-2">
         <TaskStatusDropdown
-          class="mr-1"
           :status="task.status"
           @update:status="handleTaskStatusChange"
         />
+        <button class="rounded-full bg-blue-100 p-1 hover:bg-blue-200" @click="startEditing">
+          <EditIcon :size="'h-4 w-4'" />
+        </button>
         <TrashButton class="invisible group-hover:visible" @click="handleDeleteTask" />
       </div>
     </div>
@@ -60,6 +62,7 @@ import type { TaskStatus } from '@/types/task';
 import { taskApi } from '@/api/task';
 import TaskForm from '@/components/core/kanbanBoard/TaskForm.vue';
 import H3Title from '@/components/core/title/H3Title.vue';
+import EditIcon from '@/components/ui/EditIcon.vue';
 import DragHandle from '@/components/ui/DragHandle.vue';
 import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';

@@ -60,7 +60,7 @@
 
       <!-- 提醒 -->
       <div class="space-y-2">
-        <h3 class="font-medium text-gray-700">設定提醒 (可選)</h3>
+        <Label label="設定提醒 (可選)" />
         <el-date-picker
           v-model="reminderDatetime"
           type="datetime"
@@ -100,6 +100,7 @@ import type { Material } from '@/types/task';
 import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 import MaterialInput from '@/components/core/input/MaterialInput.vue';
+import Label from '@/components/core/title/Label.vue';
 
 const props = defineProps<{
   initialData?: CreateTaskSchema;

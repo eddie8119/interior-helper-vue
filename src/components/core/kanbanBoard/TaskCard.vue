@@ -18,26 +18,21 @@
         <TrashButton class="invisible group-hover:visible" @click="handleDeleteTask" />
       </div>
     </div>
-    <div class="p-2">
-      <p class="mt-1 text-lg text-gray-600">{{ task.description }}</p>
-      <div class="mt-2 text-gray-500">
-        <div v-if="task.reminderDatetime" class="flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="mr-1 h-3 w-3"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
-          <span>{{ formatDate(task.reminderDatetime) }}</span>
-        </div>
+    <!-- 任務描述 -->
+    <div class="task-details grid grid-cols-1 gap-5 p-2">
+      <p class="text-lg">{{ task.description }}</p>
+
+      <!-- 任務材料 -->
+      <div v-if="task.materials && task.materials.length > 0">
+        <Label :label="t('label.materials') + ':'" />
+        <MaterialList :materials="task.materials" />
+      </div>
+
+      <!-- 任務提醒 -->
+      <div v-if="task.reminderDatetime" class="flex items-center text-gray-500">
+        <DateIcon />
+        <p>{{ t('label.reminder') }}</p>
+        <span>{{ formatDate(task.reminderDatetime) }}</span>
       </div>
     </div>
   </div>
@@ -57,6 +52,7 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { TaskResponse } from '@/types/response';
 import type { TaskStatus } from '@/types/task';
@@ -67,12 +63,16 @@ import H3Title from '@/components/core/title/H3Title.vue';
 import DragHandle from '@/components/ui/DragHandle.vue';
 import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
+import DateIcon from '@/components/ui/DateIcon.vue';
+import MaterialList from '@/components/ui/MaterialList.vue';
+import Label from '@/components/core/title/Label.vue';
 import { useTaskContext } from '@/context/useTaskContext';
 
 const props = defineProps<{
   task: TaskResponse;
 }>();
 
+const { t } = useI18n();
 // 從上下文中獲取任務操作
 const { deleteTask, updateTask } = useTaskContext();
 
@@ -160,5 +160,12 @@ const formatDate = (dateString: string | Date | number | null) => {
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.task-details > *:not(:last-child)::after {
+  content: '';
+  display: block;
+  border-bottom: 1px solid var(--tw-color-gray-200, #e5e7eb); /* Tailwind gray-200 */
+  margin-top: 1rem;
 }
 </style>

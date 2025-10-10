@@ -37,12 +37,7 @@ export const getTasksByProjectId = async (req: Request, res: Response) => {
     // 查詢專案下的所有任務
     const { data: tasks, error: tasksError } = await supabase
       .from('Tasks')
-      .select(
-        `
-        *,
-        TaskMaterials(*)
-      `
-      )
+      .select('*')
       .eq('project_id', projectId)
       .order('created_at', { ascending: false });
 
@@ -55,15 +50,25 @@ export const getTasksByProjectId = async (req: Request, res: Response) => {
       });
     }
 
-    // 處理任務數據，將材料整合到任務中
-    const processedTasks = tasks.map((task) => {
-      const { TaskMaterials, ...taskData } = task;
-      const { user_id, ...safeTask } = taskData;
-      return {
-        ...safeTask,
-        materials: TaskMaterials || [],
-      };
-    });
+    // 為每個任務獲取材料
+    const processedTasks = await Promise.all(
+      tasks.map(async (task) => {
+        const { data: materials, error: materialsError } = await supabase
+          .from('TaskMaterials')
+          .select('*')
+          .eq('task_id', task.id);
+
+        if (materialsError) {
+          console.error(`Error fetching materials for task ${task.id}:`, materialsError);
+        }
+
+        const { user_id, ...safeTask } = task;
+        return {
+          ...safeTask,
+          materials: materials || [],
+        };
+      })
+    );
 
     // 轉換為駝峰式命名並返回
     return res.status(200).json({

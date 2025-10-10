@@ -207,25 +207,32 @@ export const createTask = async (req: Request, res: Response) => {
 
     // 2. 如果有材料，創建材料記錄
     let taskMaterials = [];
-    if (materials && materials.length > 0) {
-      const materialsToInsert = materials.map((material: any) => ({
-        task_id: task.id,
-        name: material.name,
-        quantity: material.quantity,
-        unit_price: material.unit_price,
-        user_id: userId,
-      }));
+    if (materials && Array.isArray(materials) && materials.length > 0) {
+      // Filter out empty materials
+      const validMaterials = materials.filter(
+        (m: any) => m.name && m.name.trim() !== ''
+      );
 
-      const { data: insertedMaterials, error: materialsError } = await supabase
-        .from('TaskMaterials')
-        .insert(materialsToInsert)
-        .select();
+      if (validMaterials.length > 0) {
+        const materialsToInsert = validMaterials.map((material: any) => ({
+          task_id: task.id,
+          name: material.name,
+          quantity: material.quantity,
+          unit_price: material.unit_price,
+          user_id: userId,
+        }));
 
-      if (materialsError) {
-        console.error('Error creating task materials:', materialsError);
-        // 不中斷流程，但記錄錯誤
-      } else {
-        taskMaterials = insertedMaterials;
+        const { data: insertedMaterials, error: materialsError } = await supabase
+          .from('TaskMaterials')
+          .insert(materialsToInsert)
+          .select();
+
+        if (materialsError) {
+          console.error('Error creating task materials:', materialsError);
+          // 不中斷流程，但記錄錯誤
+        } else {
+          taskMaterials = insertedMaterials || [];
+        }
       }
     }
 

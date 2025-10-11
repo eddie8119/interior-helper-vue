@@ -38,6 +38,7 @@ export interface ProjectResponse {
   type: ProjectType;
   userId: string;
   isShared: boolean;
+  tasks?: TaskResponse[];
   createdAt: Date;
   updatedAt: Date;
 }

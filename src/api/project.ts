@@ -28,7 +28,7 @@ export const projectApi = {
     return request.delete(`/projects/${id}`);
   },
   getProjectShare: (id: string): Promise<ApiResponse<ProjectResponse>> => {
-    return request.get(`/projects/${id}/share`);
+    return request.get(`${import.meta.env.VITE_API_URL}/projects/shared/${id}`);
   },
   toggleProjectShare: (id: string): Promise<ApiResponse<ProjectResponse>> => {
     return request.patch(`/projects/${id}/share`);

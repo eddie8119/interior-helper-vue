@@ -21,6 +21,12 @@ interface UseProjectsReturn {
   deleteProject: (id: string) => Promise<void>;
   isUpdating: Ref<boolean>;
   updateError: Ref<Error | null>;
+  // 分享專案
+  isLoadingSharedProject: Ref<boolean>;
+  sharedProjectError: Ref<Error | null>;
+  fetchedSharedProject: Ref<ProjectResponse | null>;
+  sharedProjectUpdatedAt: Ref<number>;
+  refetchQuerySharedProject: () => void;
 }
 
 export function useProject(id: string): UseProjectsReturn {
@@ -113,6 +119,23 @@ export function useProject(id: string): UseProjectsReturn {
     }
   };
 
+  // 共享專案
+  const {
+    data: fetchedSharedProject,
+    isLoading: isLoadingSharedProject,
+    refetch: refetchQuerySharedProject,
+    error: sharedProjectError,
+    dataUpdatedAt: sharedProjectUpdatedAt,
+  } = useQuery({
+    queryKey: ['project', id],
+    queryFn: async () => {
+      const response = await projectApi.getProjectShare(id);
+      return response.data;
+    },
+    staleTime: 1000 * 10 * 3,
+    gcTime: 1000 * 60 * 5,
+  });
+
   return {
     isLoadingProject,
     error,
@@ -122,5 +145,11 @@ export function useProject(id: string): UseProjectsReturn {
     deleteProject,
     isUpdating,
     updateError,
+    // 共享專案
+    isLoadingSharedProject,
+    sharedProjectError,
+    fetchedSharedProject: fetchedSharedProject as Ref<ProjectResponse | null>,
+    sharedProjectUpdatedAt,
+    refetchQuerySharedProject,
   };
 }

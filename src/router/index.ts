@@ -167,9 +167,8 @@ const router = createRouter({
 router.beforeEach((to, _from, next) => {
   const authStore = useAuthStore();
 
-  // 公開頁面列表
   const publicPages = ['/auth/login', '/auth/register', '/auth/forgot-password'];
-  const isPublicPage = publicPages.includes(to.path) || to.meta.public === true;
+  const isPublicPage = publicPages.includes(to.path);
 
   if (!isPublicPage && !authStore.isAuthenticated) {
     return next({
@@ -178,7 +177,7 @@ router.beforeEach((to, _from, next) => {
     });
   }
 
-  if (authStore.isAuthenticated && publicPages.includes(to.path)) {
+  if (authStore.isAuthenticated && isPublicPage) {
     return next({ name: 'overview' });
   }
 

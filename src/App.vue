@@ -18,7 +18,11 @@ const authStore = useAuthStore();
 authStore.initializeAuthState();
 
 const isQuickDraftPage = computed(() => {
-  return route.path === '/todo/quick-draft' || route.path.startsWith('/auth/');
+  return (
+    route.path === '/todo/quick-draft' ||
+    route.path.startsWith('/auth/') ||
+    route.path.startsWith('/shared/project')
+  );
 });
 
 // 主題顏色

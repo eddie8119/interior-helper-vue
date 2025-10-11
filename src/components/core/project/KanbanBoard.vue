@@ -11,11 +11,11 @@
   <div class="w-full overflow-x-auto">
     <Container
       orientation="horizontal"
-      drag-handle-selector=".container-drag-handle"
-      :get-child-payload="getConstructionContainerPayload"
-      group-name="construction-containers"
+      :drag-handle-selector="readOnly ? '' : '.container-drag-handle'"
+      :get-child-payload="readOnly ? undefined : getConstructionContainerPayload"
+      :group-name="readOnly ? undefined : 'construction-containers'"
       class="flex overflow-x-auto pt-4"
-      @drop="onConstructionContainerDrop"
+      @drop="readOnly ? undefined : onConstructionContainerDrop"
     >
       <!-- 工程類型容器 -->
       <Draggable v-for="(container, index) in localConstructionContainer" :key="container.id">
@@ -24,13 +24,14 @@
           :project-id="projectId"
           :construction-name="container.name"
           :tasks="filteredTasks(container.id)"
+          :read-only="readOnly"
           @delete-container="deleteConstruction(index)"
           @update:construction-name="updateConstructionName(index, $event)"
           @task-drop="handleTaskDrop($event, container.id)"
         />
       </Draggable>
       <!-- 添加新工程類型 -->
-      <AddNewConstruction id="new-container" @add-container="addNewConstruction" />
+      <AddNewConstruction v-if="!readOnly" id="new-container" @add-container="addNewConstruction" />
     </Container>
   </div>
 </template>
@@ -58,6 +59,7 @@ const props = defineProps<{
   constructionContainer: ConstructionSelection[] | null;
   projectId: string;
   tasks: TaskResponse[] | null;
+  readOnly?: boolean;
 }>();
 
 const emit = defineEmits<{

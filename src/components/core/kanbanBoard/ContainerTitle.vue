@@ -2,10 +2,10 @@
   <div v-if="!isEditingTitle">
     <button
       class="inline-flex items-center gap-1 rounded-md py-1 text-lg font-semibold transition-all duration-300 ease-in-out hover:bg-slate-200"
-      @click="startEditing"
+      @click="readOnly ? null : startEditing"
     >
       {{ title }}{{ t('project.construction') }}
-      <EditIcon :size="'h-3 w-3'" />
+      <EditIcon :size="'h-3 w-3'" v-if="!readOnly" />
     </button>
   </div>
 
@@ -32,6 +32,7 @@ import { useEditableTitle } from '@/composables/useEditableTitle';
 
 const props = defineProps<{
   constructionName: string;
+  readOnly?: boolean;
 }>();
 
 const emit = defineEmits<{

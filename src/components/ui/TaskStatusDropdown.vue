@@ -15,7 +15,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
       </svg>
     </button>
-    <template #dropdown>
+    <template v-if="!readOnly" #dropdown>
       <el-dropdown-menu>
         <el-dropdown-item
           v-for="option in statusOptions"
@@ -42,6 +42,7 @@ import { TaskStatusEnum } from '@/types/task';
 
 const props = defineProps<{
   status: TaskStatus;
+  readOnly?: boolean;
 }>();
 
 const { t } = useI18n();
@@ -66,17 +67,6 @@ const statusClass = computed(() => {
       return 'bg-blue-100 text-blue-700';
     default:
       return 'bg-gray-100 text-gray-700';
-  }
-});
-
-const statusText = computed(() => {
-  switch (props.status) {
-    case TaskStatusEnum.DONE:
-      return '已完成';
-    case TaskStatusEnum.IN_PROGRESS:
-      return '進行中';
-    default:
-      return '待辦';
   }
 });
 </script>

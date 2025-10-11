@@ -1,15 +1,16 @@
 <template>
   <div class="mb-3 flex items-center justify-between">
     <div class="flex items-center">
-      <DragHandle handle-class="container-drag-handle" />
+      <DragHandle v-if="!readOnly" handle-class="container-drag-handle" />
       <ContainerTitle
         :construction-name="constructionName"
+        :read-only="readOnly"
         @update:construction-name="updateConstructionName"
       />
       <span>({{ tasksLength }})</span>
     </div>
 
-    <div class="flex items-center gap-1">
+    <div v-if="!readOnly" class="flex items-center gap-1">
       <OptionSelector
         v-if="isShowStatusFilter"
         :model-value="selectedStatus"
@@ -48,6 +49,7 @@ defineProps<{
   selectedStatus: string;
   options: SelectorOption[];
   isShowStatusFilter: boolean;
+  readOnly?: boolean;
 }>();
 
 const emit = defineEmits<{

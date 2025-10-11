@@ -15,11 +15,11 @@
     :behaviour="'move'"
     :drag-handle-selector="'.task-drag-handle'"
     class="grid max-h-[330px] grid-cols-1 gap-3 overflow-y-auto"
-    @drop="handleTaskDrop"
+    @drop="readOnly ? undefined : handleTaskDrop"
   >
     <!-- 任務列表 -->
     <Draggable v-for="task in tasks" :key="task.id">
-      <TaskCard :task="task" />
+      <TaskCard :task="task" :read-only="readOnly" />
     </Draggable>
   </Container>
 </template>
@@ -38,6 +38,7 @@ const props = defineProps<{
   constructionId: string;
   projectId: string;
   tasks: TaskResponse[];
+  readOnly?: boolean;
 }>();
 
 const emit = defineEmits<{

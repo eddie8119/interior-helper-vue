@@ -6,6 +6,7 @@
       :construction-name="props.constructionName"
       :tasks-length="filteredTasks.length"
       :is-show-status-filter="isShowStatusFilter"
+      :read-only="readOnly"
       @update:construction-name="updateConstructionName"
       @delete-container="handleDeleteConstruction"
     />
@@ -14,12 +15,13 @@
       :construction-id="props.constructionId"
       :project-id="props.projectId"
       :tasks="filteredTasks"
+      :read-only="readOnly"
       @update:tasks="updateTasks"
       @task-drop="handleTaskDrop"
     />
 
     <!-- 添加task按鈕 -->
-    <div class="mt-3 flex justify-center">
+    <div v-if="!readOnly" class="mt-3 flex justify-center">
       <button
         v-if="!isEditing"
         class="flex items-center justify-center rounded-md bg-blue-100 px-3 py-1 text-blue-700 hover:bg-blue-200"
@@ -48,6 +50,7 @@ const props = defineProps<{
   constructionName: string;
   projectId: string;
   tasks: TaskResponse[];
+  readOnly?: boolean;
 }>();
 
 const emit = defineEmits<{

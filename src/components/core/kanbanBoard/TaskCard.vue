@@ -2,22 +2,31 @@
   <div
     v-if="!isEditing"
     class="task-card group cursor-pointer rounded-md bg-white p-1 shadow-sm duration-200"
-    @dblclick="startEditing"
+    @dblclick="readOnly ? undefined : startEditing"
   >
     <div class="flex items-center justify-between">
       <div class="flex items-center">
-        <DragHandle :size="4" handle-class="task-drag-handle" />
-        <H3Title :title="task.title" />
+        <DragHandle v-if="!readOnly" :size="4" handle-class="task-drag-handle" />
+        <H3Title :title="task.title" class="ml-2" />
       </div>
       <div class="flex items-center gap-2">
         <TaskStatusDropdown
+          :read-only="readOnly"
           :status="task.status"
-          @update:status="handleTaskStatusChange"
+          @update:status="readOnly ? undefined : handleTaskStatusChange"
         />
-        <button class="rounded-full bg-blue-100 p-1 hover:bg-blue-200" @click="startEditing">
+        <button
+          v-if="!readOnly"
+          class="rounded-full bg-blue-100 p-1 hover:bg-blue-200"
+          @click="startEditing"
+        >
           <EditIcon :size="'h-4 w-4'" />
         </button>
-        <TrashButton class="invisible group-hover:visible" @click="handleDeleteTask" />
+        <TrashButton
+          v-if="!readOnly"
+          class="invisible group-hover:visible"
+          @click="handleDeleteTask"
+        />
       </div>
     </div>
     <!-- 任務描述 -->
@@ -33,7 +42,7 @@
       <!-- 任務提醒 -->
       <div v-if="task.reminderDatetime" class="flex items-center text-gray-500">
         <DateIcon />
-        <p>{{ t('label.reminder') }}</p>
+        <p class="mr-2">{{ t('label.reminder') }}</p>
         <span>{{ formatDate(task.reminderDatetime) }}</span>
       </div>
     </div>
@@ -73,6 +82,7 @@ import { useTaskContext } from '@/context/useTaskContext';
 
 const props = defineProps<{
   task: TaskResponse;
+  readOnly?: boolean;
 }>();
 
 const { t } = useI18n();

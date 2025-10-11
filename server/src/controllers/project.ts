@@ -384,3 +384,159 @@ export const deleteProject = async (req: Request, res: Response) => {
     });
   }
 };
+
+// 獲取公開分享的專案（不需要認證）
+export const getSharedProject = async (req: Request, res: Response) => {
+  try {
+    const projectId = req.params.id;
+
+    if (!projectId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Project ID is required',
+      });
+    }
+
+    // 查詢專案資訊（檢查是否公開分享）
+    const { data: project, error: projectError } = await supabase
+      .from('Projects')
+      .select('*')
+      .eq('id', projectId)
+      .eq('is_shared', true)
+      .single();
+
+    if (projectError || !project) {
+      console.error('Error fetching shared project:', projectError);
+      return res.status(404).json({
+        success: false,
+        message: 'Project not found or not shared publicly',
+      });
+    }
+
+    // 查詢專案的所有任務
+    const { data: tasks, error: tasksError } = await supabase
+      .from('Tasks')
+      .select('*')
+      .eq('project_id', projectId)
+      .order('created_at', { ascending: false });
+
+    if (tasksError) {
+      console.error('Error fetching tasks:', tasksError);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to fetch project tasks',
+        error: tasksError.message,
+      });
+    }
+
+    // 為每個任務獲取材料
+    const tasksWithMaterials = await Promise.all(
+      (tasks || []).map(async (task) => {
+        const { data: materials, error: materialsError } = await supabase
+          .from('TaskMaterials')
+          .select('*')
+          .eq('task_id', task.id);
+
+        if (materialsError) {
+          console.error(`Error fetching materials for task ${task.id}:`, materialsError);
+        }
+
+        const { user_id, ...safeTask } = task;
+        return {
+          ...safeTask,
+          materials: materials || [],
+        };
+      })
+    );
+
+    // 移除敏感欄位
+    const { user_id, ...safeProject } = project;
+
+    // 組合返回數據
+    const projectWithTasks = {
+      ...safeProject,
+      tasks: tasksWithMaterials,
+    };
+
+    // 轉換為駝峰式命名並返回
+    return res.status(200).json({
+      success: true,
+      data: camelcaseKeys(projectWithTasks, { deep: true }),
+    });
+  } catch (error: any) {
+    console.error('Unexpected error fetching shared project:', error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'An unexpected error occurred',
+    });
+  }
+};
+
+// 切換專案分享狀態
+export const toggleProjectShare = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).userId;
+    const projectId = req.params.id;
+
+    if (!projectId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Project ID is required',
+      });
+    }
+
+    // 檢查專案是否存在並屬於當前用戶
+    const { data: project, error: projectError } = await supabase
+      .from('Projects')
+      .select('id, is_shared')
+      .eq('id', projectId)
+      .eq('user_id', userId)
+      .single();
+
+    if (projectError) {
+      console.error('Error fetching project:', projectError);
+      return res.status(404).json({
+        success: false,
+        message: 'Project not found or you do not have permission',
+        error: projectError.message,
+      });
+    }
+
+    // 切換分享狀態
+    const newShareStatus = !project.is_shared;
+
+    const { data: updatedProject, error: updateError } = await supabase
+      .from('Projects')
+      .update({
+        is_shared: newShareStatus,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', projectId)
+      .eq('user_id', userId)
+      .select()
+      .single();
+
+    if (updateError) {
+      console.error('Error updating project share status:', updateError);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to update project share status',
+        error: updateError.message,
+      });
+    }
+
+    const { user_id, ...safeProject } = updatedProject;
+
+    return res.status(200).json({
+      success: true,
+      message: newShareStatus ? 'Project is now shared' : 'Project sharing disabled',
+      data: camelcaseKeys(safeProject),
+    });
+  } catch (error: any) {
+    console.error('Unexpected error toggling project share:', error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'An unexpected error occurred',
+    });
+  }
+};

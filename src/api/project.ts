@@ -27,4 +27,10 @@ export const projectApi = {
   deleteProject: (id: string): Promise<ApiResponse<void>> => {
     return request.delete(`/projects/${id}`);
   },
+  getProjectShare: (id: string): Promise<ApiResponse<ProjectResponse>> => {
+    return request.get(`/projects/${id}/share`);
+  },
+  toggleProjectShare: (id: string): Promise<ApiResponse<ProjectResponse>> => {
+    return request.patch(`/projects/${id}/share`);
+  },
 };

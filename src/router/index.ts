@@ -10,6 +10,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../pages/404.vue'),
   },
   {
+    path: '/shared/project/:id',
+    name: 'shared-project',
+    component: () => import('../pages/public/SharedProject.vue'),
+    meta: { public: true },
+  },
+  {
     path: '/auth',
     name: 'auth',
     component: () => import('../layouts/AuthLayout.vue'),
@@ -161,8 +167,9 @@ const router = createRouter({
 router.beforeEach((to, _from, next) => {
   const authStore = useAuthStore();
 
+  // 公開頁面列表
   const publicPages = ['/auth/login', '/auth/register', '/auth/forgot-password'];
-  const isPublicPage = publicPages.includes(to.path);
+  const isPublicPage = publicPages.includes(to.path) || to.meta.public === true;
 
   if (!isPublicPage && !authStore.isAuthenticated) {
     return next({
@@ -171,7 +178,7 @@ router.beforeEach((to, _from, next) => {
     });
   }
 
-  if (authStore.isAuthenticated && isPublicPage) {
+  if (authStore.isAuthenticated && publicPages.includes(to.path)) {
     return next({ name: 'overview' });
   }
 

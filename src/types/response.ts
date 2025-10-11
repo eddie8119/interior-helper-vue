@@ -37,6 +37,7 @@ export interface ProjectResponse {
   title: string;
   type: ProjectType;
   userId: string;
+  isShared: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

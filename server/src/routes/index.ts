@@ -4,6 +4,7 @@ import authRoutes from './auth';
 import collaboratorRoutes from './collaborator';
 import commonRoutes from './common';
 import draftRoutes from './draft';
+import invitationRoutes from './invitation';
 import notificationRoutes from './notification';
 import projectRoutes from './project';
 import taskRoutes from './task';
@@ -21,5 +22,6 @@ app.use('/api/draft', draftRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/user-settings', userSettingsRoutes);
 app.use('/api/collaborators', collaboratorRoutes);
+app.use('/api/invitations', invitationRoutes);
 
 export default app;

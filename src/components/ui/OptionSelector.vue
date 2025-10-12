@@ -5,7 +5,7 @@
     @change="onChange"
   >
     <option v-for="option in options" :key="String(option.value)" :value="option.value">
-      {{ t(`option.status.${option.value}`) }}
+      {{ t(`option.${namespace}.${option.value}`) }}
     </option>
   </select>
 </template>
@@ -15,10 +15,16 @@ import { useI18n } from 'vue-i18n';
 
 import type { SelectorOption } from '@/types/selection';
 
-const { modelValue, options, className } = defineProps<{
+const {
+  modelValue,
+  options,
+  className,
+  namespace = 'status',
+} = defineProps<{
   modelValue: string;
   options: SelectorOption[];
   className?: string;
+  namespace?: string;
 }>();
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();

@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import {
   getMyInvitations,
   getSentInvitations,
+  getInvitationByToken,
   acceptInvitation,
   rejectInvitation,
   cancelInvitation,
@@ -148,5 +149,118 @@ export const useCreateInvitation = () => {
     isCreating,
     createProject,
     createGlobal,
+  };
+};
+
+// 获取我的邀请
+export const useMyInvitations = () => {
+  const { t } = useI18n();
+  const invitations = ref<CollaboratorInvitationResponse[]>([]);
+  const isLoading = ref(false);
+  const error = ref<string | null>(null);
+
+  const refetch = async () => {
+    isLoading.value = true;
+    error.value = null;
+    try {
+      const data = await getMyInvitations();
+      invitations.value = data;
+    } catch (err: any) {
+      console.error('Failed to fetch invitations:', err);
+      error.value = err.message || t('message.error.failed_to_fetch');
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
+  return {
+    invitations,
+    isLoading,
+    error,
+    refetch,
+  };
+};
+
+// 通过token获取邀请详情
+export const useInvitationByToken = (token: any) => {
+  const { t } = useI18n();
+  const invitation = ref<CollaboratorInvitationResponse | null>(null);
+  const isLoading = ref(false);
+  const error = ref<string | null>(null);
+
+  const refetch = async () => {
+    if (!token.value) {
+      error.value = t('message.invitation.invalid_token');
+      return;
+    }
+
+    isLoading.value = true;
+    error.value = null;
+    try {
+      const data = await getInvitationByToken(token.value);
+      invitation.value = data;
+    } catch (err: any) {
+      console.error('Failed to fetch invitation:', err);
+      if (err.response?.status === 404) {
+        error.value = t('message.invitation.not_found');
+      } else if (err.response?.status === 410) {
+        error.value = t('message.invitation.expired');
+      } else {
+        error.value = t('message.invitation.load_failed');
+      }
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
+  return {
+    invitation,
+    isLoading,
+    error,
+    refetch,
+  };
+};
+
+// 接受邀请
+export const useAcceptInvitation = () => {
+  const isAccepting = ref(false);
+
+  const accept = async (invitationToken: string) => {
+    isAccepting.value = true;
+    try {
+      await acceptInvitation(invitationToken);
+    } catch (error) {
+      console.error('Failed to accept invitation:', error);
+      throw error;
+    } finally {
+      isAccepting.value = false;
+    }
+  };
+
+  return {
+    accept,
+    isAccepting,
+  };
+};
+
+// 拒绝邀请
+export const useRejectInvitation = () => {
+  const isRejecting = ref(false);
+
+  const reject = async (invitationId: string) => {
+    isRejecting.value = true;
+    try {
+      await rejectInvitation(invitationId);
+    } catch (error) {
+      console.error('Failed to reject invitation:', error);
+      throw error;
+    } finally {
+      isRejecting.value = false;
+    }
+  };
+
+  return {
+    reject,
+    isRejecting,
   };
 };

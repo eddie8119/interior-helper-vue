@@ -3,7 +3,8 @@ import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 
 import { collaboratorApi } from '@/api/collaborator';
-import type { CollaboratorRole } from '@/types/response';
+import { createProjectInvitation, createGlobalInvitation } from '@/api/invitation';
+import type { CollaboratorRole } from '@/types/collaborator';
 
 // Project-specific collaborators
 export const useProjectCollaborators = (projectId: string) => {
@@ -25,16 +26,16 @@ export const useProjectCollaborators = (projectId: string) => {
     enabled: !!projectId,
   });
 
-  // Add collaborator mutation
+  // Add collaborator mutation (使用邀請系統)
   const addCollaboratorMutation = useMutation({
     mutationFn: (data: { collaboratorEmail: string; role?: CollaboratorRole }) =>
-      collaboratorApi.addProjectCollaborator(projectId, data),
+      createProjectInvitation(projectId, data.collaboratorEmail, data.role || 'viewer'),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projectCollaborators', projectId] });
-      ElMessage.success(t('message.collaborator_added'));
+      ElMessage.success(t('message.invitation.sent'));
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || t('message.add_collaborator_failed');
+      const message = error.response?.data?.message || t('message.invitation.send_failed');
       ElMessage.error(message);
     },
   });
@@ -102,16 +103,16 @@ export const useGlobalCollaborators = () => {
     },
   });
 
-  // Add global collaborator mutation
+  // Add global collaborator mutation (使用邀請系統)
   const addCollaboratorMutation = useMutation({
     mutationFn: (data: { collaboratorEmail: string; role?: CollaboratorRole }) =>
-      collaboratorApi.addGlobalCollaborator(data),
+      createGlobalInvitation(data.collaboratorEmail, data.role || 'viewer'),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['globalCollaborators'] });
-      ElMessage.success(t('message.global_collaborator_added'));
+      ElMessage.success(t('message.invitation.sent'));
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || t('message.add_collaborator_failed');
+      const message = error.response?.data?.message || t('message.invitation.send_failed');
       ElMessage.error(message);
     },
   });

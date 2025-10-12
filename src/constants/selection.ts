@@ -96,3 +96,9 @@ export const TODO_FILTER: SelectorOption[] = [
   { value: 'done' },
   { value: 'todo' },
 ] as const;
+
+export const COLLABORATOR_ROLE_OPTIONS: SelectorOption[] = [
+  { value: 'viewer' },
+  { value: 'editor' },
+  { value: 'manager' },
+] as const;

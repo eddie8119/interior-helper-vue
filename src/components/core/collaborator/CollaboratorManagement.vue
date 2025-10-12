@@ -10,7 +10,7 @@
       />
       <OptionSelector
         v-model="newCollaboratorRole"
-        :options="roleOptions"
+        :options="COLLABORATOR_ROLE_OPTIONS"
         class-name="w-[120px]"
         namespace="role"
       />
@@ -37,21 +37,37 @@
       :data="collaborators"
       style="width: 100%"
     >
-      <el-table-column prop="collaboratorEmail" :label="t('column.email')" />
-      <el-table-column :label="t('column.role')" width="150">
+      <el-table-column :label="t('column.email')">
         <template #default="scope">
-          <OptionSelector
-            :model-value="scope.row.role"
-            :options="roleOptions"
-            namespace="role"
-            :disabled="isUpdating"
-            @update:model-value="(value) => onRoleChange(scope.row.id, value)"
-          />
+          <div class="flex items-center gap-2">
+            <span>{{ scope.row.collaboratorEmail }}</span>
+            <el-tag v-if="scope.row.isGlobal" size="small" type="success">
+              {{ t('label.global') }}
+            </el-tag>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column :label="t('column.role')" width="180">
+        <template #default="scope">
+          <div class="flex flex-col gap-1">
+            <OptionSelector
+              :model-value="scope.row.role"
+              :options="COLLABORATOR_ROLE_OPTIONS"
+              namespace="role"
+              :disabled="isUpdating || scope.row.isGlobal"
+              @update:model-value="(value) => onRoleChange(scope.row.id, value)"
+            />
+            <span v-if="scope.row.isGlobal && scope.row.globalRole" class="text-xs text-gray-500">
+              {{ t('label.collaborator.global_default') }}:
+              {{ t(`option.role.${scope.row.globalRole}`) }}
+            </span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column :label="t('column.action')" width="100">
         <template #default="scope">
           <TextButton
+            v-if="!scope.row.isGlobal"
             :loading="isRemoving"
             :disabled="isRemoving"
             size="sm"
@@ -60,6 +76,9 @@
           >
             {{ t('button.remove') }}
           </TextButton>
+          <span v-else class="text-xs text-gray-500">
+            {{ t('label.collaborator.global_managed') }}
+          </span>
         </template>
       </el-table-column>
     </el-table>
@@ -76,7 +95,7 @@ import { useI18n } from 'vue-i18n';
 import TextButton from '@/components/core/button/TextButton.vue';
 import OptionSelector from '@/components/ui/OptionSelector.vue';
 import type { CollaboratorRole } from '@/types/response';
-import type { SelectorOption } from '@/types/selection';
+import { COLLABORATOR_ROLE_OPTIONS } from '@/constants/selection';
 
 const { t } = useI18n();
 
@@ -97,11 +116,6 @@ const emit = defineEmits<{
 
 const newCollaboratorEmail = ref('');
 const newCollaboratorRole = ref<CollaboratorRole>('viewer');
-const roleOptions: SelectorOption[] = [
-  { value: 'viewer' },
-  { value: 'editor' },
-  { value: 'manager' },
-];
 
 const handleAddCollaborator = () => {
   if (!newCollaboratorEmail.value || !newCollaboratorEmail.value.includes('@')) {

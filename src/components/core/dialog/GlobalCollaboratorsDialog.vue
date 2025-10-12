@@ -16,7 +16,7 @@
       :is-adding="isAdding"
       :is-updating="isUpdating"
       :is-removing="isRemoving"
-      :empty-message="t('message.nomanage_global_collaborators')"
+      :empty-message="t('message.sign.no_global_collaborators')"
       @add="handleAddCollaborator"
       @update-role="handleUpdateRole"
       @remove="handleRemoveCollaborator"

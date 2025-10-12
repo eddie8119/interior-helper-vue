@@ -32,7 +32,7 @@
 
       <!-- 未啟用分享提示 -->
       <div v-else class="rounded-lg p-4 text-center text-sm">
-        {{ t('dialog.share_disabled_hint') }}
+        {{ t('message.sign.share_disabled_hint') }}
       </div>
     </div>
   </BasicEditDialog>

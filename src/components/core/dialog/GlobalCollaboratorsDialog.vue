@@ -1,14 +1,14 @@
 <template>
   <BasicEditDialog
     v-model="dialogVisible"
-    :title="t('title.manage_project_collaborators')"
+    :title="t('title.manage_global_collaborators')"
     :is-submitting="isSubmitting"
     :error-message="errorMessage"
     :show-footer-button="false"
     @cancel="dialogVisible = false"
   >
     <p class="mb-4 text-sm text-gray-600">
-      {{ t('dialog.collaborators_description') }}
+      {{ t('dialog.global_collaborators_description') }}
     </p>
     <CollaboratorManagement
       :collaborators="collaborators || []"
@@ -16,7 +16,7 @@
       :is-adding="isAdding"
       :is-updating="isUpdating"
       :is-removing="isRemoving"
-      :empty-message="t('message.no_collaborators')"
+      :empty-message="t('message.nomanage_global_collaborators')"
       @add="handleAddCollaborator"
       @update-role="handleUpdateRole"
       @remove="handleRemoveCollaborator"
@@ -30,14 +30,13 @@ import { useI18n } from 'vue-i18n';
 
 import CollaboratorManagement from '@/components/core/collaborator/CollaboratorManagement.vue';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
-import { useProjectCollaborators } from '@/composables/useCollaborators';
+import { useGlobalCollaborators } from '@/composables/useCollaborators';
 import type { CollaboratorRole } from '@/types/response';
 
 const { t } = useI18n();
 
 const props = defineProps<{
   modelValue: boolean;
-  projectId: string;
 }>();
 
 const emit = defineEmits<{
@@ -63,7 +62,7 @@ const {
   isUpdating,
   isRemoving,
   refetch,
-} = useProjectCollaborators(props.projectId);
+} = useGlobalCollaborators();
 
 // Refetch when dialog opens
 watch(dialogVisible, (newValue: boolean) => {

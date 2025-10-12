@@ -27,11 +27,11 @@ import QuickDraft from './QuickDraft.vue';
 
 import DeleteButton from '@/components/ui/DeleteButton.vue';
 // import CloseIcon from '@/components/icons/CloseIcon.vue';
-import { useQuickDraftStore } from '@/stores/quickDraft';
+import { useSlideStore } from '@/stores/slide';
 
-const quickDraftStore = useQuickDraftStore();
-const { isQuickDraftSlideVisible } = storeToRefs(quickDraftStore);
-const { hideQuickDraftSlide } = quickDraftStore;
+const slideStore = useSlideStore();
+const { isQuickDraftSlideVisible } = storeToRefs(slideStore);
+const { hideQuickDraftSlide } = slideStore;
 </script>
 
 <style lang="scss" scoped>

@@ -10,8 +10,8 @@
 
 <script setup lang="ts">
 import PencilIcon from '@/components/ui/PencilIcon.vue';
-import { useQuickDraftStore } from '@/stores/quickDraft';
+import { useSlideStore } from '@/stores/slide';
 
-const quickDraftStore = useQuickDraftStore();
-const { toggleQuickDraftSlide } = quickDraftStore;
+const slideStore = useSlideStore();
+const { toggleQuickDraftSlide } = slideStore;
 </script>

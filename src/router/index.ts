@@ -16,6 +16,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { public: true },
   },
   {
+    path: '/invitation/accept',
+    name: 'invitation-accept',
+    component: () => import('../views/InvitationAccept.vue'),
+    meta: { public: true },
+  },
+  {
     path: '/auth',
     name: 'auth',
     component: () => import('../layouts/AuthLayout.vue'),

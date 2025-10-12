@@ -5,7 +5,10 @@
       "title": "Name",
       "type": "Type",
       "task_progress": "Task Progress",
-      "createdAt": "Created At"
+      "createdAt": "Created At",
+      "email": "Email",
+      "role": "Role",
+      "action": "Action"
     }
   },
   "zh-TW": {
@@ -14,7 +17,10 @@
       "title": "名稱",
       "type": "類型",
       "task_progress": "任務進度",
-      "createdAt": "建立時間"
+      "createdAt": "建立時間",
+      "email": "電子郵件",
+      "role": "角色",
+      "action": "動作"
     }
   },
   "ja": {

@@ -11,6 +11,11 @@
         "todo": "Todo",
         "inProgress": "In Progress",
         "done": "Done"
+      },
+      "role": {
+        "viewer": "Viewer",
+        "editor": "Editor",
+        "manager": "Manager"
       }
     }
   },
@@ -26,6 +31,11 @@
         "todo": "待辦",
         "inProgress": "進行中",
         "done": "已完成"
+      },
+      "role": {
+        "viewer": "瀏覽者",
+        "editor": "編輯者",
+        "manager": "管理員"
       }
     }
   },

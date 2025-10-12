@@ -2,6 +2,8 @@
   "en": {
     "button": {
       "cancel": "Cancel",
+      "copy": "Copy",
+      "remove": "Remove",
       "save": "Save",
       "add": "Add",
       "add_task": "Add Task",
@@ -19,6 +21,15 @@
       "delete_completed": "Delete Completed",
       "resend": "Resend",
       "activate": "Activate",
+      "add_alarm": "Add Alarm",
+      "accept": "Accept",
+      "reject": "Reject",
+      "accept_invitation": "Accept Invitation",
+      "back_to_home": "Back to Home",
+      "export": {
+        "json": "JSON",
+        "csv": "CSV"
+      },
       "try_again": "Try Again",
       "query": "Query",
       "pdf": "PDF",
@@ -28,6 +39,8 @@
   "zh-TW": {
     "button": {
       "cancel": "取消",
+      "remove": "移除",
+      "copy": "複製",
       "save": "儲存",
       "add": "添加",
       "add_task": "施作任務",
@@ -45,10 +58,15 @@
       "delete_completed": "刪除已完成",
       "resend": "重新發送",
       "activate": "啟用",
-      "try_again": "再試一次",
-      "query": "查詢",
-      "pdf": "PDF",
-      "csv": "CSV"
+      "add_alarm": "新增警報",
+      "accept": "接受",
+      "reject": "拒絕",
+      "accept_invitation": "接受邀請",
+      "back_to_home": "返回首頁",
+      "export": {
+        "json": "JSON",
+        "csv": "CSV"
+      }
     }
   },
   "ja": {

@@ -3,14 +3,22 @@
     "dialog": {
       "delete_confirm": "Do you confirm the deletion",
       "share_project_link": "Share Project Link",
-      "move_note_to_project": "Select Project, Move Note"
+      "move_note_to_project": "Select Project, Move Note",
+      "enable_project_sharing": "Enable Project Sharing",
+      "share_description": "Share your project with others.",
+      "collaborators_description": "Collaborators are users who can access your projects.",
+      "global_collaborators_description": "Global collaborators are collaborators who can access all projects."
     }
   },
   "zh-TW": {
     "dialog": {
       "delete_confirm": "確定要刪除",
       "share_project_link": "分享專案連結",
-      "move_note_to_project": "選取專案，移動速記"
+      "move_note_to_project": "選取專案，移動速記",
+      "enable_project_sharing": "啟用專案分享",
+      "share_description": "分享您的專案給其他人。",
+      "collaborators_description": "協作者是能夠存取專案的使用者。",
+      "global_collaborators_description": "全域協作者是能夠存取所有專案的協作者。"
     }
   },
   "ja": {

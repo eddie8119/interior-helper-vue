@@ -4,6 +4,8 @@
       "time": "Time",
       "status": "Status",
       "materials": "Materials",
+      "type": "Type",
+      "role": "Role",
       "detail": "Detail",
       "total": "Total",
       "action": "Action",
@@ -14,6 +16,18 @@
       "end_time": "End Time",
       "quick_date_selector": "Quick Day Selector",
       "custom_time_range": "Custom Time Range",
+      "collaborator": {
+        "global": "Global",
+        "global_default": "Global Default",
+        "global_managed": "Managed globally"
+      },
+      "invitation": {
+        "project": "Project",
+        "global": "Global",
+        "expires_at": "Expires at",
+        "project_invitation": "Project Invitation",
+        "global_invitation": "Global Collaboration Invitation"
+      },
       "alarm": {
         "type": "Type",
         "time_interval": "Time Interval",
@@ -43,6 +57,8 @@
       "time": "時間",
       "status": "狀態",
       "materials": "材料",
+      "type": "類型",
+      "role": "角色",
       "detail": "詳情",
       "total": "總計",
       "action": "操作",
@@ -53,6 +69,18 @@
       "end_time": "結束時間",
       "quick_date_selector": "快速天數選擇器",
       "custom_time_range": "自訂時間區間",
+      "collaborator": {
+        "global": "全域",
+        "global_default": "全域預設",
+        "global_managed": "由全域管理"
+      },
+      "invitation": {
+        "project": "專案",
+        "global": "全域",
+        "expires_at": "過期時間",
+        "project_invitation": "專案邀請",
+        "global_invitation": "全域協作邀請"
+      },
       "alarm": {
         "type": "類型",
         "time_interval": "時間區間",

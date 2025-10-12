@@ -1,6 +1,8 @@
 {
   "button": {
     "cancel": "Cancel",
+    "copy": "Copy",
+    "remove": "Remove",
     "save": "Save",
     "add": "Add",
     "add_task": "Add Task",
@@ -18,6 +20,15 @@
     "delete_completed": "Delete Completed",
     "resend": "Resend",
     "activate": "Activate",
+    "add_alarm": "Add Alarm",
+    "accept": "Accept",
+    "reject": "Reject",
+    "accept_invitation": "Accept Invitation",
+    "back_to_home": "Back to Home",
+    "export": {
+      "json": "JSON",
+      "csv": "CSV"
+    },
     "try_again": "Try Again",
     "query": "Query",
     "pdf": "PDF",
@@ -28,7 +39,10 @@
     "title": "Name",
     "type": "Type",
     "task_progress": "Task Progress",
-    "createdAt": "Created At"
+    "createdAt": "Created At",
+    "email": "Email",
+    "role": "Role",
+    "action": "Action"
   },
   "common": {
     "create_project": "Create Project",
@@ -62,7 +76,11 @@
   "dialog": {
     "delete_confirm": "Do you confirm the deletion",
     "share_project_link": "Share Project Link",
-    "move_note_to_project": "Select Project, Move Note"
+    "move_note_to_project": "Select Project, Move Note",
+    "enable_project_sharing": "Enable Project Sharing",
+    "share_description": "Share your project with others.",
+    "collaborators_description": "Collaborators are users who can access your projects.",
+    "global_collaborators_description": "Global collaborators are collaborators who can access all projects."
   },
   "dropdown": {
     "zh-TW": "繁體中文",
@@ -86,7 +104,10 @@
     "time": "Time",
     "status": "Status",
     "materials": "Materials",
+    "type": "Type",
+    "role": "Role",
     "detail": "Detail",
+    "total": "Total",
     "action": "Action",
     "note": "Note",
     "average": "Average",
@@ -95,6 +116,18 @@
     "end_time": "End Time",
     "quick_date_selector": "Quick Day Selector",
     "custom_time_range": "Custom Time Range",
+    "collaborator": {
+      "global": "Global",
+      "global_default": "Global Default",
+      "global_managed": "Managed globally"
+    },
+    "invitation": {
+      "project": "Project",
+      "global": "Global",
+      "expires_at": "Expires at",
+      "project_invitation": "Project Invitation",
+      "global_invitation": "Global Collaboration Invitation"
+    },
     "alarm": {
       "type": "Type",
       "time_interval": "Time Interval",
@@ -141,10 +174,33 @@
       "no_done": "No done",
       "no_undone": "No undone",
       "no_change": "No change",
-      "no_alarm": "No alarm"
+      "no_alarm": "No alarm",
+      "no_collaborators": "No project collaborators",
+      "no_global_collaborators": "No company collaborators",
+      "no_invitations": "No pending invitations",
+      "share_disabled_hint": "Share disabled"
     },
     "success": {
       "update_success": "Update successful!"
+    },
+    "invitation": {
+      "sent": "Invitation sent successfully",
+      "accepted": "Invitation accepted",
+      "rejected": "Invitation rejected",
+      "cancelled": "Invitation cancelled",
+      "send_failed": "Failed to send invitation",
+      "accept_failed": "Failed to accept invitation",
+      "reject_failed": "Failed to reject invitation",
+      "cancel_failed": "Failed to cancel invitation",
+      "already_exists": "An invitation already exists for this user",
+      "invited_by": "Invited by {name}",
+      "invited_you": "invited you to collaborate",
+      "login_required": "Please login or register to accept this invitation",
+      "ready_to_accept": "You are about to accept this collaboration invitation",
+      "invalid_token": "Invalid invitation link",
+      "not_found": "Invitation not found or already processed",
+      "expired": "This invitation has expired",
+      "load_failed": "Failed to load invitation details"
     },
     "error": {
       "update_failed": "Update failed",
@@ -190,6 +246,11 @@
       "todo": "Todo",
       "inProgress": "In Progress",
       "done": "Done"
+    },
+    "role": {
+      "viewer": "Viewer",
+      "editor": "Editor",
+      "manager": "Manager"
     }
   },
   "pagination": {
@@ -281,7 +342,10 @@
     "quick_draft": "Quick Draft",
     "setting": "Setting",
     "share": "Share",
-    "manage_collaborators": "Manage Collaborators",
+    "manage_project_collaborators": "Manage Project Collaborators",
+    "manage_global_collaborators": "Manage Global Collaborators",
+    "collaboration_invitation": "Collaboration Invitation",
+    "invitation_error": "Invitation Error",
     "delete_confirm": "Delete Confirm",
     "create_project": "Create Project",
     "move_note": "Move Note",

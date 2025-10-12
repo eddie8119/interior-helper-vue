@@ -30,38 +30,12 @@
   <!-- Collaborators Dialog -->
   <CollaboratorDialog v-model="showCollaboratorsDialog" :project-id="projectId" />
 
-  <el-dialog
-    v-model="showCollaboratorsDialog"
-    :title="t('title.manage_collaborators')"
-    width="600px"
-    destroy-on-close
-  >
-    <div class="flex flex-col gap-4">
-      <p>{{ t('message.collaborators_description') }}</p>
-      <div class="mb-4 flex items-center gap-2">
-        <el-input v-model="newCollaboratorEmail" :placeholder="t('placeholder.email')" />
-        <el-button type="primary" @click="addCollaborator">
-          {{ t('button.add') }}
-        </el-button>
-      </div>
-      <el-table v-if="collaborators.length > 0" :data="collaborators" style="width: 100%">
-        <el-table-column prop="email" :label="t('column.email')" />
-        <el-table-column prop="role" :label="t('column.role')" width="120" />
-        <el-table-column :label="t('column.action')" width="100">
-          <template #default="scope">
-            <el-button type="danger" size="small" @click="removeCollaborator(scope.row)">
-              {{ t('button.remove') }}
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <p v-else class="text-center text-gray-500">{{ t('message.no_collaborators') }}</p>
-    </div>
-  </el-dialog>
+  <!-- Global Collaborators Dialog -->
+  <GlobalCollaboratorsDialog v-model="showGlobalCollaboratorsDialog" />
 </template>
 
 <script setup lang="ts">
-import { Delete, Share, User } from '@element-plus/icons-vue';
+import { Delete, Share, User, UserFilled } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -69,6 +43,7 @@ import { useRouter } from 'vue-router';
 
 import CollaboratorDialog from '@/components/core/dialog/CollaboratorDialog.vue';
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
+import GlobalCollaboratorsDialog from '@/components/core/dialog/GlobalCollaboratorsDialog.vue';
 import ShareLinkDialog from '@/components/core/dialog/ShareLinkDialog.vue';
 import { useProject } from '@/composables/useProject';
 import { getProjectStorageKey } from '@/utils/storage/projectStorage';
@@ -88,6 +63,8 @@ const showDeleteDialog = ref(false);
 const showShareDialog = ref(false);
 // Collaborators management
 const showCollaboratorsDialog = ref(false);
+// Global collaborators management
+const showGlobalCollaboratorsDialog = ref(false);
 
 const actionButtons = [
   {
@@ -101,6 +78,12 @@ const actionButtons = [
     type: 'info',
     icon: User,
     handler: () => (showCollaboratorsDialog.value = true),
+  },
+  {
+    key: 'globalCollaborators',
+    type: 'success',
+    icon: UserFilled,
+    handler: () => (showGlobalCollaboratorsDialog.value = true),
   },
   {
     key: 'delete',

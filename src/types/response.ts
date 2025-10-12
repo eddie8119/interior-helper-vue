@@ -1,6 +1,8 @@
 import type { ConstructionSelection, ProjectType } from './selection';
 import type { TaskStatus } from '@/types/task';
 import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
+import type { CollaboratorRole } from '@/types/collaborator';
+import type { InvitationStatus, InvitationType } from '@/types/invitation';
 
 export interface AuthResponse {
   user: {
@@ -64,9 +66,6 @@ export interface TaskMaterialResponse {
   updatedAt: Date;
 }
 
-// 協作者角色
-export type CollaboratorRole = 'viewer' | 'editor' | 'manager';
-
 // 專案協作者
 export interface ProjectCollaboratorResponse {
   id: string;
@@ -88,4 +87,25 @@ export interface GlobalCollaboratorResponse {
   role: CollaboratorRole;
   createdAt: Date;
   updatedAt: Date;
+}
+
+// 協作者邀請
+export interface CollaboratorInvitationResponse {
+  id: string;
+  invitationType: InvitationType;
+  projectId: string | null;
+  inviterId: string;
+  inviteeEmail: string;
+  role: CollaboratorRole;
+  status: InvitationStatus;
+  invitationToken: string;
+  expiresAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  acceptedAt: Date | null;
+  // 關聯數據
+  projects?: {
+    title: string;
+  };
+  inviterName?: string;
 }

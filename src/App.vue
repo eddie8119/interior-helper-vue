@@ -2,6 +2,7 @@
   <RouterView />
   <QuickDraftSlide v-if="!isQuickDraftPage" />
   <QuickDraftToggle v-if="!isQuickDraftPage" />
+  <NotificationSlide />
 </template>
 
 <script setup lang="ts">
@@ -10,6 +11,7 @@ import { useRoute } from 'vue-router';
 
 import QuickDraftSlide from '@/components/core/draft/QuickDraftSlide.vue';
 import QuickDraftToggle from '@/components/core/draft/QuickDraftToggle.vue';
+import NotificationSlide from '@/components/core/notification/NotificationSlide.vue';
 import { useAuthStore } from '@/stores/auth';
 import { initTheme, setTheme } from '@/utils/theme';
 

@@ -29,7 +29,13 @@
       </el-dropdown>
       <!-- 沒有下拉選項 -->
       <div v-else>
-        <img :src="getIconUrl(nav.icon)" :alt="`${nav.name}-Icon`" class="icon-hover icon-basic" />
+        <button class="flex items-center" @click="nav.action()">
+          <img
+            :src="getIconUrl(nav.icon)"
+            :alt="`${nav.name}-Icon`"
+            class="icon-hover icon-basic"
+          />
+        </button>
       </div>
     </div>
     <!-- 顯示身分 -->
@@ -56,12 +62,14 @@ import { useLocale } from '@/composables/useLocale';
 import { useAuthStore } from '@/stores/auth';
 import { Language } from '@/types/language';
 import { getIconUrl } from '@/utils/assetUrl';
+import { useSlideStore } from '@/stores/slide';
 
 const { t } = useI18n();
 const authStore = useAuthStore();
 const { languages, handleLanguageChange } = useLocale();
 const { authentications, handleAuthenticationChange } = useAuthentication();
 const { isAdmin } = useAuth();
+const slideStore = useSlideStore();
 
 // 為了解決 型別切換
 const handleLanguageSelect = (code: string): void => {
@@ -75,7 +83,12 @@ const navItems = computed<NavItem[]>(() => {
       name: 'Global',
       icon: 'Global',
       label: t('common.language'),
-      action: handleLanguageSelect,
+      action: (value?: string) => {
+        if (value) return handleLanguageSelect(value as Language);
+        // default to current or first language when invoked without params
+        const fallback = languages[0]?.code as Language;
+        handleLanguageSelect(fallback);
+      },
       dropdownItems: languages.map((lang) => ({
         label: lang.label,
         value: lang.code,
@@ -90,14 +103,17 @@ const navItems = computed<NavItem[]>(() => {
         name: 'Notification',
         icon: 'Bell',
         label: t('common.notification'),
-        action: () => {},
+        action: handleNotificationSlide,
       },
       {
         id: 3,
         name: 'Authentication',
         icon: 'UserCircle',
         label: t('common.authentication'),
-        action: handleAuthenticationChange,
+        action: (value?: string) => {
+          if (!value) return; // ignore when called without dropdown selection
+          handleAuthenticationChange(value);
+        },
         dropdownItems: authentications.map((auth) => ({
           label: auth.label,
           value: auth.code,
@@ -108,6 +124,10 @@ const navItems = computed<NavItem[]>(() => {
 
   return baseItems;
 });
+
+const handleNotificationSlide = () => {
+  slideStore.toggleNotificationSlide();
+};
 </script>
 
 <style lang="scss" scoped></style>

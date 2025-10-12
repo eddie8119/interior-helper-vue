@@ -21,6 +21,6 @@ export interface NavItem {
   name: string;
   icon: string;
   label: string;
-  action: (value: string) => void;
+  action: (value?: string) => void;
   dropdownItems?: { label: string; value: string }[];
 }

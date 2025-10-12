@@ -66,8 +66,17 @@ export const getProjects = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).userId;
 
+    // 獲取用戶的 email
+    const { data: user } = await supabase
+      .from('Users')
+      .select('email')
+      .eq('id', userId)
+      .single();
+
+    const userEmail = user?.email;
+
     // 查詢資料庫中屬於當前用戶的所有專案
-    const { data: projects, error } = await supabase
+    const { data: ownedProjects, error } = await supabase
       .from('Projects')
       .select('*')
       .eq('user_id', userId)
@@ -82,8 +91,54 @@ export const getProjects = async (req: Request, res: Response) => {
       });
     }
 
+    // 查詢用戶作為協作者的專案（project-specific）
+    const { data: projectCollaborations } = await supabase
+      .from('ProjectCollaborators')
+      .select('project_id, Projects(*)')
+      .eq('collaborator_email', userEmail);
+
+    // 查詢用戶作為全域協作者可訪問的專案
+    const { data: globalCollaborations } = await supabase
+      .from('GlobalCollaborators')
+      .select('owner_id')
+      .eq('collaborator_email', userEmail);
+
+    const ownerIds = globalCollaborations?.map((gc) => gc.owner_id) || [];
+    let globalProjects: any[] = [];
+
+    if (ownerIds.length > 0) {
+      const { data: gProjects } = await supabase
+        .from('Projects')
+        .select('*')
+        .in('user_id', ownerIds)
+        .order('created_at', { ascending: false });
+      globalProjects = gProjects || [];
+    }
+
+    // 合併所有專案，去重
+    const projectMap = new Map();
+    
+    // 添加擁有的專案
+    ownedProjects?.forEach((project) => {
+      projectMap.set(project.id, project);
+    });
+
+    // 添加作為協作者的專案
+    projectCollaborations?.forEach((pc: any) => {
+      if (pc.Projects) {
+        projectMap.set(pc.Projects.id, pc.Projects);
+      }
+    });
+
+    // 添加全域協作者可訪問的專案
+    globalProjects.forEach((project) => {
+      projectMap.set(project.id, project);
+    });
+
+    const allProjects = Array.from(projectMap.values());
+
     // 在返回前移除敏感欄位
-    const safeProjects = projects?.map((project) => {
+    const safeProjects = allProjects.map((project) => {
       const { user_id, ...safeProject } = project;
       return safeProject;
     });
@@ -114,20 +169,56 @@ export const getProject = async (req: Request, res: Response) => {
       });
     }
 
+    // 獲取用戶的 email
+    const { data: user } = await supabase
+      .from('Users')
+      .select('email')
+      .eq('id', userId)
+      .single();
+
+    const userEmail = user?.email;
+
     // 查詢專案資訊
     const { data: project, error: projectError } = await supabase
       .from('Projects')
       .select('*')
       .eq('id', projectId)
-      .eq('user_id', userId)
       .single();
 
-    if (projectError) {
+    if (projectError || !project) {
       console.error('Error fetching project:', projectError);
       return res.status(404).json({
         success: false,
         message: 'Project not found',
-        error: projectError.message,
+        error: projectError?.message,
+      });
+    }
+
+    // 檢查用戶是否有權限訪問此專案
+    const isOwner = project.user_id === userId;
+    
+    // 檢查是否為專案協作者
+    const { data: projectCollaborator } = await supabase
+      .from('ProjectCollaborators')
+      .select('id')
+      .eq('project_id', projectId)
+      .eq('collaborator_email', userEmail)
+      .single();
+
+    // 檢查是否為全域協作者
+    const { data: globalCollaborator } = await supabase
+      .from('GlobalCollaborators')
+      .select('id')
+      .eq('owner_id', project.user_id)
+      .eq('collaborator_email', userEmail)
+      .single();
+
+    const hasAccess = isOwner || projectCollaborator || globalCollaborator;
+
+    if (!hasAccess) {
+      return res.status(403).json({
+        success: false,
+        message: 'You do not have permission to access this project',
       });
     }
 

@@ -63,3 +63,29 @@ export interface TaskMaterialResponse {
   createdAt: Date;
   updatedAt: Date;
 }
+
+// 協作者角色
+export type CollaboratorRole = 'viewer' | 'editor' | 'manager';
+
+// 專案協作者
+export interface ProjectCollaboratorResponse {
+  id: string;
+  projectId: string;
+  userId: string;
+  collaboratorEmail: string;
+  role: CollaboratorRole;
+  isGlobal: boolean; // 是否為全域協作者
+  globalRole: CollaboratorRole | null; // 全域角色（如果是全域協作者）
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// 全域協作者
+export interface GlobalCollaboratorResponse {
+  id: string;
+  ownerId: string;
+  collaboratorEmail: string;
+  role: CollaboratorRole;
+  createdAt: Date;
+  updatedAt: Date;
+}

@@ -1,6 +1,7 @@
 import express from 'express';
 
 import authRoutes from './auth';
+import collaboratorRoutes from './collaborator';
 import commonRoutes from './common';
 import draftRoutes from './draft';
 import notificationRoutes from './notification';
@@ -19,5 +20,6 @@ app.use('/api/common', commonRoutes);
 app.use('/api/draft', draftRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/user-settings', userSettingsRoutes);
+app.use('/api/collaborators', collaboratorRoutes);
 
 export default app;

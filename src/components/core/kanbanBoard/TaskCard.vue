@@ -31,10 +31,10 @@
     </div>
     <!-- 任務描述 -->
     <div class="task-details grid grid-cols-1 gap-5 p-2">
-      <p class="text-lg">{{ task.description }}</p>
+      <p v-if="showDescription" class="text-lg">{{ task.description }}</p>
 
       <!-- 任務材料 -->
-      <div v-if="task.materials && task.materials.length > 0">
+      <div v-if="showMaterials && task.materials && task.materials.length > 0">
         <Label :label="t('label.materials') + ':'" />
         <MaterialList :materials="task.materials" />
       </div>
@@ -78,6 +78,7 @@ import EditIcon from '@/components/ui/EditIcon.vue';
 import MaterialList from '@/components/ui/MaterialList.vue';
 import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
+import { useTaskCardFilter } from '@/composables/useTaskCardFilter';
 import { useTaskContext } from '@/context/useTaskContext';
 
 const props = defineProps<{
@@ -88,6 +89,8 @@ const props = defineProps<{
 const { t } = useI18n();
 // 從上下文中獲取任務操作
 const { deleteTask, updateTask } = useTaskContext();
+// 從上下文中獲取顯示過濾
+const { showDescription, showMaterials } = useTaskCardFilter();
 
 const isEditing = ref(false);
 const { values, setValues } = useForm<Partial<TaskResponse>>();

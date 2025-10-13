@@ -1,7 +1,7 @@
 .sidebar-nav-link {
-  @apply flex h-[36px] items-center gap-2 rounded-xl p-2 hover:bg-black-200 dark:hover:bg-black-500;
+  @apply flex h-[36px] items-center gap-2 rounded-xl p-2 text-primary-text hover:bg-primary-panel dark:hover:bg-black-500;
 }
 
 .router-link-active {
-  @apply bg-black-200 dark:bg-black-500;
+  @apply bg-primary-panel dark:bg-black-500;
 }

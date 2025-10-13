@@ -5,10 +5,7 @@
   .el-input__wrapper {
     @apply rounded-lg;
 
-    &:hover {
-      @apply border-brand-primary;
-    }
-
+    &:hover,
     &.is-focus {
       @apply border-brand-primary;
     }
@@ -18,7 +15,6 @@
     .el-input-number__decrease,
     .el-input-number__increase {
       @apply border-brand-primary bg-transparent text-brand-primary;
-
       border-left: 2px solid var(--el-border-color);
 
       &:hover {
@@ -36,7 +32,6 @@
 .el-input {
   .el-input__wrapper {
     @apply bg-black-100 dark:bg-gray-500;
-
     border-radius: 8px;
     padding: 4px 8px;
     transition: border-color 0.3s ease;
@@ -44,31 +39,51 @@
 
     &:hover {
       @apply border-brand-primary;
-
       box-shadow: none;
     }
 
     &.is-focus {
       @apply border-brand-primary;
-
       box-shadow: none;
     }
   }
 
   .el-input__inner {
-    @apply text-black-900 dark:text-white;
-
     font-size: 14px;
     height: 30px;
 
     &::placeholder {
-      @apply text-black-400 dark:text-black-300;
-
+      @apply text-primary-text-200 dark:text-black-300;
       font-size: 14px;
     }
   }
 }
 
-// .search-header {
-//   @apply mb-4 flex w-full items-center lg:w-1/4  ;
-// }
+// Search input in tables and forms
+.input {
+  .el-input__wrapper {
+    @apply h-9 rounded-xl bg-primary-background;
+    border-radius: 8px;
+    padding: 4px 8px;
+    transition: border-color 0.3s ease;
+
+    &.is-focus {
+      box-shadow: none;
+      border: 1px solid var(--color-primary-text);
+    }
+
+    &.is-error {
+      border: 1px solid var(--color-secondary-red);
+    }
+  }
+
+  // text color
+  .el-input__inner {
+    color: var(--color-primary-text);
+
+    // focus state
+    &:focus {
+      color: var(--color-primary-text);
+    }
+  }
+}

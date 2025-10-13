@@ -9,3 +9,49 @@
 .dropdown-container-button-active {
   @apply bg-black-100 dark:bg-black-400;
 }
+
+/* Element Plus dropdown popper (panel container injected into body) */
+.el-dropdown__popper.el-popper {
+  /* override EP overlay variables */
+  --el-bg-color-overlay: var(--color-primary-background);
+  --el-border-color-light: transparent;
+  --el-text-color-regular: var(--color-primary-text);
+  --el-dropdown-menuItem-hover-fill: color-mix(
+    in srgb,
+    var(--color-primary-chart) 10%,
+    transparent
+  );
+
+  background-color: var(--color-primary-background) !important;
+  color: var(--color-primary-text) !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+/* The actual menu list */
+.el-dropdown-menu {
+  background-color: var(--color-primary-background) !important;
+  color: var(--color-primary-text) !important;
+  border: none !important;
+  padding: 4px;
+}
+
+/* Menu items */
+.el-dropdown-menu__item {
+  color: var(--color-primary-text) !important;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--color-primary-chart) 12%, transparent) !important;
+    color: var(--color-primary-text) !important;
+  }
+
+  &.is-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

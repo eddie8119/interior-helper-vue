@@ -1,3 +1,16 @@
 .icon-hover {
   @apply transition-transform duration-300 hover:scale-110;
 }
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0;
+  }
+}
+.animate-alarm-blink {
+  animation: blink 2.5s ease-in-out infinite;
+}

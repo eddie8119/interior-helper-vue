@@ -61,13 +61,16 @@
             <template #default="scope">
               <slot :name="column.field" :row="scope.row">
                 <!-- Default cell rendering -->
-                <template v-if="column.field === 'tag'">
+                <template v-if="column.field === 'title'">
                   <router-link
                     :to="`/todo/project/${scope.row.id}`"
                     class="text-primary-chart underline"
                   >
                     {{ scope.row[column.field] }}
                   </router-link>
+                </template>
+                <template v-else-if="column.field === 'createdAt'">
+                  {{ formatDateTimeWithDay(new Date(scope.row[column.field])) }}
                 </template>
                 <template v-else>
                   <span v-if="scope.row[column.field] === undefined" class="text-primary-text">
@@ -124,6 +127,7 @@ import type { Column, TableAction } from '@/types/common';
 
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
 import { useAuth } from '@/composables/useAuth';
+import { formatDateTimeWithDay } from '@/utils/dateTime';
 
 const props = withDefaults(
   defineProps<{

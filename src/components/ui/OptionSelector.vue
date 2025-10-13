@@ -1,16 +1,17 @@
 <template>
-  <select
-    :value="modelValue"
-    :class="`rounded-md border p-2 text-sm shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200 ${className}`"
-    @change="onChange"
-  >
-    <option v-for="option in options" :key="String(option.value)" :value="option.value">
-      {{ t(`option.${namespace}.${option.value}`) }}
-    </option>
-  </select>
+  <el-select v-model="model" :class="[className]" v-bind="$attrs">
+    <el-option
+      v-for="option in options"
+      :key="String(option.value)"
+      :label="t(`option.${namespace}.${option.value}`)"
+      :value="option.value"
+    />
+  </el-select>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { ElOption, ElSelect } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 
 import type { SelectorOption } from '@/types/selection';
@@ -31,8 +32,8 @@ const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();
 
 const { t } = useI18n();
 
-const onChange = (e: Event) => {
-  const target = e.target as HTMLSelectElement;
-  emit('update:modelValue', target.value);
-};
+const model = computed({
+  get: () => modelValue,
+  set: (val: string) => emit('update:modelValue', val),
+});
 </script>

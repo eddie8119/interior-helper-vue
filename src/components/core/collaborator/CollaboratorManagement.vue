@@ -11,7 +11,7 @@
       <OptionSelector
         v-model="newCollaboratorRole"
         :options="COLLABORATOR_ROLE_OPTIONS"
-        class-name="w-[120px]"
+        class-name="w-[150px]"
         namespace="role"
       />
       <TextButton

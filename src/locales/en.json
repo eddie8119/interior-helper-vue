@@ -128,14 +128,6 @@
       "project_invitation": "Project Invitation",
       "global_invitation": "Global Collaboration Invitation"
     },
-    "alarm": {
-      "type": "Type",
-      "time_interval": "Time Interval",
-      "alarm_level": "Alarm Level",
-      "value": "Value",
-      "repeat": "Repeat",
-      "email": "Email"
-    },
     "user": {
       "username": "Username",
       "email": "Email",
@@ -251,6 +243,11 @@
       "viewer": "Viewer",
       "editor": "Editor",
       "manager": "Manager"
+    },
+    "display": {
+      "all": "Show All",
+      "content": "Content Only",
+      "materials": "Materials Only"
     }
   },
   "pagination": {

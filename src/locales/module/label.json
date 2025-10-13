@@ -28,14 +28,6 @@
         "project_invitation": "Project Invitation",
         "global_invitation": "Global Collaboration Invitation"
       },
-      "alarm": {
-        "type": "Type",
-        "time_interval": "Time Interval",
-        "alarm_level": "Alarm Level",
-        "value": "Value",
-        "repeat": "Repeat",
-        "email": "Email"
-      },
       "user": {
         "username": "Username",
         "email": "Email",
@@ -80,14 +72,6 @@
         "expires_at": "過期時間",
         "project_invitation": "專案邀請",
         "global_invitation": "全域協作邀請"
-      },
-      "alarm": {
-        "type": "類型",
-        "time_interval": "時間區間",
-        "alarm_level": "警報等級",
-        "value": "數值",
-        "repeat": "重複",
-        "email": "電子郵件"
       },
       "user": {
         "username": "使用者名稱",

@@ -123,14 +123,6 @@
       "project_invitation": "專案邀請",
       "global_invitation": "全域協作邀請"
     },
-    "alarm": {
-      "type": "類型",
-      "time_interval": "時間區間",
-      "alarm_level": "警報等級",
-      "value": "數值",
-      "repeat": "重複",
-      "email": "電子郵件"
-    },
     "user": {
       "username": "使用者名稱",
       "email": "電子郵件",
@@ -243,6 +235,11 @@
       "viewer": "瀏覽者",
       "editor": "編輯者",
       "manager": "管理員"
+    },
+    "display": {
+      "all": "都要顯示",
+      "content": "只顯示內容",
+      "materials": "只顯示材料"
     }
   },
   "pagination": {

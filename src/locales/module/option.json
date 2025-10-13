@@ -16,6 +16,11 @@
         "viewer": "Viewer",
         "editor": "Editor",
         "manager": "Manager"
+      },
+      "display": {
+        "all": "Show All",
+        "content": "Content Only",
+        "materials": "Materials Only"
       }
     }
   },
@@ -36,6 +41,11 @@
         "viewer": "瀏覽者",
         "editor": "編輯者",
         "manager": "管理員"
+      },
+      "display": {
+        "all": "都要顯示",
+        "content": "只顯示內容",
+        "materials": "只顯示材料"
       }
     }
   },

@@ -60,9 +60,9 @@ import { useAuth } from '@/composables/useAuth';
 import { useAuthentication } from '@/composables/useAuthentication';
 import { useLocale } from '@/composables/useLocale';
 import { useAuthStore } from '@/stores/auth';
+import { useSlideStore } from '@/stores/slide';
 import { Language } from '@/types/language';
 import { getIconUrl } from '@/utils/assetUrl';
-import { useSlideStore } from '@/stores/slide';
 
 const { t } = useI18n();
 const authStore = useAuthStore();

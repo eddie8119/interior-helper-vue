@@ -2,9 +2,9 @@
   <SlidePanel
     v-model="isNotificationSlideVisible"
     side="right"
-    :topOffsetRem="4"
-    :widthPercent="45"
-    :maxWidthPx="350"
+    :top-offset-rem="4"
+    :width-percent="45"
+    :max-width-px="350"
     @close="hideNotificationSlide"
   >
     <!-- Notification slot content goes here -->
@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
+
 import SlidePanel from '@/components/ui/SlidePanel.vue';
 import { useSlideStore } from '@/stores/slide';
 

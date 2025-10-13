@@ -28,10 +28,11 @@
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type { CollaboratorRole } from '@/types/response';
+
 import CollaboratorManagement from '@/components/core/collaborator/CollaboratorManagement.vue';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
 import { useGlobalCollaborators } from '@/composables/useCollaborators';
-import type { CollaboratorRole } from '@/types/response';
 
 const { t } = useI18n();
 

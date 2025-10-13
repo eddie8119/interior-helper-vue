@@ -29,8 +29,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 
-import { TODO_FILTER } from '@/constants/selection';
 import TrashButton from '@/components/ui/TrashButton.vue';
+import { TODO_FILTER } from '@/constants/selection';
 
 defineProps({
   selected: {

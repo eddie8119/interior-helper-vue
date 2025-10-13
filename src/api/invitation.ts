@@ -1,4 +1,5 @@
 import type { CollaboratorInvitationResponse, CollaboratorRole } from '@/types/response';
+
 import request from '@/utils/request';
 
 // Get my received invitations

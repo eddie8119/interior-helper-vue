@@ -2,17 +2,18 @@ import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type { CollaboratorInvitationResponse, CollaboratorRole } from '@/types/response';
+
 import {
+  acceptInvitation,
+  cancelInvitation,
+  createGlobalInvitation,
+  createProjectInvitation,
+  getInvitationByToken,
   getMyInvitations,
   getSentInvitations,
-  getInvitationByToken,
-  acceptInvitation,
   rejectInvitation,
-  cancelInvitation,
-  createProjectInvitation,
-  createGlobalInvitation,
 } from '@/api/invitation';
-import type { CollaboratorInvitationResponse, CollaboratorRole } from '@/types/response';
 
 export const useInvitations = () => {
   const { t } = useI18n();

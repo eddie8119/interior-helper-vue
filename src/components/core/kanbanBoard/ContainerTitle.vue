@@ -5,7 +5,7 @@
       @click="readOnly ? null : startEditing"
     >
       {{ title }}{{ t('project.construction') }}
-      <EditIcon :size="'h-3 w-3'" v-if="!readOnly" />
+      <EditIcon v-if="!readOnly" :size="'h-3 w-3'" />
     </button>
   </div>
 

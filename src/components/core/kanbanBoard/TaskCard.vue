@@ -71,13 +71,13 @@ import type { TaskStatus } from '@/types/task';
 import { taskApi } from '@/api/task';
 import TaskForm from '@/components/core/kanbanBoard/TaskForm.vue';
 import H3Title from '@/components/core/title/H3Title.vue';
-import EditIcon from '@/components/ui/EditIcon.vue';
+import Label from '@/components/core/title/Label.vue';
+import DateIcon from '@/components/ui/DateIcon.vue';
 import DragHandle from '@/components/ui/DragHandle.vue';
+import EditIcon from '@/components/ui/EditIcon.vue';
+import MaterialList from '@/components/ui/MaterialList.vue';
 import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
-import DateIcon from '@/components/ui/DateIcon.vue';
-import MaterialList from '@/components/ui/MaterialList.vue';
-import Label from '@/components/core/title/Label.vue';
 import { useTaskContext } from '@/context/useTaskContext';
 
 const props = defineProps<{

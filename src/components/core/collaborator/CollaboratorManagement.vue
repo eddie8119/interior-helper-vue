@@ -92,9 +92,10 @@ import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type { CollaboratorRole } from '@/types/response';
+
 import TextButton from '@/components/core/button/TextButton.vue';
 import OptionSelector from '@/components/ui/OptionSelector.vue';
-import type { CollaboratorRole } from '@/types/response';
 import { COLLABORATOR_ROLE_OPTIONS } from '@/constants/selection';
 
 const { t } = useI18n();

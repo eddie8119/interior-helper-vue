@@ -18,7 +18,10 @@
         icon-width="w-4"
         icon-height="h-4"
         aria-label="Close"
-        @click="$emit('update:modelValue', false); $emit('close')"
+        @click="
+          $emit('update:modelValue', false);
+          $emit('close');
+        "
       />
       <div class="h-full w-full overflow-auto p-6">
         <slot />
@@ -29,6 +32,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+
 import DeleteButton from '@/components/ui/DeleteButton.vue';
 
 interface Props {

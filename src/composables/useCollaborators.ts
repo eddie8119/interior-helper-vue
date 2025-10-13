@@ -2,9 +2,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { ElMessage } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 
-import { collaboratorApi } from '@/api/collaborator';
-import { createProjectInvitation, createGlobalInvitation } from '@/api/invitation';
 import type { CollaboratorRole } from '@/types/collaborator';
+
+import { collaboratorApi } from '@/api/collaborator';
+import { createGlobalInvitation, createProjectInvitation } from '@/api/invitation';
 
 // Project-specific collaborators
 export const useProjectCollaborators = (projectId: string) => {

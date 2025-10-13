@@ -1,38 +1,26 @@
 <template>
   <RouterView />
-  <QuickDraftSlide v-if="!isQuickDraftPage" />
-  <QuickDraftToggle v-if="!isQuickDraftPage" />
-  <NotificationSlide />
+  <QuickDraftSlide v-if="shouldShowQuickDraft" />
+  <QuickDraftToggle v-if="shouldShowQuickDraft" />
+  <NotificationSlide v-if="shouldShowNotification" />
 </template>
 
 <script setup lang="ts">
-import { computed, provide, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { provide } from 'vue';
 
 import QuickDraftSlide from '@/components/core/draft/QuickDraftSlide.vue';
 import QuickDraftToggle from '@/components/core/draft/QuickDraftToggle.vue';
 import NotificationSlide from '@/components/core/notification/NotificationSlide.vue';
+import { useGlobalUI } from '@/composables/useGlobalUI';
 import { useAuthStore } from '@/stores/auth';
-import { initTheme, setTheme } from '@/utils/theme';
 
-const route = useRoute();
+// Initialize global state
 const authStore = useAuthStore();
 authStore.initializeAuthState();
 
-const isQuickDraftPage = computed(() => {
-  return (
-    route.path === '/todo/quick-draft' ||
-    route.path.startsWith('/auth/') ||
-    route.path.startsWith('/shared/project')
-  );
-});
+// Global UI logic
+const { isDarkMode, shouldShowQuickDraft, shouldShowNotification } = useGlobalUI();
 
-// 主題顏色
-const isDarkMode = ref<boolean>(initTheme());
+// Provide theme to child components
 provide('isDarkMode', isDarkMode);
-
-provide('toggleTheme', () => {
-  isDarkMode.value = !isDarkMode.value;
-  setTheme(isDarkMode.value);
-});
 </script>

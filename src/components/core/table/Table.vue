@@ -3,11 +3,11 @@
     <ShowUpdateTime
       v-if="props.lastUpdateTime"
       class="absolute right-4 top-4"
-      :last-update-time="formatDateTimeWithMinutes(new Date(props.lastUpdateTime))"
+      :last-update-time="props.lastUpdateTime"
     />
 
     <!-- 搜索 -->
-    <div v-if="props.showSearch" class="input">
+    <div v-if="props.showSearch" class="input mb-4 flex w-full items-center lg:w-1/4">
       <el-input
         v-model="searchQuery"
         :placeholder="t('placeholder.search')"
@@ -31,6 +31,7 @@
         height: '40px',
         padding: '16px 0',
         whiteSpace: 'nowrap',
+        fontWeight: 'bold',
         borderBottom: '1px solid var(--color-black-300)',
       }"
       :cell-style="{
@@ -40,42 +41,45 @@
         borderBottom: '1px solid var(--color-black-100)',
       }"
     >
-      <el-table-column :width="idColumnLength" align="center">
+      <el-table-column v-if="props.showIdColumn" :width="idColumnLength" align="center">
         <template #default="{ $index }">
-          {{ $index + 1 }}
+          <p class="text-primary-text">{{ $index + 1 }}</p>
         </template>
       </el-table-column>
 
-      <template v-for="column in otherColumns" :key="column.field">
-        <el-table-column
-          :prop="column.field"
-          :label="t(`column.${column.field}`)"
-          :min-width="column.minWidth || 80"
-          :sortable="true"
-          show-overflow-tooltip
-        >
-          <template #default="scope">
-            <slot :name="column.field" :row="scope.row">
-              <!-- 如果有自定義的插槽，則使用插槽內容 -->
-              <template v-if="column.field === 'title'">
-                <router-link
-                  :to="`/todo/project/${scope.row.id}`"
-                  class="text-brand-primary underline"
-                >
-                  {{ scope.row[column.field] }}
-                </router-link>
-              </template>
-              <template v-else-if="column.field === 'createdAt'">
-                {{ formatDateTimeWithDay(new Date(scope.row[column.field])) }}
-              </template>
-              <template v-else>
-                <span v-if="scope.row[column.field] === undefined"> N/A</span>
-                <p v-else>{{ scope.row[column.field] }}</p>
-              </template>
-            </slot>
-          </template>
-        </el-table-column>
-      </template>
+      <slot name="columns" :columns="otherColumns" :t="t" :props="props">
+        <!-- Default column rendering -->
+        <template v-for="column in otherColumns" :key="column.field">
+          <el-table-column
+            :prop="column.field"
+            :label="t(`column.${column.field}`)"
+            :min-width="column.minWidth || 80"
+            :sortable="true"
+            show-overflow-tooltip
+            class="text-primary-text"
+          >
+            <template #default="scope">
+              <slot :name="column.field" :row="scope.row">
+                <!-- Default cell rendering -->
+                <template v-if="column.field === 'tag'">
+                  <router-link
+                    :to="`/todo/project/${scope.row.id}`"
+                    class="text-primary-chart underline"
+                  >
+                    {{ scope.row[column.field] }}
+                  </router-link>
+                </template>
+                <template v-else>
+                  <span v-if="scope.row[column.field] === undefined" class="text-primary-text">
+                    N/A</span
+                  >
+                  <p v-else class="text-primary-text">{{ scope.row[column.field] }}</p>
+                </template>
+              </slot>
+            </template>
+          </el-table-column>
+        </template>
+      </slot>
 
       <!-- 操作列 -->
       <el-table-column
@@ -87,7 +91,9 @@
       >
         <template #default="{ row }">
           <div class="flex justify-center">
-            <DropdownMenu :actions="props.actions" :row="row" />
+            <slot name="actions" :row="row">
+              <DropdownMenu :actions="props.actions" :row="row" />
+            </slot>
           </div>
         </template>
       </el-table-column>
@@ -118,8 +124,6 @@ import type { Column, TableAction } from '@/types/common';
 
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
 import { useAuth } from '@/composables/useAuth';
-import { formatDateTimeWithMinutes } from '@/utils/dateTime';
-import { formatDateTimeWithDay } from '@/utils/dateTime';
 
 const props = withDefaults(
   defineProps<{
@@ -131,8 +135,9 @@ const props = withDefaults(
     showActions?: boolean;
     showSearch?: boolean;
     showPagination?: boolean;
-    lastUpdateTime?: string | null | number;
+    lastUpdateTime?: Date | null | number;
     height?: string;
+    observationType?: string;
   }>(),
   {
     data: () => [] as T[],
@@ -149,6 +154,8 @@ const props = withDefaults(
   }
 );
 
+defineEmits(['update:currentPage', 'update:pageSize']);
+
 const { t } = useI18n();
 const { isAdmin } = useAuth();
 
@@ -161,7 +168,7 @@ const otherColumns = computed<Column[]>(() => props.columns.slice(1));
 
 // 表格屬性，根據是否有Height來決定是否設置高度
 const tableAttributes = computed(() => {
-  return props.height ? { height: props.height } : { height: 'calc(100vh - 420px)' };
+  return props.height ? { height: props.height } : {};
 });
 
 // 過濾和搜索邏輯
@@ -180,31 +187,24 @@ const filteredData = computed(() => {
     });
   }
 
-  // 分頁
-  const startIndex = (currentPage.value - 1) * pageSize.value;
-  return result.slice(startIndex, startIndex + pageSize.value);
+  return result;
 });
 
-const paginatedData = computed(() => filteredData.value);
+// 分頁
+const paginatedData = computed(() => {
+  if (!props.showPagination) return filteredData.value;
+
+  const startIndex = (currentPage.value - 1) * pageSize.value;
+  return filteredData.value.slice(startIndex, startIndex + pageSize.value);
+});
+
+// Expose some values for child components
+defineExpose({
+  currentPage,
+  pageSize,
+  filteredData,
+  searchQuery,
+});
 </script>
 
-<style lang="scss" scoped>
-.input {
-  @apply mb-4 flex w-full items-center lg:w-1/4;
-
-  :deep(.el-input__wrapper) {
-    @apply h-7 rounded-xl bg-black-100 dark:bg-black-500;
-    border-radius: 8px;
-    padding: 4px 8px;
-    transition: border-color 0.3s ease;
-
-    &.is-focus {
-      box-shadow: none;
-      border: 1px solid var(--color-brand-primary);
-    }
-    &.is-error {
-      border: 1px solid var(--color-secondary-red);
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

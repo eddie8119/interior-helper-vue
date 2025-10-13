@@ -1,10 +1,12 @@
 <template>
   <el-dialog
     v-model="dialogVisible"
-    width="500px"
+    class="bg-primary-background"
+    :width="computedWidth"
     :title="title"
     :close-on-click-modal="true"
     :close-on-press-escape="true"
+    center
     align-center
     @close="onCancel"
   >
@@ -16,6 +18,7 @@
     <div v-if="errorMessage" class="error-message">
       <el-alert :title="errorMessage" type="error" show-icon :closable="false" />
     </div>
+
     <span class="mt-5 flex items-center gap-3">
       <slot name="footer-left" />
       <div class="flex-grow" />
@@ -49,6 +52,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import TextButton from '@/components/core/button/TextButton.vue';
+import { useResponsiveWidth } from '@/composables/useResponsiveWidth';
 
 const props = withDefaults(
   defineProps<{
@@ -58,6 +62,7 @@ const props = withDefaults(
     errorMessage?: string;
     showFooterButton?: boolean;
     isInvalid?: boolean;
+    width?: string;
   }>(),
   {
     modelValue: false,
@@ -65,6 +70,7 @@ const props = withDefaults(
     isSubmitting: false,
     errorMessage: '',
     showFooterButton: true,
+    width: undefined,
   }
 );
 
@@ -73,7 +79,14 @@ const dialogVisible = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 });
+
 const { t } = useI18n();
+const { isMobile } = useResponsiveWidth();
+
+const computedWidth = computed(() => {
+  if (isMobile.value) return '80vw';
+  return props.width ?? '500px';
+});
 
 const onSubmit = () => {
   emit('submit');
@@ -85,11 +98,18 @@ const onCancel = () => {
 };
 </script>
 
+<style lang="scss">
+.el-dialog__title {
+  color: var(--color-primary-text);
+  font-weight: 700;
+  font-size: 1rem;
+}
+</style>
+
 <style lang="scss" scoped>
 .flex-grow {
   flex-grow: 1;
 }
-
 .error-message {
   margin: 16px 0;
 
@@ -102,25 +122,5 @@ const onCancel = () => {
     font-size: 14px;
     line-height: 1.5;
   }
-}
-</style>
-<style>
-.el-dialog__header {
-  display: flex;
-  justify-content: center;
-
-  position: relative;
-}
-
-.el-dialog__title {
-  flex: none;
-  margin-left: 30px;
-}
-
-.el-dialog__headerbtn {
-  position: absolute;
-  right: -3%;
-  top: 30%;
-  transform: translateY(-50%);
 }
 </style>

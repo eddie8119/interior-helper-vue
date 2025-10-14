@@ -78,7 +78,7 @@ import EditIcon from '@/components/ui/EditIcon.vue';
 import MaterialList from '@/components/ui/MaterialList.vue';
 import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
-import { useTaskCardFilter } from '@/composables/useTaskCardFilter';
+import { useTaskCardFilter } from '@/context/useTaskCardFilter';
 import { useTaskContext } from '@/context/useTaskContext';
 
 const props = defineProps<{
@@ -89,7 +89,6 @@ const props = defineProps<{
 const { t } = useI18n();
 // 從上下文中獲取任務操作
 const { deleteTask, updateTask } = useTaskContext();
-// 從上下文中獲取顯示過濾
 const { showDescription, showMaterials } = useTaskCardFilter();
 
 const isEditing = ref(false);

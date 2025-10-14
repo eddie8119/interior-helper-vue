@@ -1,27 +1,5 @@
 <template>
-  <div class="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center">
-    <div class="flex items-center gap-2">
-      <p>全案狀態篩選:</p>
-      <OptionSelector
-        :model-value="selectedStatus"
-        :options="STATUS_FILTER_OPTIONS"
-        :class-name="'w-[140px]'"
-        @update:model-value="selectedStatus = $event"
-      />
-    </div>
-    <div class="flex items-center gap-2">
-      <p>顯示內容:</p>
-      <el-radio-group v-model="displayMode" size="small" @change="handleDisplayModeChange">
-        <el-radio-button
-          v-for="option in TASK_DISPLAY_OPTIONS"
-          :key="option.value"
-          :label="option.value"
-        >
-          {{ t(`option.display.${option.value}`) }}
-        </el-radio-button>
-      </el-radio-group>
-    </div>
-  </div>
+  <KanbanFilterBar @update:selected-status="selectedStatus = $event" />
   <div class="w-full overflow-x-auto">
     <Container
       orientation="horizontal"
@@ -51,9 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ElRadioButton, ElRadioGroup } from 'element-plus';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { Container, Draggable } from 'vue3-smooth-dnd';
 
 import type { TaskFilterStatus } from '@/constants/selection';
@@ -63,12 +39,11 @@ import type { ConstructionSelection } from '@/types/selection';
 import { taskApi } from '@/api/task';
 import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
 import ConstructionContainerItem from '@/components/core/kanbanBoard/ConstructionContainerItem.vue';
-import OptionSelector from '@/components/ui/OptionSelector.vue';
+import KanbanFilterBar from '@/components/core/project/KanbanFilterBar.vue';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
-import { provideTaskCardFilter, type TaskCardDisplayMode } from '@/composables/useTaskCardFilter';
-import { STATUS_FILTER_OPTIONS, TASK_DISPLAY_OPTIONS } from '@/constants/selection';
+import { provideTaskCardFilter } from '@/context/useTaskCardFilter';
 import { provideTaskContext } from '@/context/useTaskContext';
 import { filterTasksByConstruction } from '@/utils/todo/taskUtils';
 
@@ -84,19 +59,13 @@ const emit = defineEmits<{
   (e: 'update:projectAllTasks', value: TaskResponse[]): void;
 }>();
 
-const { t } = useI18n();
-
 // amount of editing 都會使用本地副本
 const localConstructionContainer = ref<ConstructionSelection[]>([]);
 const localTasks = ref<TaskResponse[]>([]);
 const selectedStatus = ref<TaskFilterStatus>('all');
 
-// Task card display filter
-const { displayMode, updateVisibility } = provideTaskCardFilter();
-
-const handleDisplayModeChange = (mode: TaskCardDisplayMode) => {
-  updateVisibility(mode);
-};
+// Provide task card display filter context for all descendant components
+provideTaskCardFilter();
 
 const initializelocalConstructionContainer = () => {
   localConstructionContainer.value = [...(props.constructionContainer || [])];

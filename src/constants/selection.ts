@@ -97,6 +97,8 @@ export const TASK_DISPLAY_OPTIONS: SelectorOption[] = [
   { value: 'materials' },
 ] as const;
 
+export type TaskCardDisplayMode = (typeof TASK_DISPLAY_OPTIONS)[number]['value'];
+
 export const TODO_FILTER: SelectorOption[] = [
   { value: 'all' },
   { value: 'done' },

@@ -2,16 +2,24 @@
   <header class="header-container border-bottom justify-between">
     <LogoArea class="--mobile md:hidden" />
     <div class="--desktop hidden md:block">
-      <div class="flex items-center gap-4">
+      <div class="flex">
         <button
-          class="text-gray-600 transition-transform duration-300 hover:text-gray-800"
+          class="mr-4 transition-transform duration-300 hover:text-gray-800"
           :class="{ 'rotate-90': props.isSidebarCollapsed }"
           @click="emit('toggle-sidebar')"
         >
-          <img src="@/assets/icons/Menu.svg" :alt="`menu Icon`" class="icon-hover icon-basic" />
+          <span
+            class="icon-hover icon-mask"
+            :style="{
+              WebkitMaskImage: `url(${getIconUrl('Menu')})`,
+              maskImage: `url(${getIconUrl('Menu')})`,
+              backgroundColor: 'var(--color-primary-text)',
+            }"
+            aria-label="menu Icon"
+            role="img"
+          />
         </button>
         <PrePage />
-        <PageSubject />
         <!-- <Breadcrumb /> -->
       </div>
     </div>
@@ -20,10 +28,10 @@
 </template>
 
 <script setup lang="ts">
-import PageSubject from '@/components/core/header/PageSubject.vue';
 import RightPanel from '@/components/core/header/RightPanel.vue';
 import PrePage from '@/components/core/PrePage.vue';
 import LogoArea from '@/components/core/sidebar/LogoArea.vue';
+import { getIconUrl } from '@/utils/assetUrl';
 
 const props = defineProps<{
   isSidebarCollapsed: boolean;

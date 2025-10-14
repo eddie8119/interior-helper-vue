@@ -3,12 +3,23 @@
     class="ml-1 text-gray-600 transition-transform duration-300 hover:text-gray-800"
     @click="handleBack"
   >
-    <img src="@/assets/icons/back.svg" :alt="`back Icon`" class="icon-hover icon-basic w-3" />
+    <span
+      class="icon-hover icon-mask w-3"
+      :style="{
+        WebkitMaskImage: `url(${getIconUrl('back')})`,
+        maskImage: `url(${getIconUrl('back')})`,
+        backgroundColor: 'var(--color-primary-text)',
+      }"
+      aria-label="back Icon"
+      role="img"
+    />
   </button>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+
+import { getIconUrl } from '@/utils/assetUrl';
 
 const router = useRouter();
 

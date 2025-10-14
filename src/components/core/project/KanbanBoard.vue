@@ -3,13 +3,14 @@
     @update:selected-status="selectedStatus = $event"
     @update:days-range="daysRange = $event"
   />
-  <div class="w-full overflow-x-auto">
+  <div class="w-full">
     <Container
       orientation="horizontal"
       :drag-handle-selector="readOnly ? '' : '.container-drag-handle'"
       :get-child-payload="readOnly ? undefined : getConstructionContainerPayload"
       :group-name="readOnly ? undefined : 'construction-containers'"
-      class="flex overflow-x-auto pt-4"
+      class="flex pt-4"
+      style="overflow-x: auto; overflow-y: visible"
       @drop="!readOnly && onConstructionContainerDrop($event)"
     >
       <!-- 工程類型容器 -->

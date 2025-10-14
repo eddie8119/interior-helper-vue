@@ -11,11 +11,12 @@
     :should-accept-drop="shouldAcceptDrop"
     :drag-begin-delay="0"
     :animation-duration="150"
-    :auto-scroll-enabled="true"
+    :auto-scroll-enabled="false"
     :behaviour="'move'"
     :drag-handle-selector="'.task-drag-handle'"
-    class="grid max-h-[330px] grid-cols-1 gap-3 overflow-y-auto"
-    @drop="readOnly ? undefined : handleTaskDrop"
+    class="grid max-h-[330px] grid-cols-1 gap-3"
+    style="overflow-y: auto; overflow-x: visible; touch-action: pan-y"
+    @drop="!readOnly && handleTaskDrop($event)"
   >
     <!-- 任務列表 -->
     <Draggable v-for="task in tasks" :key="task.id">

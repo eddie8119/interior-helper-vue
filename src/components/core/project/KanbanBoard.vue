@@ -10,7 +10,7 @@
       :get-child-payload="readOnly ? undefined : getConstructionContainerPayload"
       :group-name="readOnly ? undefined : 'construction-containers'"
       class="flex overflow-x-auto pt-4"
-      @drop="readOnly ? undefined : onConstructionContainerDrop"
+      @drop="!readOnly && onConstructionContainerDrop($event)"
     >
       <!-- 工程類型容器 -->
       <Draggable v-for="(container, index) in localConstructionContainer" :key="container.id">

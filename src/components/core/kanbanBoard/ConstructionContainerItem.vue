@@ -44,12 +44,14 @@ import ContainerBody from '@/components/core/kanbanBoard/ContainerBody.vue';
 import ContainerHeader from '@/components/core/kanbanBoard/ContainerHeader.vue';
 import { STATUS_FILTER_OPTIONS } from '@/constants/selection';
 import { useEditingStateStore } from '@/stores/editingState';
+import { isWithinDaysRange } from '@/utils/dateUtils';
 
 const props = defineProps<{
   constructionId: string;
   constructionName: string;
   projectId: string;
   tasks: TaskResponse[];
+  daysRange: [number, number];
   readOnly?: boolean;
 }>();
 
@@ -72,10 +74,22 @@ const isEditing = computed(() => {
 const selectedStatus = ref<TaskFilterStatus>('all');
 
 const filteredTasks = computed(() => {
-  if (selectedStatus.value === 'all') {
-    return props.tasks;
+  let tasks = props.tasks;
+
+  // Filter by status
+  if (selectedStatus.value !== 'all') {
+    tasks = tasks.filter((task: TaskResponse) => task.status === selectedStatus.value);
   }
-  return props.tasks.filter((task: TaskResponse) => task.status === selectedStatus.value);
+
+  // Filter by days range (reminder date)
+  tasks = tasks.filter((task: TaskResponse) => {
+    // If task has no reminder, don't filter it out
+    if (!task.reminderDatetime) return true;
+
+    return isWithinDaysRange(task.reminderDatetime, props.daysRange[0], props.daysRange[1]);
+  });
+
+  return tasks;
 });
 
 const isShowStatusFilter = computed(() => {

@@ -1,5 +1,8 @@
 <template>
-  <KanbanFilterBar @update:selected-status="selectedStatus = $event" />
+  <KanbanFilterBar
+    @update:selected-status="selectedStatus = $event"
+    @update:days-range="daysRange = $event"
+  />
   <div class="w-full overflow-x-auto">
     <Container
       orientation="horizontal"
@@ -16,6 +19,7 @@
           :project-id="projectId"
           :construction-name="container.name"
           :tasks="filteredTasks(container.id)"
+          :days-range="daysRange"
           :read-only="readOnly"
           @delete-container="deleteConstruction(index)"
           @update:construction-name="updateConstructionName(index, $event)"
@@ -63,6 +67,7 @@ const emit = defineEmits<{
 const localConstructionContainer = ref<ConstructionSelection[]>([]);
 const localTasks = ref<TaskResponse[]>([]);
 const selectedStatus = ref<TaskFilterStatus>('all');
+const daysRange = ref<[number, number]>([0, 10]);
 
 // Provide task card display filter context for all descendant components
 provideTaskCardFilter();

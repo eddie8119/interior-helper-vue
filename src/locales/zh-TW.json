@@ -100,6 +100,7 @@
     "status": "狀態",
     "materials": "材料",
     "type": "類型",
+    "reminder": "提醒",
     "role": "角色",
     "detail": "詳情",
     "total": "總計",
@@ -133,6 +134,11 @@
       "project_name": "專案名稱",
       "project_type": "專案類型",
       "construction": "工程"
+    },
+    "task": {
+      "task_display": "任務顯示內容",
+      "reminder_days_range": "提醒到期天數範圍",
+      "status": "全案狀態篩選"
     },
     "setting": {
       "existing_list": "現有列表"

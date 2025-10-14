@@ -105,6 +105,7 @@
     "status": "Status",
     "materials": "Materials",
     "type": "Type",
+    "reminder": "Reminder",
     "role": "Role",
     "detail": "Detail",
     "total": "Total",
@@ -138,6 +139,11 @@
       "project_name": "Project Name",
       "project_type": "Project Type",
       "construction": "Construction"
+    },
+    "task": {
+      "task_display": "Task Display",
+      "reminder_days_range": "Reminder Days Range",
+      "status": "All Tasks Status"
     },
     "setting": {
       "existing_list": "Existing List"

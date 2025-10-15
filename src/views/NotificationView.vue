@@ -15,8 +15,8 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import ReminderManager from '@/components/core/notification/ReminderManager.vue';
-import UserSettingsForm from '@/components/core/notification/UserSettingsForm.vue';
+import ReminderManager from '@/components/notification/ReminderManager.vue';
+import UserSettingsForm from '@/components/notification/UserSettingsForm.vue';
 
 const { t } = useI18n();
 const activeTab = ref('reminders');

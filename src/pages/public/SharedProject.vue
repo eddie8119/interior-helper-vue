@@ -36,7 +36,7 @@
 import { useRoute } from 'vue-router';
 
 import Loading from '@/components/core/loading/Loading.vue';
-import KanbanBoard from '@/components/core/project/KanbanBoard.vue';
+import KanbanBoard from '@/components/project/KanbanBoard.vue';
 import H1Title from '@/components/core/title/H1Title.vue';
 import { useProject } from '@/composables/useProject';
 

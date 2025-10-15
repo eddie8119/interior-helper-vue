@@ -42,9 +42,9 @@ import type { TaskResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
 
 import { taskApi } from '@/api/task';
-import AddNewConstruction from '@/components/core/kanbanBoard/AddNewConstruction.vue';
-import ConstructionContainerItem from '@/components/core/kanbanBoard/ConstructionContainerItem.vue';
-import KanbanFilterBar from '@/components/core/project/KanbanFilterBar.vue';
+import AddNewConstruction from '@/components/kanbanBoard/AddNewConstruction.vue';
+import ConstructionContainerItem from '@/components/kanbanBoard/ConstructionContainerItem.vue';
+import KanbanFilterBar from '@/components/project/KanbanFilterBar.vue';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';

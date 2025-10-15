@@ -30,9 +30,9 @@ import { computed } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 
 import Loading from '@/components/core/loading/Loading.vue';
-import KanbanBoard from '@/components/core/project/KanbanBoard.vue';
-import ProjectHeader from '@/components/core/project/ProjectHeader.vue';
-import ProjectSettings from '@/components/core/project/ProjectSettings.vue';
+import KanbanBoard from '@/components/project/KanbanBoard.vue';
+import ProjectHeader from '@/components/project/ProjectHeader.vue';
+import ProjectSettings from '@/components/project/ProjectSettings.vue';
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
 import { useProjectInitialization } from '@/composables/todo/useProjectInitialization';
 import { useProjectLocalStorage } from '@/composables/todo/useProjectLocalStorage';

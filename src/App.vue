@@ -10,7 +10,7 @@ import { provide } from 'vue';
 
 import QuickDraftSlide from '@/components/core/draft/QuickDraftSlide.vue';
 import QuickDraftToggle from '@/components/core/draft/QuickDraftToggle.vue';
-import NotificationSlide from '@/components/core/notification/NotificationSlide.vue';
+import NotificationSlide from '@/components/notification/NotificationSlide.vue';
 import { useGlobalUI } from '@/composables/useGlobalUI';
 import { useAuthStore } from '@/stores/auth';
 

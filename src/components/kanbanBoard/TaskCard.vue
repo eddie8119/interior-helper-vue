@@ -69,7 +69,7 @@ import type { TaskResponse } from '@/types/response';
 import type { TaskStatus } from '@/types/task';
 
 import { taskApi } from '@/api/task';
-import TaskForm from '@/components/core/kanbanBoard/TaskForm.vue';
+import TaskForm from '@/components/kanbanBoard/TaskForm.vue';
 import H3Title from '@/components/core/title/H3Title.vue';
 import Label from '@/components/core/title/Label.vue';
 import DateIcon from '@/components/ui/DateIcon.vue';

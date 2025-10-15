@@ -31,8 +31,8 @@ import { Container, Draggable } from 'vue3-smooth-dnd';
 
 import type { TaskResponse } from '@/types/response';
 
-import AddNewTask from '@/components/core/kanbanBoard/AddNewTask.vue';
-import TaskCard from '@/components/core/kanbanBoard/TaskCard.vue';
+import AddNewTask from '@/components/kanbanBoard/AddNewTask.vue';
+import TaskCard from '@/components/kanbanBoard/TaskCard.vue';
 import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{

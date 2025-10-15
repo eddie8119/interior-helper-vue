@@ -37,7 +37,7 @@ import { useI18n } from 'vue-i18n';
 import type { SelectorOption } from '@/types/selection';
 
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
-import ContainerTitle from '@/components/core/kanbanBoard/ContainerTitle.vue';
+import ContainerTitle from '@/components/kanbanBoard/ContainerTitle.vue';
 import DragHandle from '@/components/ui/DragHandle.vue';
 import OptionSelector from '@/components/ui/OptionSelector.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';

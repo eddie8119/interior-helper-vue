@@ -43,8 +43,8 @@ import { useI18n } from 'vue-i18n';
 import type { TaskFilterStatus } from '@/constants/selection';
 import type { TaskResponse } from '@/types/response';
 
-import ContainerBody from '@/components/core/kanbanBoard/ContainerBody.vue';
-import ContainerHeader from '@/components/core/kanbanBoard/ContainerHeader.vue';
+import ContainerBody from '@/components/kanbanBoard/ContainerBody.vue';
+import ContainerHeader from '@/components/kanbanBoard/ContainerHeader.vue';
 import { STATUS_FILTER_OPTIONS } from '@/constants/selection';
 import { useEditingStateStore } from '@/stores/editingState';
 import { isWithinDaysRange } from '@/utils/dateUtils';

@@ -30,7 +30,7 @@ import { useI18n } from 'vue-i18n';
 
 import type { CollaboratorRole } from '@/types/response';
 
-import CollaboratorManagement from '@/components/core/collaborator/CollaboratorManagement.vue';
+import CollaboratorManagement from '@/components/collaborator/CollaboratorManagement.vue';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
 import { useProjectCollaborators } from '@/composables/useCollaborators';
 

@@ -1,5 +1,5 @@
 import type { ProjectResponse } from '@/types/response';
-import type { ConstructionSelection } from '@/types/selection';
+import type { ConstructionSelection, ProjectType } from '@/types/selection';
 import type { Ref } from 'vue';
 
 export function useProjectUpdates(
@@ -14,6 +14,18 @@ export function useProjectUpdates(
       project.value = {
         ...project.value,
         title: newTitle,
+      };
+      saveProjectToLocalStorage();
+      updateLastUpdateTime();
+    }
+  };
+
+  // 更新專案類型的方法
+  const updateProjectType = (newType: ProjectType) => {
+    if (project.value) {
+      project.value = {
+        ...project.value,
+        type: newType,
       };
       saveProjectToLocalStorage();
       updateLastUpdateTime();
@@ -35,6 +47,7 @@ export function useProjectUpdates(
 
   return {
     updateProjectTitle,
+    updateProjectType,
     updateConstructionContainer,
   };
 }

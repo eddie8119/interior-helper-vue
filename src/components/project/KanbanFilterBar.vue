@@ -1,11 +1,11 @@
 <template>
-  <div class="mb-6 flex flex-col gap-5 sm:flex-row sm:items-center">
+  <div class="mb-6 grid grid-cols-2 gap-6 sm:flex sm:flex-row sm:items-center">
     <div class="filter-container">
       <Label :label="t('label.task.status')" />
       <OptionSelector
         :model-value="selectedStatus"
         :options="STATUS_FILTER_OPTIONS"
-        :class-name="'w-[145px]'"
+        :class-name="'w-full sm:w-[145px]'"
         @update:model-value="handleStatusChange"
       />
     </div>
@@ -14,7 +14,7 @@
       <OptionSelector
         :model-value="displayMode"
         :options="TASK_DISPLAY_OPTIONS"
-        :class-name="'w-[145px]'"
+        :class-name="'w-full sm:w-[145px]'"
         :namespace="'display'"
         @update:model-value="handleDisplayModeChange"
       />

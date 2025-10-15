@@ -3,7 +3,7 @@
     <el-option
       v-for="option in options"
       :key="String(option.value)"
-      :label="t(`option.${namespace}.${option.value}`)"
+      :label="useI18nLabel ? t(`option.${namespace}.${option.value}`) : String(option.value)"
       :value="option.value"
     />
   </el-select>
@@ -21,11 +21,13 @@ const {
   options,
   className,
   namespace = 'status',
+  useI18nLabel = true,
 } = defineProps<{
-  modelValue: string;
+  modelValue: string | undefined;
   options: SelectorOption[];
   className?: string;
   namespace?: string;
+  useI18nLabel?: boolean;
 }>();
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>();

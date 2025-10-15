@@ -6,8 +6,14 @@
     <Loading />
   </div>
   <div v-else class="relative h-full w-full">
-    <div class="mb-2 flex flex-col md:flex-row md:justify-between">
-      <ProjectHeader :title="localProject?.title || ''" @update:title="updateProjectTitle" />
+    <div class="my-5 flex flex-col gap-4 md:flex-row md:justify-between">
+      <div class="flex items-center gap-4">
+        <ProjectTitle :title="localProject?.title || ''" @update:title="updateProjectTitle" />
+        <ProjectType
+          :project-type="localProject?.type || undefined"
+          @update:project-type="updateProjectType"
+        />
+      </div>
 
       <div class="flex items-center gap-4">
         <ProjectSettings :project-title="localProject?.title || ''" :project-id="projectId" />
@@ -31,7 +37,8 @@ import { onBeforeRouteLeave, useRoute } from 'vue-router';
 
 import Loading from '@/components/core/loading/Loading.vue';
 import KanbanBoard from '@/components/project/KanbanBoard.vue';
-import ProjectHeader from '@/components/project/ProjectHeader.vue';
+import ProjectTitle from '@/components/project/ProjectTitle.vue';
+import ProjectType from '@/components/project/ProjectType.vue';
 import ProjectSettings from '@/components/project/ProjectSettings.vue';
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
 import { useProjectInitialization } from '@/composables/todo/useProjectInitialization';
@@ -79,11 +86,12 @@ useProjectInitialization(
 );
 
 // 專案更新
-const { updateProjectTitle, updateConstructionContainer } = useProjectUpdates(
+const { updateProjectTitle, updateProjectType, updateConstructionContainer } = useProjectUpdates(
   localProject,
   saveProjectToLocalStorage,
   updateLastUpdateTime
 );
+
 // 更新專案下所有任務
 const { updateProjectAllTasks } = useTaskUpdates(
   localTasks,

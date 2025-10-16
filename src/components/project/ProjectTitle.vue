@@ -4,7 +4,7 @@
       class="inline-flex items-center gap-2 rounded-md text-2xl font-bold transition-all duration-300 ease-in-out hover:bg-slate-200"
       @click="startEditing"
     >
-      <span>{{ title }} 工程案</span>
+      <span>{{ projectTitle }} 工程案</span>
       <EditIcon />
     </button>
   </div>
@@ -29,11 +29,11 @@ import EditIcon from '@/components/ui/EditIcon.vue';
 import { useEditableTitle } from '@/composables/useEditableTitle';
 
 const props = defineProps<{
-  title: string;
+  projectTitle: string | undefined;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:title', value: string): void;
+  (e: 'update:project-title', value: string): void;
 }>();
 
 // 使用可編輯標題的共用邏輯
@@ -41,12 +41,12 @@ const {
   isEditingTitle,
   tempTitle,
   titleInputRef,
-  title,
+  title: projectTitle,
   startEditing,
   onInputFocus,
   saveTitle,
   cancelEdit,
-} = useEditableTitle(props, emit, 'title');
+} = useEditableTitle(props, emit, 'projectTitle');
 </script>
 
 <style scoped>

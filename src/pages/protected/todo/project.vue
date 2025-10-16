@@ -8,7 +8,10 @@
   <div v-else class="relative h-full w-full">
     <div class="my-5 flex flex-col gap-4 md:flex-row md:justify-between">
       <div class="flex items-center gap-4">
-        <ProjectTitle :title="localProject?.title || ''" @update:title="updateProjectTitle" />
+        <ProjectTitle
+          :project-title="localProject?.title || undefined"
+          @update:project-title="updateProjectTitle"
+        />
         <ProjectType
           :project-type="localProject?.type || undefined"
           @update:project-type="updateProjectType"
@@ -16,7 +19,10 @@
       </div>
 
       <div class="flex items-center gap-4">
-        <ProjectSettings :project-title="localProject?.title || ''" :project-id="projectId" />
+        <ProjectSettings
+          :project-title="localProject?.title || undefined"
+          :project-id="projectId"
+        />
         <ShowUpdateTime :last-update-time="formattedUpdateTime" />
       </div>
     </div>

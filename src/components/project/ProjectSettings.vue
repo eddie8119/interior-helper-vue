@@ -50,7 +50,7 @@ import { getProjectStorageKey } from '@/utils/storage/projectStorage';
 
 const props = defineProps<{
   projectId: string;
-  projectTitle: string;
+  projectTitle: string | undefined;
 }>();
 
 const { t } = useI18n();

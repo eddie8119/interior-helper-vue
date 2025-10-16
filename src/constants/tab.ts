@@ -1,12 +1,5 @@
 import type { Tab } from '@/types/layout';
 
-export const devicesTabList: Tab[] = [
-  {
-    label: 'Devices',
-    name: 'devices',
-  },
-];
-
 export const userTabList: Tab[] = [
   {
     label: 'Profile',

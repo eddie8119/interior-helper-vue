@@ -1,31 +1,18 @@
 <template>
   <div
-    v-if="isLoadingProject && isLoadingTasks"
+    v-if="isLoadingProject || isLoadingTasks"
     class="flex h-full w-full items-center justify-center"
   >
     <Loading />
   </div>
   <div v-else class="relative h-full w-full">
-    <div class="my-5 flex flex-col gap-4 md:flex-row md:justify-between">
-      <div class="flex items-center gap-4">
-        <ProjectTitle
-          :project-title="localProject?.title || undefined"
-          @update:project-title="updateProjectTitle"
-        />
-        <ProjectType
-          :project-type="localProject?.type || undefined"
-          @update:project-type="updateProjectType"
-        />
-      </div>
-
-      <div class="flex items-center gap-4">
-        <ProjectSettings
-          :project-title="localProject?.title || undefined"
-          :project-id="projectId"
-        />
-        <ShowUpdateTime :last-update-time="formattedUpdateTime" />
-      </div>
-    </div>
+    <ProjectHeader
+      :local-project="localProject || undefined"
+      :project-id="projectId"
+      :last-update-time="formattedUpdateTime"
+      @update:project-title="updateProjectTitle"
+      @update:project-type="updateProjectType"
+    />
 
     <KanbanBoard
       :project-id="projectId"
@@ -38,15 +25,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, defineAsyncComponent } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 
 import Loading from '@/components/core/loading/Loading.vue';
-import KanbanBoard from '@/components/project/KanbanBoard.vue';
-import ProjectTitle from '@/components/project/ProjectTitle.vue';
-import ProjectType from '@/components/project/ProjectType.vue';
-import ProjectSettings from '@/components/project/ProjectSettings.vue';
-import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
+import ProjectHeader from '@/components/project/ProjectHeader.vue';
+const KanbanBoard = defineAsyncComponent(() => import('@/components/project/KanbanBoard.vue'));
 import { useProjectInitialization } from '@/composables/todo/useProjectInitialization';
 import { useProjectLocalStorage } from '@/composables/todo/useProjectLocalStorage';
 import { useProjectSaving } from '@/composables/todo/useProjectSaving';
@@ -118,8 +102,13 @@ const { saveAllData } = useProjectSaving(
 
 // 路由離開前保存數據 - 直接調用 saveAllData
 onBeforeRouteLeave(async (_, __, next: any) => {
-  await saveAllData();
-  next();
+  try {
+    await saveAllData();
+    next();
+  } catch (error) {
+    console.error('保存專案數據失敗:', error);
+    next(false);
+  }
 });
 
 const formattedUpdateTime = computed(() => {

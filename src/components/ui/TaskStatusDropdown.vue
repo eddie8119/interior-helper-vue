@@ -1,8 +1,15 @@
 <template>
-  <el-dropdown trigger="click" @command="handleCommand">
+  <el-dropdown
+    :trigger="readOnly ? 'contextmenu' : 'click'"
+    :disabled="readOnly"
+    @command="handleCommand"
+  >
     <button
-      class="status-badge flex items-center px-3 py-1.5 transition-all duration-200 hover:shadow-sm"
-      :class="statusClass"
+      :class="[
+        'status-badge flex items-center px-3 py-1.5 transition-all duration-200',
+        readOnly ? '' : 'hover:shadow-sm',
+        statusClass,
+      ]"
     >
       {{ t(`option.status.${props.status}`) }}
       <svg
@@ -11,6 +18,7 @@
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
+        v-if="!readOnly"
       >
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
       </svg>

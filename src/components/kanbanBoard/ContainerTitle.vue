@@ -3,7 +3,7 @@
     <button
       :class="[
         'inline-flex items-center gap-1 rounded-md py-1 text-lg font-semibold transition-all duration-300 ease-in-out',
-        !readOnly ? 'hover:bg-slate-200' : ''
+        !readOnly ? 'hover:bg-slate-200' : '',
       ]"
       @click="!readOnly && startEditing()"
     >

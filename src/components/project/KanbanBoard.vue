@@ -3,7 +3,7 @@
     @update:selected-status="selectedStatus = $event"
     @update:days-range="daysRange = $event"
   />
-  <div class="w-full">
+  <div class="w-full overflow-auto">
     <Container
       orientation="horizontal"
       :drag-handle-selector="readOnly ? '' : '.container-drag-handle'"
@@ -11,7 +11,7 @@
       :group-name="readOnly ? undefined : 'construction-containers'"
       class="flex pt-4"
       style="overflow-x: auto; overflow-y: visible"
-      @drop="!readOnly && onConstructionContainerDrop($event)"
+      @drop="onConstructionContainerDrop"
     >
       <!-- 工程類型容器 -->
       <Draggable v-for="(container, index) in localConstructionContainer" :key="container.id">
@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { Container, Draggable } from 'vue3-smooth-dnd';
 
 import type { TaskFilterStatus } from '@/constants/selection';
@@ -48,9 +48,10 @@ import KanbanFilterBar from '@/components/project/KanbanFilterBar.vue';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
+import { useTaskOperations } from '@/composables/todo/useTaskOperations';
 import { provideTaskCardFilter } from '@/context/useTaskCardFilter';
 import { provideTaskContext } from '@/context/useTaskContext';
-import { filterTasksByConstruction } from '@/utils/todo/taskUtils';
+import { filterTasksByConstruction, processTasksWithOrder } from '@/utils/todo/taskUtils';
 
 const props = defineProps<{
   constructionContainer: ConstructionSelection[] | null;
@@ -64,119 +65,69 @@ const emit = defineEmits<{
   (e: 'update:projectAllTasks', value: TaskResponse[]): void;
 }>();
 
-// amount of editing 都會使用本地副本
+// 狀態管理
 const localConstructionContainer = ref<ConstructionSelection[]>([]);
 const localTasks = ref<TaskResponse[]>([]);
 const selectedStatus = ref<TaskFilterStatus>('all');
 const daysRange = ref<[number, number]>([0, 10]);
 
-// Provide task card display filter context for all descendant components
+// Context 提供
 provideTaskCardFilter();
 
-const initializelocalConstructionContainer = () => {
-  localConstructionContainer.value = [...(props.constructionContainer || [])];
-};
-const initializelocalTasks = () => {
-  localTasks.value = [...(props.tasks || [])];
-};
-
-watch(
-  () => [props.constructionContainer, props.tasks],
-  () => {
-    initializelocalConstructionContainer();
-    initializelocalTasks();
-  },
-  { immediate: true }
-);
-
-onMounted(() => {
-  initializelocalConstructionContainer();
-  initializelocalTasks();
-});
-
-// 容器更新回調
 const onContainerUpdate = (newContainers: ConstructionSelection[]) => {
   emit('update:constructionContainer', newContainers);
 };
+
 const onTaskUpdate = (newTasks: TaskResponse[]) => {
   emit('update:projectAllTasks', newTasks);
 };
 
-// usecomposable
-// 容器操作邏輯
+// ==================== Composables ====================
+// 工程容器操作
 const { deleteConstruction, addNewConstruction, updateConstructionName } = useConstructionActions(
   localConstructionContainer,
   onContainerUpdate
 );
 
-// 提供任務上下文
-provideTaskContext({
-  deleteTask: (taskId: string) => {
-    const taskIndex = localTasks.value.findIndex((task: TaskResponse) => task.id === taskId);
-    if (taskIndex !== -1) {
-      localTasks.value = localTasks.value.filter((task: TaskResponse) => task.id !== taskId);
-      onTaskUpdate(localTasks.value);
-    }
-  },
-  addNewTask: (newTaskData: TaskResponse) => {
-    localTasks.value = [...localTasks.value, newTaskData];
-    onTaskUpdate(localTasks.value);
-  },
-  updateTask: (taskId: string, updatedTask: Partial<TaskResponse>) => {
-    // 根據ID查找並更新任務
-    const taskIndex = localTasks.value.findIndex((task: TaskResponse) => task.id === taskId);
-    if (taskIndex !== -1) {
-      localTasks.value = localTasks.value.map((task: TaskResponse) =>
-        task.id === taskId ? { ...task, ...updatedTask } : task
-      );
-      onTaskUpdate(localTasks.value);
-    }
-  },
-});
+// 任務操作
+const { deleteTask, addNewTask, updateTask } = useTaskOperations(localTasks, onTaskUpdate);
 
 // 拖曳邏輯
 const { getConstructionContainerPayload, onConstructionContainerDrop } = useDraggableConstructions(
   localConstructionContainer,
   onContainerUpdate
 );
-// 處理任務任務拖曳 (放在localTasks之後)
-const { handleTaskDrop } = useTaskDragAndDrop(localTasks, (updatedTasks: DraggableTask[]) => {
-  emit('update:projectAllTasks', updatedTasks);
-});
 
+const { handleTaskDrop } = useTaskDragAndDrop(localTasks, onTaskUpdate);
+
+// ==================== 數據初始化與同步 ====================
+// 初始化工程容器
+watch(
+  () => props.constructionContainer,
+  (newContainers: ConstructionSelection[] | null) => {
+    localConstructionContainer.value = [...(newContainers || [])];
+  },
+  { immediate: true }
+);
+
+// 初始化任務並處理排序
 watch(
   () => props.tasks,
   (newTasks: TaskResponse[] | null) => {
-    if (newTasks) {
-      // 為每個任務分配 order 屬性，以便排序
-      const taskMap: { [key: string]: DraggableTask[] } = {};
-      newTasks.forEach((task: TaskResponse) => {
-        const constructionType = task.constructionType || 'uncategorized';
-        if (!taskMap[constructionType]) {
-          taskMap[constructionType] = [];
-        }
-        taskMap[constructionType].push(task as DraggableTask);
-      });
-
-      const processedTasks: DraggableTask[] = [];
-      Object.values(taskMap).forEach((group: DraggableTask[]) => {
-        group
-          .sort(
-            (a: DraggableTask, b: DraggableTask) => (a.order ?? Infinity) - (b.order ?? Infinity)
-          )
-          .forEach((task: DraggableTask, index: number) => {
-            task.order = index;
-            processedTasks.push(task);
-          });
-      });
-      localTasks.value = processedTasks;
-    } else {
-      localTasks.value = [];
-    }
+    localTasks.value = processTasksWithOrder(newTasks as DraggableTask[] | null);
   },
   { immediate: true, deep: true }
 );
 
+// 提供任務上下文給子組件
+provideTaskContext({
+  deleteTask,
+  addNewTask,
+  updateTask,
+});
+
+// ==================== 計算屬性與過濾 ====================
+// 按狀態過濾任務
 const filteredTasksByStatus = computed(() => {
   if (selectedStatus.value === 'all') {
     return localTasks.value;
@@ -184,11 +135,12 @@ const filteredTasksByStatus = computed(() => {
   return localTasks.value.filter((task: TaskResponse) => task.status === selectedStatus.value);
 });
 
-// 使用工具函數過濾任務
+// 按工程類型過濾任務
 const filteredTasks = (constructionId: string) => {
   return filterTasksByConstruction(filteredTasksByStatus.value, constructionId);
 };
 
+// 組件卸載前保存任務數據
 onBeforeUnmount(() => {
   if (localTasks.value.length) {
     taskApi.updateProjectTasksWithBeacon(localTasks.value, props.projectId);

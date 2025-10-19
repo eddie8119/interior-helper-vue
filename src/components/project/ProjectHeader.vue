@@ -28,7 +28,7 @@ import type { ProjectResponse } from '@/types/response';
 import type { ProjectType as ProjectTypeValue } from '@/types/selection';
 
 defineProps<{
-  localProject: ProjectResponse | undefined;
+  localProject: ProjectResponse | null;
   projectId: string;
   lastUpdateTime: string | number | Date | null;
 }>();

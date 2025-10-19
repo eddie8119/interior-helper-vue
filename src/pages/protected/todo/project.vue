@@ -7,7 +7,7 @@
   </div>
   <div v-else class="relative h-full w-full">
     <ProjectHeader
-      :local-project="localProject || undefined"
+      :local-project="localProject || null"
       :project-id="projectId"
       :last-update-time="formattedUpdateTime"
       @update:project-title="updateProjectTitle"
@@ -16,7 +16,7 @@
 
     <KanbanBoard
       :project-id="projectId"
-      :construction-container="localProject?.constructionContainer || []"
+      :construction-container="localProject?.constructionContainer || null"
       :tasks="localTasks"
       @update:construction-container="updateConstructionContainer"
       @update:project-all-tasks="updateProjectAllTasks"

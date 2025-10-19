@@ -14,7 +14,7 @@ import { projectApi } from '@/api/project';
 
 interface UseProjectsReturn {
   isLoadingProject: Ref<boolean>;
-  error: Ref<Error | null>;
+  errorProject: Ref<Error | null>;
   fetchedProject: Ref<ProjectResponse | null>;
   projectUpdatedAt: Ref<number>;
   updateProject: (data: Partial<CreateProjectSchema>) => Promise<ProjectResponse | null>;
@@ -39,7 +39,7 @@ export function useProject(id: string): UseProjectsReturn {
     data: fetchedProject,
     isLoading: isLoadingProject,
     refetch: refetchQueryProject,
-    error,
+    error: errorProject,
     dataUpdatedAt: projectUpdatedAt,
   } = useQuery({
     queryKey: ['project', id],
@@ -138,7 +138,7 @@ export function useProject(id: string): UseProjectsReturn {
 
   return {
     isLoadingProject,
-    error,
+    errorProject,
     fetchedProject: fetchedProject as Ref<ProjectResponse | null>,
     projectUpdatedAt,
     updateProject,

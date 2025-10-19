@@ -16,7 +16,7 @@ interface UseTasksReturn {
   // 批次
   // 批次獲取專案任務列表
   isLoadingTasks: Ref<boolean>;
-  error: Ref<Error | null>;
+  errorTasks: Ref<Error | null>;
   fetchedTasks: Ref<TaskResponse[] | null>;
   tasksUpdatedAt: Ref<number>;
   refetchTasks: () => Promise<void>;
@@ -50,7 +50,7 @@ export function useTasks(projectId?: string): UseTasksReturn {
     data: fetchedTasks,
     isLoading: isLoadingTasks,
     refetch: refetchQueryTasks,
-    error,
+    error: errorTasks,
     dataUpdatedAt: tasksUpdatedAt,
   } = useQuery({
     queryKey: ['tasks', projectId],
@@ -133,7 +133,7 @@ export function useTasks(projectId?: string): UseTasksReturn {
   return {
     // 獲取專案任務列表
     isLoadingTasks,
-    error,
+    errorTasks,
     fetchedTasks: fetchedTasks as Ref<TaskResponse[] | null>,
     tasksUpdatedAt,
     refetchTasks,

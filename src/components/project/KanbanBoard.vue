@@ -24,7 +24,7 @@
           :tasks="filteredTasks(container.id)"
           :days-range="daysRange"
           :read-only="readOnly"
-          @delete-container="deleteConstruction(index)"
+          @delete-container="handleDeleteConstruction(index)"
           @update:construction-name="updateConstructionName(index, $event)"
           @task-drop="handleTaskDrop($event, container.id)"
         />
@@ -47,6 +47,7 @@ import { taskApi } from '@/api/task';
 import AddNewConstruction from '@/components/kanbanBoard/AddNewConstruction.vue';
 import ConstructionContainerItem from '@/components/kanbanBoard/ConstructionContainerItem.vue';
 import KanbanFilterBar from '@/components/project/KanbanFilterBar.vue';
+import { useTasks } from '@/composables/useTasks';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
@@ -85,14 +86,20 @@ const onTaskUpdate = (newTasks: TaskResponse[]) => {
 };
 
 // ==================== Composables ====================
-// 工程容器操作
-const { deleteConstruction, addNewConstruction, updateConstructionName } = useConstructionActions(
-  localConstructionContainer,
-  onContainerUpdate
-);
-
 // 任務操作
 const { deleteTask, addNewTask, updateTask } = useTaskOperations(localTasks, onTaskUpdate);
+
+// API 任務操作（用於刪除任務）
+const { deleteTask: deleteTaskFromApi } = useTasks(props.projectId);
+
+// 工程容器操作
+const { addNewConstruction, updateConstructionName, deleteConstructionWithTasks } =
+  useConstructionActions(localConstructionContainer, onContainerUpdate, {
+    tasksRef: localTasks,
+    deleteTaskFromApi,
+    deleteTaskFromState: deleteTask,
+    filterTasksByConstruction,
+  });
 
 // 拖曳邏輯
 const { getConstructionContainerPayload, onConstructionContainerDrop } = useDraggableConstructions(
@@ -140,6 +147,11 @@ const filteredTasksByStatus = computed(() => {
 // 按工程類型過濾任務
 const filteredTasks = (constructionId: string) => {
   return filterTasksByConstruction(filteredTasksByStatus.value, constructionId);
+};
+
+// 處理刪除工程容器（包含刪除容器內的所有任務）
+const handleDeleteConstruction = async (index: number) => {
+  await deleteConstructionWithTasks(index);
 };
 
 // 組件卸載前保存任務數據

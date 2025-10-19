@@ -31,7 +31,10 @@ interface UseTasksReturn {
   isCreatingTask: Ref<boolean>;
   createError: Ref<Error | null>;
   // 更新單個任務
-  updateTask: (taskId: string, taskData: Partial<TaskResponse>) => Promise<{ success: boolean; data?: TaskResponse; message?: string }>;
+  updateTask: (
+    taskId: string,
+    taskData: Partial<TaskResponse>
+  ) => Promise<{ success: boolean; data?: TaskResponse; message?: string }>;
   isUpdatingTask: Ref<boolean>;
   updateTaskError: Ref<Error | null>;
   // 刪除任務
@@ -146,7 +149,13 @@ export function useTasks(projectId?: string): UseTasksReturn {
 
   // 更新單個任務 mutation
   const { mutateAsync: mutateUpdateTask } = useMutation({
-    mutationFn: async ({ taskId, taskData }: { taskId: string; taskData: Partial<TaskResponse> }) => {
+    mutationFn: async ({
+      taskId,
+      taskData,
+    }: {
+      taskId: string;
+      taskData: Partial<TaskResponse>;
+    }) => {
       const response = await taskApi.updateTask(taskId, taskData);
       return response;
     },

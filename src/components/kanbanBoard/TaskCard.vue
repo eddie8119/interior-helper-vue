@@ -92,7 +92,12 @@ const { t } = useI18n();
 
 const { deleteTask: deleteTaskFromContext, updateTask: updateTaskInContext } = useTaskContext();
 const { showDescription, showMaterials } = useTaskCardFilter();
-const { deleteTask: deleteTaskFromApi, isDeletingTask, updateTask: updateTaskFromApi, isUpdatingTask } = useTasks(props.task.projectId);
+const {
+  deleteTask: deleteTaskFromApi,
+  isDeletingTask,
+  updateTask: updateTaskFromApi,
+  isUpdatingTask,
+} = useTasks(props.task.projectId);
 
 const isEditing = ref(false);
 const { values, setValues } = useForm<Partial<TaskResponse>>();

@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, shallowRef } from 'vue';
 
 import type { ProjectResponse } from '@/types/response';
 import type { Ref } from 'vue';
@@ -17,6 +17,11 @@ import { getProjectStorageKey, saveProjectToLocalStorage } from '@/utils/storage
  * 4. 追蹤本地數據是否有變更 (`hasChanges`)。
  * 5. 確保本地數據結構與伺服器數據結構同步，避免因數據模型更新導致的錯誤。
  *
+ * @performance
+ * 使用 `shallowRef` 來避免深層響應式追蹤，提升效能。
+ * 更新時必須使用整體替換（如 `localProject.value = { ...localProject.value, ... }`）
+ * 而非直接修改屬性，以確保 Vue 能正確偵測變更。
+ *
  * @param {string} projectId - 當前專案的 ID，用於生成 localStorage 的 key。
  * @param {Ref<ProjectResponse | null>} fetchedProject - 從伺服器獲取並傳入的專案數據的響應式引用。
  *
@@ -26,7 +31,7 @@ import { getProjectStorageKey, saveProjectToLocalStorage } from '@/utils/storage
  *   initLocalProject: () => void,
  *   saveToLocalStorage: () => void
  * }}
- * - `localProject`: 響應式引用，存儲最終合併後的專案數據，供 UI 使用。
+ * - `localProject`: 響應式引用（shallowRef），存儲最終合併後的專案數據，供 UI 使用。
  * - `hasChanges`: 一個布林值的響應式引用，表示本地數據是否已變更且尚未保存到 API。
  * - `initLocalProject`: 一個函數，用於從 localStorage 或傳入的 `fetchedProject` 初始化 `localProject`。
  * - `saveToLocalStorage`: 一個函數，用於將當前的 `localProject` 狀態保存到 localStorage。
@@ -35,7 +40,7 @@ export function useProjectLocalStorage(
   projectId: string,
   fetchedProject: Ref<ProjectResponse | null>
 ) {
-  const localProject = ref<ProjectResponse | null>(null);
+  const localProject = shallowRef<ProjectResponse | null>(null);
   const hasChanges = ref(false);
   const storageKey = getProjectStorageKey(projectId);
 

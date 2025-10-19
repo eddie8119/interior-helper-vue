@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, shallowRef } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
 import type { Ref } from 'vue';
@@ -27,7 +27,7 @@ import { getTaskStorageKey, saveTaskToLocalStorage } from '@/utils/storage/taskS
  * }}
  */
 export function useTaskLocalStorage(projectId: string, fetchedTasks: Ref<any[] | null>) {
-  const localTasks = ref<TaskResponse[] | null>(null);
+  const localTasks = shallowRef<TaskResponse[] | null>(null);
   const hasChanges = ref(false);
   const storageTasksKey = getTaskStorageKey(projectId);
 

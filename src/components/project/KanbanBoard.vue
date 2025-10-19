@@ -114,19 +114,21 @@ provideTaskContext({
   deleteTask: (taskId: string) => {
     const taskIndex = localTasks.value.findIndex((task: TaskResponse) => task.id === taskId);
     if (taskIndex !== -1) {
-      localTasks.value.splice(taskIndex, 1);
+      localTasks.value = localTasks.value.filter((task: TaskResponse) => task.id !== taskId);
       onTaskUpdate(localTasks.value);
     }
   },
   addNewTask: (newTaskData: TaskResponse) => {
-    localTasks.value.push(newTaskData);
+    localTasks.value = [...localTasks.value, newTaskData];
     onTaskUpdate(localTasks.value);
   },
   updateTask: (taskId: string, updatedTask: Partial<TaskResponse>) => {
     // 根據ID查找並更新任務
     const taskIndex = localTasks.value.findIndex((task: TaskResponse) => task.id === taskId);
     if (taskIndex !== -1) {
-      localTasks.value[taskIndex] = { ...localTasks.value[taskIndex], ...updatedTask };
+      localTasks.value = localTasks.value.map((task: TaskResponse) =>
+        task.id === taskId ? { ...task, ...updatedTask } : task
+      );
       onTaskUpdate(localTasks.value);
     }
   },

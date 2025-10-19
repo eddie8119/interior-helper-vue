@@ -2,7 +2,7 @@
   <BasicEditDialog
     v-model="dialogVisible"
     :title="t('title.move_note')"
-    :is-submitting="isCreating"
+    :is-submitting="isCreatingTask"
     :error-message="errorMessage"
     :is-invalid="isInvalid"
     @submit="onSubmit"
@@ -62,7 +62,7 @@ const { projects } = storeToRefs(projectsStore);
 
 // Get refetchProjects from useProjects
 const { refetchProjects } = useProjects();
-const { createTask, isCreating, createError } = useTasks();
+const { createTask, isCreatingTask, createError } = useTasks();
 
 const props = defineProps<{
   modelValue: boolean;

@@ -18,6 +18,7 @@
         <button
           v-if="!readOnly"
           class="rounded-full bg-blue-100 p-1 hover:bg-blue-200"
+          :disabled="isUpdatingTask"
           @click="startEditing"
         >
           <EditIcon :size="'h-4 w-4'" />
@@ -25,6 +26,7 @@
         <TrashButton
           v-if="!readOnly"
           class="invisible group-hover:visible"
+          :disabled="isDeletingTask"
           @click="handleDeleteTask"
         />
       </div>
@@ -68,8 +70,8 @@ import { useI18n } from 'vue-i18n';
 import type { TaskResponse } from '@/types/response';
 import type { TaskStatus } from '@/types/task';
 
-import { taskApi } from '@/api/task';
 import TaskForm from '@/components/kanbanBoard/TaskForm.vue';
+import { useTasks } from '@/composables/useTasks';
 import H3Title from '@/components/core/title/H3Title.vue';
 import Label from '@/components/core/title/Label.vue';
 import DateIcon from '@/components/ui/DateIcon.vue';
@@ -87,9 +89,10 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
-// 從上下文中獲取任務操作
-const { deleteTask, updateTask } = useTaskContext();
+
+const { deleteTask: deleteTaskFromContext, updateTask: updateTaskInContext } = useTaskContext();
 const { showDescription, showMaterials } = useTaskCardFilter();
+const { deleteTask: deleteTaskFromApi, isDeletingTask, updateTask: updateTaskFromApi, isUpdatingTask } = useTasks(props.task.projectId);
 
 const isEditing = ref(false);
 const { values, setValues } = useForm<Partial<TaskResponse>>();
@@ -110,45 +113,35 @@ const cancelEditing = () => {
 };
 
 const onUpdateTask = async () => {
-  try {
-    const { success, message, data } = await taskApi.updateTask(props.task.id, values);
-    if (success) {
-      updateTask(props.task.id, data);
-      isEditing.value = false;
-    }
-    if (!success) {
-      errorMessage.value = message;
-      return;
-    }
-  } catch (error) {
-    console.error('Failed to update task:', error);
+  const { success, message, data } = await updateTaskFromApi(props.task.id, values);
+  if (success && data) {
+    updateTaskInContext(props.task.id, data);
+    isEditing.value = false;
+  }
+  if (!success) {
+    errorMessage.value = message || '更新任務失敗';
   }
 };
 
 // 處理刪除任務
 const handleDeleteTask = async () => {
-  const { success } = await taskApi.deleteTask(props.task.id);
+  const success = await deleteTaskFromApi(props.task.id);
   if (success) {
-    deleteTask(props.task.id);
+    deleteTaskFromContext(props.task.id);
   }
 };
 
 // 更新任務狀態
 const handleTaskStatusChange = async (status: TaskStatus) => {
-  try {
-    const { success, message, data } = await taskApi.updateTask(props.task.id, {
-      ...props.task,
-      status,
-    });
-    if (success) {
-      updateTask(props.task.id, data);
-    }
-    if (!success) {
-      errorMessage.value = message;
-      return;
-    }
-  } catch (error) {
-    console.error('Failed to update task:', error);
+  const { success, message, data } = await updateTaskFromApi(props.task.id, {
+    ...props.task,
+    status,
+  });
+  if (success && data) {
+    updateTaskInContext(props.task.id, data);
+  }
+  if (!success) {
+    errorMessage.value = message || '更新任務狀態失敗';
   }
 };
 

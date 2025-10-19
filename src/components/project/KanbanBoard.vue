@@ -6,14 +6,16 @@
   <div class="w-full overflow-auto">
     <Container
       orientation="horizontal"
-      :drag-handle-selector="readOnly ? '' : '.container-drag-handle'"
+      :drag-handle-selector="readOnly ? '.__disabled__' : '.container-drag-handle'"
       :get-child-payload="readOnly ? undefined : getConstructionContainerPayload"
       :group-name="readOnly ? undefined : 'construction-containers'"
+      :non-drag-area-selector="readOnly ? '*' : undefined"
+      :should-accept-drop="() => !readOnly"
       class="flex pt-4"
       style="overflow-x: auto; overflow-y: visible"
-      @drop="onConstructionContainerDrop"
+      @drop="!readOnly && onConstructionContainerDrop($event)"
     >
-      <!-- 工程類型容器 -->
+      <!-- 工程類型容器：保持一致的 Draggable 包裹，拖曳由 readOnly 與 Container 設定關閉 -->
       <Draggable v-for="(container, index) in localConstructionContainer" :key="container.id">
         <ConstructionContainerItem
           :construction-id="container.id"

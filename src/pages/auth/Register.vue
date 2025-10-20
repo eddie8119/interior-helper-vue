@@ -32,11 +32,11 @@ import { useI18n } from 'vue-i18n';
 import type { RegisterData } from '@/types/user';
 import type { AxiosError } from 'axios';
 
-import { userApi } from '@/api/user';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import RegisterForm from '@/components/auth/RegisterForm.vue';
 import { useFormError } from '@/composables/useFormError';
 import { useFormValidation } from '@/composables/useFormValidation';
+import { useUser } from '@/composables/useUser';
 import router from '@/router';
 import { useAuthStore } from '@/stores/auth';
 import { registerSchema } from '@/utils/schemas/registerSchema';
@@ -44,7 +44,7 @@ import { registerSchema } from '@/utils/schemas/registerSchema';
 const { t } = useI18n();
 const authStore = useAuthStore();
 
-const showMessage = ref<string>('');
+const showMessage = ref<string | undefined>(undefined);
 const verifiedStatus = {
   UNVERIFIED: '0',
   VERIFIED: '1',
@@ -71,11 +71,13 @@ const { errorMessage, handleError, setErrorMessage } = useFormError({
   defaultErrorKey: t('error.register_failed'),
 });
 
-const onSubmit = handleSubmit(async (values) => {
+const { register } = useUser();
+
+const onSubmit = handleSubmit(async (values: RegisterData) => {
   if (password.value !== confirmPassword.value) return;
 
   try {
-    const { success, message } = await userApi.register(values as RegisterData);
+    const { success, message } = await register(values);
     if (!success) {
       showMessage.value = message;
       return;

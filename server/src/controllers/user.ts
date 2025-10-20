@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { supabase } from '@/lib/supabase';
 import { RegisterSchema } from '@/schemas/registerSchema';
+import { emailService } from '@/services/notification/email.service';
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -82,23 +83,12 @@ export const register = async (req: Request, res: Response) => {
 // 獲取當前用戶信息
 export const getCurrentUser = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.replace('Bearer ', '');
-    if (!token) {
+    // authMiddleware 已經驗證並附加 req.user
+    const user = req.user;
+    if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'No token provided',
-      });
-    }
-
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser(token);
-
-    if (authError || !user) {
-      return res.status(401).json({
-        success: false,
-        message: authError?.message || 'Invalid token or user not found',
+        message: 'User not authenticated',
       });
     }
 
@@ -114,8 +104,7 @@ export const getCurrentUser = async (req: Request, res: Response) => {
         user: {
           id: user.id,
           email: user.email,
-          name: user.user_metadata?.name,
-          createdAt: user.created_at,
+          name: user.name,
         },
         userDoc,
       },
@@ -132,17 +121,10 @@ export const getCurrentUser = async (req: Request, res: Response) => {
 // 更新用戶信息 (僅限本人)
 export const updateUser = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.replace('Bearer ', '');
-    if (!token) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
-    }
-
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser(token);
-    if (authError || !user) {
-      return res.status(401).json({ success: false, message: 'Invalid token' });
+    // authMiddleware 已經驗證並附加 req.user
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'User not authenticated' });
     }
 
     const updates = req.body;
@@ -152,7 +134,7 @@ export const updateUser = async (req: Request, res: Response) => {
     const { data: updatedUserDoc, error: updateError } = await supabase
       .from('Profiles')
       .update(safeUpdates)
-      .eq('id', user.id) // 使用 token 中的 user.id 確保安全性
+      .eq('id', user.id) // 使用 middleware 提供的 user.id 確保安全性
       .select()
       .maybeSingle();
 
@@ -177,17 +159,10 @@ export const updateUser = async (req: Request, res: Response) => {
 // 刪除用戶 (僅限本人)
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.replace('Bearer ', '');
-    if (!token) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
-    }
-
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser(token);
-    if (authError || !user) {
-      return res.status(401).json({ success: false, message: 'Invalid token' });
+    // authMiddleware 已經驗證並附加 req.user
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'User not authenticated' });
     }
     const userId = user.id;
 
@@ -260,6 +235,215 @@ export const checkUserExists = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Failed to check user existence',
+    });
+  }
+};
+
+// 要求重置密碼 (忘記密碼 - 發送重置郵件)
+export const forgotPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is required',
+      });
+    }
+
+    // 檢查用戶是否存在
+    const { data: userProfile } = await supabase
+      .from('Profiles')
+      .select('id')
+      .eq('email', email)
+      .maybeSingle();
+
+    // 為了安全，即使用戶不存在也返回成功（防止郵箱枚舉攻擊）
+    if (!userProfile) {
+      return res.json({
+        success: true,
+        message: 'If the email exists, a password reset link has been sent',
+      });
+    }
+
+    // 使用 Supabase 生成重置 token
+    const { data, error } = await supabase.auth.admin.generateLink({
+      type: 'recovery',
+      email,
+    });
+
+    if (error || !data.properties?.action_link) {
+      console.error('Generate reset link error:', error);
+      return res.status(400).json({
+        success: false,
+        message: 'Failed to generate reset link',
+      });
+    }
+
+    // 從 action_link 中提取 token
+    const actionLink = data.properties.action_link;
+    const url = new URL(actionLink);
+    const token = url.searchParams.get('token');
+
+    if (!token) {
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to extract reset token',
+      });
+    }
+
+    // 使用自訂郵件模板發送
+    const emailSent = await emailService.sendPasswordResetEmail(email, token);
+
+    if (!emailSent) {
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to send reset email',
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Password reset email sent successfully',
+    });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to send password reset email',
+    });
+  }
+};
+
+// 重置密碼 (忘記密碼 - 使用重置連結)
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const { newPassword, newConfirmPassword, token } = req.body;
+
+    // 驗證輸入
+    if (!newPassword || !newConfirmPassword || !token) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password, confirm password, and token are required',
+      });
+    }
+
+    if (newPassword !== newConfirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Passwords do not match',
+      });
+    }
+
+    // 驗證密碼強度
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password must be at least 6 characters long',
+      });
+    }
+
+    // 使用 token 更新密碼
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+
+    if (error) {
+      console.error('Reset password error:', error);
+      return res.status(400).json({
+        success: false,
+        message: error.message || 'Failed to reset password',
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Password reset successfully',
+    });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to reset password',
+    });
+  }
+};
+
+// 更改密碼 (已登入用戶)
+export const changePassword = async (req: Request, res: Response) => {
+  try {
+    // authMiddleware 已經驗證並附加 req.user
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'User not authenticated',
+      });
+    }
+
+    const { oldPassword, newPassword, newConfirmPassword } = req.body;
+
+    // 驗證輸入
+    if (!oldPassword || !newPassword || !newConfirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Old password, new password, and confirm password are required',
+      });
+    }
+
+    if (newPassword !== newConfirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'New passwords do not match',
+      });
+    }
+
+    // 驗證密碼強度
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password must be at least 6 characters long',
+      });
+    }
+
+    // 驗證舊密碼 - 嘗試用舊密碼登入
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: oldPassword,
+    });
+
+    if (signInError) {
+      return res.status(400).json({
+        success: false,
+        message: 'Old password is incorrect',
+      });
+    }
+
+    // 更新密碼
+    const { error: updateError } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+
+    if (updateError) {
+      console.error('Change password error:', updateError);
+      return res.status(400).json({
+        success: false,
+        message: updateError.message || 'Failed to change password',
+      });
+    }
+
+    // 發送密碼更改成功通知郵件
+    await emailService.sendPasswordChangedNotification(user.email);
+
+    res.json({
+      success: true,
+      message: 'Password changed successfully',
+    });
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to change password',
     });
   }
 };

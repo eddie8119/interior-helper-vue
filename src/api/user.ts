@@ -11,21 +11,7 @@ import type {
 
 import request from '@/utils/request';
 
-interface ChangePasswordPayload {
-  old_password: string;
-  new_password: string;
-  new_confirm_password: string;
-}
-
-interface ResetPasswordPayload {
-  new_password: string;
-  new_confirm_password: string;
-  token: string;
-  uid: string;
-}
-
 export const userApi = {
-  // User account operations
   // 註冊
   register(data: RegisterData): Promise<ApiResponse<null>> {
     return request.post('/user/register/', data);
@@ -51,9 +37,9 @@ export const userApi = {
   resetPassword(data: ResetPasswordData) {
     const { newPassword, newConfirmPassword, token, uid } = data;
 
-    const payload: ResetPasswordPayload = {
-      new_password: newPassword,
-      new_confirm_password: newConfirmPassword,
+    const payload: ResetPasswordData = {
+      newPassword,
+      newConfirmPassword,
       token,
       uid,
     };
@@ -62,15 +48,7 @@ export const userApi = {
   },
 
   // 更改密碼(知道密碼)
-  changePassword(data: ChangePasswordData) {
-    const { oldPassword, newPassword, newConfirmPassword } = data;
-
-    const payload: ChangePasswordPayload = {
-      old_password: oldPassword,
-      new_password: newPassword,
-      new_confirm_password: newConfirmPassword,
-    };
-
+  changePassword(payload: ChangePasswordData) {
     return request.put('/user/change-password/', payload);
   },
 

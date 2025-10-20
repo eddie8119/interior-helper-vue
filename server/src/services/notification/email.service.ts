@@ -3,6 +3,10 @@ import { sendMail } from '@/services/notification/mailer';
 import { generateTaskReminderTemplate } from './templates/taskReminder';
 import { generateDailyDigestTemplate } from './templates/dailyDigest';
 import { generateInvitationTemplate } from './templates/invitation';
+import {
+  generatePasswordResetTemplate,
+  generatePasswordChangedTemplate,
+} from './templates/passwordReset';
 import type { CollaboratorRole, InvitationType } from '@/types/response';
 
 // 用於發送任務提醒和每日摘要
@@ -109,6 +113,51 @@ export class EmailService {
       return true;
     } catch (error) {
       console.error('發送協作邀請郵件失敗:', error);
+      return false;
+    }
+  }
+
+  /**
+   * 發送密碼重置郵件
+   */
+  async sendPasswordResetEmail(email: string, resetToken: string): Promise<boolean> {
+    try {
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+      const resetLink = `${frontendUrl}/reset-password?token=${resetToken}`;
+
+      await sendMail({
+        from: `"${process.env.EMAIL_FROM_NAME || '帳戶安全系統'}" <${process.env.EMAIL_FROM}>`,
+        to: email,
+        subject: '重置您的密碼',
+        html: generatePasswordResetTemplate({
+          email,
+          resetLink,
+          expiresIn: '1 小時',
+        }),
+      });
+
+      return true;
+    } catch (error) {
+      console.error('發送密碼重置郵件失敗:', error);
+      return false;
+    }
+  }
+
+  /**
+   * 發送密碼更改成功通知郵件
+   */
+  async sendPasswordChangedNotification(email: string): Promise<boolean> {
+    try {
+      await sendMail({
+        from: `"${process.env.EMAIL_FROM_NAME || '帳戶安全系統'}" <${process.env.EMAIL_FROM}>`,
+        to: email,
+        subject: '密碼已成功更改',
+        html: generatePasswordChangedTemplate(email),
+      });
+
+      return true;
+    } catch (error) {
+      console.error('發送密碼更改通知郵件失敗:', error);
       return false;
     }
   }

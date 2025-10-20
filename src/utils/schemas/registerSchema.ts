@@ -1,26 +1,23 @@
 import { z } from 'zod';
 
-const passwordRules = {
-  min: 6,
-  hasUpperCase: /[A-Z]/,
-  hasSpecialChar: /[!@#$%^&*]/,
-  hasAlphaNumeric: /[0-9a-zA-Z]/,
-};
+import { passwordRules } from '@/constants/password';
+import type { TranslateFunction } from '@/types/i18n';
 
-export const registerSchema = z
-  .object({
-    email: z.string().min(1, 'This is required').email('Invalid email'),
-    password: z
-      .string()
-      .min(passwordRules.min, `At least ${passwordRules.min} characters`)
-      .regex(passwordRules.hasUpperCase, 'Must contain at least 1 uppercase letter')
-      .regex(passwordRules.hasSpecialChar, 'Must contain at least 1 special character (!@#$%^&*)')
-      .regex(passwordRules.hasAlphaNumeric, 'Must contain alphanumeric characters'),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['confirmPassword'],
-  });
+export const createRegisterSchema = (t: TranslateFunction) =>
+  z
+    .object({
+      email: z.string().min(1, t('validation.email.required')).email(t('validation.email.invalid')),
+      password: z
+        .string()
+        .min(passwordRules.min, t('validation.password.min', { min: passwordRules.min }))
+        .regex(passwordRules.hasUpperCase, t('validation.password.uppercase'))
+        .regex(passwordRules.hasSpecialChar, t('validation.password.special'))
+        .regex(passwordRules.hasAlphaNumeric, t('validation.password.alphanumeric')),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t('validation.password.mismatch'),
+      path: ['confirmPassword'],
+    });
 
-export type RegisterSchema = z.infer<typeof registerSchema>;
+export type RegisterSchema = z.infer<ReturnType<typeof createRegisterSchema>>;

@@ -33,7 +33,7 @@ import { userApi } from '@/api/user';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import ResetPasswordForm from '@/components/auth/ResetPasswordForm.vue';
 import { useFormValidation } from '@/composables/useFormValidation';
-import { resetPasswordSchema } from '@/utils/schemas/resetPasswordSchema';
+import { createResetPasswordSchema } from '@/utils/schemas/resetPasswordSchema';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -56,7 +56,7 @@ onActivated(() => {
 
 const { handleSubmit, errors, isSubmitting } = useFormValidation<
   Omit<ResetPasswordData, 'token' | 'uid'>
->(resetPasswordSchema, {
+>(createResetPasswordSchema(t), {
   newPassword: '',
   newConfirmPassword: '',
 });

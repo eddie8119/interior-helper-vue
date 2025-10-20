@@ -39,7 +39,7 @@ import { useFormValidation } from '@/composables/useFormValidation';
 import { useUser } from '@/composables/useUser';
 import router from '@/router';
 import { useAuthStore } from '@/stores/auth';
-import { registerSchema } from '@/utils/schemas/registerSchema';
+import { createRegisterSchema } from '@/utils/schemas/registerSchema';
 
 const { t } = useI18n();
 const authStore = useAuthStore();
@@ -50,10 +50,13 @@ const verifiedStatus = {
   VERIFIED: '1',
 };
 
-const { handleSubmit, errors, isSubmitting } = useFormValidation<RegisterData>(registerSchema, {
-  email: '',
-  password: '',
-});
+const { handleSubmit, errors, isSubmitting } = useFormValidation<RegisterData>(
+  createRegisterSchema(t),
+  {
+    email: '',
+    password: '',
+  }
+);
 
 const { value: email, handleBlur: handleBlurEmail } = useField<string>('email');
 const { value: password, handleBlur: handleBlurPassword } = useField<string>('password');

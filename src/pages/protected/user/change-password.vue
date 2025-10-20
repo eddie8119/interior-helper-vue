@@ -27,26 +27,34 @@
 import { toTypedSchema } from '@vee-validate/zod';
 import { ElMessage } from 'element-plus';
 import { useField, useForm } from 'vee-validate';
-import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { userApi } from '@/api/user';
+import type { AxiosError } from 'axios';
+
 import AuthCard from '@/components/auth/AuthCard.vue';
 import ChangePasswordForm from '@/components/auth/ChangePasswordForm.vue';
+import { useFormError } from '@/composables/useFormError';
+import { useUser } from '@/composables/useUser';
 import { type ChangePasswordData } from '@/types/user';
-import { changePasswordSchema } from '@/utils/schemas/changePasswordSchema';
-
-const errorMessage = ref<string>('');
+import { createChangePasswordSchema } from '@/utils/schemas/changePasswordSchema';
 
 const { t } = useI18n();
+
 const { handleSubmit, errors, isSubmitting, resetForm } = useForm<ChangePasswordData>({
-  validationSchema: toTypedSchema(changePasswordSchema),
+  validationSchema: toTypedSchema(createChangePasswordSchema(t)),
   initialValues: {
     oldPassword: '',
     newPassword: '',
     newConfirmPassword: '',
   },
 });
+
+const { errorMessage, handleError } = useFormError({
+  statusCodes: [400],
+  defaultErrorKey: t('error.change_password_failed'),
+});
+
+const { changePassword } = useUser();
 
 const { value: oldPassword, handleBlur: handleBlurOldPassword } = useField<string>('oldPassword');
 const { value: newPassword, handleBlur: handleBlurNewPassword } = useField<string>('newPassword');
@@ -55,19 +63,16 @@ const { value: newConfirmPassword, handleBlur: handleBlurNewConfirmPassword } =
 
 const onSubmit = handleSubmit(async (values: ChangePasswordData) => {
   try {
-    await userApi.changePassword(values);
+    const { success, message } = await changePassword(values);
 
-    ElMessage.success(t('message.change_password_success'));
-    resetForm();
-  } catch (error) {
-    const err = error as { response?: { status: number; data: Record<string, string[]> } };
-    if (err.response?.status === 400 && err.response?.data) {
-      const errors = err.response.data;
-      const errorMessages = Object.values(errors).flat().join('\n');
-      errorMessage.value = errorMessages;
+    if (success) {
+      ElMessage.success(t('message.change_password_success'));
+      resetForm();
     } else {
-      errorMessage.value = t('error.change_password_failed');
+      errorMessage.value = message || t('error.change_password_failed');
     }
+  } catch (error) {
+    handleError(error as AxiosError);
   }
 });
 </script>

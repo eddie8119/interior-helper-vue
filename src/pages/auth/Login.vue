@@ -35,14 +35,14 @@ import { useFormError } from '@/composables/useFormError';
 import { useFormValidation } from '@/composables/useFormValidation';
 import { useAuthStore } from '@/stores/auth';
 import { setAccessToken, setRefreshToken } from '@/utils/auth';
-import { loginSchema } from '@/utils/schemas/loginSchema';
+import { createLoginSchema } from '@/utils/schemas/loginSchema';
 
 const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 
-const { handleSubmit, errors, isSubmitting } = useFormValidation<LoginData>(loginSchema, {
+const { handleSubmit, errors, isSubmitting } = useFormValidation<LoginData>(createLoginSchema(t), {
   email: '',
   password: '',
 });
@@ -59,9 +59,9 @@ const { errorMessage, handleError } = useFormError({
   defaultErrorKey: t('error.login_failed'),
 });
 
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async (values: LoginData) => {
   try {
-    const { data: apiResponseData, success } = await authApi.login(values as LoginData);
+    const { data: apiResponseData, success } = await authApi.login(values);
 
     if (success && apiResponseData) {
       const { access_token, refresh_token } = apiResponseData;

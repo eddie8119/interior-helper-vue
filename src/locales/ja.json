@@ -172,5 +172,18 @@
       "emailExists": "このメールアドレスは既に存在します",
       "inviteFailed": "メンバーの招待に失敗しました"
     }
+  },
+  "validation": {
+    "email": {
+      "required": "メールアドレスは必須です",
+      "invalid": "無効なメールアドレス"
+    },
+    "password": {
+      "min": "少なくとも {min} 文字",
+      "uppercase": "少なくとも1つの大文字を含む必要があります",
+      "special": "少なくとも1つの特殊文字を含む必要があります",
+      "alphanumeric": "英数字を含む必要があります",
+      "mismatch": "パスワードが一致しません"
+    }
   }
 }

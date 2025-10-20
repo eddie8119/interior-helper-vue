@@ -330,7 +330,7 @@
     }
   },
   "tab": {
-    "projects": "Projects",
+    "projects": "Projects List",
     "project": "Project"
   },
   "title": {
@@ -361,6 +361,19 @@
       "alarm_history": "Alarm History",
       "real_time_read": "Real Time Read(5 minutes range)",
       "history_read": "History Read"
+    }
+  },
+  "validation": {
+    "email": {
+      "required": "Email is required",
+      "invalid": "Invalid email address"
+    },
+    "password": {
+      "min": "At least {min} characters",
+      "uppercase": "Must contain at least 1 uppercase letter",
+      "special": "Must contain at least 1 special character",
+      "alphanumeric": "Must contain alphanumeric characters",
+      "mismatch": "Passwords do not match"
     }
   }
 }

@@ -353,5 +353,18 @@
       "real_time_read": "即時觀測(5分鐘範圍)",
       "history_read": "觀測歷史數據"
     }
+  },
+  "validation": {
+    "email": {
+      "required": "電子郵件為必填",
+      "invalid": "無效的電子郵件地址"
+    },
+    "password": {
+      "min": "至少 {min} 個字元",
+      "uppercase": "必須包含至少 1 個大寫字母",
+      "special": "必須包含至少 1 個特殊字元",
+      "alphanumeric": "必須包含英數字元",
+      "mismatch": "密碼不一致"
+    }
   }
 }

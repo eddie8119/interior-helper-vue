@@ -31,6 +31,7 @@ import { useI18n } from 'vue-i18n';
 
 import type { AxiosError } from 'axios';
 
+import { useAuthentication } from '@/composables/useAuthentication';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import ChangePasswordForm from '@/components/auth/ChangePasswordForm.vue';
 import { useFormError } from '@/composables/useFormError';
@@ -55,6 +56,7 @@ const { errorMessage, handleError } = useFormError({
 });
 
 const { changePassword } = useUser();
+const { logoutAction } = useAuthentication();
 
 const { value: oldPassword, handleBlur: handleBlurOldPassword } = useField<string>('oldPassword');
 const { value: newPassword, handleBlur: handleBlurNewPassword } = useField<string>('newPassword');
@@ -64,10 +66,11 @@ const { value: newConfirmPassword, handleBlur: handleBlurNewConfirmPassword } =
 const onSubmit = handleSubmit(async (values: ChangePasswordData) => {
   try {
     const { success, message } = await changePassword(values);
-
+ 
     if (success) {
       ElMessage.success(t('message.change_password_success'));
       resetForm();
+      logoutAction();
     } else {
       errorMessage.value = message || t('error.change_password_failed');
     }

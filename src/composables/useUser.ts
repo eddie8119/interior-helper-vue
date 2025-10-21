@@ -237,7 +237,7 @@ export function useUser(): UseUserReturn {
   const { mutateAsync: mutateChangePassword } = useMutation({
     mutationFn: async (data: ChangePasswordData) => {
       const response = await userApi.changePassword(data);
-      return response.data;
+      return response;
     },
   });
 
@@ -249,7 +249,7 @@ export function useUser(): UseUserReturn {
       changePasswordError.value = null;
 
       const result = await mutateChangePassword(data);
-      return { success: result?.success ?? false, message: result?.message };
+      return result as unknown as { success: boolean; message?: string };
     } catch (err: unknown) {
       changePasswordError.value = err instanceof Error ? err : new Error(String(err));
       console.error('更改密碼失敗:', err);

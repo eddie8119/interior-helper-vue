@@ -34,16 +34,7 @@ export const userApi = {
   },
 
   // 重置密碼(忘記密碼)
-  resetPassword(data: ResetPasswordData) {
-    const { newPassword, newConfirmPassword, token, uid } = data;
-
-    const payload: ResetPasswordData = {
-      newPassword,
-      newConfirmPassword,
-      token,
-      uid,
-    };
-
+  resetPassword(payload: ResetPasswordData) {
     return request.patch('/user/reset-password/confirm/', payload);
   },
 

@@ -24,6 +24,7 @@ interface UseAuthenticationReturn {
   currentAuthentication: Ref<string>;
   authentications: AuthenticationItem[];
   handleAuthenticationChange: (value: string) => void;
+  logoutAction: () => void;
 }
 
 export const useAuthentication = (): UseAuthenticationReturn => {
@@ -67,5 +68,6 @@ export const useAuthentication = (): UseAuthenticationReturn => {
     currentAuthentication,
     authentications,
     handleAuthenticationChange,
+    logoutAction,
   };
 };

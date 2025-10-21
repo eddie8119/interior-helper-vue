@@ -35,3 +35,26 @@
     }
   }
 }
+
+.dark .el-checkbox {
+  .el-checkbox__inner {
+    border-color: var(--color-dark-primary-chart);
+  }
+
+  &.is-checked {
+    .el-checkbox__inner {
+      background-color: var(--color-dark-primary-chart);
+      border-color: var(--color-dark-primary-chart);
+    }
+
+    .el-checkbox__label {
+      color: var(--color-dark-primary-chart);
+    }
+  }
+
+  &:hover {
+    .el-checkbox__inner {
+      border-color: var(--color-dark-primary-chart);
+    }
+  }
+}

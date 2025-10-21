@@ -12,7 +12,7 @@ td {
 
 /* ===== Custom Table Global Styles (extracted from BasicTable.vue) ===== */
 .custom-table {
-  @apply bg-primary-background text-primary-text;
+  @apply background-color-difference text-color-difference;
 
   /* EP variable for current row background */
   --el-table-current-row-bg-color: var(--color-primary-panel);
@@ -23,11 +23,11 @@ td {
 
 .custom-table .el-table__cell,
 .custom-table .el-table__inner-wrapper {
-  @apply bg-primary-background text-primary-text;
+  @apply background-color-difference text-color-difference;
 }
 
 .custom-table .el-table__body tr:hover > td {
-  background-color: var(--color-primary-panel) !important;
+  @apply panel-color-difference;
 }
 
 /* Header cells background same as body rows */
@@ -35,18 +35,22 @@ td {
 .custom-table .el-table__header-wrapper .el-table__cell,
 .custom-table thead th,
 .custom-table thead .el-table__cell {
-  background-color: var(--color-primary-background) !important;
-  color: var(--color-primary-text) !important;
+  @apply background-color-difference text-color-difference;
 }
 
 /* Active (current-row) */
 .custom-table .el-table__body tr.current-row > td {
-  background-color: var(--color-primary-panel) !important;
+  @apply panel-color-difference;
 }
 
 /* Selected via checkbox */
 .custom-table .el-table__body tr:has(.el-checkbox__input.is-checked) > td,
 .custom-table .el-table__body tr:has(.el-checkbox.is-checked) > td,
 .custom-table .el-table__body tr.is-selected > td {
-  background-color: var(--color-primary-panel) !important;
+  @apply panel-color-difference;
+}
+
+//
+.table-text {
+  @apply text-color-difference;
 }

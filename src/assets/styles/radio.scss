@@ -41,6 +41,39 @@
   }
 }
 
+.dark .el-radio-button {
+  .el-radio-button__inner {
+    background-color: var(--color-dark-primary-panel);
+    border-color: var(--color-dark-primary-chart);
+    color: var(--color-dark-primary-text);
+    box-shadow: none;
+  }
+
+  &:not(.is-disabled):hover .el-radio-button__inner {
+    border-color: var(--color-dark-primary-chart);
+    color: var(--color-dark-primary-chart);
+  }
+
+  &:not(.is-disabled):focus-within .el-radio-button__inner {
+    box-shadow: 0 0 0 1px var(--color-dark-primary-chart) inset;
+  }
+
+  &.is-active .el-radio-button__inner,
+  &:not(.is-disabled) .el-radio-button__original-radio:checked + .el-radio-button__inner {
+    background-color: var(--color-dark-primary-chart);
+    border-color: var(--color-dark-primary-chart);
+    color: #fff;
+  }
+
+  &.is-disabled .el-radio-button__inner {
+    background-color: var(--color-dark-primary-panel);
+    border-color: var(--color-dark-primary-chart);
+    color: var(--color-dark-primary-text);
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
 /* ===============================
    🔲 額外修飾：群組外框平滑過渡
    =============================== */

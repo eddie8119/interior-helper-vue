@@ -9,13 +9,13 @@
 
 // panel
 .basic-container {
-  @apply rounded-xl shadow-lg dark:bg-black-500;
+  @apply rounded-xl shadow-lg;
 }
 
 .panel-container {
-  @apply basic-container bg-primary-panel p-3;
+  @apply basic-container panel-color-difference p-3;
 }
 
 .auth-container {
-  @apply h-full w-full rounded-none bg-primary-panel p-6 dark:!text-[#ffffff] md:h-auto md:w-[400px] md:rounded-xl md:shadow-lg;
+  @apply panel-color-difference h-full w-full rounded-none p-6 md:h-auto md:w-[400px] md:rounded-xl md:shadow-lg;
 }

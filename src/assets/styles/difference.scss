@@ -1,0 +1,52 @@
+/* for light/dark mode */
+.background-color-difference {
+  @apply bg-primary-background dark:bg-primaryDark-background;
+}
+
+.light-color-difference {
+  @apply bg-primary-light dark:bg-primaryDark-light;
+}
+
+.panel-color-difference {
+  @apply bg-primary-panel dark:bg-primaryDark-panel;
+}
+
+.text-color-difference {
+  @apply text-primary-text dark:text-primaryDark-text;
+}
+
+.text200-color-difference {
+  @apply text-primary-text-200 dark:text-primaryDark-text-200;
+}
+
+.diagram-color-difference {
+  @apply bg-primary-diagram dark:bg-primaryDark-diagram;
+}
+
+.chart-color-difference {
+  @apply bg-primary-chart dark:bg-primaryDark-chart;
+}
+
+.chart-text-color-difference {
+  @apply text-primary-chart dark:text-primaryDark-chart;
+}
+
+.card-color-difference {
+  @apply bg-primary-card dark:bg-primaryDark-card;
+}
+
+.card200-color-difference {
+  @apply bg-primary-card-200 dark:bg-primaryDark-card-200;
+}
+
+.card300-color-difference {
+  @apply bg-primary-card-300 dark:bg-primaryDark-card-300;
+}
+
+.border-color-difference {
+  @apply border-primary-border dark:border-primaryDark-border;
+}
+
+.border-brand-color-difference {
+  @apply border-primary-chart dark:border-primaryDark-chart;
+}

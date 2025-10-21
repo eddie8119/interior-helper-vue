@@ -31,11 +31,25 @@
   --color-primary-card: #e6e6e6;
   --color-primary-card-200: #e3f5ff;
   --color-primary-card-300: #e5ecf6;
+  --color-primary-border: #606266;
   --color-primary-light: #f7f9fb;
   --color-primary-blue: #e3f5ff;
   --color-primary-purple: #e5ecf6;
   --color-primary-purple-50: #edf2f8;
-  --color-primary-brand: #000000;
+
+  /* dark Primary Colors */
+  --color-dark-primary-background: #1c1c1c;
+  --color-dark-primary-panel: #9fa0a2;
+  --color-dark-primary-text: #ffffff;
+  --color-dark-primary-text-200: #9fa0a2;
+  --color-dark-primary-diagram: #95a4fc;
+  --color-dark-primary-chart: #0050be;
+  --color-dark-primary-axisLabel: #9fa0a2;
+  --color-dark-primary-card: #e6e6e6;
+  --color-dark-primary-card-200: #e3f5ff;
+  --color-dark-primary-card-300: #e5ecf6;
+  --color-dark-primary-border: #606266;
+  --color-dark-primary-light: #f7f9fb;
 
   /* Secondary Colors - Dynamically set from tenants.ts */
   --color-secondary-purple-a: #95a4fc;

@@ -38,12 +38,12 @@
     box-shadow: none;
 
     &:hover {
-      @apply border-brand-primary;
+      @apply border-brand-color-difference;
       box-shadow: none;
     }
 
     &.is-focus {
-      @apply border-brand-primary;
+      @apply border-brand-color-difference;
       box-shadow: none;
     }
   }
@@ -60,16 +60,17 @@
 }
 
 // Search input in tables and forms
-.input {
+.input_table {
   .el-input__wrapper {
-    @apply h-9 rounded-xl bg-primary-background;
+    @apply background-color-difference h-9 rounded-xl;
     border-radius: 8px;
     padding: 4px 8px;
     transition: border-color 0.3s ease;
+    border: 1px solid var(--color-primary-border);
 
     &.is-focus {
       box-shadow: none;
-      border: 1px solid var(--color-primary-text);
+      @apply border-brand-color-difference;
     }
 
     &.is-error {
@@ -78,12 +79,25 @@
   }
 
   // text color
-  .el-input__inner {
-    color: var(--color-primary-text);
+  .el-input__inner,
+  .el-input__inner:focus {
+    @apply text-color-difference;
+  }
+}
 
-    // focus state
-    &:focus {
-      color: var(--color-primary-text);
+.el-date-editor {
+  .el-input__wrapper {
+    @apply background-color-difference h-8 rounded-md;
+    transition: border-color 0.3s ease;
+    border: 1px solid var(--color-primary-border);
+
+    &.is-focus {
+      border-color: var(--color-primary-text);
+      box-shadow: none;
+    }
+
+    &.is-disabled {
+      @apply opacity-60;
     }
   }
 }

@@ -28,15 +28,25 @@ module.exports = {
     ],
     'vue/valid-template-root': 'error',
     'vue/no-unused-vars': 'warn',
-    '@typescript-eslint/no-unused-vars': 'warn',
-
-    'vue/max-attributes-per-line': [
-      'error',
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
       {
-        singleline: 3,
-        multiline: 1,
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
       },
     ],
+    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'warn',
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
+    'no-debugger': 'warn',
+    'no-alert': 'warn',
+    'prefer-const': 'error',
+    'no-var': 'error',
+
+    'vue/max-attributes-per-line': 'off',
     'vue/html-self-closing': [
       'error',
       {
@@ -47,24 +57,36 @@ module.exports = {
         },
       },
     ],
-    'vue/html-indent': ['error', 2],
-    'vue/html-closing-bracket-newline': [
-      'error',
-      {
-        singleline: 'never',
-        multiline: 'always',
-      },
-    ],
-    'vue/first-attribute-linebreak': [
-      'error',
-      {
-        singleline: 'ignore',
-        multiline: 'below',
-      },
-    ],
-    'vue/multiline-html-element-content-newline': 'error',
-    'vue/singleline-html-element-content-newline': 'off', //ESLint 和 Prettier衝突 取Prettier
+    'vue/html-indent': 'off',
+    'vue/html-closing-bracket-newline': 'off',
+    'vue/first-attribute-linebreak': 'off',
+    'vue/multiline-html-element-content-newline': 'off',
+    'vue/singleline-html-element-content-newline': 'off',
     'vue/multi-word-component-names': 'off',
+    'vue/component-name-in-template-casing': [
+      'warn',
+      'PascalCase',
+      {
+        registeredComponentsOnly: false,
+        ignores: ['router-link', 'router-view'],
+      },
+    ],
+    'vue/block-order': [
+      'error',
+      {
+        order: ['template', 'script', 'style'],
+      },
+    ],
+    'vue/define-macros-order': [
+      'error',
+      {
+        order: ['defineProps', 'defineEmits'],
+      },
+    ],
+    'vue/no-unused-refs': 'warn',
+    'vue/no-template-shadow': 'error',
+    'vue/no-v-html': 'warn',
+    'vue/require-default-prop': 'off',
     'import/order': [
       'warn',
       {
@@ -89,15 +111,6 @@ module.exports = {
         ignoreCase: true,
       },
     ],
-    'vue/composition-api-order': [
-      'error',
-      {
-        order: ['defineProps', 'defineEmits', 'defineExpose', 'defineOptions'],
-        groups: {
-          import: false, // 關掉 import 檢查
-        },
-      },
-    ],
   },
   overrides: [
     {
@@ -107,9 +120,8 @@ module.exports = {
         parser: '@typescript-eslint/parser',
       },
       rules: {
-        // 確保 Composition API 方法用箭頭函式
         'func-style': ['error', 'expression', { allowArrowFunctions: true }],
-        // 'vue/multi-word-component-names': 'off',
+        'vue/composition-api-order': 'off',
       },
     },
     {

@@ -6,19 +6,22 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "lint": "npm run lint:script && npm run lint:style",
-    "lint:script": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "lint:check": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
+    "lint": "npm run lint:check && npm run lint:style:check",
+    "lint:check": "npm run lint:fix -- --no-fix",
+    "lint:fix": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "lint:style": "stylelint **/*.{vue,scss} --fix",
-    "lint:fix": "eslint --fix --ext .js,.ts,.tsx,.vue src/",
+    "lint:style:check": "stylelint **/*.{vue,scss}",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,vue,scss,css,md,json}\"",
-    "fix": "npm run format && npm run lint:fix",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,vue,scss,css,md,json}\"",
+    "fix": "npm run format && npm run lint:fix && npm run lint:style",
     "test": "vitest",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "preview": "vite preview",
-    "locales:build": "node scripts/build-locales.js"
+    "locales:build": "node scripts/build-locales.js",
+    "locales:export": "node scripts/export-translator.js",
+    "locales:consolidate": "node scripts/consolidate-translator.js"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",

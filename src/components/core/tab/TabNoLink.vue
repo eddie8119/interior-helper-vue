@@ -24,8 +24,6 @@ import { useI18n } from 'vue-i18n';
 
 import type { Tab } from '@/types/layout';
 
-const { t } = useI18n();
-
 const props = defineProps<{
   tabsList: Tab[];
   modelValue: number;
@@ -34,6 +32,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:modelValue', value: number): void;
 }>();
+
+const { t } = useI18n();
 
 const tabsList = computed(() => {
   return props.tabsList.map((tab) => ({

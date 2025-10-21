@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <ElDialog
     v-model="dialogVisible"
     class="bg-primary-background"
     :width="computedWidth"
@@ -10,13 +10,13 @@
     align-center
     @close="onCancel"
   >
-    <el-form label-width="110px" class="device-form" @submit.prevent="onSubmit">
+    <ElForm label-width="110px" class="device-form" @submit.prevent="onSubmit">
       <slot />
-    </el-form>
+    </ElForm>
 
     <!-- Error Message Display -->
     <div v-if="errorMessage" class="error-message">
-      <el-alert :title="errorMessage" type="error" show-icon :closable="false" />
+      <ElAlert :title="errorMessage" type="error" show-icon :closable="false" />
     </div>
 
     <span class="mt-5 flex items-center gap-3">
@@ -44,7 +44,7 @@
         </TextButton>
       </slot>
     </span>
-  </el-dialog>
+  </ElDialog>
 </template>
 
 <script setup lang="ts">

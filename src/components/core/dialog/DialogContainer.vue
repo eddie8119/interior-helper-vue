@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <ElDialog
     v-model="dialogVisible"
     :title="title"
     :width="width"
@@ -13,7 +13,7 @@
         <slot name="footer" />
       </span>
     </template>
-  </el-dialog>
+  </ElDialog>
 </template>
 
 <script setup lang="ts">

@@ -3,16 +3,16 @@
     <div class="mb-4 flex items-center justify-between">
       <h2 class="text-xl font-semibold">{{ t('notification.reminderManager') }}</h2>
       <div class="flex space-x-2">
-        <el-button type="primary" :loading="isChecking" @click="handleCheckReminders">
+        <ElButton type="primary" :loading="isChecking" @click="handleCheckReminders">
           {{ t('notification.checkReminders') }}
-        </el-button>
-        <el-button type="success" :loading="isLoadingReminders" @click="refetchReminders">
+        </ElButton>
+        <ElButton type="success" :loading="isLoadingReminders" @click="refetchReminders">
           {{ t('common.refresh') }}
-        </el-button>
+        </ElButton>
       </div>
     </div>
 
-    <el-alert
+    <ElAlert
       v-if="checkSuccess"
       type="success"
       :title="t('notification.checkSuccess', { count: checkCount })"
@@ -20,38 +20,38 @@
       class="mb-4"
     />
 
-    <el-table
+    <ElTable
       v-loading="isLoadingReminders"
       :data="pendingReminders || []"
       border
       style="width: 100%"
       empty-text="No pending reminders"
     >
-      <el-table-column prop="title" :label="t('task.title')" min-width="150" />
-      <el-table-column :label="t('task.project')" min-width="150">
+      <ElTableColumn prop="title" :label="t('task.title')" min-width="150" />
+      <ElTableColumn :label="t('task.project')" min-width="150">
         <template #default="scope">
           {{ scope.row.Projects?.title || '-' }}
         </template>
-      </el-table-column>
-      <el-table-column :label="t('task.reminderTime')" min-width="180">
+      </ElTableColumn>
+      <ElTableColumn :label="t('task.reminderTime')" min-width="180">
         <template #default="scope">
           <div class="flex items-center">
-            <el-icon class="mr-1"><Clock /></el-icon>
+            <ElIcon class="mr-1"><Clock /></ElIcon>
             {{ formatDateTime(scope.row.reminder_datetime) }}
           </div>
         </template>
-      </el-table-column>
-      <el-table-column :label="t('task.status')" width="120">
+      </ElTableColumn>
+      <ElTableColumn :label="t('task.status')" width="120">
         <template #default="scope">
-          <el-tag :type="getStatusType(scope.row.status)">
+          <ElTag :type="getStatusType(scope.row.status)">
             {{ scope.row.status }}
-          </el-tag>
+          </ElTag>
         </template>
-      </el-table-column>
-      <el-table-column :label="t('notification.reminderStatus')" width="150">
+      </ElTableColumn>
+      <ElTableColumn :label="t('notification.reminderStatus')" width="150">
         <template #default="scope">
           <div class="flex items-center">
-            <el-tag
+            <ElTag
               v-if="scope.row.line_reminder_sent"
               type="success"
               effect="dark"
@@ -59,28 +59,28 @@
               class="mr-1"
             >
               LINE
-            </el-tag>
-            <el-tag v-else type="info" effect="plain" size="small" class="mr-1"> LINE </el-tag>
-            <el-tag v-if="scope.row.email_reminder_sent" type="success" effect="dark" size="small">
+            </ElTag>
+            <ElTag v-else type="info" effect="plain" size="small" class="mr-1"> LINE </ElTag>
+            <ElTag v-if="scope.row.email_reminder_sent" type="success" effect="dark" size="small">
               Email
-            </el-tag>
-            <el-tag v-else type="info" effect="plain" size="small"> Email </el-tag>
+            </ElTag>
+            <ElTag v-else type="info" effect="plain" size="small"> Email </ElTag>
           </div>
         </template>
-      </el-table-column>
-      <el-table-column :label="t('common.actions')" width="120" fixed="right">
+      </ElTableColumn>
+      <ElTableColumn :label="t('common.actions')" width="120" fixed="right">
         <template #default="scope">
-          <el-button
+          <ElButton
             type="primary"
             size="small"
             :loading="isResetting"
             @click="handleResetReminder(scope.row.id)"
           >
             {{ t('notification.reset') }}
-          </el-button>
+          </ElButton>
         </template>
-      </el-table-column>
-    </el-table>
+      </ElTableColumn>
+    </ElTable>
 
     <div
       v-if="pendingReminders && pendingReminders.length > 0"

@@ -29,11 +29,11 @@ import Table from '@/components/core/table/Table.vue';
 import H3Title from '@/components/core/title/H3Title.vue';
 import { PH_DEVICE_USAGE_COLUMNS } from '@/constants/columns/ph';
 
-const { t } = useI18n();
-
 const props = defineProps<{
   observationType: ObservationType;
 }>();
+
+const { t } = useI18n();
 
 const dummyDevices = computed(() => {
   switch (props.observationType) {

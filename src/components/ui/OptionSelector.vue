@@ -1,12 +1,12 @@
 <template>
-  <el-select v-model="model" :class="[className]" v-bind="$attrs">
-    <el-option
+  <ElSelect v-model="model" :class="[className]" v-bind="$attrs">
+    <ElOption
       v-for="option in options"
       :key="String(option.value)"
       :label="useI18nLabel ? t(`option.${namespace}.${option.value}`) : String(option.value)"
       :value="option.value"
     />
-  </el-select>
+  </ElSelect>
 </template>
 
 <script setup lang="ts">

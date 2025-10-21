@@ -70,16 +70,16 @@ import { useI18n } from 'vue-i18n';
 import type { TaskResponse } from '@/types/response';
 import type { TaskStatus } from '@/types/task';
 
-import TaskForm from '@/components/kanbanBoard/TaskForm.vue';
-import { useTasks } from '@/composables/useTasks';
 import H3Title from '@/components/core/title/H3Title.vue';
 import Label from '@/components/core/title/Label.vue';
+import TaskForm from '@/components/kanbanBoard/TaskForm.vue';
 import DateIcon from '@/components/ui/DateIcon.vue';
 import DragHandle from '@/components/ui/DragHandle.vue';
 import EditIcon from '@/components/ui/EditIcon.vue';
 import MaterialList from '@/components/ui/MaterialList.vue';
 import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
+import { useTasks } from '@/composables/useTasks';
 import { useTaskCardFilter } from '@/context/useTaskCardFilter';
 import { useTaskContext } from '@/context/useTaskContext';
 

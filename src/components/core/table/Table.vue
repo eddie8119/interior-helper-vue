@@ -8,7 +8,7 @@
 
     <!-- 搜索 -->
     <div v-if="props.showSearch" class="input mb-4 flex w-full items-center lg:w-1/4">
-      <el-input
+      <ElInput
         v-model="searchQuery"
         :placeholder="t('placeholder.search')"
         :prefix-icon="Search"
@@ -17,7 +17,7 @@
     </div>
 
     <!-- 表格 -->
-    <el-table
+    <ElTable
       ref="tableRef"
       v-loading="props.loading"
       :data="paginatedData"
@@ -41,16 +41,16 @@
         borderBottom: '1px solid var(--color-black-100)',
       }"
     >
-      <el-table-column v-if="props.showIdColumn" :width="idColumnLength" align="center">
+      <ElTableColumn v-if="props.showIdColumn" :width="idColumnLength" align="center">
         <template #default="{ $index }">
           <p class="text-primary-text">{{ $index + 1 }}</p>
         </template>
-      </el-table-column>
+      </ElTableColumn>
 
       <slot name="columns" :columns="otherColumns" :t="t" :props="props">
         <!-- Default column rendering -->
         <template v-for="column in otherColumns" :key="column.field">
-          <el-table-column
+          <ElTableColumn
             :prop="column.field"
             :label="t(`column.${column.field}`)"
             :min-width="column.minWidth || 80"
@@ -80,12 +80,12 @@
                 </template>
               </slot>
             </template>
-          </el-table-column>
+          </ElTableColumn>
         </template>
       </slot>
 
       <!-- 操作列 -->
-      <el-table-column
+      <ElTableColumn
         v-if="props.showActions && isAdmin"
         :label="t(`column.action`)"
         width="80"
@@ -99,8 +99,8 @@
             </slot>
           </div>
         </template>
-      </el-table-column>
-    </el-table>
+      </ElTableColumn>
+    </ElTable>
 
     <!-- 分頁器 -->
     <Pagination

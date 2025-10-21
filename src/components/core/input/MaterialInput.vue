@@ -47,8 +47,6 @@ export interface Item extends BasicItem {
   unitPrice?: number;
 }
 
-const { t } = useI18n();
-
 withDefaults(
   defineProps<{
     modelValue: Item[];
@@ -74,6 +72,8 @@ withDefaults(
 const emit = defineEmits<{
   (e: 'update:modelValue', value: Item[]): void;
 }>();
+
+const { t } = useI18n();
 
 const newItemFactory = (): Item => ({
   name: '',

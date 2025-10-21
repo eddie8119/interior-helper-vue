@@ -3,7 +3,7 @@
     <ShowNowTime />
     <div v-for="nav in navItems" :key="nav.id" class="flex items-center">
       <!-- 下拉選項 -->
-      <el-dropdown
+      <ElDropdown
         v-if="nav.dropdownItems"
         :trigger="'click'"
         @command="(command) => nav.action(command)"
@@ -21,17 +21,17 @@
           />
         </button>
         <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item
+          <ElDropdownMenu>
+            <ElDropdownItem
               v-for="item in nav.dropdownItems"
               :key="item.value"
               :command="item.value"
             >
               {{ t(`dropdown.${item.label}`) }}
-            </el-dropdown-item>
-          </el-dropdown-menu>
+            </ElDropdownItem>
+          </ElDropdownMenu>
         </template>
-      </el-dropdown>
+      </ElDropdown>
       <!-- 沒有下拉選項 -->
       <div v-else>
         <span

@@ -1,5 +1,5 @@
 <template>
-  <transition name="slide-panel">
+  <Transition name="slide-panel">
     <div
       v-if="modelValue"
       :class="[
@@ -27,7 +27,7 @@
         <slot />
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script setup lang="ts">

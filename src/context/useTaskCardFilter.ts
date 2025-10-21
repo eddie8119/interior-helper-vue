@@ -1,4 +1,5 @@
 import { inject, provide, ref, type Ref } from 'vue';
+
 import { type TaskCardDisplayMode } from '@/constants/selection';
 
 interface TaskCardFilterContext {

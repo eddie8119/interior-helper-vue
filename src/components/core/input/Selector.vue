@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <LabelText v-if="props.label" :title="props.label" />
-    <el-select
+    <ElSelect
       :model-value="props.modelValue"
       :placeholder="props.placeholder"
       class="w-full rounded-xl"
@@ -12,14 +12,14 @@
       @update:model-value="updateValue"
       @change="handleChange"
     >
-      <el-option
+      <ElOption
         v-for="option in props.options"
         :key="option[valueKey] || option[labelKey]"
         :label="option[labelKey]"
         :value="option[valueKey] || option[labelKey]"
         :class="optionClass"
       />
-    </el-select>
+    </ElSelect>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
-  <el-form-item :error="error">
-    <el-input
+  <ElFormItem :error="error">
+    <ElInput
       :model-value="modelValue"
       :placeholder="placeholder"
       :name="name"
@@ -11,8 +11,8 @@
       @blur="$emit('blur')"
     >
       <template #prefix />
-    </el-input>
-  </el-form-item>
+    </ElInput>
+  </ElFormItem>
 </template>
 
 <script setup lang="ts">

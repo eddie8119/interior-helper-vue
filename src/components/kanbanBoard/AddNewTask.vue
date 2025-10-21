@@ -26,17 +26,15 @@ import TaskForm from '@/components/kanbanBoard/TaskForm.vue';
 import { useTaskContext } from '@/context/useTaskContext';
 import { createTaskSchema } from '@/utils/schemas/createTaskSchema';
 
-const { t } = useI18n();
-const { addNewTask } = useTaskContext();
-
 const props = defineProps<{
   constructionId: string;
   projectId: string;
 }>();
-
 const emit = defineEmits<{
   (e: 'close'): void;
 }>();
+const { t } = useI18n();
+const { addNewTask } = useTaskContext();
 
 // 任務表單組件引用
 const taskFormRef = ref<InstanceType<typeof TaskForm> | null>(null);

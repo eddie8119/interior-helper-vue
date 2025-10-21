@@ -1,35 +1,35 @@
 <template>
-  <el-card class="panel-container">
+  <ElCard class="panel-container">
     <template #header>
       <div class="flex items-center">
-        <el-avatar :size="50" class="mr-4">
+        <ElAvatar :size="50" class="mr-4">
           {{ username?.charAt(0)?.toUpperCase() || 'U' }}
-        </el-avatar>
+        </ElAvatar>
         <H1Title :title="username" />
       </div>
     </template>
 
-    <el-skeleton :loading="loading" animated>
+    <ElSkeleton :loading="loading" animated>
       <template #default>
         <div class="profile-info space-y-6">
           <div class="info-section">
-            <el-descriptions :column="1" border>
-              <el-descriptions-item :label="t('label.user.username')">
+            <ElDescriptions :column="1" border>
+              <ElDescriptionsItem :label="t('label.user.username')">
                 <div class="flex items-center">
                   <span>{{ username }}</span>
                 </div>
-              </el-descriptions-item>
-              <el-descriptions-item :label="t('label.user.email')">
+              </ElDescriptionsItem>
+              <ElDescriptionsItem :label="t('label.user.email')">
                 <div class="flex items-center">
                   <span>{{ email }}</span>
                 </div>
-              </el-descriptions-item>
-            </el-descriptions>
+              </ElDescriptionsItem>
+            </ElDescriptions>
           </div>
         </div>
       </template>
-    </el-skeleton>
-  </el-card>
+    </ElSkeleton>
+  </ElCard>
 </template>
 
 <script setup lang="ts">

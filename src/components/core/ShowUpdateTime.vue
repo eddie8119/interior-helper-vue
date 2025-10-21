@@ -8,9 +8,8 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
 const props = defineProps<{ lastUpdateTime: Date | null | number }>();
-
+const { t } = useI18n();
 const formatTime = (value: Date | number | null): string => {
   if (!value) return '-';
 

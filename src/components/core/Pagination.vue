@@ -1,6 +1,6 @@
 <template>
   <div class="pagination-wrapper mt-4">
-    <el-pagination
+    <ElPagination
       v-model:current-page="currentPage"
       v-model:page-size="pageSize"
       layout="total, sizes, prev, pager, next"

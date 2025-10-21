@@ -56,8 +56,6 @@ import TextButton from '@/components/core/button/TextButton.vue';
 import MoveDialog from '@/components/core/dialog/MoveDialog.vue';
 import CheckIcon from '@/components/ui/CheckIcon.vue';
 
-const { t } = useI18n();
-
 const props = defineProps<{
   todoItem: TodoItemDraft;
 }>();
@@ -65,6 +63,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:todo-item', todo: TodoItemDraft): void;
 }>();
+
+const { t } = useI18n();
 
 const showMoveToProjectDialog = ref(false);
 </script>

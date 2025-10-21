@@ -9,11 +9,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import OptionSelector from '@/components/ui/OptionSelector.vue';
 
 import type { ProjectType } from '@/types/selection';
 import type { SelectorOption } from '@/types/selection';
 
+import OptionSelector from '@/components/ui/OptionSelector.vue';
 import { useCommon } from '@/composables/useCommon';
 
 const props = defineProps<{

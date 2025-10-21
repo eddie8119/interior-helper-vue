@@ -1,6 +1,6 @@
 import camelcaseKeys from 'camelcase-keys';
-import { Request, Response } from 'express';
 import { randomBytes } from 'crypto';
+import { Request, Response } from 'express';
 import snakecaseKeys from 'snakecase-keys';
 
 import { supabase } from '@/lib/supabase';
@@ -104,7 +104,8 @@ export const createProjectInvitation = async (req: Request, res: Response) => {
 
     // Get inviter name
     const { data: inviterData } = await supabase.auth.admin.getUserById(userId);
-    const inviterName = inviterData?.user?.user_metadata?.name || inviterData?.user?.email || 'Someone';
+    const inviterName =
+      inviterData?.user?.user_metadata?.name || inviterData?.user?.email || 'Someone';
 
     // Send invitation email
     await emailService.sendCollaboratorInvitation(
@@ -211,7 +212,8 @@ export const createGlobalInvitation = async (req: Request, res: Response) => {
 
     // Get inviter name
     const { data: inviterData } = await supabase.auth.admin.getUserById(userId);
-    const inviterName = inviterData?.user?.user_metadata?.name || inviterData?.user?.email || 'Someone';
+    const inviterName =
+      inviterData?.user?.user_metadata?.name || inviterData?.user?.email || 'Someone';
 
     // Send invitation email
     await emailService.sendCollaboratorInvitation(

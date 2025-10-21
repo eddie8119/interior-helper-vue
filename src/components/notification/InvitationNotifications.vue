@@ -1,9 +1,9 @@
 <template>
   <div class="invitation-notifications">
     <div v-if="isLoading" class="py-8 text-center">
-      <el-icon class="is-loading" :size="32">
+      <ElIcon class="is-loading" :size="32">
         <Loading />
-      </el-icon>
+      </ElIcon>
     </div>
 
     <div v-else-if="invitations && invitations.length > 0" class="space-y-4">
@@ -15,15 +15,15 @@
         <div class="flex items-start justify-between">
           <div class="flex-1">
             <div class="mb-2 flex items-center gap-2">
-              <el-tag
+              <ElTag
                 :type="invitation.invitationType === 'global' ? 'success' : 'primary'"
                 size="small"
               >
                 {{ t(`label.invitation.${invitation.invitationType}`) }}
-              </el-tag>
-              <el-tag type="info" size="small">
+              </ElTag>
+              <ElTag type="info" size="small">
                 {{ t(`option.role.${invitation.role}`) }}
-              </el-tag>
+              </ElTag>
             </div>
 
             <h4 class="mb-2 font-semibold text-gray-800">
@@ -47,17 +47,17 @@
           </div>
 
           <div class="ml-4 flex flex-col gap-2">
-            <el-button
+            <ElButton
               type="primary"
               size="small"
               :loading="isAccepting"
               @click="handleAccept(invitation.invitationToken)"
             >
               {{ t('button.accept') }}
-            </el-button>
-            <el-button size="small" :loading="isRejecting" @click="handleReject(invitation.id)">
+            </ElButton>
+            <ElButton size="small" :loading="isRejecting" @click="handleReject(invitation.id)">
               {{ t('button.reject') }}
-            </el-button>
+            </ElButton>
           </div>
         </div>
       </div>

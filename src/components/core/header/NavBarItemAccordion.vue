@@ -23,14 +23,14 @@ interface Item {
   action?: () => void;
 }
 
-const { t } = useI18n();
-
 const props = defineProps<{
   items: Item[];
   selectedItem?: Record<string, any> | string;
 }>();
 
 const emit = defineEmits(['select']);
+
+const { t } = useI18n();
 </script>
 
 <style lang="scss" scoped></style>

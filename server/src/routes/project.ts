@@ -6,9 +6,9 @@ import {
   getOverviewProjects,
   getProject,
   getProjects,
-  updateProject,
   getSharedProject,
   toggleProjectShare,
+  updateProject,
 } from '@/controllers/project';
 import { authMiddleware, requireUserId } from '@/middleware/auth';
 
@@ -19,7 +19,7 @@ router.get('/shared/:id', getSharedProject);
 
 router.use(authMiddleware);
 
-router.get('/overview', requireUserId, getOverviewProjects);  // 用於概覽頁面
+router.get('/overview', requireUserId, getOverviewProjects); // 用於概覽頁面
 router.get('/', requireUserId, getProjects);
 router.get('/:id', requireUserId, getProject);
 router.post('/', requireUserId, createProject);

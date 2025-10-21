@@ -1,5 +1,5 @@
 <template>
-  <el-form>
+  <ElForm>
     <FormInput
       :model-value="props.newPassword"
       name="newPassword"
@@ -25,7 +25,7 @@
     <router-link v-if="authStore.isAuthenticated" to="/">
       <p class="mb-2 text-sm">{{ t('link.back_to_home') }}</p>
     </router-link>
-  </el-form>
+  </ElForm>
 </template>
 
 <script setup lang="ts">
@@ -35,20 +35,18 @@ import FormInput from '../core/input/FormInput.vue';
 
 import { useAuthStore } from '@/stores/auth';
 
-const { t } = useI18n();
-const authStore = useAuthStore();
-
 const props = defineProps<{
   newPassword: string;
   newConfirmPassword: string;
   errors?: Record<string, string>;
   errorMessage?: string;
 }>();
-
 const emit = defineEmits<{
   (e: 'update:newPassword', value: string): void;
   (e: 'blur:newPassword'): void;
   (e: 'update:newConfirmPassword', value: string): void;
   (e: 'blur:newConfirmPassword'): void;
 }>();
+const { t } = useI18n();
+const authStore = useAuthStore();
 </script>

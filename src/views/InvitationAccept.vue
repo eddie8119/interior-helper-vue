@@ -4,9 +4,9 @@
       <!-- Loading State -->
       <div v-if="isLoading" class="rounded-lg bg-white p-8 shadow-md">
         <div class="flex flex-col items-center justify-center py-12">
-          <el-icon class="is-loading mb-4" :size="48">
+          <ElIcon class="is-loading mb-4" :size="48">
             <Loading />
-          </el-icon>
+          </ElIcon>
           <p class="text-gray-600">{{ t('message.loading') }}</p>
         </div>
       </div>
@@ -14,25 +14,25 @@
       <!-- Error State -->
       <div v-else-if="error" class="rounded-lg bg-white p-8 shadow-md">
         <div class="text-center">
-          <el-icon class="mb-4 text-red-500" :size="64">
+          <ElIcon class="mb-4 text-red-500" :size="64">
             <WarningFilled />
-          </el-icon>
+          </ElIcon>
           <h2 class="mb-4 text-2xl font-bold text-gray-800">{{ t('title.invitation_error') }}</h2>
           <p class="mb-6 text-gray-600">
             {{ error }}
           </p>
-          <el-button type="primary" @click="router.push('/')">
+          <ElButton type="primary" @click="router.push('/')">
             {{ t('button.back_to_home') }}
-          </el-button>
+          </ElButton>
         </div>
       </div>
 
       <!-- Invitation Details -->
       <div v-else-if="invitation" class="rounded-lg bg-white p-8 shadow-md">
         <div class="mb-8 text-center">
-          <el-icon class="mb-4 text-blue-500" :size="64">
+          <ElIcon class="mb-4 text-blue-500" :size="64">
             <Avatar />
-          </el-icon>
+          </ElIcon>
           <h1 class="mb-2 text-3xl font-bold text-gray-800">
             {{ t('title.collaboration_invitation') }}
           </h1>
@@ -44,9 +44,9 @@
         <div class="mb-6 space-y-4 rounded-lg bg-gray-50 p-6">
           <div class="flex items-center justify-between border-b border-gray-200 pb-3">
             <span class="font-semibold text-gray-700">{{ t('label.type') }}:</span>
-            <el-tag :type="invitation.invitationType === 'global' ? 'success' : 'primary'">
+            <ElTag :type="invitation.invitationType === 'global' ? 'success' : 'primary'">
               {{ t(`label.invitation.${invitation.invitationType}`) }}
-            </el-tag>
+            </ElTag>
           </div>
 
           <div
@@ -59,7 +59,7 @@
 
           <div class="flex items-center justify-between border-b border-gray-200 pb-3">
             <span class="font-semibold text-gray-700">{{ t('label.role') }}:</span>
-            <el-tag type="info">{{ t(`option.role.${invitation.role}`) }}</el-tag>
+            <ElTag type="info">{{ t(`option.role.${invitation.role}`) }}</ElTag>
           </div>
 
           <div class="flex items-center justify-between">
@@ -75,7 +75,7 @@
               {{ t('message.invitation.ready_to_accept') }}
             </p>
           </div>
-          <el-button
+          <ElButton
             type="primary"
             size="large"
             class="w-full"
@@ -83,7 +83,7 @@
             @click="handleAccept"
           >
             {{ t('button.accept_invitation') }}
-          </el-button>
+          </ElButton>
         </div>
 
         <!-- Not logged in -->
@@ -94,21 +94,21 @@
             </p>
           </div>
           <div class="flex gap-4">
-            <el-button
+            <ElButton
               type="primary"
               size="large"
               class="flex-1"
               @click="router.push(`/auth/login?redirect=/invitation/accept?token=${token}`)"
             >
               {{ t('button.login') }}
-            </el-button>
-            <el-button
+            </ElButton>
+            <ElButton
               size="large"
               class="flex-1"
               @click="router.push(`/auth/register?redirect=/invitation/accept?token=${token}`)"
             >
               {{ t('button.register') }}
-            </el-button>
+            </ElButton>
           </div>
         </div>
       </div>

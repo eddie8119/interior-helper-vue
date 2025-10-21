@@ -21,12 +21,8 @@
     <div class="mt-6">
       <Label :label="t('placeholder.project.add_new')" />
       <div class="flex gap-4">
-        <el-form-item
-          :error="inputValueError"
-          class="mb-0"
-          :class="{ 'has-error': inputValueError }"
-        >
-          <el-input
+        <ElFormItem :error="inputValueError" class="mb-0" :class="{ 'has-error': inputValueError }">
+          <ElInput
             v-model="inputValue"
             :placeholder="t('placeholder.project.add_new')"
             size="small"
@@ -34,7 +30,7 @@
             @blur="handleBlurInputValue"
             @keyup.enter="onSubmit"
           />
-        </el-form-item>
+        </ElFormItem>
         <div class="shrink-0">
           <TextButton
             type="submit"
@@ -64,8 +60,6 @@ import Label from '@/components/core/title/Label.vue';
 import DeleteButton from '@/components/ui/DeleteButton.vue';
 import { inputStringSchema } from '@/utils/schemas/inputStringSchema';
 
-const { t } = useI18n();
-
 defineProps<{
   title: string;
   localItems: string[];
@@ -75,6 +69,8 @@ const emit = defineEmits<{
   'delete-item': [index: string];
   'add-item': [newItem: string];
 }>();
+
+const { t } = useI18n();
 
 const { handleSubmit, isSubmitting, resetForm } = useForm({
   validationSchema: toTypedSchema(inputStringSchema),

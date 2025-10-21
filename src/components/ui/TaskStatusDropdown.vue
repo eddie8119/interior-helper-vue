@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown
+  <ElDropdown
     :trigger="readOnly ? 'contextmenu' : 'click'"
     :disabled="readOnly"
     @command="handleCommand"
@@ -13,31 +13,27 @@
     >
       {{ t(`option.status.${props.status}`) }}
       <svg
+        v-if="!readOnly"
         xmlns="http://www.w3.org/2000/svg"
         class="ml-1.5 h-4 w-4"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
-        v-if="!readOnly"
       >
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
       </svg>
     </button>
     <template v-if="!readOnly" #dropdown>
-      <el-dropdown-menu>
-        <el-dropdown-item
-          v-for="option in statusOptions"
-          :key="option.value"
-          :command="option.value"
-        >
+      <ElDropdownMenu>
+        <ElDropdownItem v-for="option in statusOptions" :key="option.value" :command="option.value">
           <div class="flex items-center">
             <div :class="['mr-3 h-3 w-3 rounded-full', option.color]" />
             <span :class="option.textColor">{{ t(`option.status.${option.value}`) }}</span>
           </div>
-        </el-dropdown-item>
-      </el-dropdown-menu>
+        </ElDropdownItem>
+      </ElDropdownMenu>
     </template>
-  </el-dropdown>
+  </ElDropdown>
 </template>
 
 <script setup lang="ts">
@@ -53,6 +49,8 @@ const props = defineProps<{
   readOnly?: boolean;
 }>();
 
+const emit = defineEmits<{ (e: 'update:status', status: TaskStatus): void }>();
+
 const { t } = useI18n();
 
 const statusOptions = [
@@ -60,8 +58,6 @@ const statusOptions = [
   { value: TaskStatusEnum.IN_PROGRESS, color: 'bg-blue-400', textColor: 'text-blue-800' },
   { value: TaskStatusEnum.DONE, color: 'bg-green-400', textColor: 'text-green-800' },
 ];
-
-const emit = defineEmits<{ (e: 'update:status', status: TaskStatus): void }>();
 
 const handleCommand = (command: TaskStatus) => {
   emit('update:status', command);

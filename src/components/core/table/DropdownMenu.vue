@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown trigger="click" @command="handleCommand">
+  <ElDropdown trigger="click" @command="handleCommand">
     <div class="flex cursor-pointer justify-center">
       <div class="group flex flex-col gap-1">
         <div class="h-1 w-1 rounded-full bg-black-400 group-hover:bg-brand-primary" />
@@ -8,13 +8,13 @@
       </div>
     </div>
     <template #dropdown>
-      <el-dropdown-menu>
-        <el-dropdown-item v-for="action in actions" :key="action.label" :command="action">
+      <ElDropdownMenu>
+        <ElDropdownItem v-for="action in actions" :key="action.label" :command="action">
           {{ t(`dropdown.${action.label}`) }}
-        </el-dropdown-item>
-      </el-dropdown-menu>
+        </ElDropdownItem>
+      </ElDropdownMenu>
     </template>
-  </el-dropdown>
+  </ElDropdown>
 </template>
 
 <script setup lang="ts">
@@ -25,12 +25,12 @@ interface Action {
   onClick: (row: any) => void;
 }
 
-const { t } = useI18n();
-
 const props = defineProps<{
   actions: Action[];
   row: any;
 }>();
+
+const { t } = useI18n();
 
 const handleCommand = (action: Action) => {
   action.onClick(props.row);

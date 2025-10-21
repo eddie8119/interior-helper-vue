@@ -53,8 +53,6 @@ interface Step {
   status: ProcessStatus;
 }
 
-const { t } = useI18n();
-
 const props = defineProps<{
   formattedDeviceAlarmRecords: AlarmRecord[] | null;
   isAdmin: boolean;
@@ -66,6 +64,8 @@ const props = defineProps<{
   showAlarmContent: string | null;
   showAlarmSeverity: string | null;
 }>();
+
+const { t } = useI18n();
 
 // 可以遠端控制 目前只有 PH儀器可以控
 const isShowRemoteController = computed(() => {

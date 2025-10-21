@@ -61,7 +61,7 @@
       <!-- 提醒 -->
       <div class="space-y-2">
         <Label label="設定提醒 (可選)" />
-        <el-date-picker
+        <ElDatePicker
           v-model="reminderDatetime"
           type="datetime"
           format="YYYY-MM-DD HH:mm:ss"

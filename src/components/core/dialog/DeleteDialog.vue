@@ -18,7 +18,7 @@
         若確認刪除，請在下方輸入 <span class="font-semibold text-red-500">{{ props.target }}</span>
       </p>
 
-      <el-input v-model="typeCheck" :placeholder="t('placeholder.project.project_name')" />
+      <ElInput v-model="typeCheck" :placeholder="t('placeholder.project.project_name')" />
     </div>
   </BasicEditDialog>
 </template>
@@ -28,8 +28,6 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
-
-const { t } = useI18n();
 
 const props = defineProps<{
   modelValue: boolean;
@@ -42,6 +40,8 @@ const emit = defineEmits<{
   'update:modelValue': [value: boolean];
   confirm: [];
 }>();
+
+const { t } = useI18n();
 
 const errorMessage = ref<string>('');
 const isSubmitting = ref(false);

@@ -15,7 +15,7 @@
   />
 
   <!-- 下滑式導航 -->
-  <transition name="slide-down">
+  <Transition name="slide-down">
     <div
       v-if="isHamburgerOpen"
       class="fixed left-0 top-[60px] z-50 w-full rounded-b-2xl bg-white shadow-lg dark:bg-black-900"
@@ -62,7 +62,7 @@
         </div>
       </nav>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script setup lang="ts">

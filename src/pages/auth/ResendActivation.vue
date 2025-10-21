@@ -13,16 +13,16 @@
       {{ t('button.resend') }}
     </template>
 
-    <el-form>
-      <el-form-item :error="errors.email">
-        <el-input
+    <ElForm>
+      <ElFormItem :error="errors.email">
+        <ElInput
           v-model="email"
           type="email"
           :placeholder="t('placeholder.auth.email')"
           @blur="handleBlurEmail"
         />
-      </el-form-item>
-    </el-form>
+      </ElFormItem>
+    </ElForm>
   </AuthCard>
 </template>
 

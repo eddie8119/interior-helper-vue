@@ -73,8 +73,6 @@ import H2Title from '@/components/core/title/H2Title.vue';
 import { availableRoles, type Member, Role } from '@/types/role';
 import { emailSchema } from '@/utils/schemas/emailSchema';
 
-const { t } = useI18n();
-
 const props = defineProps<{
   members: Member[];
 }>();
@@ -82,6 +80,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'member-invited', member: Member): void;
 }>();
+
+const { t } = useI18n();
 
 const { handleSubmit, errors, isSubmitting } = useForm({
   validationSchema: toTypedSchema(emailSchema),

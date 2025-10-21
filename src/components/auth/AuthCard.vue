@@ -12,7 +12,7 @@
     <!-- 這裡放表單內容 -->
     <slot />
 
-    <el-button
+    <ElButton
       v-if="props.showSubmitButton"
       type="primary"
       size="large"
@@ -23,7 +23,7 @@
       @click="emit('submit')"
     >
       <slot name="button-text"> {{ t('button.submit') }}</slot>
-    </el-button>
+    </ElButton>
 
     <!-- 消息 -->
     <div v-if="props.errorMessage" class="mt-2 text-center">
@@ -38,8 +38,6 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 
 const props = withDefaults(
   defineProps<{
@@ -62,6 +60,8 @@ const props = withDefaults(
 const emit = defineEmits<{
   (e: 'submit'): void;
 }>();
+
+const { t } = useI18n();
 </script>
 
 <style lang="scss" scoped>

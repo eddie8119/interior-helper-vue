@@ -14,7 +14,7 @@
           <p class="font-medium">{{ t('dialog.enable_project_sharing') }}</p>
           <p class="text-sm text-gray-500">{{ t('dialog.share_description') }}</p>
         </div>
-        <el-switch v-model="isShared" :loading="isToggling" @change="handleToggleShare" />
+        <ElSwitch v-model="isShared" :loading="isToggling" @change="handleToggleShare" />
       </div>
 
       <!-- 分享連結區域 -->
@@ -23,7 +23,7 @@
           {{ t('dialog.share_project_link') }}
         </p>
         <div class="flex items-center gap-2">
-          <el-input v-model="shareLink" readonly />
+          <ElInput v-model="shareLink" readonly />
           <TextButton variant="primary" size="sm" class="h-[30px] w-[70px]" @click="copyShareLink">
             {{ t('button.copy') }}
           </TextButton>

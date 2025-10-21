@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-4">
     <!-- Add Collaborator Section -->
     <div class="flex items-center gap-2">
-      <el-input
+      <ElInput
         v-model="newCollaboratorEmail"
         :placeholder="t('placeholder.email')"
         :disabled="isAdding"
@@ -28,26 +28,26 @@
 
     <!-- Collaborators List -->
     <div v-if="isLoading" class="flex justify-center py-8">
-      <el-icon class="is-loading" :size="24">
+      <ElIcon class="is-loading" :size="24">
         <Loading />
-      </el-icon>
+      </ElIcon>
     </div>
-    <el-table
+    <ElTable
       v-else-if="collaborators && collaborators.length > 0"
       :data="collaborators"
       style="width: 100%"
     >
-      <el-table-column :label="t('column.email')">
+      <ElTableColumn :label="t('column.email')">
         <template #default="scope">
           <div class="flex items-center gap-2">
             <span>{{ scope.row.collaboratorEmail }}</span>
-            <el-tag v-if="scope.row.isGlobal" size="small" type="success">
+            <ElTag v-if="scope.row.isGlobal" size="small" type="success">
               {{ t('label.global') }}
-            </el-tag>
+            </ElTag>
           </div>
         </template>
-      </el-table-column>
-      <el-table-column :label="t('column.role')" width="180">
+      </ElTableColumn>
+      <ElTableColumn :label="t('column.role')" width="180">
         <template #default="scope">
           <div class="flex flex-col gap-1">
             <OptionSelector
@@ -63,8 +63,8 @@
             </span>
           </div>
         </template>
-      </el-table-column>
-      <el-table-column :label="t('column.action')" width="100">
+      </ElTableColumn>
+      <ElTableColumn :label="t('column.action')" width="100">
         <template #default="scope">
           <TextButton
             v-if="!scope.row.isGlobal"
@@ -80,8 +80,8 @@
             {{ t('label.collaborator.global_managed') }}
           </span>
         </template>
-      </el-table-column>
-    </el-table>
+      </ElTableColumn>
+    </ElTable>
     <p v-else class="py-8 text-center text-gray-500">{{ emptyMessage }}</p>
   </div>
 </template>
@@ -98,8 +98,6 @@ import TextButton from '@/components/core/button/TextButton.vue';
 import OptionSelector from '@/components/ui/OptionSelector.vue';
 import { COLLABORATOR_ROLE_OPTIONS } from '@/constants/selection';
 
-const { t } = useI18n();
-
 const props = defineProps<{
   collaborators: any[];
   isLoading: boolean;
@@ -114,6 +112,8 @@ const emit = defineEmits<{
   updateRole: [payload: { collaboratorId: string; role: CollaboratorRole }];
   remove: [collaboratorId: string];
 }>();
+
+const { t } = useI18n();
 
 const newCollaboratorEmail = ref('');
 const newCollaboratorRole = ref<CollaboratorRole>('viewer');

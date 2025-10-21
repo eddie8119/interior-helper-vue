@@ -8,29 +8,29 @@
     @submit="onSubmit"
     @cancel="onCancel"
   >
-    <el-form-item :label="t('label.project.project_name')" :error="titleError">
-      <el-input
+    <ElFormItem :label="t('label.project.project_name')" :error="titleError">
+      <ElInput
         v-model="title"
         :placeholder="t('placeholder.project.project_name')"
         @blur="handleBlurTitle"
       />
-    </el-form-item>
-    <el-form-item :label="t('label.project.project_type')" :error="typeError">
-      <el-select
+    </ElFormItem>
+    <ElFormItem :label="t('label.project.project_type')" :error="typeError">
+      <ElSelect
         v-model="type"
         :placeholder="t('placeholder.project.project_type')"
         @blur="handleBlurType"
       >
-        <el-option
+        <ElOption
           v-for="item in PROJECT_TYPES"
           :key="item.value"
           :label="t(`project.type.${item.value}`)"
           :value="item.value"
         />
-      </el-select>
-    </el-form-item>
-    <el-form-item :label="t('label.project.construction')" :error="constructionContainerError">
-      <el-select
+      </ElSelect>
+    </ElFormItem>
+    <ElFormItem :label="t('label.project.construction')" :error="constructionContainerError">
+      <ElSelect
         v-model="constructionContainer"
         multiple
         filterable
@@ -41,8 +41,8 @@
         value-key="id"
         @blur="handleBlurConstructionContainer"
       >
-        <el-option :value="newConstructionItem" class="flex items-center gap-2">
-          <el-input
+        <ElOption :value="newConstructionItem" class="flex items-center gap-2">
+          <ElInput
             v-model="newConstructionItem"
             :placeholder="t('placeholder.project.add_new_construction')"
             size="small"
@@ -50,18 +50,18 @@
             @click.stop
           >
             <template #append>
-              <el-button :icon="Plus" size="small" @click.stop="addConstructionData" />
+              <ElButton :icon="Plus" size="small" @click.stop="addConstructionData" />
             </template>
-          </el-input>
-        </el-option>
-        <el-option
+          </ElInput>
+        </ElOption>
+        <ElOption
           v-for="item in localConstructionItems"
           :key="item.id"
           :label="item.name + '工程'"
           :value="item"
         />
-      </el-select>
-    </el-form-item>
+      </ElSelect>
+    </ElFormItem>
   </BasicEditDialog>
 </template>
 
@@ -79,18 +79,16 @@ import { useCommonAction } from '@/composables/useCommonAction';
 import { PROJECT_TYPES } from '@/constants/selection';
 import { createProjectSchema, type CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
 
-const { t } = useI18n();
-const queryClient = useQueryClient();
-const { newConstructionItem, localConstructionItems, addConstructionData } = useCommonAction();
-
 const props = defineProps<{
   modelValue: boolean;
 }>();
-
 const emit = defineEmits<{
   'update:modelValue': [value: boolean];
   'update:projectData': [projectData: CreateProjectSchema];
 }>();
+const { t } = useI18n();
+const queryClient = useQueryClient();
+const { newConstructionItem, localConstructionItems, addConstructionData } = useCommonAction();
 
 const errorMessage = ref<string>('');
 

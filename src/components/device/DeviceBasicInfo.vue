@@ -120,14 +120,15 @@ import TagEditDialog from '@/components/core/dialog/TagEditDialog.vue';
 import WaterQualityEditDialog from '@/components/core/dialog/WaterQualityEditDialog.vue';
 import H3Title from '@/components/core/title/H3Title.vue';
 
-const { t } = useI18n();
-
 const props = defineProps<{
   deviceData: Device;
   isAdmin: boolean;
   observationType: ObservationType;
 }>();
+
 const emit = defineEmits<{ 'update:deviceData': [deviceData: Device] }>();
+
+const { t } = useI18n();
 
 const waterOptionsList = ref([
   { name: t('option.waterQuality.pure_water'), value: 'pure_water' },

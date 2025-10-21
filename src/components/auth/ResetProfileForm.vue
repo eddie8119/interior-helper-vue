@@ -1,5 +1,5 @@
 <template>
-  <el-form>
+  <ElForm>
     <FormInput
       :model-value="props.email"
       name="email"
@@ -13,7 +13,7 @@
     <router-link to="/">
       <p class="mb-2 text-sm">Back to Home</p>
     </router-link>
-  </el-form>
+  </ElForm>
 </template>
 
 <script setup lang="ts">
@@ -21,14 +21,13 @@ import { useI18n } from 'vue-i18n';
 
 import FormInput from '../core/input/FormInput.vue';
 
-const { t } = useI18n();
 const props = defineProps<{
   email: string;
   errors?: Record<string, string>;
 }>();
-
 const emit = defineEmits<{
   (e: 'update:email', value: string): void;
   (e: 'blur:email'): void;
 }>();
+const { t } = useI18n();
 </script>

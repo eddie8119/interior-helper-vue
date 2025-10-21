@@ -1,5 +1,5 @@
 <template>
-  <el-form>
+  <ElForm>
     <FormInput
       :model-value="props.oldPassword"
       name="oldPassword"
@@ -32,7 +32,7 @@
       @update:model-value="emit('update:new-confirm-password', $event)"
       @blur="emit('blur:new-confirm-password')"
     />
-  </el-form>
+  </ElForm>
 </template>
 
 <script setup lang="ts">
@@ -40,14 +40,12 @@ import { useI18n } from 'vue-i18n';
 
 import FormInput from '../core/input/FormInput.vue';
 
-const { t } = useI18n();
 const props = defineProps<{
   oldPassword: string;
   newPassword: string;
   newConfirmPassword: string;
   errors?: Record<string, string>;
 }>();
-
 const emit = defineEmits<{
   (e: 'update:old-password', value: string): void;
   (e: 'blur:old-password'): void;
@@ -56,4 +54,5 @@ const emit = defineEmits<{
   (e: 'update:new-confirm-password', value: string): void;
   (e: 'blur:new-confirm-password'): void;
 }>();
+const { t } = useI18n();
 </script>

@@ -60,13 +60,13 @@ import { useI18n } from 'vue-i18n';
 
 import { useEditingStateStore } from '@/stores/editingState';
 
-const { t } = useI18n();
-
 const props = defineProps<{
   id: string;
 }>();
 
 const emit = defineEmits<{ (e: 'add-container', name: string): void }>();
+
+const { t } = useI18n();
 
 const editingStateStore = useEditingStateStore();
 const newContainerName = ref('');

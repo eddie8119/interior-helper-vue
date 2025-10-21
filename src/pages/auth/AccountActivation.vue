@@ -7,13 +7,13 @@
       <p class="mb-4 text-lg">
         {{ t('message.dialog.activation_success') }}
       </p>
-      <el-button
+      <ElButton
         type="primary"
         class="auth-brand-button w-full"
         @click="router.push({ name: 'login' })"
       >
         {{ t('button.login') }}
-      </el-button>
+      </ElButton>
     </div>
 
     <div v-else-if="activationStatus === 'error'" class="flex flex-col items-center">
@@ -22,15 +22,15 @@
       <p class="mb-4 text-sm text-secondary-red">
         {{ errorMessage }}
       </p>
-      <el-button type="primary" class="auth-brand-button w-full" @click="reActivateAccount">
+      <ElButton type="primary" class="auth-brand-button w-full" @click="reActivateAccount">
         {{ t('button.try_again') }}
-      </el-button>
+      </ElButton>
     </div>
 
     <div v-else class="text-center">
-      <el-icon class="mb-4 animate-spin text-4xl text-blue-500">
+      <ElIcon class="mb-4 animate-spin text-4xl text-blue-500">
         <Loading />
-      </el-icon>
+      </ElIcon>
       <p class="text-lg">
         {{ t('message.dialog.activating') }}
       </p>

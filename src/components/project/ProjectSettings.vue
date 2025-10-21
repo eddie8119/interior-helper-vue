@@ -1,6 +1,6 @@
 <template>
   <div class="mr-60 flex items-center gap-1">
-    <el-button
+    <ElButton
       v-for="button in actionButtons"
       :key="button.key"
       :type="button.type"

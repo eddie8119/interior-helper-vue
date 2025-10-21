@@ -1,14 +1,14 @@
 import express from 'express';
 
 import {
-  getProjectCollaborators,
-  addProjectCollaborator,
-  updateProjectCollaborator,
-  removeProjectCollaborator,
-  getGlobalCollaborators,
   addGlobalCollaborator,
-  updateGlobalCollaborator,
+  addProjectCollaborator,
+  getGlobalCollaborators,
+  getProjectCollaborators,
   removeGlobalCollaborator,
+  removeProjectCollaborator,
+  updateGlobalCollaborator,
+  updateProjectCollaborator,
 } from '@/controllers/collaborator';
 import { authMiddleware, requireUserId } from '@/middleware/auth';
 

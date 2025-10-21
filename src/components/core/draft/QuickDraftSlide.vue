@@ -1,5 +1,5 @@
 <template>
-  <transition class="hidden sm:block" name="todo-slide">
+  <Transition class="hidden sm:block" name="todo-slide">
     <div
       v-if="isQuickDraftSlideVisible"
       class="fixed left-0 top-0 z-[999] flex h-full w-[65%] max-w-[550px] rounded-r-[20px] bg-white shadow-xl"
@@ -17,7 +17,7 @@
         <QuickDraft />
       </div>
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <script setup lang="ts">

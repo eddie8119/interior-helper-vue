@@ -1,5 +1,5 @@
 <template>
-  <el-form>
+  <ElForm>
     <FormInput
       :model-value="props.email"
       name="email"
@@ -27,7 +27,7 @@
     <router-link to="/auth/forgot-password">
       <p class="mb-2 text-sm">{{ t('link.forgot_password') }}</p>
     </router-link>
-  </el-form>
+  </ElForm>
 </template>
 
 <script setup lang="ts">
@@ -35,17 +35,16 @@ import { useI18n } from 'vue-i18n';
 
 import FormInput from '@/components/core/input/FormInput.vue';
 
-const { t } = useI18n();
 const props = defineProps<{
   email: string;
   password: string;
   errors?: Record<string, string>;
 }>();
-
 const emit = defineEmits<{
   (e: 'update:email', value: string): void;
   (e: 'update:password', value: string): void;
   (e: 'blur:email'): void;
   (e: 'blur:password'): void;
 }>();
+const { t } = useI18n();
 </script>

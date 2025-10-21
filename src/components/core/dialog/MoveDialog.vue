@@ -11,34 +11,29 @@
     <p class="text-center text-lg">
       {{ t('dialog.move_note_to_project') }}
     </p>
-    <el-form-item :label="t('label.project.project')">
-      <el-select
+    <ElFormItem :label="t('label.project.project')">
+      <ElSelect
         v-model="selectedProject"
         value-key="id"
         :placeholder="t('placeholder.project.project')"
       >
-        <el-option
-          v-for="item in projects"
-          :key="item.id"
-          :label="item.title"
-          :value="item.title"
-        />
-      </el-select>
-    </el-form-item>
-    <el-form-item :label="t('label.project.construction')">
-      <el-select
+        <ElOption v-for="item in projects" :key="item.id" :label="item.title" :value="item.title" />
+      </ElSelect>
+    </ElFormItem>
+    <ElFormItem :label="t('label.project.construction')">
+      <ElSelect
         v-model="selectedConstruction"
         :placeholder="t('placeholder.project.construction')"
         :disabled="!selectedProject"
       >
-        <el-option
+        <ElOption
           v-for="item in constructionContainerOptions"
           :key="item.id"
           :label="item.name + '工程'"
           :value="item.id"
         />
-      </el-select>
-    </el-form-item>
+      </ElSelect>
+    </ElFormItem>
   </BasicEditDialog>
 </template>
 
@@ -56,6 +51,16 @@ import { useProjects } from '@/composables/useProjects';
 import { useTasks } from '@/composables/useTasks';
 import { useProjectsStore } from '@/stores/projects';
 
+const props = defineProps<{
+  modelValue: boolean;
+  target: TodoItemDraft;
+  subject?: string;
+}>();
+const emit = defineEmits<{
+  'update:modelValue': [value: boolean];
+  'update:target': [value: TodoItemDraft];
+  confirm: [];
+}>();
 const { t } = useI18n();
 const projectsStore = useProjectsStore();
 const { projects } = storeToRefs(projectsStore);
@@ -63,12 +68,6 @@ const { projects } = storeToRefs(projectsStore);
 // Get refetchProjects from useProjects
 const { refetchProjects } = useProjects();
 const { createTask, isCreatingTask, createError } = useTasks();
-
-const props = defineProps<{
-  modelValue: boolean;
-  target: TodoItemDraft;
-  subject?: string;
-}>();
 
 // 獲取所有專案 以及內部工程。如果piani沒有 才用api獲取
 watch(
@@ -79,12 +78,6 @@ watch(
     }
   }
 );
-
-const emit = defineEmits<{
-  'update:modelValue': [value: boolean];
-  'update:target': [value: TodoItemDraft];
-  confirm: [];
-}>();
 
 const isSubmitting = ref(false);
 const errorMessage = ref<string>('');

@@ -25,13 +25,12 @@ import { type RouteLocationRaw, useRoute } from 'vue-router';
 
 import type { Tab } from '@/types/layout';
 
-const { t } = useI18n();
-const route = useRoute();
 const props = defineProps<{
   subject: string;
   tabsList: Tab[];
 }>();
-
+const { t } = useI18n();
+const route = useRoute();
 const finalTabs = computed(() => {
   return props.tabsList.map((tab) => {
     const routeName = `todo-${tab.name}`;

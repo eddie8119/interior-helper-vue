@@ -34,8 +34,6 @@ import CollaboratorManagement from '@/components/collaborator/CollaboratorManage
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
 import { useProjectCollaborators } from '@/composables/useCollaborators';
 
-const { t } = useI18n();
-
 const props = defineProps<{
   modelValue: boolean;
   projectId: string;
@@ -45,6 +43,8 @@ const emit = defineEmits<{
   'update:modelValue': [value: boolean];
   confirm: [];
 }>();
+
+const { t } = useI18n();
 
 const errorMessage = ref<string>('');
 const isSubmitting = ref(false);

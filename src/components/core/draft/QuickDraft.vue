@@ -25,7 +25,7 @@
     </div>
 
     <div class="max-h-[calc(100vh-350px)] overflow-y-auto pr-1">
-      <transition-group name="todo-list" tag="div" class="space-y-3">
+      <TransitionGroup name="todo-list" tag="div" class="space-y-3">
         <TodoItem
           v-for="todo in filteredTodos"
           :key="todo.id"
@@ -33,7 +33,7 @@
           class="todo-list-item"
           @update:todo-item="updateTodo"
         />
-      </transition-group>
+      </TransitionGroup>
     </div>
   </div>
 </template>

@@ -5,16 +5,16 @@
       <p class="text-gray-500">{{ t('settings.notificationSettingsDescription') }}</p>
     </div>
 
-    <el-form
+    <ElForm
       v-loading="isLoadingSettings"
       :model="formData"
       label-position="top"
       @submit.prevent="handleSubmit"
     >
       <!-- LINE Notify Token -->
-      <el-form-item :label="t('settings.lineNotifyToken')">
+      <ElFormItem :label="t('settings.lineNotifyToken')">
         <div class="mb-2">
-          <el-input
+          <ElInput
             v-model="formData.lineNotifyToken"
             type="password"
             show-password
@@ -24,41 +24,41 @@
         <div class="mb-2 text-sm text-gray-500">
           {{ t('settings.lineNotifyTokenDescription') }}
         </div>
-        <el-link
+        <ElLink
           href="https://notify-bot.line.me/zh_TW/"
           target="_blank"
           type="primary"
           class="text-sm"
         >
-          {{ t('settings.getLineNotifyToken') }} <el-icon class="ml-1"><Link /></el-icon>
-        </el-link>
-      </el-form-item>
+          {{ t('settings.getLineNotifyToken') }} <ElIcon class="ml-1"><Link /></ElIcon>
+        </ElLink>
+      </ElFormItem>
 
       <!-- 通知開關 -->
-      <el-form-item>
-        <el-switch
+      <ElFormItem>
+        <ElSwitch
           v-model="formData.lineNotificationsEnabled"
           :active-text="t('settings.enableLineNotifications')"
           class="mb-2"
         />
         <div>
-          <el-switch
+          <ElSwitch
             v-model="formData.emailNotificationsEnabled"
             :active-text="t('settings.enableEmailNotifications')"
           />
         </div>
-      </el-form-item>
+      </ElFormItem>
 
       <!-- 提交按鈕 -->
-      <el-form-item>
-        <el-button type="primary" native-type="submit" :loading="isUpdating">
+      <ElFormItem>
+        <ElButton type="primary" native-type="submit" :loading="isUpdating">
           {{ t('common.save') }}
-        </el-button>
-      </el-form-item>
-    </el-form>
+        </ElButton>
+      </ElFormItem>
+    </ElForm>
 
     <!-- 成功提示 -->
-    <el-alert
+    <ElAlert
       v-if="saveSuccess"
       type="success"
       :title="t('settings.saveSuccess')"

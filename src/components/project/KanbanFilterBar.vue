@@ -21,7 +21,7 @@
     </div>
     <div class="filter-container w-full sm:w-[280px]">
       <Label :label="t('label.task.reminder_days_range')" />
-      <el-slider
+      <ElSlider
         v-model="daysRange"
         range
         :min="0"
@@ -42,10 +42,10 @@ import { useI18n } from 'vue-i18n';
 import type { TaskFilterStatus } from '@/constants/selection';
 import type { TaskCardDisplayMode } from '@/constants/selection';
 
-import OptionSelector from '@/components/ui/OptionSelector.vue';
 import Label from '@/components/core/title/Label.vue';
-import { useTaskCardFilter } from '@/context/useTaskCardFilter';
+import OptionSelector from '@/components/ui/OptionSelector.vue';
 import { STATUS_FILTER_OPTIONS, TASK_DISPLAY_OPTIONS } from '@/constants/selection';
+import { useTaskCardFilter } from '@/context/useTaskCardFilter';
 
 const emit = defineEmits<{
   (e: 'update:selectedStatus', value: TaskFilterStatus): void;

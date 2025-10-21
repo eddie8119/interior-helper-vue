@@ -115,8 +115,6 @@ import { useI18n } from 'vue-i18n';
 import H2Title from '@/components/core/title/H2Title.vue';
 import { availableRoles, type Member, Role } from '@/types/role';
 
-const { t } = useI18n();
-
 const props = defineProps<{
   members: Member[];
 }>();
@@ -125,6 +123,8 @@ const emit = defineEmits<{
   (e: 'member-removed', email: string): void;
   (e: 'role-changed', member: Member): void;
 }>();
+
+const { t } = useI18n();
 
 const currentUserRole = computed(() => Role.OWNER); // TODO: Get from auth store
 

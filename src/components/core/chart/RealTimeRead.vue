@@ -20,12 +20,12 @@ import H3Title from '@/components/core/title/H3Title.vue';
 import { ObservationType } from '@/types/device';
 import { getMainMeasureUnit, getUnitBound } from '@/utils/labelConvert';
 
-const { t } = useI18n();
-
 const props = defineProps<{
   deviceMeasurementData: WsData | undefined;
   observationType: ObservationType;
 }>();
+
+const { t } = useI18n();
 
 const chartContainer = ref<HTMLElement | null>(null);
 const chartInstance = ref<ECharts | null>(null);

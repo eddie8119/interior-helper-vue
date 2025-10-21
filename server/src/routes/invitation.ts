@@ -1,14 +1,14 @@
 import express from 'express';
 
 import {
-  createProjectInvitation,
+  acceptInvitation,
+  cancelInvitation,
   createGlobalInvitation,
+  createProjectInvitation,
+  getInvitationByToken,
   getMyInvitations,
   getSentInvitations,
-  acceptInvitation,
   rejectInvitation,
-  cancelInvitation,
-  getInvitationByToken,
 } from '@/controllers/invitation';
 import { authMiddleware, requireUserId } from '@/middleware/auth';
 

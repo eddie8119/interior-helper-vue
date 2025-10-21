@@ -11,9 +11,9 @@
       <!-- Main Content Area -->
       <main class="flex-1 overflow-y-auto overflow-x-hidden p-6">
         <router-view v-slot="{ Component }">
-          <keep-alive>
+          <KeepAlive>
             <component :is="Component" />
-          </keep-alive>
+          </KeepAlive>
         </router-view>
       </main>
     </div>

@@ -19,13 +19,13 @@
 </template>
 
 <script setup lang="ts">
-import ProjectTitle from '@/components/project/ProjectTitle.vue';
-import ProjectTypeComponent from '@/components/project/ProjectType.vue';
-import ProjectSettings from '@/components/project/ProjectSettings.vue';
-import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
-
 import type { ProjectResponse } from '@/types/response';
 import type { ProjectType as ProjectTypeValue } from '@/types/selection';
+
+import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
+import ProjectSettings from '@/components/project/ProjectSettings.vue';
+import ProjectTitle from '@/components/project/ProjectTitle.vue';
+import ProjectTypeComponent from '@/components/project/ProjectType.vue';
 
 defineProps<{
   localProject: ProjectResponse | null;

@@ -33,11 +33,10 @@ import type { Menu } from '@/types/layout';
 import { menu } from '@/constants/menu';
 import { getIconUrl } from '@/utils/assetUrl';
 
-const { t } = useI18n();
 const props = defineProps<{
   isSidebarCollapsed: boolean;
 }>();
-
+const { t } = useI18n();
 const menuList = computed<Menu[]>(() =>
   menu.map((node) => ({
     ...node,

@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
-import { passwordRules } from '@/constants/password';
 import type { TranslateFunction } from '@/types/i18n';
+
+import { passwordRules } from '@/constants/password';
 
 export const createChangePasswordSchema = (t: TranslateFunction) =>
   z

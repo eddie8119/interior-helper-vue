@@ -1,5 +1,5 @@
-import { headerBlock } from '../templates/partials/header';
 import { footerBlock } from '../templates/partials/footer';
+import { headerBlock } from '../templates/partials/header';
 import { container, formatDateTime } from '../utils/email';
 
 export const generateTaskReminderTemplate = (task: any): string => {

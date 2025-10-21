@@ -1,13 +1,13 @@
 <template>
   <div class="notification-view">
-    <el-tabs v-model="activeTab">
-      <el-tab-pane :label="t('notification.reminderManager')" name="reminders">
+    <ElTabs v-model="activeTab">
+      <ElTabPane :label="t('notification.reminderManager')" name="reminders">
         <ReminderManager />
-      </el-tab-pane>
-      <el-tab-pane :label="t('settings.notificationSettings')" name="settings">
+      </ElTabPane>
+      <ElTabPane :label="t('settings.notificationSettings')" name="settings">
         <UserSettingsForm />
-      </el-tab-pane>
-    </el-tabs>
+      </ElTabPane>
+    </ElTabs>
   </div>
 </template>
 

@@ -21,8 +21,6 @@ import Table from '@/components/core/table/Table.vue';
 import { useUpdateTime } from '@/composables/useUpdateTime';
 import { DEVICE_COLUMNS } from '@/constants/columns/device';
 
-const { lastUpdateTime, updateLastUpdateTime } = useUpdateTime();
-
 const props = defineProps<{
   devices: Device[];
   loading: boolean;
@@ -31,6 +29,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'edit', device: Device): void;
 }>();
+
+const { lastUpdateTime, updateLastUpdateTime } = useUpdateTime();
 
 const deviceActions = [
   {

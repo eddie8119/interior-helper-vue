@@ -22,7 +22,13 @@
       <p class="mb-4 text-sm text-secondary-red">
         {{ errorMessage }}
       </p>
-      <ElButton type="primary" class="auth-brand-button w-full" @click="reActivateAccount">
+      <ElButton
+        type="primary"
+        size="large"
+        class="auth-brand-button w-full"
+        block
+        @click="reActivateAccount"
+      >
         {{ t('button.try_again') }}
       </ElButton>
     </div>
@@ -40,7 +46,6 @@
 
 <script setup lang="ts">
 import { Loading } from '@element-plus/icons-vue';
-import { isAxiosError } from 'axios';
 import { onActivated, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
@@ -61,8 +66,8 @@ const errorMessage = ref<string>('');
 const activationStatus = ref<'pending' | 'success' | 'error'>('pending');
 
 const activateAccount = async () => {
-  const { uid, token } = route.query;
-  if (!uid || !token) {
+  const { token, email } = route.query;
+  if (!token || !email) {
     errorMessage.value = t('error.invalid_activation_link');
     activationStatus.value = 'error';
     return;
@@ -71,13 +76,13 @@ const activateAccount = async () => {
   try {
     isLoading.value = true;
     await userApi.activateAccount({
-      uid: uid as string,
       token: token as string,
+      email: email as string,
     });
     activationStatus.value = 'success';
-  } catch (error) {
-    if (isAxiosError(error)) {
-      errorMessage.value = error.response?.data?.detail || t('error.activation_failed');
+  } catch (error: any) {
+    if (error?.response?.data?.message) {
+      errorMessage.value = error.response.data.message;
     } else {
       errorMessage.value = t('error.activation_failed');
     }

@@ -27,16 +27,13 @@
 </template>
 
 <script setup lang="ts">
-import { isAxiosError } from 'axios';
 import { useField } from 'vee-validate';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { RegisterData } from '@/types/user';
-import type { AxiosError } from 'axios';
 
 import AuthCard from '@/components/auth/AuthCard.vue';
-import NameInput from '@/components/auth/NameInput.vue';
 import RegisterForm from '@/components/auth/RegisterForm.vue';
 import { useFormError } from '@/composables/useFormError';
 import { useFormValidation } from '@/composables/useFormValidation';
@@ -49,10 +46,6 @@ const { t } = useI18n();
 const authStore = useAuthStore();
 
 const showMessage = ref<string | undefined>(undefined);
-const verifiedStatus = {
-  UNVERIFIED: '0',
-  VERIFIED: '1',
-};
 
 const { handleSubmit, errors, isSubmitting } = useFormValidation<RegisterData>(
   createRegisterSchema(t),
@@ -79,7 +72,7 @@ const isValid = computed(() => {
   );
 });
 
-const { errorMessage, handleError, setErrorMessage } = useFormError({
+const { errorMessage, handleError } = useFormError({
   statusCodes: [400],
   defaultErrorKey: t('error.register_failed'),
 });
@@ -98,28 +91,19 @@ const onSubmit = handleSubmit(async (values: RegisterData) => {
     if (success) {
       showMessage.value = t('message.dialog.check_the_email');
       authStore.setPendingActivationEmail(email.value);
+      
+      // 註冊成功，導向激活頁面
+      setTimeout(() => {
+        router.push({
+          name: 'activation',
+          query: {
+            email: email.value,
+          },
+        });
+      }, 2000);
     }
   } catch (error) {
-    if (isAxiosError(error)) {
-      const emailMessage = error?.response?.data?.email;
-      const { verified } = emailMessage;
-
-      if (verified === verifiedStatus.UNVERIFIED) {
-        setErrorMessage(t('message.dialog.email_not_verified'));
-
-        setTimeout(() => {
-          router.push({
-            name: 'resend-activation',
-            query: {
-              email: email.value,
-              from: 'register',
-            },
-          });
-        }, 3000);
-      } else {
-        handleError(error as AxiosError);
-      }
-    }
+    handleError(error as any);
   }
 });
 </script>

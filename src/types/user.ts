@@ -32,8 +32,8 @@ export interface EditProfileData {
 }
 
 export interface ActivationData {
-  uid: string;
   token: string;
+  email: string;
 }
 
 export interface ResendActivationData {

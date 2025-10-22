@@ -7,16 +7,14 @@ import snakecaseKeys from 'snakecase-keys';
 
 export const register = async (req: Request, res: Response) => {
   try {
-
     const snakeCaseData = snakecaseKeys(req.body, { deep: true });
-        const { email, password, name  } = snakeCaseData;
-        
+    const { email, password, name } = snakeCaseData;
 
-    // 使用 admin client 建立使用者
+    // 使用 admin client 建立使用者，不自動確認郵件
     const { data: authData, error: signUpError } = await supabase.auth.admin.createUser({
       email,
       password,
-      email_confirm: true, //todo
+      email_confirm: false, // 需要驗證
     });
 
     if (signUpError || !authData.user) {
@@ -41,7 +39,7 @@ export const register = async (req: Request, res: Response) => {
       .maybeSingle();
 
     if (docError) {
-      // 如果 profile 建立失敗，刪除剛建立的 auth user 以保持資料一致性
+      // 如果 profile 建立失敗，刪除創建的 auth user 以保持資料一致性
       await supabase.auth.admin.deleteUser(authData.user.id);
       return res.status(500).json({
         success: false,
@@ -49,16 +47,48 @@ export const register = async (req: Request, res: Response) => {
       });
     }
 
-    // 建立使用者後，自動登入以取得 session tokens
-    const { data: sessionData, error: signInError } = await supabase.auth.signInWithPassword({
+    // 產生激活 token
+    const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
+      type: 'signup',
       email,
       password,
     });
 
-    if (signInError || !sessionData.session) {
+    if (linkError || !linkData.properties?.action_link) {
+      console.error('Generate activation link error:', linkError);
+      // 如果產生 token 失敗，刪除已建立的資料
+      await supabase.auth.admin.deleteUser(authData.user.id);
+      await supabase.from('Profiles').delete().eq('id', authData.user.id);
       return res.status(500).json({
         success: false,
-        message: signInError?.message || 'Auto-login failed after registration.',
+        message: 'Failed to generate activation link',
+      });
+    }
+
+    // 從 action_link 中提取 token
+    const actionLink = linkData.properties.action_link;
+    const url = new URL(actionLink);
+    const token = url.searchParams.get('token');
+
+    if (!token) {
+      await supabase.auth.admin.deleteUser(authData.user.id);
+      await supabase.from('Profiles').delete().eq('id', authData.user.id);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to extract activation token',
+      });
+    }
+
+    // 發送激活郵件
+    const emailSent = await emailService.sendActivationEmail(email, token, name);
+
+    if (!emailSent) {
+      // 如果郵件發送失敗，刪除已建立的資料
+      await supabase.auth.admin.deleteUser(authData.user.id);
+      await supabase.from('Profiles').delete().eq('id', authData.user.id);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to send activation email',
       });
     }
 
@@ -71,10 +101,8 @@ export const register = async (req: Request, res: Response) => {
           createdAt: authData.user.created_at,
         },
         userDoc,
-        access_token: sessionData.session.access_token,
-        refresh_token: sessionData.session.refresh_token,
       },
-      message: 'User registered and logged in successfully',
+      message: 'User registered successfully. Please check your email to activate your account.',
     });
   } catch (error) {
     console.error('Register error:', error);
@@ -449,6 +477,129 @@ export const changePassword = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Failed to change password',
+    });
+  }
+};
+
+// 激活帳戶 (驗證郵件)
+export const activateAccount = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        message: 'Activation token is required',
+      });
+    }
+
+    // 使用 token 驗證郵件
+    const { data, error } = await supabase.auth.verifyOtp({
+      type: 'signup',
+      token,
+      email: req.body.email,
+    });
+
+    if (error || !data.user) {
+      console.error('Email verification error:', error);
+      return res.status(400).json({
+        success: false,
+        message: error?.message || 'Invalid or expired activation token',
+      });
+    }
+
+    // 驗證成功了，註戶已激活
+    res.json({
+      success: true,
+      data: {
+        user: {
+          id: data.user.id,
+          email: data.user.email,
+        },
+      },
+      message: 'Email verified successfully. Your account is now active.',
+    });
+  } catch (error) {
+    console.error('Activate account error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to activate account',
+    });
+  }
+};
+
+// 重新發送激活郵件
+export const resendActivation = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is required',
+      });
+    }
+
+    // 檢查用戶是否存在
+    const { data: userProfile } = await supabase
+      .from('Profiles')
+      .select('id')
+      .eq('email', email)
+      .maybeSingle();
+
+    if (!userProfile) {
+      return res.json({
+        success: true,
+        message: 'If the email exists, a new activation link has been sent',
+      });
+    }
+
+    // 產生新的激活 token
+    const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
+      type: 'signup',
+      email,
+      password: Math.random().toString(36).slice(-8),
+    });
+
+    if (linkError || !linkData.properties?.action_link) {
+      console.error('Generate activation link error:', linkError);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to generate activation link',
+      });
+    }
+
+    // 從 action_link 中提取 token
+    const actionLink = linkData.properties.action_link;
+    const url = new URL(actionLink);
+    const token = url.searchParams.get('token');
+
+    if (!token) {
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to extract activation token',
+      });
+    }
+
+    // 發送激活郵件
+    const emailSent = await emailService.sendActivationEmail(email, token);
+
+    if (!emailSent) {
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to send activation email',
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Activation email sent successfully',
+    });
+  } catch (error) {
+    console.error('Resend activation error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to resend activation email',
     });
   }
 };

@@ -7,6 +7,7 @@ import {
   generatePasswordResetTemplate,
   generatePasswordChangedTemplate,
 } from './templates/passwordReset';
+import { generateAccountActivationTemplate } from './templates/accountActivation';
 import type { CollaboratorRole, InvitationType } from '@/types/response';
 
 // 用於發送任務提醒和每日摘要
@@ -113,6 +114,37 @@ export class EmailService {
       return true;
     } catch (error) {
       console.error('發送協作邀請郵件失敗:', error);
+      return false;
+    }
+  }
+
+  /**
+   * 發送帳戶激活郵件
+   */
+  async sendActivationEmail(
+    email: string,
+    activationToken: string,
+    userName?: string
+  ): Promise<boolean> {
+    try {
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+      const activationLink = `${frontendUrl}/auth/activation?token=${activationToken}&email=${encodeURIComponent(email)}`;
+
+      await sendMail({
+        from: `"${process.env.EMAIL_FROM_NAME || 'HSWE IoT'}" <${process.env.EMAIL_FROM}>`,
+        to: email,
+        subject: '驗證您的 HSWE IoT 帳戶',
+        html: generateAccountActivationTemplate({
+          email,
+          activationLink,
+          expiresIn: '24 小時',
+          userName,
+        }),
+      });
+
+      return true;
+    } catch (error) {
+      console.error('發送帳戶激活郵件失敗:', error);
       return false;
     }
   }

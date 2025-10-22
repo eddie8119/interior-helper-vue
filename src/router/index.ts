@@ -37,8 +37,8 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/auth/Register.vue'),
       },
       {
-        path: 'account-activation',
-        name: 'account-activation',
+        path: 'activation',
+        name: 'activation',
         component: () => import('../pages/auth/AccountActivation.vue'),
       },
       {
@@ -173,7 +173,7 @@ const router = createRouter({
 router.beforeEach((to, _from, next) => {
   const authStore = useAuthStore();
 
-  const publicPages = ['/auth/login', '/auth/register', '/auth/forgot-password'];
+  const publicPages = ['/auth/login', '/auth/register', '/auth/activation', '/auth/forgot-password'];
   const isPublicPage = publicPages.includes(to.path);
 
   if (!isPublicPage && !authStore.isAuthenticated) {

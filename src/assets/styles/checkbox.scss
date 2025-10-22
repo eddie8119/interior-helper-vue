@@ -1,8 +1,9 @@
 .el-checkbox {
+  // 統一尺寸與 check 樣式
   .el-checkbox__inner {
     width: 18px;
     height: 18px;
-    border: 2px solid var(--color-primary-chart);
+    border: 2px solid var(--checkbox-border-color, var(--color-primary-chart));
 
     &::after {
       border-width: 2px;
@@ -12,49 +13,36 @@
     }
   }
 
-  &.is-checked {
-    .el-checkbox__inner {
-      background-color: var(--color-primary-chart);
-      border-color: var(--color-primary-chart);
-    }
-
-    .el-checkbox__label {
-      color: var(--color-primary-chart);
-      font-weight: 500;
-    }
-  }
-
+  // label 基本樣式
   .el-checkbox__label {
     font-size: 14px;
     padding-left: 6px;
+    transition: color 0.2s ease;
   }
 
-  &:hover {
+  // hover 狀態
+  &:hover .el-checkbox__inner {
+    border-color: var(--checkbox-active-color, var(--color-primary-chart));
+  }
+
+  // ✅ Checked 狀態共用
+  &.is-checked {
     .el-checkbox__inner {
-      border-color: var(--color-primary-chart);
+      background-color: var(--checkbox-active-color, var(--color-primary-chart));
+      border-color: var(--checkbox-active-color, var(--color-primary-chart));
+    }
+
+    .el-checkbox__label {
+      color: var(--checkbox-active-color, var(--color-primary-chart));
+      font-weight: 500;
     }
   }
 }
 
+/* ===============================
+   🌙 Dark Theme Override
+   =============================== */
 .dark .el-checkbox {
-  .el-checkbox__inner {
-    border-color: var(--color-dark-primary-chart);
-  }
-
-  &.is-checked {
-    .el-checkbox__inner {
-      background-color: var(--color-dark-primary-chart);
-      border-color: var(--color-dark-primary-chart);
-    }
-
-    .el-checkbox__label {
-      color: var(--color-dark-primary-chart);
-    }
-  }
-
-  &:hover {
-    .el-checkbox__inner {
-      border-color: var(--color-dark-primary-chart);
-    }
-  }
+  --checkbox-border-color: var(--color-dark-primary-chart);
+  --checkbox-active-color: var(--color-dark-primary-chart);
 }

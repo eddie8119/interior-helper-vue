@@ -1,84 +1,65 @@
-/* 通用樣式 */
+/* 主題變數 — 預設亮色模式 */
+:root {
+  --rb-panel: var(--color-primary-panel);
+  --rb-chart: var(--color-primary-chart);
+  --rb-text: var(--color-primary-text);
+}
+
+/* 暗色模式覆寫變數 */
+.dark {
+  --rb-panel: var(--color-dark-primary-panel);
+  --rb-chart: var(--color-dark-primary-chart);
+  --rb-text: var(--color-dark-primary-text);
+}
+
+/* ===============================
+   基本樣式與互動狀態
+   =============================== */
 .el-radio-button {
   .el-radio-button__inner {
-    background-color: var(--color-primary-panel);
-    border-color: var(--color-primary-chart);
-    color: var(--color-primary-text);
+    background-color: var(--rb-panel);
+    border-color: var(--rb-chart);
+    color: var(--rb-text);
+    box-shadow: none;
     transition:
       background-color 0.2s ease,
       border-color 0.2s ease,
       color 0.2s ease,
       box-shadow 0.2s ease;
-    box-shadow: none;
   }
 
-  /* hover 狀態 */
+  /* hover */
   &:not(.is-disabled):hover .el-radio-button__inner {
-    border-color: var(--color-primary-chart);
-    color: var(--color-primary-chart);
+    border-color: var(--rb-chart);
+    color: var(--rb-chart);
   }
 
-  /* focus 狀態（鍵盤聚焦） */
+  /* focus */
   &:not(.is-disabled):focus-within .el-radio-button__inner {
-    box-shadow: 0 0 0 1px var(--color-primary-chart) inset;
+    box-shadow: 0 0 0 1px var(--rb-chart) inset;
   }
 
-  /* active / checked 狀態 */
+  /* active / checked */
   &.is-active .el-radio-button__inner,
   &:not(.is-disabled) .el-radio-button__original-radio:checked + .el-radio-button__inner {
-    background-color: var(--color-primary-chart);
-    border-color: var(--color-primary-chart);
+    background-color: var(--rb-chart);
+    border-color: var(--rb-chart);
     color: #fff;
   }
 
-  /* disabled 狀態 */
+  /* disabled */
   &.is-disabled .el-radio-button__inner {
-    background-color: var(--color-primary-panel);
-    border-color: var(--color-primary-chart);
-    color: var(--color-primary-text);
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
-
-.dark .el-radio-button {
-  .el-radio-button__inner {
-    background-color: var(--color-dark-primary-panel);
-    border-color: var(--color-dark-primary-chart);
-    color: var(--color-dark-primary-text);
-    box-shadow: none;
-  }
-
-  &:not(.is-disabled):hover .el-radio-button__inner {
-    border-color: var(--color-dark-primary-chart);
-    color: var(--color-dark-primary-chart);
-  }
-
-  &:not(.is-disabled):focus-within .el-radio-button__inner {
-    box-shadow: 0 0 0 1px var(--color-dark-primary-chart) inset;
-  }
-
-  &.is-active .el-radio-button__inner,
-  &:not(.is-disabled) .el-radio-button__original-radio:checked + .el-radio-button__inner {
-    background-color: var(--color-dark-primary-chart);
-    border-color: var(--color-dark-primary-chart);
-    color: #fff;
-  }
-
-  &.is-disabled .el-radio-button__inner {
-    background-color: var(--color-dark-primary-panel);
-    border-color: var(--color-dark-primary-chart);
-    color: var(--color-dark-primary-text);
+    background-color: var(--rb-panel);
+    border-color: var(--rb-chart);
+    color: var(--rb-text);
     opacity: 0.5;
     cursor: not-allowed;
   }
 }
 
 /* ===============================
-   🔲 額外修飾：群組外框平滑過渡
+   🔲 群組邊角修飾
    =============================== */
-
-/* 第一個與最後一個邊框銜接修正 */
 .el-radio-button__inner {
   border-radius: 0;
 }

@@ -1,51 +1,56 @@
 .dropdown-container {
-  @apply absolute right-0 top-full z-10 mt-2 grid w-32 grid-cols-1 gap-1 rounded-lg bg-black-200 p-2 shadow-lg dark:bg-black-500;
+  @apply absolute right-0 top-full z-10 mt-2 grid w-32 grid-cols-1 gap-1 rounded-lg p-2 shadow-lg;
+  @apply bg-black-200 dark:bg-black-500;
 }
 
+/* ===============================
+   🔹 Dropdown Button (custom in component)
+   =============================== */
 .dropdown-container-button {
-  @apply flex w-full items-center gap-2 rounded-xl p-2 hover:bg-black-200 dark:hover:bg-black-500;
+  @apply flex w-full items-center gap-2 rounded-xl p-2 transition-colors duration-200;
+  @apply hover:bg-black-200 dark:hover:bg-black-500;
+
+  &.active {
+    @apply bg-black-100 dark:bg-black-400;
+  }
 }
 
-.dropdown-container-button-active {
-  @apply bg-black-100 dark:bg-black-400;
-}
-
-/* Element Plus dropdown popper (panel container injected into body) */
+/* ===============================
+   🔹 Element Plus Dropdown (global popper container)
+   =============================== */
 .el-dropdown__popper.el-popper {
-  @apply bg-primary-panel text-primary-text dark:bg-primaryDark-panel dark:text-primaryDark-text;
+  @apply text-primary-text dark:text-primaryDark-text;
+  @apply bg-primary-panel dark:bg-primaryDark-panel;
+  @apply overflow-hidden rounded-lg shadow-lg;
   border: 1px solid transparent !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
-  border-radius: 8px !important;
-  overflow: hidden;
 }
 
-/* The actual menu list */
+/* ===============================
+   🔹 Dropdown Menu List
+   =============================== */
 .el-dropdown-menu {
-  @apply panel-color-difference text-color-difference;
+  @apply panel-color-difference text-color-difference p-1;
   border: none !important;
-  padding: 4px;
 }
 
-/* Menu items */
+/* ===============================
+   🔹 Dropdown Menu Items
+   =============================== */
 .el-dropdown-menu__item {
-  @apply text-color-difference;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+  @apply text-color-difference rounded-md px-2 py-1 transition-colors duration-200;
 
-  &:hover {
-    background-color: var(--color-primary-hover, rgba(255, 255, 255, 0.05)) !important;
+  &:hover,
+  &.selected {
     @apply chart-text-color-difference;
+    background-color: var(--color-primary-hover, rgba(255, 255, 255, 0.08)) !important;
   }
 
   &.selected {
-    background-color: var(--color-primary-hover, rgba(255, 255, 255, 0.1)) !important;
-    @apply chart-text-color-difference;
     font-weight: 600;
   }
 
   &.is-disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+    @apply cursor-not-allowed opacity-60;
   }
 }

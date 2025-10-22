@@ -20,6 +20,7 @@ import type {
 } from '@/types/user';
 
 import { userApi } from '@/api/user';
+import { useAuthStore } from '@/stores/auth';
 
 interface UseUserReturn {
   // 獲取用戶資料
@@ -67,6 +68,8 @@ interface UseUserReturn {
 const QUERY_KEY = 'user';
 
 export function useUser(): UseUserReturn {
+  const authStore = useAuthStore();
+
   // 狀態追蹤
   const isRegistering = ref(false);
   const registerError = ref<Error | null>(null);
@@ -97,6 +100,7 @@ export function useUser(): UseUserReturn {
       const response = await userApi.getUserProfile();
       return response.data;
     },
+    enabled: authStore.isAuthenticated, // 未登入不發送請求
     staleTime: 1000 * 60 * 5, // 5分鐘
     gcTime: 1000 * 60 * 10, // 10分鐘
   });

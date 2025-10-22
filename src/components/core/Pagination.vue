@@ -43,14 +43,14 @@ const pageSize = computed({
     // 總數和每頁條數選擇器
     .el-pagination__total,
     .el-pagination__sizes {
-      @apply text-black-900 dark:text-white;
+      @apply text-primary-text dark:text-primaryDark-text;
     }
 
     // 按鈕樣式（上一頁、下一頁、頁碼）
     .btn-prev,
     .btn-next,
     .el-pager li {
-      @apply rounded-full border-none bg-transparent text-black-900 transition-colors dark:text-white;
+      @apply rounded-full border-none bg-transparent text-primary-text transition-colors dark:text-primaryDark-text;
 
       &:hover {
         @apply bg-black-100 dark:bg-black-900;

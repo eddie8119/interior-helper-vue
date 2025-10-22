@@ -8,7 +8,9 @@
       :style="{
         WebkitMaskImage: `url(${getIconUrl('back')})`,
         maskImage: `url(${getIconUrl('back')})`,
-        backgroundColor: 'var(--color-primary-text)',
+        backgroundColor: isDarkMode
+          ? 'var(--color-dark-primary-text)'
+          : 'var(--color-primary-text)',
       }"
       aria-label="back Icon"
       role="img"
@@ -17,11 +19,14 @@
 </template>
 
 <script setup lang="ts">
+import { inject, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { getIconUrl } from '@/utils/assetUrl';
 
 const router = useRouter();
+
+const isDarkMode = inject('isDarkMode') as Ref<boolean>;
 
 const handleBack = () => {
   router.back();

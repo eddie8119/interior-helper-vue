@@ -1,5 +1,5 @@
 <template>
-  <div class="table-container panel-container relative p-4">
+  <div class="panel-container relative p-4">
     <ShowUpdateTime
       v-if="props.lastUpdateTime"
       class="absolute right-4 top-4"
@@ -7,7 +7,7 @@
     />
 
     <!-- 搜索 -->
-    <div v-if="props.showSearch" class="input mb-4 flex w-full items-center lg:w-1/4">
+    <div v-if="props.showSearch" class="input_table mb-4 flex w-full items-center lg:w-1/4">
       <ElInput
         v-model="searchQuery"
         :placeholder="t('placeholder.search')"
@@ -18,12 +18,11 @@
 
     <!-- 表格 -->
     <ElTable
-      ref="tableRef"
       v-loading="props.loading"
       :data="paginatedData"
+      :height="tableHeight"
       class="custom-table"
       :border="false"
-      v-bind="tableAttributes"
       header-row-class-name="table-header"
       highlight-current-row
       :header-cell-style="{
@@ -32,18 +31,11 @@
         padding: '16px 0',
         whiteSpace: 'nowrap',
         fontWeight: 'bold',
-        borderBottom: '1px solid var(--color-black-300)',
-      }"
-      :cell-style="{
-        height: '40px',
-        lineHeight: '40px',
-        color: 'var(--color-black-900)',
-        borderBottom: '1px solid var(--color-black-100)',
       }"
     >
       <ElTableColumn v-if="props.showIdColumn" :width="idColumnLength" align="center">
         <template #default="{ $index }">
-          <p class="text-primary-text">{{ $index + 1 }}</p>
+          <p class="table-text">{{ $index + 1 }}</p>
         </template>
       </ElTableColumn>
 
@@ -56,7 +48,7 @@
             :min-width="column.minWidth || 80"
             :sortable="true"
             show-overflow-tooltip
-            class="text-primary-text"
+            class="table-text"
           >
             <template #default="scope">
               <slot :name="column.field" :row="scope.row">
@@ -64,7 +56,7 @@
                 <template v-if="column.field === 'title'">
                   <router-link
                     :to="`/todo/project/${scope.row.id}`"
-                    class="text-primary-chart underline"
+                    class="chart-text-color-difference underline"
                   >
                     {{ scope.row[column.field] }}
                   </router-link>
@@ -73,10 +65,8 @@
                   {{ formatDateTimeWithDay(new Date(scope.row[column.field])) }}
                 </template>
                 <template v-else>
-                  <span v-if="scope.row[column.field] === undefined" class="text-primary-text">
-                    N/A</span
-                  >
-                  <p v-else class="text-primary-text">{{ scope.row[column.field] }}</p>
+                  <span v-if="scope.row[column.field] === undefined" class="table-text"> N/A</span>
+                  <p v-else class="table-text">{{ scope.row[column.field] }}</p>
                 </template>
               </slot>
             </template>
@@ -140,8 +130,8 @@ const props = withDefaults(
     showSearch?: boolean;
     showPagination?: boolean;
     lastUpdateTime?: Date | null | number;
-    height?: string;
     observationType?: string;
+    tableHeight?: string;
   }>(),
   {
     data: () => [] as T[],
@@ -153,8 +143,8 @@ const props = withDefaults(
     showSearch: true,
     showPagination: true,
     lastUpdateTime: null,
-    height: undefined,
     observationType: '',
+    tableHeight: '350px',
   }
 );
 
@@ -169,11 +159,6 @@ const pageSize = ref<number>(20);
 const idColumnLength: string = '50';
 
 const otherColumns = computed<Column[]>(() => props.columns.slice(1));
-
-// 表格屬性，根據是否有Height來決定是否設置高度
-const tableAttributes = computed(() => {
-  return props.height ? { height: props.height } : {};
-});
 
 // 過濾和搜索邏輯
 const filteredData = computed(() => {

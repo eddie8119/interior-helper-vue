@@ -3,7 +3,7 @@
     <img
       src="@/assets/icons/CompanyLogo.png"
       :alt="`logo-Icon`"
-      class="icon-logo h-[42px] w-[125px]"
+      class="icon-logo h-7 w-20 md:h-[42px] md:w-[125px]"
     />
   </router-link>
 </template>

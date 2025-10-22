@@ -1,23 +1,28 @@
 <template>
   <nav class="flex flex-col gap-5">
     <div v-for="node in menuList" :key="`menu-group-${node.group}`" class="flex flex-col gap-1">
-      <div v-show="isCollapsed" class="px-3 text-xs text-black-400">
+      <div v-show="showGroupTitle" :class="groupTitleClassComputed">
         {{ node.group }}
       </div>
       <div v-for="item in node.items" :key="`menu-item-${item.label}`" class="flex flex-col gap-1">
-        <router-link
-          :to="item.route"
-          class="sidebar-nav-link"
-          :class="{ 'justify-center': isSidebarCollapsed }"
-        >
+        <router-link :to="item.route" :class="linkClassComputed" @click="$emit('item-click')">
           <div class="flex items-center gap-2">
-            <img
-              :src="getIconUrl(item.icon)"
-              :alt="`${item.name}-icon`"
-              class="h-5 w-5 invert dark:invert-0"
+            <span
+              class="icon-hover icon-mask"
+              :style="{
+                WebkitMaskImage: `url(${getIconUrl(item.icon)})`,
+                maskImage: `url(${getIconUrl(item.icon)})`,
+                backgroundColor: isDarkMode
+                  ? 'var(--color-dark-primary-text)'
+                  : 'var(--color-primary-text)',
+              }"
+              :aria-label="`${item.name}-Icon`"
+              role="img"
             />
           </div>
-          <span v-show="isCollapsed">{{ item.label }}</span>
+          <span v-show="labelVisible" class="text-color-difference ml-3 text-sm font-medium">{{
+            item.label
+          }}</span>
         </router-link>
       </div>
     </div>
@@ -25,18 +30,24 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, inject, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { Menu } from '@/types/layout';
-
 import { menu } from '@/constants/menu';
+import { type Menu, NavVariant } from '@/types/layout';
 import { getIconUrl } from '@/utils/assetUrl';
 
 const props = defineProps<{
-  isSidebarCollapsed: boolean;
+  isSidebarCollapsed?: boolean;
+  variant?: NavVariant;
+  linkClass?: string;
+  labelClass?: string;
+  groupTitleClass?: string;
 }>();
+defineEmits<{ (e: 'item-click'): void }>();
 const { t } = useI18n();
+const isDarkMode = inject('isDarkMode') as Ref<boolean>;
+
 const menuList = computed<Menu[]>(() =>
   menu.map((node) => ({
     ...node,
@@ -49,6 +60,27 @@ const menuList = computed<Menu[]>(() =>
 );
 
 const isCollapsed = computed(() => !props.isSidebarCollapsed);
+const variant = computed(() => props.variant ?? NavVariant.SIDEBAR);
+
+const showGroupTitle = computed(() =>
+  variant.value === NavVariant.MOBILE ? true : isCollapsed.value
+);
+
+const linkClassComputed = computed(
+  () =>
+    props.linkClass ??
+    (variant.value === NavVariant.SIDEBAR
+      ? `sidebar-nav-link ${props.isSidebarCollapsed ? 'justify-center' : ''}`
+      : 'dark:hover:bg-black-700 flex items-center rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-black-100')
+);
+
+const groupTitleClassComputed = computed(
+  () => props.groupTitleClass ?? 'px-3 text-xs text200-color-difference'
+);
+
+const labelVisible = computed(() =>
+  variant.value === NavVariant.MOBILE ? true : isCollapsed.value
+);
 </script>
 
 <style></style>

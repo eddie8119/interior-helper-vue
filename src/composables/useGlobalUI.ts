@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import { initTheme } from '@/utils/theme';
+import { initTheme, setTheme } from '@/utils/theme';
 
 export function useGlobalUI() {
   const route = useRoute();
@@ -27,5 +27,6 @@ export function useGlobalUI() {
     isQuickDraftPage,
     shouldShowQuickDraft,
     shouldShowNotification,
+    setTheme,
   };
 }

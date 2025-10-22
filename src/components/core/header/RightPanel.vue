@@ -14,7 +14,9 @@
             :style="{
               WebkitMaskImage: `url(${getIconUrl(nav.icon)})`,
               maskImage: `url(${getIconUrl(nav.icon)})`,
-              backgroundColor: 'var(--color-primary-text)',
+              backgroundColor: isDarkMode
+                ? 'var(--color-dark-primary-text)'
+                : 'var(--color-primary-text)',
             }"
             :aria-label="`${nav.name}-Icon`"
             role="img"
@@ -33,21 +35,23 @@
         </template>
       </ElDropdown>
       <!-- 沒有下拉選項 -->
-      <div v-else>
+      <button v-else type="button" class="flex items-center" @click="nav.action && nav.action()">
         <span
           class="icon-hover icon-mask"
           :style="{
             WebkitMaskImage: `url(${getIconUrl(nav.icon)})`,
             maskImage: `url(${getIconUrl(nav.icon)})`,
-            backgroundColor: 'var(--color-primary-text)',
+            backgroundColor: isDarkMode
+              ? 'var(--color-dark-primary-text)'
+              : 'var(--color-primary-text)',
           }"
           :aria-label="`${nav.name}-Icon`"
           role="img"
         />
-      </div>
+      </button>
     </div>
     <!-- 顯示身分 -->
-    <p class="text-sm text-primary-text-200">
+    <p class="text200-color-difference text-sm">
       {{ isAdmin ? t('common.role.admin') : t('common.role.user') }}
     </p>
     <MobileNav />
@@ -56,7 +60,7 @@
 
 <script setup lang="ts">
 import { ElDropdown, ElDropdownItem, ElDropdownMenu } from 'element-plus';
-import { computed } from 'vue';
+import { computed, inject, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import MobileNav from './MobileNav.vue';
@@ -77,6 +81,9 @@ const { languages, handleLanguageChange } = useLocale();
 const { authentications, handleAuthenticationChange } = useAuthentication();
 const { isAdmin } = useAuth();
 
+const toggleTheme = inject('toggleTheme') as () => void;
+const isDarkMode = inject('isDarkMode') as Ref<boolean>;
+
 // 為了解決 型別切換
 const handleLanguageSelect = (code: string): void => {
   handleLanguageChange(code as Language);
@@ -84,6 +91,13 @@ const handleLanguageSelect = (code: string): void => {
 
 const navItems = computed<NavItem[]>(() => {
   const baseItems: NavItem[] = [
+    {
+      id: 0,
+      name: 'LightSet',
+      icon: 'LightSet',
+      label: t('common.light_set'),
+      action: toggleTheme,
+    },
     {
       id: 1,
       name: 'Global',
@@ -96,18 +110,18 @@ const navItems = computed<NavItem[]>(() => {
       })),
     },
   ];
-
   if (authStore.isAuthenticated) {
     baseItems.push(
+      // {
+      //   id: 2,
+      //   name: 'Notification',
+      //   icon: 'Bell',
+      //   label: t('common.notification'),
+      //   action: () => {},
+      // },
+
       {
         id: 2,
-        name: 'Notification',
-        icon: 'Bell',
-        label: t('common.notification'),
-        action: () => {},
-      },
-      {
-        id: 3,
         name: 'Authentication',
         icon: 'UserCircle',
         label: t('common.authentication'),

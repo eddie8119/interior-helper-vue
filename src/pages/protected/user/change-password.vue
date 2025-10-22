@@ -31,9 +31,9 @@ import { useI18n } from 'vue-i18n';
 
 import type { AxiosError } from 'axios';
 
-import { useAuthentication } from '@/composables/useAuthentication';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import ChangePasswordForm from '@/components/auth/ChangePasswordForm.vue';
+import { useAuthentication } from '@/composables/useAuthentication';
 import { useFormError } from '@/composables/useFormError';
 import { useUser } from '@/composables/useUser';
 import { type ChangePasswordData } from '@/types/user';
@@ -66,7 +66,7 @@ const { value: newConfirmPassword, handleBlur: handleBlurNewConfirmPassword } =
 const onSubmit = handleSubmit(async (values: ChangePasswordData) => {
   try {
     const { success, message } = await changePassword(values);
- 
+
     if (success) {
       ElMessage.success(t('message.change_password_success'));
       resetForm();

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen bg-white dark:bg-black-900 dark:!text-white">
+  <div class="background-color-difference flex h-screen dark:bg-primaryDark-background">
     <!-- Sidebar -->
     <Sidebar :is-sidebar-collapsed="isSidebarCollapsed" class="--desktop hidden md:block" />
 
@@ -9,7 +9,7 @@
       <Header :is-sidebar-collapsed="isSidebarCollapsed" @toggle-sidebar="toggleSidebar" />
 
       <!-- Main Content Area -->
-      <main class="flex-1 overflow-y-auto overflow-x-hidden p-6">
+      <main class="flex-1 overflow-y-auto overflow-x-hidden p-3 md:p-6">
         <router-view v-slot="{ Component }">
           <KeepAlive>
             <component :is="Component" />

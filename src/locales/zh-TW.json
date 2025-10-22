@@ -322,7 +322,10 @@
   },
   "tab": {
     "projects": "專案群",
-    "project": "專案"
+    "project": "專案",
+    "profile": "個人資料",
+    "change-password": "修改密碼",
+    "edit-profile": "編輯個人資料"
   },
   "title": {
     "register": "註冊",

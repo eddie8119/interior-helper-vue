@@ -331,7 +331,10 @@
   },
   "tab": {
     "projects": "Projects List",
-    "project": "Project"
+    "project": "Project",
+    "profile": "Profile",
+    "change-password": "Change Password",
+    "edit-profile": "Edit Profile"
   },
   "title": {
     "register": "Register",

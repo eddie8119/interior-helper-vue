@@ -19,7 +19,12 @@ const authStore = useAuthStore();
 authStore.initializeAuthState();
 
 // Global UI logic
-const { isDarkMode, shouldShowQuickDraft, shouldShowNotification } = useGlobalUI();
+const { isDarkMode, shouldShowQuickDraft, shouldShowNotification, setTheme } = useGlobalUI();
+
+provide('toggleTheme', () => {
+  isDarkMode.value = !isDarkMode.value;
+  setTheme(isDarkMode.value);
+});
 
 // Provide theme to child components
 provide('isDarkMode', isDarkMode);

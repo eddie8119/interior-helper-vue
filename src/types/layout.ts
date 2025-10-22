@@ -24,3 +24,9 @@ export interface NavItem {
   action: (value?: string) => void;
   dropdownItems?: { label: string; value: string }[];
 }
+
+// 判斷navbar的模式
+export enum NavVariant {
+  SIDEBAR = 'sidebar',
+  MOBILE = 'mobile',
+}

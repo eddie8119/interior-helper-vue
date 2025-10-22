@@ -5,7 +5,7 @@
       <div class="flex">
         <button
           class="mr-4 transition-transform duration-300 hover:text-gray-800"
-          :class="{ 'rotate-90': props.isSidebarCollapsed }"
+          :class="{ 'rotate-90': isSidebarCollapsed }"
           @click="emit('toggle-sidebar')"
         >
           <span
@@ -13,7 +13,9 @@
             :style="{
               WebkitMaskImage: `url(${getIconUrl('Menu')})`,
               maskImage: `url(${getIconUrl('Menu')})`,
-              backgroundColor: 'var(--color-primary-text)',
+              backgroundColor: isDarkMode
+                ? 'var(--color-dark-primary-text)'
+                : 'var(--color-primary-text)',
             }"
             aria-label="menu Icon"
             role="img"
@@ -28,16 +30,20 @@
 </template>
 
 <script setup lang="ts">
+import { inject, type Ref } from 'vue';
+
 import RightPanel from '@/components/core/header/RightPanel.vue';
 import PrePage from '@/components/core/PrePage.vue';
 import LogoArea from '@/components/core/sidebar/LogoArea.vue';
 import { getIconUrl } from '@/utils/assetUrl';
 
-const props = defineProps<{
+defineProps<{
   isSidebarCollapsed: boolean;
 }>();
 
 const emit = defineEmits(['toggle-sidebar']);
+
+const isDarkMode = inject('isDarkMode') as Ref<boolean>;
 </script>
 
 <style lang="scss" scoped></style>

@@ -8,8 +8,8 @@
         class="whitespace-nowrap border-b-2 px-3 py-2 text-sm transition-colors md:px-4"
         :class="[
           route.path.endsWith(tab.name)
-            ? 'rounded-t-lg border-brand-primary font-medium'
-            : 'hover:border-brand-primary/30 border-transparent text-black-400 hover:text-brand-primary',
+            ? 'chart-text-color-difference border-brand-color-difference rounded-t-lg font-medium'
+            : 'hover:border-brand-color-difference/30 text200-color-difference hover:chart-text-color-difference border-transparent',
         ]"
       >
         {{ t(`tab.${tab.name}`) }}

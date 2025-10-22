@@ -28,9 +28,9 @@ import { useRoute, useRouter } from 'vue-router';
 import type { LoginData } from '@/types/user';
 import type { AxiosError } from 'axios';
 
-import { authApi } from '@/api/auth';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import LoginForm from '@/components/auth/LoginForm.vue';
+import { useAuth } from '@/composables/useAuth';
 import { useFormError } from '@/composables/useFormError';
 import { useFormValidation } from '@/composables/useFormValidation';
 import { useAuthStore } from '@/stores/auth';
@@ -41,6 +41,7 @@ const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
+const { login } = useAuth();
 
 const { handleSubmit, errors, isSubmitting } = useFormValidation<LoginData>(createLoginSchema(t), {
   email: '',
@@ -61,7 +62,7 @@ const { errorMessage, handleError } = useFormError({
 
 const onSubmit = handleSubmit(async (values: LoginData) => {
   try {
-    const { data: apiResponseData, success } = await authApi.login(values);
+    const { data: apiResponseData, success } = await login(values);
 
     if (success && apiResponseData) {
       const { access_token, refresh_token } = apiResponseData;

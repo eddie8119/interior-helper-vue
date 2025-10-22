@@ -1,6 +1,16 @@
 <template>
   <ElForm>
     <FormInput
+      :model-value="props.name"
+      name="name"
+      type="text"
+      :placeholder="t('placeholder.auth.name')"
+      :error="props.errors?.name"
+      icon="User"
+      @update:model-value="emit('update:name', $event)"
+      @blur="emit('blur:name')"
+    />
+    <FormInput
       :model-value="props.email"
       name="email"
       type="email"
@@ -45,15 +55,18 @@ import { useI18n } from 'vue-i18n';
 import FormInput from '../core/input/FormInput.vue';
 
 const props = defineProps<{
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
   errors?: Record<string, string>;
 }>();
 const emit = defineEmits<{
+  (e: 'update:name', value: string): void;
   (e: 'update:email', value: string): void;
   (e: 'update:password', value: string): void;
   (e: 'update:confirmPassword', value: string): void;
+  (e: 'blur:name'): void;
   (e: 'blur:email'): void;
   (e: 'blur:password'): void;
   (e: 'blur:confirmPassword'): void;

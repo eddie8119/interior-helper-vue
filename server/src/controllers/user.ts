@@ -3,10 +3,15 @@ import { Request, Response } from 'express';
 import { supabase } from '@/lib/supabase';
 import { RegisterSchema } from '@/schemas/registerSchema';
 import { emailService } from '@/services/notification/email.service';
+import snakecaseKeys from 'snakecase-keys';
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body as RegisterSchema;
+
+    const snakeCaseData = snakecaseKeys(req.body, { deep: true });
+        const { email, password, name  } = snakeCaseData;
+        
+
     // 使用 admin client 建立使用者
     const { data: authData, error: signUpError } = await supabase.auth.admin.createUser({
       email,
@@ -31,7 +36,7 @@ export const register = async (req: Request, res: Response) => {
     // 在 Profiles 資料表中新增對應的 profile
     const { data: userDoc, error: docError } = await supabase
       .from('Profiles')
-      .insert([{ id: authData.user.id, email }])
+      .insert([{ id: authData.user.id, email, name }])
       .select()
       .maybeSingle();
 

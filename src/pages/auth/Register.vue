@@ -9,13 +9,16 @@
     <template #title> {{ t('title.register') }} HSWE IoT! </template>
     <template #button-text> {{ t('button.register') }} </template>
     <RegisterForm
+      :name="name"
       :email="email"
       :password="password"
       :confirm-password="confirmPassword"
       :errors="errors"
+      @update:name="name = $event"
       @update:email="email = $event"
       @update:password="password = $event"
       @update:confirm-password="confirmPassword = $event"
+      @blur:name="handleBlurName"
       @blur:email="handleBlurEmail"
       @blur:password="handleBlurPassword"
       @blur:confirm-password="handleBlurConfirmPassword"
@@ -33,6 +36,7 @@ import type { RegisterData } from '@/types/user';
 import type { AxiosError } from 'axios';
 
 import AuthCard from '@/components/auth/AuthCard.vue';
+import NameInput from '@/components/auth/NameInput.vue';
 import RegisterForm from '@/components/auth/RegisterForm.vue';
 import { useFormError } from '@/composables/useFormError';
 import { useFormValidation } from '@/composables/useFormValidation';
@@ -53,11 +57,13 @@ const verifiedStatus = {
 const { handleSubmit, errors, isSubmitting } = useFormValidation<RegisterData>(
   createRegisterSchema(t),
   {
+    name: '',
     email: '',
     password: '',
   }
 );
 
+const { value: name, handleBlur: handleBlurName } = useField<string>('name');
 const { value: email, handleBlur: handleBlurEmail } = useField<string>('email');
 const { value: password, handleBlur: handleBlurPassword } = useField<string>('password');
 const { value: confirmPassword, handleBlur: handleBlurConfirmPassword } =
@@ -65,7 +71,11 @@ const { value: confirmPassword, handleBlur: handleBlurConfirmPassword } =
 
 const isValid = computed(() => {
   return (
-    email.value && password.value && confirmPassword.value && Object.keys(errors.value).length === 0
+    name.value &&
+    email.value &&
+    password.value &&
+    confirmPassword.value &&
+    Object.keys(errors.value).length === 0
   );
 });
 
@@ -85,9 +95,10 @@ const onSubmit = handleSubmit(async (values: RegisterData) => {
       showMessage.value = message;
       return;
     }
-
-    showMessage.value = t('message.dialog.check_the_email');
-    authStore.setPendingActivationEmail(email.value);
+    if (success) {
+      showMessage.value = t('message.dialog.check_the_email');
+      authStore.setPendingActivationEmail(email.value);
+    }
   } catch (error) {
     if (isAxiosError(error)) {
       const emailMessage = error?.response?.data?.email;

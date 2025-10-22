@@ -34,7 +34,6 @@ export function useAuth(): UseAuthReturn {
       loginError.value = null;
 
       const result = await mutateLogin(data);
-
       return result as unknown as ApiResponse<AuthResponse>;
     } catch (err: unknown) {
       loginError.value = err instanceof Error ? err : new Error(String(err));

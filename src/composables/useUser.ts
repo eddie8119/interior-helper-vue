@@ -114,8 +114,9 @@ export function useUser(): UseUserReturn {
   const { mutateAsync: mutateRegister } = useMutation({
     mutationFn: async (data: RegisterData) => {
       const response = await userApi.register(data);
-      return response.data;
+      return response;
     },
+    retry: false,
   });
 
   const register = async (data: RegisterData): Promise<ApiResult> => {

@@ -116,7 +116,7 @@ import DropdownMenu from './DropdownMenu.vue';
 import type { Column, TableAction } from '@/types/common';
 
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
-import { useAuth } from '@/composables/useAuth';
+import { isAdmin } from '@/utils/auth';
 import { formatDateTimeWithDay } from '@/utils/dateTime';
 
 const props = withDefaults(
@@ -151,7 +151,6 @@ const props = withDefaults(
 defineEmits(['update:currentPage', 'update:pageSize']);
 
 const { t } = useI18n();
-const { isAdmin } = useAuth();
 
 const searchQuery = ref<string>('');
 const currentPage = ref<number>(1);

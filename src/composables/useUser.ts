@@ -8,6 +8,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { type Ref, ref } from 'vue';
 
+import type { ApiResult } from '@/types/request';
 import type {
   ActivationData,
   ChangePasswordData,
@@ -22,7 +23,7 @@ import { userApi } from '@/api/user';
 
 interface UseUserReturn {
   // 獲取用戶資料
-  userProfile: Ref<any>;
+  userProfile: Ref<unknown>;
   isLoadingProfile: Ref<boolean>;
   profileError: Ref<Error | null>;
   refetchProfile: () => Promise<void>;
@@ -113,13 +114,13 @@ export function useUser(): UseUserReturn {
     },
   });
 
-  const register = async (data: RegisterData): Promise<{ success: boolean; message?: string }> => {
+  const register = async (data: RegisterData): Promise<ApiResult> => {
     try {
       isRegistering.value = true;
       registerError.value = null;
 
       const result = await mutateRegister(data);
-      return { success: result?.success ?? false, message: result?.message };
+      return result as unknown as ApiResult;
     } catch (err: unknown) {
       registerError.value = err instanceof Error ? err : new Error(String(err));
       console.error('註冊失敗:', err);
@@ -137,15 +138,13 @@ export function useUser(): UseUserReturn {
     },
   });
 
-  const activateAccount = async (
-    data: ActivationData
-  ): Promise<{ success: boolean; message?: string }> => {
+  const activateAccount = async (data: ActivationData): Promise<ApiResult> => {
     try {
       isActivating.value = true;
       activateError.value = null;
 
       const result = await mutateActivate(data);
-      return { success: result?.success ?? false, message: result?.message };
+      return result as unknown as ApiResult;
     } catch (err: unknown) {
       activateError.value = err instanceof Error ? err : new Error(String(err));
       console.error('帳戶激活失敗:', err);
@@ -163,15 +162,13 @@ export function useUser(): UseUserReturn {
     },
   });
 
-  const resendActivation = async (
-    data: ResendActivationData
-  ): Promise<{ success: boolean; message?: string }> => {
+  const resendActivation = async (data: ResendActivationData): Promise<ApiResult> => {
     try {
       isResending.value = true;
       resendError.value = null;
 
       const result = await mutateResend(data);
-      return { success: result?.success ?? false, message: result?.message };
+      return result as unknown as ApiResult;
     } catch (err: unknown) {
       resendError.value = err instanceof Error ? err : new Error(String(err));
       console.error('重發激活郵件失敗:', err);
@@ -189,15 +186,13 @@ export function useUser(): UseUserReturn {
     },
   });
 
-  const forgotPassword = async (
-    data: ForgotPasswordData
-  ): Promise<{ success: boolean; message?: string }> => {
+  const forgotPassword = async (data: ForgotPasswordData): Promise<ApiResult> => {
     try {
       isForgettingPassword.value = true;
       forgotPasswordError.value = null;
 
       const result = await mutateForgotPassword(data);
-      return { success: result?.success ?? false, message: result?.message };
+      return result as unknown as ApiResult;
     } catch (err: unknown) {
       forgotPasswordError.value = err instanceof Error ? err : new Error(String(err));
       console.error('要求重置密碼失敗:', err);
@@ -215,15 +210,13 @@ export function useUser(): UseUserReturn {
     },
   });
 
-  const resetPassword = async (
-    data: ResetPasswordData
-  ): Promise<{ success: boolean; message?: string }> => {
+  const resetPassword = async (data: ResetPasswordData): Promise<ApiResult> => {
     try {
       isResettingPassword.value = true;
       resetPasswordError.value = null;
 
       const result = await mutateResetPassword(data);
-      return { success: result?.success ?? false, message: result?.message };
+      return result as unknown as ApiResult;
     } catch (err: unknown) {
       resetPasswordError.value = err instanceof Error ? err : new Error(String(err));
       console.error('重置密碼失敗:', err);
@@ -241,15 +234,13 @@ export function useUser(): UseUserReturn {
     },
   });
 
-  const changePassword = async (
-    data: ChangePasswordData
-  ): Promise<{ success: boolean; message?: string }> => {
+  const changePassword = async (data: ChangePasswordData): Promise<ApiResult> => {
     try {
       isChangingPassword.value = true;
       changePasswordError.value = null;
 
       const result = await mutateChangePassword(data);
-      return result as unknown as { success: boolean; message?: string };
+      return result as unknown as ApiResult;
     } catch (err: unknown) {
       changePasswordError.value = err instanceof Error ? err : new Error(String(err));
       console.error('更改密碼失敗:', err);
@@ -271,15 +262,13 @@ export function useUser(): UseUserReturn {
     },
   });
 
-  const updateProfile = async (
-    data: EditProfileData
-  ): Promise<{ success: boolean; message?: string }> => {
+  const updateProfile = async (data: EditProfileData): Promise<ApiResult> => {
     try {
       isUpdatingProfile.value = true;
       updateProfileError.value = null;
 
       const result = await mutateUpdateProfile(data);
-      return { success: result?.success ?? false, message: result?.message };
+      return result as unknown as ApiResult;
     } catch (err: unknown) {
       updateProfileError.value = err instanceof Error ? err : new Error(String(err));
       console.error('更新個人資料失敗:', err);
@@ -291,7 +280,7 @@ export function useUser(): UseUserReturn {
 
   return {
     // 獲取用戶資料
-    userProfile: userProfile as Ref<any>,
+    userProfile: userProfile as Ref<unknown>,
     isLoadingProfile,
     profileError,
     refetchProfile,

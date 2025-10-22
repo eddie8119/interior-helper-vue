@@ -4,12 +4,15 @@
 export type ApiResponse<T> =
   | {
       success: true;
-      data: T;
+      data?: T;
       message?: string;
     }
   | {
       success: false;
-      data: T;
+      data?: T;
       message: string;
       error?: unknown;
     };
+
+// ApiResult
+export type ApiResult = ApiResponse<undefined>;

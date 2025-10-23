@@ -6,13 +6,14 @@
         :construction-name="constructionName"
         :read-only="readOnly"
         @update:construction-name="updateConstructionName"
+        @editing-change="(v) => (isEditingTitle = v)"
       />
       <span>({{ tasksLength }})</span>
     </div>
 
     <div v-if="!readOnly" class="flex items-center gap-1">
       <OptionSelector
-        v-if="isShowStatusFilter"
+        v-if="isShowStatusFilter && !isEditingTitle"
         :model-value="selectedStatus"
         :options="STATUS_FILTER_OPTIONS"
         :class-name="'w-[90px]'"
@@ -60,6 +61,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const showDeleteConstructionDialog = ref(false);
+const isEditingTitle = ref(false);
 
 // 處理容器名稱更新
 const updateConstructionName = (newName: string) => {

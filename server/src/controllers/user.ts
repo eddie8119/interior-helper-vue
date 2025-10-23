@@ -94,16 +94,13 @@ export const register = async (req: Request, res: Response) => {
     // 發送激活郵件
     const emailSent = await emailService.sendActivationEmail(email, token, name);
 
-    if (!emailSent) {
-      // 如果郵件發送失敗，刪除已建立的資料
-      await rollbackUserRegistration(authData.user.id);
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to send activation email',
-      });
-    }
+    // 即使郵件失敗，也保留用戶，只返回警告
+    const responseStatus = emailSent ? 201 : 201;
+    const responseMessage = emailSent
+      ? 'User registered successfully. Please check your email to activate your account.'
+      : 'User registered successfully, but failed to send activation email. Please check your email or request a new activation link.';
 
-    res.status(201).json({
+    res.status(responseStatus).json({
       success: true,
       data: {
         user: {
@@ -113,7 +110,8 @@ export const register = async (req: Request, res: Response) => {
         },
         userDoc,
       },
-      message: 'User registered successfully. Please check your email to activate your account.',
+      message: responseMessage,
+      emailSent: emailSent, // 告知前端郵件是否成功
     });
   } catch (error) {
     console.error('Register error:', error);
@@ -324,16 +322,12 @@ export const forgotPassword = async (req: Request, res: Response) => {
     // 使用自訂郵件模板發送
     const emailSent = await emailService.sendPasswordResetEmail(email, token);
 
-    if (!emailSent) {
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to send reset email',
-      });
-    }
-
+    // 即使郵件失敗，也返回成功（防止郵箱枚舉攻擊）
     res.json({
       success: true,
-      message: 'Password reset email sent successfully',
+      message: emailSent
+        ? 'Password reset email sent successfully'
+        : 'If the email exists, a password reset link has been sent',
     });
   } catch (error) {
     console.error('Forgot password error:', error);
@@ -558,16 +552,12 @@ export const resendActivation = async (req: Request, res: Response) => {
     // 發送激活郵件
     const emailSent = await emailService.sendActivationEmail(email, token);
 
-    if (!emailSent) {
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to send activation email',
-      });
-    }
-
+    // 即使郵件失敗，也返回成功（防止郵箱枚舉攻擊）
     res.json({
       success: true,
-      message: 'Activation email sent successfully',
+      message: emailSent
+        ? 'Activation email sent successfully'
+        : 'If the email exists, a new activation link has been sent',
     });
   } catch (error) {
     console.error('Resend activation error:', error);

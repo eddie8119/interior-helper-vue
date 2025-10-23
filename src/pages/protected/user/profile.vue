@@ -3,9 +3,9 @@
     <template #header>
       <div class="flex items-center">
         <ElAvatar :size="50" class="mr-4">
-          {{ username?.charAt(0)?.toUpperCase() || 'U' }}
+          {{ userInitial }}
         </ElAvatar>
-        <H1Title :title="username" />
+        <H1Title :title="userName" />
       </div>
     </template>
 
@@ -14,19 +14,19 @@
         <div class="profile-info space-y-6">
           <div class="info-section">
             <ElDescriptions :column="1" border>
-              <ElDescriptionsItem :label="t('label.user.username')">
+              <ElDescriptionsItem :label="t('label.user.name')">
                 <EditInput
-                  v-model="username"
+                  v-model="nameModel"
                   :placeholder="t('placeholder.auth.name')"
-                  name="username"
+                  name="name"
                   type="text"
                   :is-loading="isUpdatingProfile"
-                  @save="handleSaveUsername"
+                  @save="handleSaveName"
                 />
               </ElDescriptionsItem>
               <ElDescriptionsItem :label="t('label.user.email')">
                 <div class="flex items-center">
-                  <span>{{ email }}</span>
+                  <span>{{ userEmail }}</span>
                 </div>
               </ElDescriptionsItem>
             </ElDescriptions>
@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { ElMessage } from 'element-plus';
-import { onActivated, ref, watch } from 'vue';
+import { computed, onActivated } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import EditInput from '@/components/core/input/EditInput.vue';
@@ -50,22 +50,20 @@ const { t } = useI18n();
 const { userProfile, isLoadingProfile, refetchProfile, updateProfile, isUpdatingProfile } =
   useUser();
 
-const email = ref<string>('');
-const username = ref<string>('');
+const userName = computed(() => userProfile.value?.userDoc?.name ?? '');
+const userEmail = computed(() => userProfile.value?.userDoc?.email ?? '');
+const userInitial = computed(() => userName.value?.charAt(0)?.toUpperCase() || 'U');
 
-// Sync local fields when userProfile changes
-watch(
-  () => userProfile?.value,
-  (profile: any) => {
-    if (!profile) return;
-    const user = profile.user ?? profile;
-    email.value = user?.email ?? '';
-    username.value = user?.username ?? user?.name ?? '';
+// v-model proxy without local ref
+const nameModel = computed({
+  get: () => userName.value,
+  set: async (val: string) => {
+    // reuse your existing save logic
+    await updateProfile({ name: val });
   },
-  { immediate: true }
-);
+});
 
-const handleSaveUsername = async (data: string) => {
+const handleSaveName = async (data: string) => {
   try {
     const { success, message } = await updateProfile({ name: data });
     if (success) {
@@ -75,7 +73,7 @@ const handleSaveUsername = async (data: string) => {
       throw new Error(message || 'Failed to update profile');
     }
   } catch (err) {
-    console.error('Failed to update username:', err);
+    console.error('Failed to update name:', err);
     ElMessage.error(t('message.error.updateProfile') || 'Failed to update profile');
     throw err;
   }

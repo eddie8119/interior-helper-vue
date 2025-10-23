@@ -103,11 +103,6 @@ export const register = async (req: Request, res: Response) => {
     res.status(responseStatus).json({
       success: true,
       data: {
-        user: {
-          id: authData.user.id,
-          email: authData.user.email,
-          createdAt: authData.user.created_at,
-        },
         userDoc,
       },
       message: responseMessage,
@@ -137,11 +132,6 @@ export const getCurrentUser = async (req: Request, res: Response) => {
     res.json({
       success: true,
       data: {
-        user: {
-          id: user.id,
-          email: user.email,
-          name: user.name || null,
-        },
         userDoc,
       },
     });

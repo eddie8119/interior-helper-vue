@@ -17,7 +17,7 @@
               <ElDescriptionsItem :label="t('label.user.username')">
                 <EditInput
                   v-model="username"
-                  :placeholder="t('placeholder.username')"
+                  :placeholder="t('placeholder.auth.name')"
                   name="username"
                   type="text"
                   :is-loading="isUpdatingProfile"

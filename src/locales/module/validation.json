@@ -1,6 +1,9 @@
 {
   "en": {
     "validation": {
+      "input": {
+        "required": "This is required"
+      },
       "email": {
         "required": "Email is required",
         "invalid": "Invalid email address"
@@ -16,6 +19,9 @@
   },
   "zh-TW": {
     "validation": {
+      "input": {
+        "required": "此為必填"
+      },
       "email": {
         "required": "電子郵件為必填",
         "invalid": "無效的電子郵件地址"

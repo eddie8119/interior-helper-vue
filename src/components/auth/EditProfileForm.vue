@@ -4,7 +4,7 @@
       :model-value="props.username"
       name="username"
       type="text"
-      :placeholder="t('placeholder.auth.username')"
+      :placeholder="t('placeholder.auth.name')"
       :error="props.errors?.username"
       @update:model-value="emit('update:username', $event)"
       @blur="emit('blur:username')"

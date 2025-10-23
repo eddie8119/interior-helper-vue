@@ -17,7 +17,7 @@
       ref="titleInputRef"
       v-model="tempTitle"
       type="text"
-      class="block w-[150px] rounded-lg border border-gray-300 bg-gray-50 p-1 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+      class="block h-9 w-[150px] rounded-lg border border-gray-300 bg-gray-50 px-2 text-lg leading-7 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
       :placeholder="t('placeholder.project.construction')"
       @focus="onInputFocus"
       @blur="onBlur"

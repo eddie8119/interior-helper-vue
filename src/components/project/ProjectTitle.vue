@@ -14,7 +14,7 @@
       ref="titleInputRef"
       v-model="tempTitle"
       type="text"
-      class="block w-[230px] rounded-lg border border-gray-300 bg-gray-50 p-2 text-xl text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+      class="block h-8 w-[230px] rounded-lg border border-gray-300 bg-gray-50 px-3 text-2xl leading-tight text-gray-900 focus:border-blue-500 focus:ring-blue-500"
       placeholder="工程案名稱"
       @focus="onInputFocus"
       @blur="isEditingTitle = false"

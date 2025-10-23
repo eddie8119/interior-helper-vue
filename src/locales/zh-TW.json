@@ -1,8 +1,10 @@
 {
   "button": {
     "cancel": "取消",
+    "confirm": "確認",
     "remove": "移除",
     "copy": "複製",
+    "edit": "編輯",
     "save": "儲存",
     "add": "添加",
     "add_task": "施作任務",
@@ -41,7 +43,6 @@
     "action": "動作"
   },
   "common": {
-    "confirm": "確認",
     "cancel": "取消",
     "save": "儲存",
     "add": "新增",
@@ -254,6 +255,7 @@
   },
   "placeholder": {
     "auth": {
+      "name": "姓名",
       "email": "電子郵件",
       "password": "密碼",
       "confirm_password": "確認密碼",

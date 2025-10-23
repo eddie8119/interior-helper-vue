@@ -19,3 +19,8 @@
 .auth-container {
   @apply panel-color-difference h-full w-full rounded-none p-6 md:h-auto md:w-[400px] md:rounded-xl md:shadow-lg;
 }
+
+.el-card {
+  border: none;
+  box-shadow: none;
+}

@@ -30,7 +30,7 @@
         :is-submitting="isSubmitting"
       >
         <TextButton size="md" variant="outline" @click="onCancel">
-          {{ t('common.cancel') }}
+          {{ t('button.cancel') }}
         </TextButton>
 
         <TextButton
@@ -40,7 +40,7 @@
           size="md"
           @click="onSubmit"
         >
-          {{ t('common.confirm') }}
+          {{ t('button.confirm') }}
         </TextButton>
       </slot>
     </span>

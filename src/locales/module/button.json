@@ -2,7 +2,9 @@
   "en": {
     "button": {
       "cancel": "Cancel",
+      "confirm": "Confirm",
       "copy": "Copy",
+      "edit": "Edit",
       "remove": "Remove",
       "save": "Save",
       "add": "Add",
@@ -39,8 +41,10 @@
   "zh-TW": {
     "button": {
       "cancel": "取消",
+      "confirm": "確認",
       "remove": "移除",
       "copy": "複製",
+      "edit": "編輯",
       "save": "儲存",
       "add": "添加",
       "add_task": "施作任務",

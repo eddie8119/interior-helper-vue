@@ -6,7 +6,6 @@
       :name="name"
       :type="type"
       :show-password="type === 'password'"
-      class="input"
       @update:model-value="$emit('update:modelValue', $event)"
       @blur="$emit('blur')"
     >

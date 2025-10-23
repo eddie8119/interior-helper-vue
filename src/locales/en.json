@@ -1,7 +1,9 @@
 {
   "button": {
     "cancel": "Cancel",
+    "confirm": "Confirm",
     "copy": "Copy",
+    "edit": "Edit",
     "remove": "Remove",
     "save": "Save",
     "add": "Add",
@@ -46,7 +48,6 @@
   },
   "common": {
     "create_project": "Create Project",
-    "confirm": "Confirm",
     "cancel": "Cancel",
     "save": "Save",
     "add": "Add",
@@ -262,6 +263,7 @@
   },
   "placeholder": {
     "auth": {
+      "name": "Name",
       "email": "Email",
       "password": "Password",
       "confirm_password": "Confirm Password",

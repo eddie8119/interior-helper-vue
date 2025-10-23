@@ -57,7 +57,7 @@
   @extend .input-base;
 
   .el-input__wrapper {
-    @apply rounded-lg bg-black-100 dark:bg-gray-500;
+    @apply background-color-difference rounded-lg;
   }
 }
 

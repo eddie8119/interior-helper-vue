@@ -9,7 +9,7 @@
       </div>
     </template>
 
-    <ElSkeleton :loading="loading" animated>
+    <ElSkeleton :loading="isLoadingProfile" animated>
       <template #default>
         <div class="profile-info space-y-6">
           <div class="info-section">
@@ -39,48 +39,40 @@
 
 <script setup lang="ts">
 import { ElMessage } from 'element-plus';
-import { onActivated, onMounted, ref } from 'vue';
+import { onActivated, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { userApi } from '@/api/user';
 import EditInput from '@/components/core/input/EditInput.vue';
 import H1Title from '@/components/core/title/H1Title.vue';
 import { useUser } from '@/composables/useUser';
 
 const { t } = useI18n();
-const { updateProfile, isUpdatingProfile } = useUser();
+const { userProfile, isLoadingProfile, refetchProfile, updateProfile, isUpdatingProfile } =
+  useUser();
 
 const email = ref<string>('');
 const username = ref<string>('');
-const loading = ref(true);
 
-const fetchUserProfile = async (showLoader: boolean) => {
-  if (showLoader) {
-    loading.value = true;
-  }
-  try {
-    const { data: apiResponseData } = await userApi.getUserProfile();
-    if (apiResponseData?.user) {
-      email.value = apiResponseData.user.email;
-      username.value = apiResponseData.user.name;
-    }
-  } finally {
-    if (showLoader) {
-      loading.value = false;
-    }
-  }
-};
+// Sync local fields when userProfile changes
+watch(
+  () => userProfile?.value,
+  (profile: any) => {
+    if (!profile) return;
+    const user = profile.user ?? profile;
+    email.value = user?.email ?? '';
+    username.value = user?.username ?? user?.name ?? '';
+  },
+  { immediate: true }
+);
 
-const handleSaveUsername = async (newUsername: string) => {
+const handleSaveUsername = async (data: string) => {
   try {
-    const result = await updateProfile({ name: newUsername });
-    if (result.success) {
-      ElMessage.success(t('message.success.updateProfile') || 'Profile updated successfully');
+    const { success, message } = await updateProfile({ name: data });
+    if (success) {
+      ElMessage.success(t('message.success.updateProfile'));
     } else {
-      ElMessage.error(
-        result.message || t('message.error.updateProfile') || 'Failed to update profile'
-      );
-      throw new Error(result.message || 'Failed to update profile');
+      ElMessage.error(message || t('message.error.updateProfile'));
+      throw new Error(message || 'Failed to update profile');
     }
   } catch (err) {
     console.error('Failed to update username:', err);
@@ -89,20 +81,13 @@ const handleSaveUsername = async (newUsername: string) => {
   }
 };
 
-// todo
-// onMounted is called only once when the component is first created.
-// We show the loader on the initial fetch.
-onMounted(() => {
-  fetchUserProfile(true);
-});
-
 // onActivated is called when a kept-alive component is re-inserted into the DOM.
 // We refresh the data in the background without showing the loader.
 onActivated(() => {
   // The onMounted hook handles the initial fetch, so we can skip the first activation.
   // This check prevents a double-fetch on the first load.
-  if (!loading.value) {
-    fetchUserProfile(false);
+  if (!isLoadingProfile.value) {
+    refetchProfile();
   }
 });
 </script>

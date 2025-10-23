@@ -28,8 +28,8 @@ router.use(authMiddleware);
 
 // 個人資料
 router.get('/profile', requireUserId, getCurrentUser);
-router.put('/user/:documentId', requireUserId, updateUser);
-router.delete('/user/:documentId', requireUserId, deleteUser);
+router.put('/profile', requireUserId, updateUser);
+router.delete('/:documentId', requireUserId, deleteUser);
 router.get('/check/:email', requireUserId, checkUserExists);
 
 // 密碼管理

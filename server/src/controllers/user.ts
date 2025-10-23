@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
+import snakecaseKeys from 'snakecase-keys';
 
 import { supabase } from '@/lib/supabase';
-import { RegisterSchema } from '@/schemas/registerSchema';
 import { emailService } from '@/services/notification/email.service';
-import snakecaseKeys from 'snakecase-keys';
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -160,9 +159,9 @@ export const updateUser = async (req: Request, res: Response) => {
       return res.status(401).json({ success: false, message: 'User not authenticated' });
     }
 
-    const updates = req.body;
-    // 不允許透過此 API 更新密碼或 email
-    const { password, email, ...safeUpdates } = updates;
+    const snakeCaseData = snakecaseKeys(req.body, { deep: true });
+
+    const { password, email, ...safeUpdates } = snakeCaseData;
 
     const { data: updatedUserDoc, error: updateError } = await supabase
       .from('Profiles')

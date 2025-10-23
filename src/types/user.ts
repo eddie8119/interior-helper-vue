@@ -28,7 +28,7 @@ export interface ResetPasswordData {
 }
 
 export interface EditProfileData {
-  username: string;
+  name: string;
 }
 
 export interface ActivationData {

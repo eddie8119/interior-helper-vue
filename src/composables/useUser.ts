@@ -259,7 +259,7 @@ export function useUser(): UseUserReturn {
   const { mutateAsync: mutateUpdateProfile } = useMutation({
     mutationFn: async (data: EditProfileData) => {
       const response = await userApi.updateUserProfile(data);
-      return response.data;
+      return response;
     },
     onSuccess: () => {
       // 更新成功後重新獲取用戶資料

@@ -6,11 +6,18 @@
     </TextButton>
   </div>
   <div v-else class="flex items-center gap-2">
-    <FormInput v-model="editingValue" :placeholder="placeholder" :name="name" :type="type" />
+    <FormInput
+      v-model="editingValue"
+      :placeholder="placeholder"
+      :name="name"
+      :type="type"
+      :error="errors?.editingValue"
+      @blur="handleBlur"
+    />
     <TextButton
       variant="primary"
       :loading="isLoading"
-      :disabled="isLoading"
+      :disabled="isLoading || !isValid"
       size="md"
       @click="handleSave"
     >
@@ -24,12 +31,14 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessage } from 'element-plus';
-import { ref, watch } from 'vue';
+import { useField } from 'vee-validate';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import TextButton from '@/components/core/button/TextButton.vue';
 import FormInput from '@/components/core/input/FormInput.vue';
+import { useFormValidation } from '@/composables/useFormValidation';
+import { createEditingValueSchema } from '@/utils/schemas/editingValueSchema';
 
 interface Props {
   modelValue: string;
@@ -54,12 +63,26 @@ const emit = defineEmits<Emits>();
 const { t } = useI18n();
 
 const isEditing = ref(false);
-const editingValue = ref(props.modelValue);
+const lastModelValue = ref(props.modelValue);
+
+const { errors } = useFormValidation(createEditingValueSchema(t), {
+  editingValue: props.modelValue,
+});
+
+const { value: editingValue, handleBlur } = useField<string>('editingValue');
+
+const isValid = computed(() => {
+  return editingValue.value && editingValue.value.trim() && Object.keys(errors.value).length === 0;
+});
 
 watch(
   () => props.modelValue,
-  (newValue) => {
+  (newValue, oldValue) => {
     editingValue.value = newValue;
+    if (newValue !== oldValue) {
+      isEditing.value = false;
+      lastModelValue.value = newValue;
+    }
   }
 );
 
@@ -73,23 +96,16 @@ const handleCancel = () => {
 };
 
 const handleSave = async () => {
-  if (!editingValue.value.trim()) {
-    ElMessage.warning(t('message.validation.required'));
-    return;
-  }
+  if (!isValid.value) return;
 
   if (editingValue.value === props.modelValue) {
     isEditing.value = false;
     return;
   }
 
-  try {
-    await emit('save', editingValue.value);
-    emit('update:modelValue', editingValue.value);
-    isEditing.value = false;
-  } catch (err) {
-    console.error('Failed to save:', err);
-  }
+  // Delegate save to parent (e.g., via vue-query). Do not close or update here.
+  // When parent updates modelValue on success, the watcher will close editing.
+  emit('save', editingValue.value);
 };
 </script>
 

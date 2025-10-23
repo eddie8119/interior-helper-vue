@@ -3,11 +3,27 @@ import snakecaseKeys from 'snakecase-keys';
 
 import { supabase } from '@/lib/supabase';
 import { emailService } from '@/services/notification/email.service';
+import {
+  extractTokenFromActionLink,
+  rollbackUserRegistration,
+  validatePasswordChange,
+  validateRegistrationInput,
+  generateSecureRandomPassword,
+} from '@/utils/userValidation';
 
 export const register = async (req: Request, res: Response) => {
   try {
     const snakeCaseData = snakecaseKeys(req.body, { deep: true });
     const { email, password, name } = snakeCaseData;
+
+    // 驗證輸入
+    const validation = validateRegistrationInput(email, password, name);
+    if (!validation.valid) {
+      return res.status(400).json({
+        success: false,
+        message: validation.error,
+      });
+    }
 
     // 使用 admin client 建立使用者，不自動確認郵件
     const { data: authData, error: signUpError } = await supabase.auth.admin.createUser({
@@ -39,7 +55,7 @@ export const register = async (req: Request, res: Response) => {
 
     if (docError) {
       // 如果 profile 建立失敗，刪除創建的 auth user 以保持資料一致性
-      await supabase.auth.admin.deleteUser(authData.user.id);
+      await rollbackUserRegistration(authData.user.id);
       return res.status(500).json({
         success: false,
         message: `Failed to create user profile: ${docError.message}`,
@@ -56,8 +72,7 @@ export const register = async (req: Request, res: Response) => {
     if (linkError || !linkData.properties?.action_link) {
       console.error('Generate activation link error:', linkError);
       // 如果產生 token 失敗，刪除已建立的資料
-      await supabase.auth.admin.deleteUser(authData.user.id);
-      await supabase.from('Profiles').delete().eq('id', authData.user.id);
+      await rollbackUserRegistration(authData.user.id);
       return res.status(500).json({
         success: false,
         message: 'Failed to generate activation link',
@@ -66,12 +81,10 @@ export const register = async (req: Request, res: Response) => {
 
     // 從 action_link 中提取 token
     const actionLink = linkData.properties.action_link;
-    const url = new URL(actionLink);
-    const token = url.searchParams.get('token');
+    const token = extractTokenFromActionLink(actionLink);
 
     if (!token) {
-      await supabase.auth.admin.deleteUser(authData.user.id);
-      await supabase.from('Profiles').delete().eq('id', authData.user.id);
+      await rollbackUserRegistration(authData.user.id);
       return res.status(500).json({
         success: false,
         message: 'Failed to extract activation token',
@@ -83,8 +96,7 @@ export const register = async (req: Request, res: Response) => {
 
     if (!emailSent) {
       // 如果郵件發送失敗，刪除已建立的資料
-      await supabase.auth.admin.deleteUser(authData.user.id);
-      await supabase.from('Profiles').delete().eq('id', authData.user.id);
+      await rollbackUserRegistration(authData.user.id);
       return res.status(500).json({
         success: false,
         message: 'Failed to send activation email',
@@ -116,13 +128,7 @@ export const register = async (req: Request, res: Response) => {
 export const getCurrentUser = async (req: Request, res: Response) => {
   try {
     // authMiddleware 已經驗證並附加 req.user
-    const user = req.user;
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: 'User not authenticated',
-      });
-    }
+    const user = req.user!; // middleware 已驗證，使用 ! 斷言
 
     const { data: userDoc } = await supabase
       .from('Profiles')
@@ -136,7 +142,7 @@ export const getCurrentUser = async (req: Request, res: Response) => {
         user: {
           id: user.id,
           email: user.email,
-          name: user.name,
+          name: user.name || null,
         },
         userDoc,
       },
@@ -153,11 +159,7 @@ export const getCurrentUser = async (req: Request, res: Response) => {
 // 更新用戶信息 (僅限本人)
 export const updateUser = async (req: Request, res: Response) => {
   try {
-    // authMiddleware 已經驗證並附加 req.user
-    const user = req.user;
-    if (!user) {
-      return res.status(401).json({ success: false, message: 'User not authenticated' });
-    }
+    const user = req.user!;
 
     const snakeCaseData = snakecaseKeys(req.body, { deep: true });
 
@@ -191,11 +193,7 @@ export const updateUser = async (req: Request, res: Response) => {
 // 刪除用戶 (僅限本人)
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    // authMiddleware 已經驗證並附加 req.user
-    const user = req.user;
-    if (!user) {
-      return res.status(401).json({ success: false, message: 'User not authenticated' });
-    }
+    const user = req.user!;
     const userId = user.id;
 
     // 1. 刪除 Supabase Auth user (這會觸發級聯刪除 Profiles 表中的對應資料，如果已設定)
@@ -306,7 +304,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
     if (error || !data.properties?.action_link) {
       console.error('Generate reset link error:', error);
-      return res.status(400).json({
+      return res.status(500).json({
         success: false,
         message: 'Failed to generate reset link',
       });
@@ -314,8 +312,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
     // 從 action_link 中提取 token
     const actionLink = data.properties.action_link;
-    const url = new URL(actionLink);
-    const token = url.searchParams.get('token');
+    const token = extractTokenFromActionLink(actionLink);
 
     if (!token) {
       return res.status(500).json({
@@ -352,26 +349,19 @@ export const resetPassword = async (req: Request, res: Response) => {
   try {
     const { newPassword, newConfirmPassword, token } = req.body;
 
-    // 驗證輸入
-    if (!newPassword || !newConfirmPassword || !token) {
+    if (!token) {
       return res.status(400).json({
         success: false,
-        message: 'New password, confirm password, and token are required',
+        message: 'Token is required',
       });
     }
 
-    if (newPassword !== newConfirmPassword) {
+    // 驗證密碼
+    const validation = validatePasswordChange(newPassword, newConfirmPassword);
+    if (!validation.valid) {
       return res.status(400).json({
         success: false,
-        message: 'Passwords do not match',
-      });
-    }
-
-    // 驗證密碼強度
-    if (newPassword.length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: 'Password must be at least 6 characters long',
+        message: validation.error,
       });
     }
 
@@ -404,37 +394,23 @@ export const resetPassword = async (req: Request, res: Response) => {
 // 更改密碼 (已登入用戶)
 export const changePassword = async (req: Request, res: Response) => {
   try {
-    // authMiddleware 已經驗證並附加 req.user
-    const user = req.user;
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: 'User not authenticated',
-      });
-    }
+    const user = req.user!;
 
     const { oldPassword, newPassword, newConfirmPassword } = req.body;
 
-    // 驗證輸入
-    if (!oldPassword || !newPassword || !newConfirmPassword) {
+    if (!oldPassword) {
       return res.status(400).json({
         success: false,
-        message: 'Old password, new password, and confirm password are required',
+        message: 'Old password is required',
       });
     }
 
-    if (newPassword !== newConfirmPassword) {
+    // 驗證新密碼
+    const validation = validatePasswordChange(newPassword, newConfirmPassword);
+    if (!validation.valid) {
       return res.status(400).json({
         success: false,
-        message: 'New passwords do not match',
-      });
-    }
-
-    // 驗證密碼強度
-    if (newPassword.length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: 'Password must be at least 6 characters long',
+        message: validation.error,
       });
     }
 
@@ -557,7 +533,7 @@ export const resendActivation = async (req: Request, res: Response) => {
     const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
       type: 'signup',
       email,
-      password: Math.random().toString(36).slice(-8),
+      password: generateSecureRandomPassword(),
     });
 
     if (linkError || !linkData.properties?.action_link) {
@@ -570,8 +546,7 @@ export const resendActivation = async (req: Request, res: Response) => {
 
     // 從 action_link 中提取 token
     const actionLink = linkData.properties.action_link;
-    const url = new URL(actionLink);
-    const token = url.searchParams.get('token');
+    const token = extractTokenFromActionLink(actionLink);
 
     if (!token) {
       return res.status(500).json({

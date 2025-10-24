@@ -40,7 +40,7 @@
           size="md"
           @click="onSubmit"
         >
-          {{ t('button.confirm') }}
+          {{ t('button.submit') }}
         </TextButton>
       </slot>
     </span>

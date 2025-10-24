@@ -5,7 +5,7 @@
     class="mb-4 h-[30px] w-full md:w-auto"
     @click="showCreateProjectDialog = true"
   >
-    {{ t('common.create_project') }}
+    {{ t('button.create_project') }}
   </TextButton>
 
   <!-- 建立專案對話框 -->

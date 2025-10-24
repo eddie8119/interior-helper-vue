@@ -14,7 +14,7 @@
       @edit="() => {}"
     >
       <template #type="{ row }">
-        <p>{{ t(`project.type.${row.type}`) }}</p>
+        <p>{{ t(`option.projectType.${row.type}`) }}</p>
       </template>
       <template #task_progress="{ row }">
         <ProgressBar

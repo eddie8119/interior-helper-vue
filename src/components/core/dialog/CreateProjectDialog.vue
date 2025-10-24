@@ -24,7 +24,7 @@
         <ElOption
           v-for="item in PROJECT_TYPES"
           :key="item.value"
-          :label="t(`project.type.${item.value}`)"
+          :label="t(`option.projectType.${item.value}`)"
           :value="item.value"
         />
       </ElSelect>

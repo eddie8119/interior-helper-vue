@@ -3,7 +3,7 @@
     v-model="model"
     :options="formattedProjectTypeItems"
     :class-name="'w-[160px]'"
-    :use-i18n-label="false"
+    :namespace="'projectType'"
   />
 </template>
 

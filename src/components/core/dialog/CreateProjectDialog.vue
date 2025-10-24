@@ -2,7 +2,7 @@
   <BasicEditDialog
     v-model="dialogVisible"
     :title="t('title.create_project')"
-    :is-submitting="isSubmitting"
+    :is-submitting="isCreatingProject"
     :error-message="errorMessage"
     :is-invalid="isInvalid"
     @submit="onSubmit"
@@ -66,16 +66,16 @@
 </template>
 
 <script setup lang="ts">
+import { ElMessage } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue';
-import { useQueryClient } from '@tanstack/vue-query';
 import { toTypedSchema } from '@vee-validate/zod';
 import { useField, useForm } from 'vee-validate';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { projectApi } from '@/api/project';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
 import { useCommonAction } from '@/composables/useCommonAction';
+import { useProject } from '@/composables/useProject';
 import { PROJECT_TYPES } from '@/constants/selection';
 import { createProjectSchema, type CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
 
@@ -87,10 +87,15 @@ const emit = defineEmits<{
   'update:projectData': [projectData: CreateProjectSchema];
 }>();
 const { t } = useI18n();
-const queryClient = useQueryClient();
 const { newConstructionItem, localConstructionItems, addConstructionData } = useCommonAction();
+const { createProject, isCreatingProject, createError } = useProject('');
 
-const errorMessage = ref<string>('');
+const errorMessage = computed({
+  get: () => createError.value?.message ?? '',
+  set: (_value: string) => {
+    // Error is managed by composable
+  },
+});
 
 const dialogVisible = computed({
   get: () => props.modelValue,
@@ -103,7 +108,7 @@ const getInitialValues = (): CreateProjectSchema => ({
   constructionContainer: [],
 });
 
-const { handleSubmit, isSubmitting, meta, resetForm } = useForm({
+const { handleSubmit, meta, resetForm } = useForm({
   validationSchema: toTypedSchema(createProjectSchema),
   initialValues: getInitialValues(),
 });
@@ -119,21 +124,12 @@ const {
 } = useField('constructionContainer');
 
 const onSubmit = handleSubmit(async (values: CreateProjectSchema) => {
-  try {
-    const { success, message } = await projectApi.createProject(values);
-    if (!success) {
-      errorMessage.value = message ?? '';
-      return;
-    }
-    if (success) {
-      await queryClient.invalidateQueries({ queryKey: ['overview-projects'] });
-      onCancel();
-    }
-  } catch (error) {
-    console.error('Failed to update device tag:', error);
-  } finally {
-    resetForm({ values: getInitialValues() });
-  }
+  const result = await createProject(values);
+  if (!result) return;
+
+  resetForm({ values: getInitialValues() });
+  onCancel();
+  ElMessage.success(t('message.success.create_success'));
 });
 
 const onCancel = () => {

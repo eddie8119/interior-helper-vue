@@ -14,7 +14,7 @@
           <p class="font-medium">{{ t('dialog.enable_project_sharing') }}</p>
           <p class="text-sm text-gray-500">{{ t('dialog.share_description') }}</p>
         </div>
-        <ElSwitch v-model="isShared" :loading="isToggling" @change="handleToggleShare" />
+        <ElSwitch v-model="isShared" :loading="isTogglingShare" @change="handleToggleShare" />
       </div>
 
       <!-- 分享連結區域 -->
@@ -43,9 +43,9 @@ import { ElMessage } from 'element-plus';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { projectApi } from '@/api/project';
 import TextButton from '@/components/core/button/TextButton.vue';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
+import { useProject } from '@/composables/useProject';
 
 const props = defineProps<{
   modelValue: boolean;
@@ -65,7 +65,7 @@ const { t } = useI18n();
 const errorMessage = ref<string>('');
 const isSubmitting = ref(false);
 const isShared = ref(props.initialIsShared || false);
-const isToggling = ref(false);
+const { toggleProjectShare, isTogglingShare } = useProject(props.projectId);
 
 watch(
   () => props.initialIsShared,
@@ -86,23 +86,19 @@ const shareLink = computed(() => {
 
 const handleToggleShare = async () => {
   try {
-    isToggling.value = true;
-    const { success, message } = await projectApi.toggleProjectShare(props.projectId);
-
-    if (success) {
-      ElMessage.success(message || t('message.update_success'));
+    const result = await toggleProjectShare(props.projectId);
+    if (result) {
+      ElMessage.success(t('message.success.update_success'));
       emit('update:isShared', isShared.value);
-    } else {
-      // 恢復原狀態
-      isShared.value = !isShared.value;
-      ElMessage.error(message || t('message.update_failed'));
+      return;
     }
-  } catch (error) {
-    // 恢復原狀態
+    // 失敗：恢復原狀態
     isShared.value = !isShared.value;
-    ElMessage.error(t('message.update_failed'));
-  } finally {
-    isToggling.value = false;
+    ElMessage.error(t('message.error.update_failed'));
+  } catch {
+    // 例外：恢復原狀態
+    isShared.value = !isShared.value;
+    ElMessage.error(t('message.error.update_failed'));
   }
 };
 

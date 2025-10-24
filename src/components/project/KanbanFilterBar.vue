@@ -1,35 +1,44 @@
 <template>
-  <div class="mb-6 grid grid-cols-2 gap-6 sm:flex sm:flex-row sm:items-center">
-    <div class="filter-container">
-      <Label :label="t('label.task.status')" />
-      <OptionSelector
-        :model-value="selectedStatus"
-        :options="STATUS_FILTER_OPTIONS"
-        :class-name="'w-full sm:w-[145px]'"
-        @update:model-value="handleStatusChange"
-      />
+  <div
+    class="grid grid-cols-2 items-center gap-4 rounded-xl border border-gray-200/70 p-3 sm:flex sm:flex-row sm:items-center"
+  >
+    <div class="filter-container-outter gap-4">
+      <div class="filter-container-inner">
+        <Label :label="t('label.task.status')" />
+        <OptionSelector
+          :model-value="selectedStatus"
+          :options="STATUS_FILTER_OPTIONS"
+          :class-name="'w-full sm:w-[140px]'"
+          @update:model-value="handleStatusChange"
+        />
+      </div>
+      <div class="filter-container-inner">
+        <Label :label="t('label.task.task_display')" />
+        <OptionSelector
+          :model-value="displayMode"
+          :options="TASK_DISPLAY_OPTIONS"
+          :class-name="'w-full sm:w-[140px]'"
+          :namespace="'display'"
+          @update:model-value="handleDisplayModeChange"
+        />
+      </div>
     </div>
-    <div class="filter-container">
-      <Label :label="t('label.task.task_display')" />
-      <OptionSelector
-        :model-value="displayMode"
-        :options="TASK_DISPLAY_OPTIONS"
-        :class-name="'w-full sm:w-[145px]'"
-        :namespace="'display'"
-        @update:model-value="handleDisplayModeChange"
-      />
-    </div>
-    <div class="filter-container w-full sm:w-[280px]">
-      <Label :label="t('label.task.reminder_days_range')" />
-      <ElSlider
-        v-model="daysRange"
-        range
-        :min="0"
-        :max="10"
-        :marks="daysMarks"
-        :show-tooltip="true"
-        @change="handleDaysRangeChange"
-      />
+    <div class="filter-container-outter">
+      <div class="filter-container-inner w-full self-center sm:w-[280px]">
+        <Label :label="t('label.task.reminder_days_range')" />
+        <div class="flex h-10 w-full items-center">
+          <ElSlider
+            class="w-full"
+            v-model="daysRange"
+            range
+            :min="0"
+            :max="10"
+            :marks="daysMarks"
+            :show-tooltip="true"
+            @change="handleDaysRangeChange"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -89,7 +98,11 @@ const handleDaysRangeChange = (value: number | number[]) => {
 </script>
 
 <style scoped>
-.filter-container {
-  @apply flex h-10 flex-col;
+.filter-container-outter {
+  @apply flex rounded-lg bg-gray-50/70 p-4;
+}
+
+.filter-container-inner {
+  @apply flex flex-col justify-center gap-1;
 }
 </style>

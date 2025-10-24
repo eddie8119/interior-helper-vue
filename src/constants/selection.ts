@@ -5,7 +5,25 @@ export const PROJECT_TYPES: SelectorOption[] = [
   { value: 'luxury' },
   { value: 'commercial' },
   { value: 'office' },
+  { value: 'retail' },
+  { value: 'restaurant' },
+  { value: 'hospitality' },
+  { value: 'education' },
+  { value: 'medical' },
+  { value: 'public' },
+  { value: 'exhibition' },
+  { value: 'industrial' },
+  { value: 'renovation' },
+  { value: 'showroom' },
 ] as const;
+
+export type ProjectType = (typeof PROJECT_TYPES)[number]['value'];
+
+// Runtime tuple of project type values, suitable for z.enum
+export const PROJECT_TYPE_VALUES = PROJECT_TYPES.map((o) => o.value) as unknown as readonly [
+  ProjectType,
+  ...ProjectType[],
+];
 
 export const CONSTRUCTION_CONTAINER: ConstructionSelection[] = [
   {

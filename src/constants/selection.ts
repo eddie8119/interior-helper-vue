@@ -1,15 +1,11 @@
-import type {
-  ConstructionSelection,
-  ProjectTypeSelection,
-  SelectorOption,
-} from '@/types/selection';
+import type { ConstructionSelection, SelectorOption } from '@/types/selection';
 
-export const PROJECT_TYPES: ProjectTypeSelection[] = [
-  { value: 'residential', label: 'residential' },
-  { value: 'luxury', label: 'luxury' },
-  { value: 'commercial', label: 'commercial' },
-  { value: 'office', label: 'office' },
-];
+export const PROJECT_TYPES: SelectorOption[] = [
+  { value: 'residential' },
+  { value: 'luxury' },
+  { value: 'commercial' },
+  { value: 'office' },
+] as const;
 
 export const CONSTRUCTION_CONTAINER: ConstructionSelection[] = [
   {

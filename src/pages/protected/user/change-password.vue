@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto max-w-md">
+  <div class="flex h-full w-full items-center justify-center">
     <AuthCard
       :error-message="errorMessage"
       :loading="isSubmitting"

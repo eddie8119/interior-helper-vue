@@ -121,7 +121,7 @@ import { formatDateTimeWithDay } from '@/utils/dateTime';
 
 const props = withDefaults(
   defineProps<{
-    data: T[];
+    data: T[] | undefined;
     columns: Column[];
     actions?: TableAction<T>[];
     loading?: boolean;

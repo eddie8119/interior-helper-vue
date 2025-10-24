@@ -7,6 +7,7 @@
       size="default"
       :icon="button.icon"
       circle
+      :class="button.class"
       @click="button.handler"
     />
   </div>
@@ -69,25 +70,29 @@ const showGlobalCollaboratorsDialog = ref(false);
 const actionButtons = [
   {
     key: 'share',
-    type: 'primary',
+    type: undefined,
+    class: 'bg-primary-panel',
     icon: Share,
     handler: () => (showShareDialog.value = true),
   },
   {
     key: 'collaborators',
-    type: 'info',
+    type: undefined,
+    class: 'bg-primary-panel',
     icon: User,
     handler: () => (showCollaboratorsDialog.value = true),
   },
   {
     key: 'globalCollaborators',
-    type: 'success',
+    type: undefined,
+    class: 'bg-primary-panel',
     icon: UserFilled,
     handler: () => (showGlobalCollaboratorsDialog.value = true),
   },
   {
     key: 'delete',
     type: 'danger',
+    class: '',
     icon: Delete,
     handler: () => (showDeleteDialog.value = true),
   },

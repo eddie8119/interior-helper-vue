@@ -9,6 +9,7 @@
       :show-search="true"
       :show-pagination="true"
       :last-update-time="overviewProjectsUpdatedAt"
+      :table-height="'300px'"
       :actions="[]"
       @edit="() => {}"
     >

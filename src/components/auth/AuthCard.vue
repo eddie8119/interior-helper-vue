@@ -64,21 +64,4 @@ const emit = defineEmits<{
 const { t } = useI18n();
 </script>
 
-<style lang="scss" scoped>
-// 嘗試移動到element.scss 不好處理
-.auth-brand-button {
-  background-color: var(--color-brand-primary);
-  border-color: var(--color-brand-primary);
-  @apply rounded-xl;
-
-  &:hover,
-  &:focus {
-    background-color: var(--color-brand-secondary);
-    border-color: var(--color-brand-secondary);
-  }
-
-  &:active {
-    opacity: 0.8;
-  }
-}
-</style>
+<style lang="scss" scoped></style>

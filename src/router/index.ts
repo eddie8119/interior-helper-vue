@@ -37,8 +37,13 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/auth/Register.vue'),
       },
       {
-        path: 'activation',
-        name: 'activation',
+        path: 'registration-success',
+        name: 'registration-success',
+        component: () => import('../pages/auth/RegistrationSuccess.vue'),
+      },
+      {
+        path: 'account-activation',
+        name: 'account-activation',
         component: () => import('../pages/auth/AccountActivation.vue'),
       },
       {
@@ -176,7 +181,8 @@ router.beforeEach((to, _from, next) => {
   const publicPages = [
     '/auth/login',
     '/auth/register',
-    '/auth/activation',
+    '/auth/account-activation',
+    '/auth/registration-success',
     '/auth/forgot-password',
   ];
   const isPublicPage = publicPages.includes(to.path);

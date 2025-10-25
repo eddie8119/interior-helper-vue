@@ -92,15 +92,15 @@ const onSubmit = handleSubmit(async (values: RegisterData) => {
       showMessage.value = t('message.dialog.check_the_email');
       authStore.setPendingActivationEmail(email.value);
 
-      // 註冊成功，導向激活頁面
+      // 註冊成功，導向註冊成功頁面
       setTimeout(() => {
         router.push({
-          name: 'activation',
+          name: 'registration-success',
           query: {
             email: email.value,
           },
         });
-      }, 2000);
+      }, 100);
     }
   } catch (error) {
     handleError(error as any);

@@ -163,7 +163,7 @@ export function useUser(): UseUserReturn {
   const { mutateAsync: mutateResend } = useMutation({
     mutationFn: async (data: ResendActivationData) => {
       const response = await userApi.resendActivation(data);
-      return response.data;
+      return response;
     },
   });
 

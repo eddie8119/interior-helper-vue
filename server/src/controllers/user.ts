@@ -25,7 +25,7 @@ export const register = async (req: Request, res: Response) => {
       });
     }
 
-    // 使用 admin client 建立使用者，不自動確認郵件
+    // 使用 admin client 建立使用者
     const { data: authData, error: signUpError } = await supabase.auth.admin.createUser({
       email,
       password,
@@ -62,37 +62,33 @@ export const register = async (req: Request, res: Response) => {
       });
     }
 
-    // 產生激活 token
+    // 以自訂流程發送啟用郵件，確保導向 /auth/account-activation
     const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
       type: 'signup',
       email,
-      password,
+      password: generateSecureRandomPassword(),
     });
 
     if (linkError || !linkData.properties?.action_link) {
       console.error('Generate activation link error:', linkError);
-      // 如果產生 token 失敗，刪除已建立的資料
-      await rollbackUserRegistration(authData.user.id);
       return res.status(500).json({
         success: false,
         message: 'Failed to generate activation link',
       });
     }
 
-    // 從 action_link 中提取 token
     const actionLink = linkData.properties.action_link;
     const token = extractTokenFromActionLink(actionLink);
 
     if (!token) {
-      await rollbackUserRegistration(authData.user.id);
       return res.status(500).json({
         success: false,
         message: 'Failed to extract activation token',
       });
     }
 
-    // 發送激活郵件
-    const emailSent = await emailService.sendActivationEmail(email, token, name);
+    // 發送包含 /auth/account-activation 的連結
+    const emailSent = await emailService.sendActivationEmail(email, token);
 
     // 即使郵件失敗，也保留用戶，只返回警告
     const responseStatus = emailSent ? 201 : 201;
@@ -104,9 +100,9 @@ export const register = async (req: Request, res: Response) => {
       success: true,
       data: {
         userDoc,
+        emailSent: emailSent, // 告知前端郵件是否成功
       },
       message: responseMessage,
-      emailSent: emailSent, // 告知前端郵件是否成功
     });
   } catch (error) {
     console.error('Register error:', error);

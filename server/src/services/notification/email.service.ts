@@ -128,7 +128,7 @@ export class EmailService {
   ): Promise<boolean> {
     try {
       const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-      const activationLink = `${frontendUrl}/auth/activation?token=${activationToken}&email=${encodeURIComponent(email)}`;
+      const activationLink = `${frontendUrl}/auth/account-activation?token=${activationToken}&email=${encodeURIComponent(email)}`;
 
       await sendMail({
         from: `"${process.env.EMAIL_FROM_NAME || 'HSWE IoT'}" <${process.env.EMAIL_FROM}>`,

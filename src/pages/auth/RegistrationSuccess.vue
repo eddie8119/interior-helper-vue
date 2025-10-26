@@ -1,6 +1,7 @@
 <template>
   <AuthCard
-    :error-message="resendError?.message"
+    :error-message="resendErrorMessage"
+    :message="resendMessage"
     :loading="isResending"
     :show-submit-button="false"
   >
@@ -28,14 +29,12 @@
       >
         {{ t('button.resend_activation_email') }}
       </ElButton>
-
-      <p v-if="resendMessage" class="text-center text-sm text-gray-600">{{ resendMessage }}</p>
     </div>
   </AuthCard>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
@@ -45,11 +44,12 @@ import { useUser } from '@/composables/useUser';
 
 const { t } = useI18n();
 const route = useRoute();
+const { resendActivation, isResending, resendError } = useUser();
 
 const resendMessage = ref<string | null>(null);
 const email = ref<string | undefined>(route.query.email as string | undefined);
 
-const { resendActivation, isResending, resendError } = useUser();
+const resendErrorMessage = computed(() => resendError.value?.message ?? null);
 
 const handleResendEmail = async () => {
   resendMessage.value = null;

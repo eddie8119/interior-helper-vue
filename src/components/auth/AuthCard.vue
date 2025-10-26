@@ -41,8 +41,8 @@ import { useI18n } from 'vue-i18n';
 
 const props = withDefaults(
   defineProps<{
-    errorMessage?: string;
-    message?: string;
+    errorMessage?: string | null;
+    message?: string | null;
     loading?: boolean;
     showLogo?: boolean;
     isInvalid?: boolean;

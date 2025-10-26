@@ -1,7 +1,7 @@
 <template>
   <AuthCard
     :error-message="errorMessage"
-    :loading="isSubmitting"
+    :loading="isResettingPassword"
     :message="showMessage"
     :is-invalid="!isValid"
     @submit="onSubmit"
@@ -23,43 +23,91 @@
 
 <script setup lang="ts">
 import { useField } from 'vee-validate';
-import { computed, onActivated, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 import type { ResetPasswordData } from '@/types/user';
 
-import { userApi } from '@/api/user';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import ResetPasswordForm from '@/components/auth/ResetPasswordForm.vue';
 import { useFormValidation } from '@/composables/useFormValidation';
+import { useUser } from '@/composables/useUser';
 import { createResetPasswordSchema } from '@/utils/schemas/resetPasswordSchema';
 
 const { t } = useI18n();
-const route = useRoute();
 const router = useRouter();
 
 const errorMessage = ref<string | undefined>(undefined);
 const showMessage = ref<string | undefined>(undefined);
-const token = ref<string | undefined>(undefined);
+const email = ref<string>('');
+const { resetPassword, isResettingPassword } = useUser();
 
-onActivated(() => {
-  token.value = route.query.token as string;
+// Base64URL decode helper
+function base64UrlDecode(input: string): string {
+  let base64 = input.replace(/-/g, '+').replace(/_/g, '/');
+  const pad = base64.length % 4;
+  if (pad) base64 += '='.repeat(4 - pad);
+  return atob(base64);
+}
 
-  if (!token.value) {
-    errorMessage.value = t('error.invalid_or_expired_token');
-    setTimeout(() => {
-      router.push({ name: 'forgot-password' });
-    }, 3000);
+// Decode JWT and extract email
+function decodeEmailFromAccessToken(token: string): string | undefined {
+  try {
+    const parts = token.split('.');
+    if (parts.length < 2) return undefined;
+    const payloadJson = base64UrlDecode(parts[1]);
+    const payload = JSON.parse(payloadJson) as { email?: string };
+    return payload.email;
+  } catch {
+    return undefined;
   }
-});
+}
 
-const { handleSubmit, errors, isSubmitting } = useFormValidation<
-  Omit<ResetPasswordData, 'token' | 'uid'>
->(createResetPasswordSchema(t), {
+const { handleSubmit, errors } = useFormValidation(createResetPasswordSchema(t), {
   newPassword: '',
   newConfirmPassword: '',
 });
+
+// 從 URL hash 的 access_token 解出 email；退而求其次使用 query 或 localStorage
+const initializeEmail = () => {
+  // 1) 優先：從 URL hash 解析 access_token
+  const hash = window.location.hash.startsWith('#') ? window.location.hash.substring(1) : '';
+  const hashParams = new URLSearchParams(hash);
+  const accessToken = hashParams.get('access_token');
+
+  if (accessToken) {
+    const decodedEmail = decodeEmailFromAccessToken(accessToken);
+    if (decodedEmail) {
+      email.value = decodedEmail;
+      localStorage.setItem('resetPasswordEmail', decodedEmail);
+      return;
+    }
+  }
+
+  // 2) 次要：從 URL query ?email=
+  const queryEmail = new URLSearchParams(window.location.search).get('email');
+  if (queryEmail) {
+    email.value = decodeURIComponent(queryEmail);
+    localStorage.setItem('resetPasswordEmail', email.value);
+    return;
+  }
+
+  // 3) 最後：localStorage
+  const storedEmail = localStorage.getItem('resetPasswordEmail');
+  if (storedEmail) {
+    email.value = storedEmail;
+    return;
+  }
+
+  // 都沒有 -> 顯示錯誤並導回
+  errorMessage.value = t('error.invalid_or_expired_token');
+  setTimeout(() => {
+    router.push({ name: 'forgot-password' });
+  }, 3000);
+};
+
+initializeEmail();
 
 const { value: newPassword, handleBlur: handleBlurNewPassword } = useField<string>('newPassword');
 const { value: newConfirmPassword, handleBlur: handleBlurNewConfirmPassword } =
@@ -69,29 +117,35 @@ const isValid = computed(() => {
   return newPassword.value && newConfirmPassword.value && Object.keys(errors.value).length === 0;
 });
 
-const onSubmit = handleSubmit(async (values) => {
-  const { uid, token } = route.query;
+const onSubmit = handleSubmit(async (values: ResetPasswordData) => {
+  errorMessage.value = undefined;
+  showMessage.value = undefined;
+
+  if (!email.value) {
+    errorMessage.value = t('error.invalid_or_expired_token');
+    return;
+  }
 
   try {
-    errorMessage.value = undefined;
-    await userApi.resetPassword({
+    const { success, message } = await resetPassword({
+      email: email.value,
       newPassword: values.newPassword,
       newConfirmPassword: values.newConfirmPassword,
-      token: token as string,
-      uid: uid as string,
     });
 
-    showMessage.value = t('success.password_reset_success');
-    setTimeout(() => {
-      router.push({ name: 'login' });
-    }, 2000);
-  } catch (error) {
-    const err = error as { response?: { status: number; data: Record<string, string[]> } };
-    if (err.response?.status === 400 && err.response?.data) {
-      const errors = err.response.data;
-      const errorMessages = Object.values(errors).flat().join('\n');
-      errorMessage.value = errorMessages;
-      if (errorMessages.includes('Token is invalid or expired')) {
+    if (success) {
+      showMessage.value = t('success.password_reset_success');
+      localStorage.removeItem('resetPasswordEmail');
+      setTimeout(() => {
+        router.push({ name: 'login' });
+      }, 2000);
+    } else {
+      errorMessage.value = message || t('error.reset_password_failed');
+    }
+  } catch (error: any) {
+    if (error?.response?.data?.message) {
+      errorMessage.value = error.response.data.message;
+      if (error.response.data.message.includes('invalid or expired')) {
         setTimeout(() => {
           router.push({ name: 'forgot-password' });
         }, 3000);

@@ -68,10 +68,10 @@ import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
-import { useUser } from '@/composables/useUser';
 import check from '@/assets/images/check.png';
 import close from '@/assets/images/close.png';
 import AuthCard from '@/components/auth/AuthCard.vue';
+import { useUser } from '@/composables/useUser';
 
 const { t } = useI18n();
 const route = useRoute();

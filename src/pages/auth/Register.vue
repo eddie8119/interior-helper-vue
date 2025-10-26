@@ -100,7 +100,7 @@ const onSubmit = handleSubmit(async (values: RegisterData) => {
             email: email.value,
           },
         });
-      }, 100);
+      }, 500);
     }
   } catch (error) {
     handleError(error as any);

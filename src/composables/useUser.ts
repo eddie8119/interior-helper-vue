@@ -139,7 +139,7 @@ export function useUser(): UseUserReturn {
   const { mutateAsync: mutateActivate } = useMutation({
     mutationFn: async (data: ActivationData) => {
       const response = await userApi.activateAccount(data);
-      return response.data;
+      return response;
     },
   });
 
@@ -187,7 +187,7 @@ export function useUser(): UseUserReturn {
   const { mutateAsync: mutateForgotPassword } = useMutation({
     mutationFn: async (data: ForgotPasswordData) => {
       const response = await userApi.forgotPassword(data);
-      return response.data;
+      return response;
     },
   });
 
@@ -211,7 +211,7 @@ export function useUser(): UseUserReturn {
   const { mutateAsync: mutateResetPassword } = useMutation({
     mutationFn: async (data: ResetPasswordData) => {
       const response = await userApi.resetPassword(data);
-      return response.data;
+      return response;
     },
   });
 

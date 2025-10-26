@@ -2,7 +2,7 @@
   <AuthCard
     :error-message="errorMessage"
     :message="showMessage"
-    :loading="isSubmitting"
+    :loading="isForgettingPassword"
     :is-invalid="!isValid"
     @submit="onSubmit"
   >
@@ -23,42 +23,44 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { ForgotPasswordData } from '@/types/user';
-import type { AxiosError } from 'axios';
 
-import { userApi } from '@/api/user';
 import AuthCard from '@/components/auth/AuthCard.vue';
 import ForgotPasswordForm from '@/components/auth/ForgotPasswordForm.vue';
-import { useFormError } from '@/composables/useFormError';
 import { useFormValidation } from '@/composables/useFormValidation';
+import { useUser } from '@/composables/useUser';
 import { forgotPasswordSchema } from '@/utils/schemas/forgotPasswordSchema';
 
 const { t } = useI18n();
-const showMessage = ref<string>('');
-
-const { handleSubmit, errors, isSubmitting } = useFormValidation<ForgotPasswordData>(
-  forgotPasswordSchema,
-  {
-    email: '',
-  }
-);
-
+const showMessage = ref<string | null>(null);
+const { forgotPassword, isForgettingPassword, forgotPasswordError } = useUser();
+const { handleSubmit, errors } = useFormValidation<ForgotPasswordData>(forgotPasswordSchema, {
+  email: '',
+});
 const { value: email, handleBlur: handleBlurEmail } = useField<string>('email');
 
 const isValid = computed(() => {
   return email.value && Object.keys(errors.value).length === 0;
 });
+const errorMessage = computed(() => forgotPasswordError.value?.message ?? null);
 
-const { errorMessage, handleError } = useFormError({
-  statusCodes: [400],
-  defaultErrorKey: t('error.reset_password_failed'),
-});
+const onSubmit = handleSubmit(async (values: ForgotPasswordData) => {
+  showMessage.value = null;
+  forgotPasswordError.value = null;
 
-const onSubmit = handleSubmit(async (values) => {
   try {
-    await userApi.forgotPassword(values as unknown as ForgotPasswordData);
-    showMessage.value = t('message.dialog.check_the_email');
-  } catch (error) {
-    handleError(error as AxiosError);
+    const { success, message } = await forgotPassword(values);
+
+    if (success) {
+      showMessage.value = t('message.dialog.check_the_email');
+    } else {
+      forgotPasswordError.value = new Error(message || t('error.reset_password_failed'));
+    }
+  } catch (error: any) {
+    if (error?.response?.data?.message) {
+      forgotPasswordError.value = new Error(error.response.data.message);
+    } else {
+      forgotPasswordError.value = new Error(t('error.reset_password_failed'));
+    }
   }
 });
 </script>

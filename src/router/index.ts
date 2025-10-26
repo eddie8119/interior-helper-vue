@@ -183,6 +183,8 @@ router.beforeEach((to, _from, next) => {
     '/auth/register',
     '/auth/account-activation',
     '/auth/registration-success',
+    '/auth/resend-activation',
+    '/auth/reset-password',
     '/auth/forgot-password',
   ];
   const isPublicPage = publicPages.includes(to.path);

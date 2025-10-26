@@ -21,10 +21,11 @@ export interface ChangePasswordData {
 }
 
 export interface ResetPasswordData {
+  email?: string;
   newPassword: string;
   newConfirmPassword: string;
-  token: string;
-  uid: string;
+  token?: string;
+  uid?: string;
 }
 
 export interface EditProfileData {

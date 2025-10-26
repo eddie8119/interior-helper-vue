@@ -1,7 +1,6 @@
 {
   "button": {
     "cancel": "Cancel",
-    "confirm": "Confirm",
     "copy": "Copy",
     "edit": "Edit",
     "remove": "Remove",
@@ -17,24 +16,17 @@
     "send_reset_email": "Send Reset Email",
     "resend_activation_email": "Resend Activation Email",
     "edit_profile": "Edit Profile",
+    "create_project": "Create Project",
     "move_to_project": "Move to Project",
     "moved_to_project": "Moved to Project",
     "delete_completed": "Delete Completed",
     "resend": "Resend",
     "activate": "Activate",
-    "add_alarm": "Add Alarm",
     "accept": "Accept",
     "reject": "Reject",
     "accept_invitation": "Accept Invitation",
     "back_to_home": "Back to Home",
-    "export": {
-      "json": "JSON",
-      "csv": "CSV"
-    },
-    "try_again": "Try Again",
-    "query": "Query",
-    "pdf": "PDF",
-    "csv": "CSV"
+    "try_again": "Try Again"
   },
   "column": {
     "edit": "Edit",
@@ -47,7 +39,6 @@
     "action": "Action"
   },
   "common": {
-    "create_project": "Create Project",
     "cancel": "Cancel",
     "save": "Save",
     "add": "Add",
@@ -79,7 +70,7 @@
     "share_project_link": "Share Project Link",
     "move_note_to_project": "Select Project, Move Note",
     "enable_project_sharing": "Enable Project Sharing",
-    "share_description": "Share your project with others.",
+    "share_description": "Share this project with others.",
     "collaborators_description": "Collaborators are users who can access your projects.",
     "global_collaborators_description": "Global collaborators are collaborators who can access all projects."
   },
@@ -131,7 +122,7 @@
       "global_invitation": "Global Collaboration Invitation"
     },
     "user": {
-      "username": "Username",
+      "name": "Username",
       "email": "Email",
       "member_since": "Member Since"
     },
@@ -179,9 +170,6 @@
       "no_invitations": "No pending invitations",
       "share_disabled_hint": "Share disabled"
     },
-    "success": {
-      "update_success": "Update successful!"
-    },
     "invitation": {
       "sent": "Invitation sent successfully",
       "accepted": "Invitation accepted",
@@ -200,6 +188,10 @@
       "not_found": "Invitation not found or already processed",
       "expired": "This invitation has expired",
       "load_failed": "Failed to load invitation details"
+    },
+    "success": {
+      "create_success": "Create project success",
+      "update_success": "Update successful!"
     },
     "error": {
       "update_failed": "Update failed",
@@ -239,6 +231,22 @@
       "notice": "Notice",
       "caution": "Caution",
       "warning": "Warning"
+    },
+    "projectType": {
+      "residential": "Residential",
+      "luxury": "Luxury",
+      "commercial": "Commercial",
+      "office": "Office",
+      "retail": "Retail / Shop",
+      "restaurant": "Restaurant",
+      "hospitality": "Hospitality",
+      "education": "Education",
+      "medical": "Medical",
+      "public": "Public",
+      "exhibition": "Exhibition",
+      "industrial": "Industrial",
+      "renovation": "Renovation",
+      "showroom": "Showroom"
     },
     "status": {
       "all": "All",
@@ -294,13 +302,7 @@
   },
   "project": {
     "project": "Project",
-    "construction": "Construction",
-    "type": {
-      "residential": "Residential",
-      "luxury": "Luxury",
-      "commercial": "Commercial",
-      "office": "Office"
-    }
+    "construction": "Construction"
   },
   "setting": {
     "construction": "Construction",
@@ -369,6 +371,9 @@
     }
   },
   "validation": {
+    "input": {
+      "required": "This is required"
+    },
     "email": {
       "required": "Email is required",
       "invalid": "Invalid email address"

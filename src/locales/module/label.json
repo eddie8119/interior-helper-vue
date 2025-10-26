@@ -30,7 +30,7 @@
         "global_invitation": "Global Collaboration Invitation"
       },
       "user": {
-        "username": "Username",
+        "name": "Username",
         "email": "Email",
         "member_since": "Member Since"
       },
@@ -81,7 +81,7 @@
         "global_invitation": "全域協作邀請"
       },
       "user": {
-        "username": "使用者名稱",
+        "name": "使用者名稱",
         "email": "電子郵件",
         "member_since": "加入日期"
       },

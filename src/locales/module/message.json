@@ -22,9 +22,6 @@
         "no_invitations": "No pending invitations",
         "share_disabled_hint": "Share disabled"
       },
-      "success": {
-        "update_success": "Update successful!"
-      },
       "invitation": {
         "sent": "Invitation sent successfully",
         "accepted": "Invitation accepted",
@@ -43,6 +40,10 @@
         "not_found": "Invitation not found or already processed",
         "expired": "This invitation has expired",
         "load_failed": "Failed to load invitation details"
+      },
+      "success": {
+        "create_success": "Create project success",
+        "update_success": "Update successful!"
       },
       "error": {
         "update_failed": "Update failed",
@@ -76,9 +77,6 @@
         "no_invitations": "無待處理邀請",
         "share_disabled_hint": "分享功能已關閉"
       },
-      "success": {
-        "update_success": "更新成功！"
-      },
       "invitation": {
         "sent": "邀請已成功發送",
         "accepted": "已接受邀請",
@@ -97,6 +95,10 @@
         "not_found": "找不到邀請或已處理",
         "expired": "此邀請已過期",
         "load_failed": "無法載入邀請詳情"
+      },
+      "success": {
+        "create_success": "專案建立成功",
+        "update_success": "更新成功！"
       },
       "error": {
         "update_failed": "更新失敗",

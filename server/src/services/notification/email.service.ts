@@ -1,14 +1,16 @@
-import { supabase } from '@/lib/supabase';
-import { sendMail } from '@/services/notification/mailer';
-import { generateTaskReminderTemplate } from './templates/taskReminder';
+import { generateAccountActivationTemplate } from './templates/accountActivation';
 import { generateDailyDigestTemplate } from './templates/dailyDigest';
 import { generateInvitationTemplate } from './templates/invitation';
 import {
-  generatePasswordResetTemplate,
   generatePasswordChangedTemplate,
+  generatePasswordResetTemplate,
 } from './templates/passwordReset';
-import { generateAccountActivationTemplate } from './templates/accountActivation';
+import { generateTaskReminderTemplate } from './templates/taskReminder';
+
 import type { CollaboratorRole, InvitationType } from '@/types/response';
+
+import { supabase } from '@/lib/supabase';
+import { sendMail } from '@/services/notification/mailer';
 
 // 用於發送任務提醒和每日摘要
 export class EmailService {
@@ -94,21 +96,13 @@ export class EmailService {
       const acceptUrl = `${frontendUrl}/invitation/accept?token=${invitationToken}`;
 
       const subject =
-        invitationType === 'project'
-          ? `協作邀請：${projectName}`
-          : '協作邀請：全域專案協作者';
+        invitationType === 'project' ? `協作邀請：${projectName}` : '協作邀請：全域專案協作者';
 
       await sendMail({
         from: `"${process.env.EMAIL_FROM_NAME || '專案協作系統'}" <${process.env.EMAIL_FROM}>`,
         to: inviteeEmail,
         subject,
-        html: generateInvitationTemplate(
-          inviterName,
-          invitationType,
-          role,
-          acceptUrl,
-          projectName
-        ),
+        html: generateInvitationTemplate(inviterName, invitationType, role, acceptUrl, projectName),
       });
 
       return true;
@@ -141,10 +135,9 @@ export class EmailService {
           userName,
         }),
       });
-
       return true;
     } catch (error) {
-      console.error('發送帳戶激活郵件失敗:', error);
+      console.error('[sendActivationEmail] Failed to send activation email to', email, error);
       return false;
     }
   }

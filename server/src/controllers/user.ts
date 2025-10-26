@@ -2,13 +2,10 @@ import { Request, Response } from 'express';
 import snakecaseKeys from 'snakecase-keys';
 
 import { supabase } from '@/lib/supabase';
-import { emailService } from '@/services/notification/email.service';
 import {
-  extractTokenFromActionLink,
   rollbackUserRegistration,
   validatePasswordChange,
   validateRegistrationInput,
-  generateSecureRandomPassword,
 } from '@/utils/userValidation';
 
 export const register = async (req: Request, res: Response) => {
@@ -62,47 +59,27 @@ export const register = async (req: Request, res: Response) => {
       });
     }
 
-    // 以自訂流程發送啟用郵件，確保導向 /auth/account-activation
-    const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
-      type: 'signup',
-      email,
-      password: generateSecureRandomPassword(),
+    // 使用 Supabase 內建模板發送啟用郵件
+    const redirectTo = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/auth/account-activation`;
+    const { error: emailError } = await supabase.auth.admin.inviteUserByEmail(email, {
+      redirectTo,
     });
 
-    if (linkError || !linkData.properties?.action_link) {
-      console.error('Generate activation link error:', linkError);
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to generate activation link',
-      });
+    const emailSent = !emailError;
+
+    if (emailError) {
+      console.warn(`[register] Failed to send invitation email to ${email}:`, emailError);
     }
 
-    const actionLink = linkData.properties.action_link;
-    const token = extractTokenFromActionLink(actionLink);
-
-    if (!token) {
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to extract activation token',
-      });
-    }
-
-    // 發送包含 /auth/account-activation 的連結
-    const emailSent = await emailService.sendActivationEmail(email, token);
-
-    // 即使郵件失敗，也保留用戶，只返回警告
-    const responseStatus = emailSent ? 201 : 201;
-    const responseMessage = emailSent
-      ? 'User registered successfully. Please check your email to activate your account.'
-      : 'User registered successfully, but failed to send activation email. Please check your email or request a new activation link.';
-
-    res.status(responseStatus).json({
+    res.status(201).json({
       success: true,
       data: {
         userDoc,
-        emailSent: emailSent, // 告知前端郵件是否成功
+        emailSent, // 告訊前端郵件是否成功
       },
-      message: responseMessage,
+      message: emailSent
+        ? 'User registered successfully. Please check your email to activate your account.'
+        : 'User registered successfully, but failed to send activation email. Please check your email or request a new activation link.',
     });
   } catch (error) {
     console.error('Register error:', error);
@@ -265,55 +242,19 @@ export const forgotPassword = async (req: Request, res: Response) => {
       });
     }
 
-    // 檢查用戶是否存在
-    const { data: userProfile } = await supabase
-      .from('Profiles')
-      .select('id')
-      .eq('email', email)
-      .maybeSingle();
+    // 使用 Supabase 內建的重置密碼流程
+    // 由 Supabase 直接寄出郵件（使用 Dashboard 設定的模板）
+    const redirectTo = `${process.env.FRONTEND_URL}/auth/reset-password`;
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
 
-    // 為了安全，即使用戶不存在也返回成功（防止郵箱枚舉攻擊）
-    if (!userProfile) {
-      return res.json({
-        success: true,
-        message: 'If the email exists, a password reset link has been sent',
-      });
+    // 為了安全，即使出錯也返回成功（防止郵箱枚舉攻擊）
+    if (error) {
+      console.error('resetPasswordForEmail error:', error);
     }
 
-    // 使用 Supabase 生成重置 token
-    const { data, error } = await supabase.auth.admin.generateLink({
-      type: 'recovery',
-      email,
-    });
-
-    if (error || !data.properties?.action_link) {
-      console.error('Generate reset link error:', error);
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to generate reset link',
-      });
-    }
-
-    // 從 action_link 中提取 token
-    const actionLink = data.properties.action_link;
-    const token = extractTokenFromActionLink(actionLink);
-
-    if (!token) {
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to extract reset token',
-      });
-    }
-
-    // 使用自訂郵件模板發送
-    const emailSent = await emailService.sendPasswordResetEmail(email, token);
-
-    // 即使郵件失敗，也返回成功（防止郵箱枚舉攻擊）
-    res.json({
+    return res.json({
       success: true,
-      message: emailSent
-        ? 'Password reset email sent successfully'
-        : 'If the email exists, a password reset link has been sent',
+      message: 'If the email exists, a password reset link has been sent',
     });
   } catch (error) {
     console.error('Forgot password error:', error);
@@ -327,12 +268,12 @@ export const forgotPassword = async (req: Request, res: Response) => {
 // 重置密碼 (忘記密碼 - 使用重置連結)
 export const resetPassword = async (req: Request, res: Response) => {
   try {
-    const { newPassword, newConfirmPassword, token } = req.body;
+    const { email, newPassword, newConfirmPassword } = req.body;
 
-    if (!token) {
+    if (!email) {
       return res.status(400).json({
         success: false,
-        message: 'Token is required',
+        message: 'Email is required',
       });
     }
 
@@ -345,16 +286,36 @@ export const resetPassword = async (req: Request, res: Response) => {
       });
     }
 
-    // 使用 token 更新密碼
-    const { error } = await supabase.auth.updateUser({
+    // 依 email 查詢 auth user，取得 user id
+    const { data: users, error: listError } = await supabase.auth.admin.listUsers();
+
+    if (listError || !users) {
+      console.error('List users error:', listError);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to find user',
+      });
+    }
+
+    const user = users.users.find((u) => u.email === email);
+    if (!user) {
+      // 為了安全，即使找不到也回储成功（防止郵箱枚舉攻擊）
+      return res.json({
+        success: true,
+        message: 'Password reset successfully',
+      });
+    }
+
+    // 使用 Admin API 更新該 user 的密碼
+    const { error: updateError } = await supabase.auth.admin.updateUserById(user.id, {
       password: newPassword,
     });
 
-    if (error) {
-      console.error('Reset password error:', error);
+    if (updateError) {
+      console.error('Update user password error:', updateError);
       return res.status(400).json({
         success: false,
-        message: error.message || 'Failed to reset password',
+        message: updateError.message || 'Failed to reset password',
       });
     }
 
@@ -420,9 +381,7 @@ export const changePassword = async (req: Request, res: Response) => {
       });
     }
 
-    // 發送密碼更改成功通知郵件
-    await emailService.sendPasswordChangedNotification(user.email);
-
+    // Supabase 會自動發送密碼更改通知郵件
     res.json({
       success: true,
       message: 'Password changed successfully',
@@ -509,36 +468,19 @@ export const resendActivation = async (req: Request, res: Response) => {
       });
     }
 
-    // 產生新的激活 token
-    const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
-      type: 'signup',
-      email,
-      password: generateSecureRandomPassword(),
+    // 使用 Supabase 內建郵件模板發送驗證郵件
+    const redirectTo = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/auth/account-activation`;
+
+    const { error: emailError } = await supabase.auth.admin.inviteUserByEmail(email, {
+      redirectTo,
     });
 
-    if (linkError || !linkData.properties?.action_link) {
-      console.error('Generate activation link error:', linkError);
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to generate activation link',
-      });
+    const emailSent = !emailError;
+
+    if (emailError) {
+      console.warn(`[resendActivation] Failed to send invitation email to ${email}:`, emailError);
     }
 
-    // 從 action_link 中提取 token
-    const actionLink = linkData.properties.action_link;
-    const token = extractTokenFromActionLink(actionLink);
-
-    if (!token) {
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to extract activation token',
-      });
-    }
-
-    // 發送激活郵件
-    const emailSent = await emailService.sendActivationEmail(email, token);
-
-    // 即使郵件失敗，也返回成功（防止郵箱枚舉攻擊）
     res.json({
       success: true,
       message: emailSent

@@ -1,35 +1,45 @@
 <template>
   <ElCard class="panel-container">
     <template #header>
-      <div class="flex items-center">
-        <ElAvatar :size="50" class="mr-4">
-          {{ userInitial }}
-        </ElAvatar>
-        <H1Title :title="userName" />
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <ElAvatar :size="50" class="mr-4">
+            {{ userInitial }}
+          </ElAvatar>
+          <H1Title :title="userName" />
+        </div>
+
+        <TextButton v-if="!isEditMode" variant="primary" size="md" @click="isEditMode = true">
+          {{ t('button.edit') }}
+        </TextButton>
       </div>
     </template>
 
     <ElSkeleton :loading="isLoadingProfile" animated>
       <template #default>
         <div class="profile-info space-y-6">
-          <div class="info-section">
-            <ElDescriptions :column="1" border>
-              <ElDescriptionsItem :label="t('label.user.name')">
-                <EditInput
-                  v-model="nameModel"
-                  :placeholder="t('placeholder.auth.name')"
-                  name="name"
-                  type="text"
-                  :is-loading="isUpdatingProfile"
-                  @save="handleSaveName"
-                />
-              </ElDescriptionsItem>
-              <ElDescriptionsItem :label="t('label.user.email')">
+          <div class="py-5">
+            <!-- View Mode -->
+            <ElDescriptions v-if="!isEditMode" :column="1" border>
+              <ElDescriptionsItem v-for="item in userDetails" :key="item.key" :label="item.label">
                 <div class="flex items-center">
-                  <span>{{ userEmail }}</span>
+                  <span>{{ item.value || '-' }}</span>
                 </div>
               </ElDescriptionsItem>
             </ElDescriptions>
+
+            <!-- Edit Mode -->
+            <ProfileEditForm
+              v-else
+              :is-updating-profile="isUpdatingProfile"
+              :user-email="userEmail"
+              :edit-form-data="editFormData"
+              :edit-form-errors="editFormErrors"
+              @update:edit-form-data="editFormData = $event"
+              @update:edit-form-errors="editFormErrors = $event"
+              @cancel="cancelEdit"
+              @save="handleSaveProfile"
+            />
           </div>
         </div>
       </template>
@@ -39,10 +49,11 @@
 
 <script setup lang="ts">
 import { ElMessage } from 'element-plus';
-import { computed, onActivated } from 'vue';
+import { computed, onActivated, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import EditInput from '@/components/core/input/EditInput.vue';
+import ProfileEditForm from '@/components/user/ProfileEditForm.vue';
+import TextButton from '@/components/core/button/TextButton.vue';
 import H1Title from '@/components/core/title/H1Title.vue';
 import { useUser } from '@/composables/useUser';
 
@@ -50,34 +61,82 @@ const { t } = useI18n();
 const { userProfile, isLoadingProfile, refetchProfile, updateProfile, isUpdatingProfile } =
   useUser();
 
-const userName = computed(() => userProfile.value?.userDoc?.name ?? '');
-const userEmail = computed(() => userProfile.value?.userDoc?.email ?? '');
-const userInitial = computed(() => userName.value?.charAt(0)?.toUpperCase() || 'U');
-
-// v-model proxy without local ref
-const nameModel = computed({
-  get: () => userName.value,
-  set: async (val: string) => {
-    // reuse your existing save logic
-    await updateProfile({ name: val });
-  },
+const isEditMode = ref(false);
+const editFormData = ref({
+  name: '',
+  phone: '',
+  company: '',
+});
+const editFormErrors = ref<Record<string, string>>({
+  name: '',
+  phone: '',
+  company: '',
 });
 
-const handleSaveName = async (data: string) => {
+const userName = computed(() => userProfile.value?.userDoc?.name ?? null);
+const userEmail = computed(() => userProfile.value?.userDoc?.email ?? null);
+const phoneNumber = computed(() => userProfile.value?.userDoc?.phoneNumber ?? null);
+const company = computed(() => userProfile.value?.userDoc?.company ?? null);
+const userInitial = computed(() => userName.value?.charAt(0)?.toUpperCase() || 'U');
+
+const userDetails = computed(() => [
+  { key: 'name', label: t('label.user.name'), value: userName.value },
+  { key: 'email', label: t('label.user.email'), value: userEmail.value },
+  { key: 'phone', label: t('label.user.phone'), value: phoneNumber.value },
+  { key: 'company', label: t('label.user.company'), value: company.value },
+]);
+
+// Initialize edit form with current data
+const initializeEditForm = () => {
+  editFormData.value = {
+    name: userName.value || '',
+    phone: phoneNumber.value || '',
+    company: company.value || '',
+  };
+  editFormErrors.value = {
+    name: '',
+    phone: '',
+    company: '',
+  };
+};
+
+const handleSaveProfile = async () => {
   try {
-    const { success, message } = await updateProfile({ name: data });
+    const { name, phone, company } = editFormData.value;
+    const { success, message } = await updateProfile({
+      name,
+      phone,
+      company,
+    });
+
     if (success) {
       ElMessage.success(t('message.success.updateProfile'));
+      isEditMode.value = false;
     } else {
       ElMessage.error(message || t('message.error.updateProfile'));
-      throw new Error(message || 'Failed to update profile');
     }
   } catch (err) {
-    console.error('Failed to update name:', err);
+    console.error('Failed to update profile:', err);
     ElMessage.error(t('message.error.updateProfile') || 'Failed to update profile');
-    throw err;
   }
 };
+
+// Cancel edit mode
+const cancelEdit = () => {
+  isEditMode.value = false;
+  editFormErrors.value = {
+    name: '',
+    phone: '',
+    company: '',
+  };
+};
+
+// Watch for edit mode changes to initialize form
+watch(isEditMode, (newVal: boolean) => {
+  if (newVal) {
+    initializeEditForm();
+  }
+});
 
 // onActivated is called when a kept-alive component is re-inserted into the DOM.
 // We refresh the data in the background without showing the loader.
@@ -90,8 +149,4 @@ onActivated(() => {
 });
 </script>
 
-<style scoped>
-.info-section {
-  padding: 1.5rem 0;
-}
-</style>
+<style scoped></style>

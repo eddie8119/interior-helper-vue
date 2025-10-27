@@ -21,15 +21,17 @@ export interface ChangePasswordData {
 }
 
 export interface ResetPasswordData {
-  email?: string;
+  email: string;
   newPassword: string;
   newConfirmPassword: string;
-  token?: string;
-  uid?: string;
+  token: string;
+  uid: string;
 }
 
 export interface EditProfileData {
   name: string;
+  phone: string;
+  company: string;
 }
 
 export interface ActivationData {

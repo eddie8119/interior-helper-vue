@@ -4,8 +4,7 @@
       "projects": "Projects List",
       "project": "Project",
       "profile": "Profile",
-      "change-password": "Change Password",
-      "edit-profile": "Edit Profile"
+      "change-password": "Change Password"
     }
   },
   "zh-TW": {
@@ -13,8 +12,7 @@
       "projects": "專案群",
       "project": "專案",
       "profile": "個人資料",
-      "change-password": "修改密碼",
-      "edit-profile": "編輯個人資料"
+      "change-password": "修改密碼"
     }
   },
   "ja": {}

@@ -124,7 +124,9 @@
     "user": {
       "name": "使用者名稱",
       "email": "電子郵件",
-      "member_since": "加入日期"
+      "member_since": "加入日期",
+      "phone": "電話",
+      "company": "公司"
     },
     "project": {
       "project": "專案",
@@ -280,6 +282,7 @@
     "email": "電子郵件",
     "name": "姓名",
     "phone": "電話",
+    "company": "公司",
     "search": "搜尋",
     "select_date_and_time": "選擇日期和時間",
     "project": {
@@ -333,8 +336,7 @@
     "projects": "專案群",
     "project": "專案",
     "profile": "個人資料",
-    "change-password": "修改密碼",
-    "edit-profile": "編輯個人資料"
+    "change-password": "修改密碼"
   },
   "title": {
     "register": "註冊",
@@ -367,12 +369,24 @@
     }
   },
   "validation": {
-    "input": {
-      "required": "此為必填"
-    },
+    "name_required": "名稱為必填",
+    "phone_required": "電話為必填",
+    "company_required": "公司為必填",
+    "description_required": "描述為必填",
+    "construction_required": "施工項目為必填",
+    "unit_required": "單位為必填",
+    "project_type_required": "案件類別為必填",
+    "input_required": "此為必填",
     "email": {
       "required": "電子郵件為必填",
       "invalid": "無效的電子郵件地址"
+    },
+    "title": {
+      "required": "標題為必填",
+      "max_length": "標題不能超過10個字"
+    },
+    "input": {
+      "required": "此為必填"
     },
     "password": {
       "min": "至少 {min} 個字元",
@@ -380,6 +394,13 @@
       "special": "必須包含至少 1 個特殊字元",
       "alphanumeric": "必須包含英數字元",
       "mismatch": "密碼不一致"
+    },
+    "quantity": {
+      "required": "數量為必填",
+      "positive": "數量必須大於 0"
+    },
+    "unit_price": {
+      "negative": "單價不能為負數"
     }
   }
 }

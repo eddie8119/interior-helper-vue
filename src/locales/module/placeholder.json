@@ -14,6 +14,7 @@
       "email": "Email",
       "name": "Name",
       "phone": "Phone",
+      "company": "Company",
       "search": "Search",
       "select_date_and_time": "Select date and time",
       "project": {
@@ -47,6 +48,7 @@
       "email": "電子郵件",
       "name": "姓名",
       "phone": "電話",
+      "company": "公司",
       "search": "搜尋",
       "select_date_and_time": "選擇日期和時間",
       "project": {

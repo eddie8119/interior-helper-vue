@@ -50,6 +50,8 @@ const onSubmit = handleSubmit(async (values: EditProfileData) => {
       ElMessage.success(t('message.change_password_success'));
       resetForm();
     }
-  } catch (error) {}
+  } catch (error) {
+    ElMessage.error(t('message.change_password_failed'));
+  }
 });
 </script>

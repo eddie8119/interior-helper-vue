@@ -25,7 +25,7 @@ interface Item {
 
 const props = defineProps<{
   items: Item[];
-  selectedItem?: Record<string, any> | string;
+  selectedItem?: Record<string, unknown> | string;
 }>();
 
 const emit = defineEmits(['select']);

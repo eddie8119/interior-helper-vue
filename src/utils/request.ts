@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import axios, { type AxiosRequestConfig } from 'axios';
+import axios, { type AxiosRequestConfig, isAxiosError } from 'axios';
 
 import router from '@/router';
 import { clearTokens, getAccessToken, getRefreshToken, setAccessToken } from '@/utils/auth';
@@ -89,9 +89,9 @@ instance.interceptors.response.use(
           onTokenRefreshed(access);
           // 用新鑰匙開門的動作
           return instance(originalRequest);
-        } catch (refreshError: any) {
+        } catch (refreshError: unknown) {
           // 當 refresh token 也過期時，後端會回傳 401
-          if (refreshError.response.status === 401) {
+          if (isAxiosError(refreshError) && refreshError.response?.status === 401) {
             console.error('Refresh token expired, logging out:', refreshError);
             await logout();
           } else {

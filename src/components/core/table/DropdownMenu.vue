@@ -22,12 +22,12 @@ import { useI18n } from 'vue-i18n';
 
 interface Action {
   label: string;
-  onClick: (row: any) => void;
+  onClick: (row: unknown) => void;
 }
 
 const props = defineProps<{
   actions: Action[];
-  row: any;
+  row: unknown;
 }>();
 
 const { t } = useI18n();

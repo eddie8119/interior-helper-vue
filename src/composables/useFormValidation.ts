@@ -14,17 +14,18 @@
 
 import { toTypedSchema } from '@vee-validate/zod';
 import { useForm } from 'vee-validate';
+import { type FormOptions } from 'vee-validate';
 
 import type { GenericObject } from 'vee-validate';
 import type { ZodSchema } from 'zod';
 
 export function useFormValidation<T extends GenericObject>(
   schema: ZodSchema<T>,
-  initialValues: Partial<T> = {} as Partial<T>
+  initialValues: FormOptions<T>['initialValues'] = {} as FormOptions<T>['initialValues']
 ) {
   const { handleSubmit, errors, resetForm, isSubmitting } = useForm<T>({
     validationSchema: toTypedSchema(schema),
-    initialValues: initialValues as any, // 使用 any 類型斷言
+    initialValues,
   });
 
   return {

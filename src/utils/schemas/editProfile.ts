@@ -1,7 +1,12 @@
 import { z } from 'zod';
 
-export const editProfileSchema = z.object({
-  username: z.string().min(1, 'Name is required'),
-});
+import type { TranslateFunction } from '@/types/i18n';
 
-export type EditProfileSchema = z.infer<typeof editProfileSchema>;
+export const editProfileSchema = (t: TranslateFunction) =>
+  z.object({
+    name: z.string().min(1, t('validation.profile.name_required')),
+    phone: z.string().min(1, t('validation.profile.phone_required')),
+    company: z.string().min(1, t('validation.profile.company_required')),
+  });
+
+export type EditProfileSchema = z.infer<ReturnType<typeof editProfileSchema>>;

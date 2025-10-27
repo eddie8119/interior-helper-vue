@@ -14,6 +14,11 @@
         "special": "Must contain at least 1 special character",
         "alphanumeric": "Must contain alphanumeric characters",
         "mismatch": "Passwords do not match"
+      },
+      "profile": {
+        "name_required": "Name is required",
+        "phone_required": "Phone is required",
+        "company_required": "Company is required"
       }
     }
   },
@@ -32,6 +37,11 @@
         "special": "必須包含至少 1 個特殊字元",
         "alphanumeric": "必須包含英數字元",
         "mismatch": "密碼不一致"
+      },
+      "profile": {
+        "name_required": "名稱為必填",
+        "phone_required": "電話為必填",
+        "company_required": "公司為必填"
       }
     }
   },

@@ -2,7 +2,7 @@
   <AuthCard
     :error-message="errorMessage"
     :message="showMessage"
-    :loading="isSubmitting"
+    :loading="isResending"
     :is-invalid="!isValid || resendCooldown > 0"
     @submit="onSubmit"
   >
@@ -33,26 +33,21 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 import type { ResendActivationData } from '@/types/user';
-import type { AxiosError } from 'axios';
 
-import { userApi } from '@/api/user';
 import AuthCard from '@/components/auth/AuthCard.vue';
-import { useFormError } from '@/composables/useFormError';
 import { useFormValidation } from '@/composables/useFormValidation';
+import { useUser } from '@/composables/useUser';
 import { resendActivationSchema } from '@/utils/schemas/resendActivationSchema';
 
 const { t } = useI18n();
 const route = useRoute();
 
-const showMessage = ref<string>('');
+const showMessage = ref<string | null>(null);
 const resendCooldown = ref<number>(0);
 
-const { handleSubmit, errors, isSubmitting } = useFormValidation<ResendActivationData>(
-  resendActivationSchema,
-  {
-    email: '',
-  }
-);
+const { handleSubmit, errors } = useFormValidation<ResendActivationData>(resendActivationSchema, {
+  email: '',
+});
 
 const { value: email, handleBlur: handleBlurEmail } = useField<string>('email');
 
@@ -80,27 +75,35 @@ const isValid = computed(() => {
   return email.value && Object.keys(errors.value).length === 0;
 });
 
-const { errorMessage, handleError, setErrorMessage } = useFormError({
-  statusCodes: [400],
-  defaultErrorKey: t('error.resend_activation_failed'),
-});
+const { resendActivation, isResending, resendError } = useUser();
+const errorMessage = computed(() => resendError.value?.message ?? null);
 
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async (values: ResendActivationData) => {
+  showMessage.value = null;
+  resendError.value = null;
+
   if (resendCooldown.value > 0) {
-    setErrorMessage(
+    resendError.value = new Error(
       t('message.error.please_wait_before_resend', { seconds: resendCooldown.value })
     );
     return;
   }
 
   try {
-    const response = await userApi.resendActivation(values as unknown as ResendActivationData);
-    if (response.status === 200) {
+    const { success, message } = await resendActivation(values);
+    if (success) {
       showMessage.value = t('message.dialog.check_the_email');
       startCooldown();
+    } else {
+      resendError.value = new Error(message || t('error.resend_activation_failed'));
     }
-  } catch (error) {
-    handleError(error as AxiosError);
+  } catch (err: unknown) {
+    const error = err as { response?: { data?: { message?: string } } };
+    if (error?.response?.data?.message) {
+      resendError.value = new Error(error.response.data.message as string);
+    } else {
+      resendError.value = new Error(t('error.resend_activation_failed'));
+    }
   }
 });
 </script>

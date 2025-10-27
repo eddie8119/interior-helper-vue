@@ -6,6 +6,10 @@ export const userTabList: Tab[] = [
     name: 'profile',
   },
   {
+    label: 'Edit Profile',
+    name: 'edit-profile',
+  },
+  {
     label: 'Change Password',
     name: 'change-password',
   },

@@ -33,7 +33,7 @@ export const useAuthentication = (): UseAuthenticationReturn => {
   const router = useRouter();
 
   const resetProfileAction = () => {
-    router.push({ name: 'user-profile' });
+    router.push({ name: 'profile' });
   };
 
   const logoutAction = async () => {

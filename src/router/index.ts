@@ -80,23 +80,23 @@ const routes: Array<RouteRecordRaw> = [
     component: AppLayout,
     children: [
       {
-        name: 'user-edit',
-        path: 'edit',
+        name: 'user',
+        path: '',
         component: () => import('../pages/protected/user/index.vue'),
-        redirect: { name: 'user-profile' },
+        redirect: { name: 'profile' },
         children: [
           {
-            name: 'user-profile',
+            name: 'profile',
             path: 'profile',
             component: () => import('../pages/protected/user/profile.vue'),
           },
           {
-            name: 'user-edit-profile',
+            name: 'edit-profile',
             path: 'edit-profile',
             component: () => import('../pages/protected/user/edit-profile.vue'),
           },
           {
-            name: 'user-change-password',
+            name: 'change-password',
             path: 'change-password',
             component: () => import('../pages/protected/user/change-password.vue'),
           },

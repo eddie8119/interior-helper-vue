@@ -1,26 +1,24 @@
 <template>
-  <div class="flex h-full w-full items-center justify-center">
-    <AuthCard
-      :error-message="errorMessage"
-      :loading="isSubmitting"
-      :show-logo="false"
-      @submit="onSubmit"
-    >
-      <template #button-text> {{ t('button.change_password') }} </template>
-      <ChangePasswordForm
-        :old-password="oldPassword"
-        :new-password="newPassword"
-        :new-confirm-password="newConfirmPassword"
-        :errors="errors"
-        @update:old-password="oldPassword = $event"
-        @update:new-password="newPassword = $event"
-        @update:new-confirm-password="newConfirmPassword = $event"
-        @blur:old-password="handleBlurOldPassword"
-        @blur:new-password="handleBlurNewPassword"
-        @blur:new-confirm-password="handleBlurNewConfirmPassword"
-      />
-    </AuthCard>
-  </div>
+  <AuthCard
+    :error-message="errorMessage"
+    :loading="isSubmitting"
+    :show-logo="false"
+    @submit="onSubmit"
+  >
+    <template #button-text> {{ t('button.change_password') }} </template>
+    <ChangePasswordForm
+      :old-password="oldPassword"
+      :new-password="newPassword"
+      :new-confirm-password="newConfirmPassword"
+      :errors="errors"
+      @update:old-password="oldPassword = $event"
+      @update:new-password="newPassword = $event"
+      @update:new-confirm-password="newConfirmPassword = $event"
+      @blur:old-password="handleBlurOldPassword"
+      @blur:new-password="handleBlurNewPassword"
+      @blur:new-confirm-password="handleBlurNewConfirmPassword"
+    />
+  </AuthCard>
 </template>
 
 <script setup lang="ts">

@@ -19,9 +19,7 @@
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "preview": "vite preview",
-    "locales:build": "node scripts/build-locales.js",
-    "locales:export": "node scripts/export-translator.js",
-    "locales:consolidate": "node scripts/consolidate-translator.js"
+    "locales:build": "node scripts/build-locales.js"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",

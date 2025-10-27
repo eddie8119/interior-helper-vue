@@ -1,37 +1,39 @@
 <template>
-  <div class="auth-container">
-    <div v-if="props.showLogo" class="flex justify-center">
-      <img src="@/assets/icons/CompanyLogo.png" alt="logo Icon" class="icon-logo w-[125px]" />
-    </div>
+  <div class="flex h-full w-full items-center justify-center">
+    <div class="auth-container">
+      <div v-if="props.showLogo" class="flex justify-center">
+        <img src="@/assets/icons/CompanyLogo.png" alt="logo Icon" class="icon-logo w-[125px]" />
+      </div>
 
-    <!-- 標題 -->
-    <h2 class="my-5 text-center text-[24px] font-semibold">
-      <slot name="title" />
-    </h2>
+      <!-- 標題 -->
+      <h2 class="my-5 text-center text-[24px] font-semibold">
+        <slot name="title" />
+      </h2>
 
-    <!-- 這裡放表單內容 -->
-    <slot />
+      <!-- 這裡放表單內容 -->
+      <slot />
 
-    <ElButton
-      v-if="props.showSubmitButton"
-      type="primary"
-      size="large"
-      :loading="props.loading"
-      :disabled="props.loading || props.isInvalid"
-      block
-      class="auth-brand-button w-full"
-      @click="emit('submit')"
-    >
-      <slot name="button-text"> {{ t('button.submit') }}</slot>
-    </ElButton>
+      <ElButton
+        v-if="props.showSubmitButton"
+        type="primary"
+        size="large"
+        :loading="props.loading"
+        :disabled="props.loading || props.isInvalid"
+        block
+        class="auth-brand-button w-full"
+        @click="emit('submit')"
+      >
+        <slot name="button-text"> {{ t('button.submit') }}</slot>
+      </ElButton>
 
-    <!-- 消息 -->
-    <div v-if="props.errorMessage" class="mt-2 text-center">
-      <p class="text-secondary-red">{{ props.errorMessage }}</p>
-    </div>
+      <!-- 消息 -->
+      <div v-if="props.errorMessage" class="mt-2 text-center">
+        <p class="text-secondary-red">{{ props.errorMessage }}</p>
+      </div>
 
-    <div v-if="props.message" class="mt-2 text-center">
-      <p class="text-secondary-green">{{ props.message }}</p>
+      <div v-if="props.message" class="mt-2 text-center">
+        <p class="text-secondary-green">{{ props.message }}</p>
+      </div>
     </div>
   </div>
 </template>

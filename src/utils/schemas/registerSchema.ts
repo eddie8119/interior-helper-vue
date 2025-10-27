@@ -7,7 +7,7 @@ import { passwordRules } from '@/constants/password';
 export const createRegisterSchema = (t: TranslateFunction) =>
   z
     .object({
-      name: z.string().min(1, t('validation.name.required')),
+      name: z.string().min(1, t('validation.name_required')),
       email: z.string().min(1, t('validation.email.required')).email(t('validation.email.invalid')),
       password: z
         .string()

@@ -1,7 +1,10 @@
 import { z } from 'zod';
 
-export const forgotPasswordSchema = z.object({
-  email: z.string().min(1, 'This is required').email('Invalid email'),
-});
+import type { TranslateFunction } from '@/types/i18n';
 
-export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
+export const forgotPasswordSchema = (t: TranslateFunction) =>
+  z.object({
+    email: z.string().min(1, t('validation.email.required')).email(t('validation.email.invalid')),
+  });
+
+export type ForgotPasswordSchema = z.infer<ReturnType<typeof forgotPasswordSchema>>;

@@ -1,7 +1,10 @@
 import { z } from 'zod';
 
-export const inputStringSchema = z.object({
-  inputValue: z.string().min(1, 'This is required'),
-});
+import type { TranslateFunction } from '@/types/i18n';
 
-export type InputStringSchema = z.infer<typeof inputStringSchema>;
+export const inputStringSchema = (t: TranslateFunction) =>
+  z.object({
+    inputValue: z.string().min(1, t('validation.input_required')),
+  });
+
+export type InputStringSchema = z.infer<ReturnType<typeof inputStringSchema>>;

@@ -1,6 +1,6 @@
-import { headerBlock } from '../templates/partials/header';
-import { footerBlock } from '../templates/partials/footer';
 import { container, roleNameMap } from '../../utils/email';
+import { footerBlock } from '../templates/partials/footer';
+import { headerBlock } from '../templates/partials/header';
 
 export const generateInvitationTemplate = (
   inviterName: string,

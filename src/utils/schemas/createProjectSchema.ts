@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { constructionSelectionSchema } from './createCommonSchema';
+
 import { PROJECT_TYPE_VALUES } from '@/constants/selection';
 
 export const createProjectSchema = z.object({

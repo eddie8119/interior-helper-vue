@@ -1,6 +1,6 @@
-import { headerBlock } from '../templates/partials/header';
-import { footerBlock } from '../templates/partials/footer';
 import { container, formatDateTime } from '../../utils/email';
+import { footerBlock } from '../templates/partials/footer';
+import { headerBlock } from '../templates/partials/header';
 
 export const generateDailyDigestTemplate = (tasks: any[]): string => {
   const today = new Date().toLocaleDateString('zh-TW');

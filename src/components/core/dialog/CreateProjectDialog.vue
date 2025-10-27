@@ -66,9 +66,9 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessage } from 'element-plus';
 import { Plus } from '@element-plus/icons-vue';
 import { toTypedSchema } from '@vee-validate/zod';
+import { ElMessage } from 'element-plus';
 import { useField, useForm } from 'vee-validate';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

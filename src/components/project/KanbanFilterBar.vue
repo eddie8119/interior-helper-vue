@@ -28,8 +28,8 @@
         <Label :label="t('label.task.reminder_days_range')" />
         <div class="flex h-10 w-full items-center">
           <ElSlider
-            class="w-full"
             v-model="daysRange"
+            class="w-full"
             range
             :min="0"
             :max="10"

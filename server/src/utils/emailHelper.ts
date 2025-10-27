@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { emailService } from '@/services/notification/email.service';
-import { isRateLimited, getRemainingAttempts, getResetTimeInSeconds } from '@/utils/rateLimiter';
+import { getRemainingAttempts, getResetTimeInSeconds, isRateLimited } from '@/utils/rateLimiter';
 
 /**
  * 郵件操作類型
@@ -28,7 +28,12 @@ export const checkEmailRateLimit = (
   operationType: EmailOperationType,
   maxAttempts: number = 5,
   windowMs: number = 60 * 60 * 1000
-): { limited: boolean; message?: string; remainingAttempts?: number; resetTimeSeconds?: number } => {
+): {
+  limited: boolean;
+  message?: string;
+  remainingAttempts?: number;
+  resetTimeSeconds?: number;
+} => {
   const key = `${operationType}:${email}`;
 
   if (isRateLimited(key, maxAttempts, windowMs)) {

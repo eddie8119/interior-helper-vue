@@ -52,9 +52,9 @@ import { ElMessage } from 'element-plus';
 import { computed, onActivated, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import ProfileEditForm from '@/components/user/ProfileEditForm.vue';
 import TextButton from '@/components/core/button/TextButton.vue';
 import H1Title from '@/components/core/title/H1Title.vue';
+import ProfileEditForm from '@/components/user/ProfileEditForm.vue';
 import { useUser } from '@/composables/useUser';
 
 const { t } = useI18n();

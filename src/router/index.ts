@@ -91,11 +91,6 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import('../pages/protected/user/profile.vue'),
           },
           {
-            name: 'edit-profile',
-            path: 'edit-profile',
-            component: () => import('../pages/protected/user/edit-profile.vue'),
-          },
-          {
             name: 'change-password',
             path: 'change-password',
             component: () => import('../pages/protected/user/change-password.vue'),

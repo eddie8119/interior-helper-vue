@@ -1,5 +1,5 @@
 <template>
-  <p class="absolute right-3 w-full text-right text-sm text-primary-text-200">
+  <p class="text200-color-difference absolute right-3 w-full text-right text-sm">
     {{ t('common.last_update_time') }}: {{ formattedTime }}
   </p>
 </template>
@@ -8,9 +8,11 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const props = defineProps<{ lastUpdateTime: Date | null | number }>();
+import type { UpdateTimeType } from '@/types/common';
+
+const props = defineProps<{ lastUpdateTime: UpdateTimeType }>();
 const { t } = useI18n();
-const formatTime = (value: Date | number | null): string => {
+const formatTime = (value: UpdateTimeType): string => {
   if (!value) return '-';
 
   const date = new Date(value);

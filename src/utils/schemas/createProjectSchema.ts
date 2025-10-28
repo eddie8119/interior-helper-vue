@@ -1,8 +1,9 @@
 import { z } from 'zod';
 
+import { constructionSelectionSchema } from './createCommonSchema';
+
 import type { TranslateFunction } from '@/types/i18n';
 
-import { constructionSelectionSchema } from './createCommonSchema';
 import { PROJECT_TYPE_VALUES } from '@/constants/selection';
 
 export const createProjectSchema = (t: TranslateFunction) =>

@@ -9,3 +9,5 @@ export interface TableAction<T> {
   label: string;
   onClick: (row: T) => void;
 }
+
+export type UpdateTimeType = Date | number | string | null;

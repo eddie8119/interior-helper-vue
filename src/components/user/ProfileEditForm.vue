@@ -69,7 +69,7 @@
 
     <!-- Action Buttons -->
     <div class="flex justify-end gap-2 pt-4">
-      <TextButton size="md" variant="outline" @click="cancelEdit" :disabled="isUpdatingProfile">
+      <TextButton size="md" variant="outline" :disabled="isUpdatingProfile" @click="cancelEdit">
         {{ t('button.cancel') }}
       </TextButton>
       <TextButton
@@ -89,9 +89,10 @@
 import { useI18n } from 'vue-i18n';
 
 import type { EditProfileData } from '@/types/user';
-import { editProfileSchema } from '@/utils/schemas/editProfile';
+
 import TextButton from '@/components/core/button/TextButton.vue';
 import FormInput from '@/components/core/input/FormInput.vue';
+import { editProfileSchema } from '@/utils/schemas/editProfile';
 
 interface Props {
   isUpdatingProfile: boolean;

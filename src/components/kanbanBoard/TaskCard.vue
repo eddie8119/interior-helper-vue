@@ -2,7 +2,7 @@
   <div
     v-if="!isEditing"
     class="task-card group cursor-pointer rounded-md bg-white p-1 shadow-sm duration-200"
-    @dblclick="readOnly ? undefined : startEditing"
+    @dblclick="handleDblClick"
   >
     <div class="flex items-center justify-between">
       <div class="flex items-center">
@@ -13,7 +13,7 @@
         <TaskStatusDropdown
           :read-only="readOnly"
           :status="task.status"
-          @update:status="readOnly ? undefined : handleTaskStatusChange"
+          @update:status="handleTaskStatusChange"
         />
         <button
           v-if="!readOnly"
@@ -113,6 +113,10 @@ const startEditing = () => {
   isEditing.value = true;
 };
 
+const handleDblClick = () => {
+  if (!props.readOnly) startEditing();
+};
+
 const cancelEditing = () => {
   isEditing.value = false;
 };
@@ -138,6 +142,7 @@ const handleDeleteTask = async () => {
 
 // 更新任務狀態
 const handleTaskStatusChange = async (status: TaskStatus) => {
+  if (props.readOnly) return;
   const { success, message, data } = await updateTaskFromApi(props.task.id, {
     ...props.task,
     status,

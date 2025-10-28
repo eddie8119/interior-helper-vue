@@ -15,13 +15,13 @@
     </div>
 
     <!-- Error State -->
-    <div v-else-if="sharedProjectError" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div v-else-if="sharedProjectError" class="mx-auto max-w-[1600px] px-4 py-12 sm:px-4">
       <div class="rounded-lg bg-red-50 p-6 text-center">
         <p class="text-red-800">{{ sharedProjectError.message || '此專案不存在或未公開分享' }}</p>
       </div>
     </div>
 
-    <div v-else-if="fetchedSharedProject" class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div v-else-if="fetchedSharedProject" class="mx-auto max-w-[1600px] px-4 py-8 sm:px-4">
       <KanbanBoard
         :construction-container="fetchedSharedProject.constructionContainer"
         :project-id="fetchedSharedProject.id"

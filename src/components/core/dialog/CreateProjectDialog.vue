@@ -129,7 +129,7 @@ const onSubmit = handleSubmit(async (values: CreateProjectSchema) => {
 
   resetForm({ values: getInitialValues() });
   onCancel();
-  ElMessage.success(t('message.success.create_success'));
+  ElMessage.success(t('message.success.create'));
 });
 
 const onCancel = () => {

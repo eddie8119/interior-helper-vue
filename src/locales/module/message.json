@@ -42,15 +42,17 @@
         "load_failed": "Failed to load invitation details"
       },
       "success": {
-        "create_success": "Create project success",
-        "update_success": "Update successful!"
+        "create": "Create successfully",
+        "update": "Update successfully",
+        "change_password": "Password changed successfully",
+        "project_deleted": "Project deleted successfully"
       },
       "error": {
-        "update_failed": "Update failed",
-        "failed_to_fetch_weather_data": "Failed to fetch weather data"
-      },
-      "project": {
-        "project_deleted_success_success": "Project deleted success"
+        "failed_to_fetch_weather_data": "Failed to fetch weather data",
+        "created": "Failed to create",
+        "update": "Failed to update",
+        "change_password": "Failed to change password",
+        "project_deleted": "Failed to delete project"
       }
     }
   },
@@ -97,12 +99,17 @@
         "load_failed": "無法載入邀請詳情"
       },
       "success": {
-        "create_success": "專案建立成功",
-        "update_success": "更新成功！"
+        "create": "建立成功",
+        "update": "更新成功",
+        "change_password": "密碼變更成功",
+        "project_deleted": "專案刪除成功"
       },
       "error": {
-        "update_failed": "更新失敗",
-        "failed_to_fetch_weather_data": "取得天氣資料失敗"
+        "created": "建立失敗",
+        "update": "更新失敗",
+        "change_password": "密碼變更失敗",
+        "failed_to_fetch_weather_data": "取得天氣資料失敗",
+        "project_deleted": "專案刪除失敗"
       }
     }
   },

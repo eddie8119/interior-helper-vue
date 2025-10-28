@@ -88,17 +88,17 @@ const handleToggleShare = async () => {
   try {
     const result = await toggleProjectShare(props.projectId);
     if (result) {
-      ElMessage.success(t('message.success.update_success'));
+      ElMessage.success(t('message.success.update'));
       emit('update:isShared', isShared.value);
       return;
     }
     // 失敗：恢復原狀態
     isShared.value = !isShared.value;
-    ElMessage.error(t('message.error.update_failed'));
+    ElMessage.error(t('message.error.update'));
   } catch {
     // 例外：恢復原狀態
     isShared.value = !isShared.value;
-    ElMessage.error(t('message.error.update_failed'));
+    ElMessage.error(t('message.error.update'));
   }
 };
 

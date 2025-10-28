@@ -150,11 +150,11 @@ const onSubmit = async () => {
 
     emit('confirm');
     dialogVisible.value = false;
-    ElMessage.success(t('message.created_success'));
+    ElMessage.success(t('message.success.created'));
   } catch (error) {
     console.error('Failed to create task:', error);
     errorMessage.value = '建立任務失敗，請重試';
-    ElMessage.error(t('message.created_failed'));
+    ElMessage.error(t('message.error.created'));
   } finally {
     isSubmitting.value = false;
   }

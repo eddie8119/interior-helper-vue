@@ -192,15 +192,17 @@
       "load_failed": "Failed to load invitation details"
     },
     "success": {
-      "create_success": "Create project success",
-      "update_success": "Update successful!"
+      "create": "Create successfully",
+      "update": "Update successfully",
+      "change_password": "Password changed successfully",
+      "project_deleted": "Project deleted successfully"
     },
     "error": {
-      "update_failed": "Update failed",
-      "failed_to_fetch_weather_data": "Failed to fetch weather data"
-    },
-    "project": {
-      "project_deleted_success_success": "Project deleted success"
+      "failed_to_fetch_weather_data": "Failed to fetch weather data",
+      "created": "Failed to create",
+      "update": "Failed to update",
+      "change_password": "Failed to change password",
+      "project_deleted": "Failed to delete project"
     }
   },
   "nav": {

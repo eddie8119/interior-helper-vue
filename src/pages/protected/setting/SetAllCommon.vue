@@ -153,8 +153,6 @@ const onSubmit = handleSubmit(async (values: CreateCommonSchema) => {
       ElMessage.error(t('message.no_common_data_exists'));
       return;
     }
-    console.log(111, values);
-    console.log(construction.value, unit.value, projectType.value);
 
     await updateCommon({
       id: common.value.id,
@@ -165,10 +163,10 @@ const onSubmit = handleSubmit(async (values: CreateCommonSchema) => {
       },
     });
 
-    ElMessage.success(t('message.update_success'));
+    ElMessage.success(t('message.success.update'));
   } catch (error) {
     console.error('Failed to update common data:', error);
-    ElMessage.error(t('message.update_failed'));
+    ElMessage.error(t('message.error.update'));
   }
 });
 </script>

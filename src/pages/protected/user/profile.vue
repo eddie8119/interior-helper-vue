@@ -110,14 +110,14 @@ const handleSaveProfile = async () => {
     });
 
     if (success) {
-      ElMessage.success(t('message.success.updateProfile'));
+      ElMessage.success(t('message.success.update'));
       isEditMode.value = false;
     } else {
-      ElMessage.error(message || t('message.error.updateProfile'));
+      ElMessage.error(message || t('message.error.update'));
     }
   } catch (err) {
     console.error('Failed to update profile:', err);
-    ElMessage.error(t('message.error.updateProfile') || 'Failed to update profile');
+    ElMessage.error(t('message.error.update'));
   }
 };
 

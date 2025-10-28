@@ -66,11 +66,11 @@ const onSubmit = handleSubmit(async (values: ChangePasswordData) => {
     const { success, message } = await changePassword(values);
 
     if (success) {
-      ElMessage.success(t('message.change_password_success'));
+      ElMessage.success(t('message.success.change_password'));
       resetForm();
       logoutAction();
     } else {
-      errorMessage.value = message || t('error.change_password_failed');
+      errorMessage.value = message || t('message.error.change_password');
     }
   } catch (error) {
     handleError(error as AxiosError);

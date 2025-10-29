@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/vue-query';
 import { type Ref, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { ApiResponse } from '@/types/request';
 import type { AuthResponse } from '@/types/response';
@@ -15,6 +16,7 @@ interface UseAuthReturn {
 }
 
 export function useAuth(): UseAuthReturn {
+  const { t } = useI18n();
   // 狀態追蹤
   const isLoggingIn = ref(false);
   const loginError = ref<Error | null>(null);
@@ -38,7 +40,7 @@ export function useAuth(): UseAuthReturn {
     } catch (err: unknown) {
       loginError.value = err instanceof Error ? err : new Error(String(err));
       console.error('登入失敗:', err);
-      return { success: false, message: '登入失敗' };
+      return { success: false, message: t('message.error.login') };
     } finally {
       isLoggingIn.value = false;
     }

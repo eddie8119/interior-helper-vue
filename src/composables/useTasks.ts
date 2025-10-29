@@ -6,6 +6,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { type Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { TaskResponse } from '@/types/response';
 import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
@@ -50,6 +51,7 @@ const QUERY_KEY = 'tasks';
 
 export function useTasks(projectId?: string): UseTasksReturn {
   const queryClient = useQueryClient();
+  const { t } = useI18n();
 
   // 獲取專案任務列表
   const {
@@ -61,7 +63,8 @@ export function useTasks(projectId?: string): UseTasksReturn {
   } = useQuery({
     queryKey: [QUERY_KEY, projectId],
     queryFn: async () => {
-      const response = await taskApi.getTasksByProjectId(projectId!);
+      if (!projectId) throw new Error('Project ID is required');
+      const response = await taskApi.getTasksByProjectId(projectId);
       return response.data;
     },
     enabled: !!projectId,
@@ -156,7 +159,7 @@ export function useTasks(projectId?: string): UseTasksReturn {
       return result;
     } catch (err: unknown) {
       console.error('更新任務失敗:', err);
-      return { success: false, message: '更新任務失敗' };
+      return { success: false, message: t('message.error.update') };
     }
   };
 

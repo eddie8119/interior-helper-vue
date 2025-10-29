@@ -7,6 +7,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { type Ref, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { ApiResult } from '@/types/request';
 import type {
@@ -69,6 +70,7 @@ const QUERY_KEY = 'user';
 
 export function useUser(): UseUserReturn {
   const authStore = useAuthStore();
+  const { t } = useI18n();
 
   // 狀態追蹤
   const isRegistering = ref(false);
@@ -129,7 +131,7 @@ export function useUser(): UseUserReturn {
     } catch (err: unknown) {
       registerError.value = err instanceof Error ? err : new Error(String(err));
       console.error('註冊失敗:', err);
-      return { success: false, message: '註冊失敗' };
+      return { success: false, message: t('message.error.register') };
     } finally {
       isRegistering.value = false;
     }
@@ -153,7 +155,7 @@ export function useUser(): UseUserReturn {
     } catch (err: unknown) {
       activateError.value = err instanceof Error ? err : new Error(String(err));
       console.error('帳戶激活失敗:', err);
-      return { success: false, message: '帳戶激活失敗' };
+      return { success: false, message: t('message.error.activate_account') };
     } finally {
       isActivating.value = false;
     }
@@ -177,7 +179,7 @@ export function useUser(): UseUserReturn {
     } catch (err: unknown) {
       resendError.value = err instanceof Error ? err : new Error(String(err));
       console.error('重發激活郵件失敗:', err);
-      return { success: false, message: '重發激活郵件失敗' };
+      return { success: false, message: t('message.error.resend_activation') };
     } finally {
       isResending.value = false;
     }
@@ -201,7 +203,7 @@ export function useUser(): UseUserReturn {
     } catch (err: unknown) {
       forgotPasswordError.value = err instanceof Error ? err : new Error(String(err));
       console.error('要求重置密碼失敗:', err);
-      return { success: false, message: '要求重置密碼失敗' };
+      return { success: false, message: t('message.error.change_password') };
     } finally {
       isForgettingPassword.value = false;
     }
@@ -225,7 +227,7 @@ export function useUser(): UseUserReturn {
     } catch (err: unknown) {
       resetPasswordError.value = err instanceof Error ? err : new Error(String(err));
       console.error('重置密碼失敗:', err);
-      return { success: false, message: '重置密碼失敗' };
+      return { success: false, message: t('message.error.change_password') };
     } finally {
       isResettingPassword.value = false;
     }
@@ -249,7 +251,7 @@ export function useUser(): UseUserReturn {
     } catch (err: unknown) {
       changePasswordError.value = err instanceof Error ? err : new Error(String(err));
       console.error('更改密碼失敗:', err);
-      return { success: false, message: '更改密碼失敗' };
+      return { success: false, message: t('message.error.change_password') };
     } finally {
       isChangingPassword.value = false;
     }
@@ -277,7 +279,7 @@ export function useUser(): UseUserReturn {
     } catch (err: unknown) {
       updateProfileError.value = err instanceof Error ? err : new Error(String(err));
       console.error('更新個人資料失敗:', err);
-      return { success: false, message: '更新個人資料失敗' };
+      return { success: false, message: t('message.error.update') };
     } finally {
       isUpdatingProfile.value = false;
     }

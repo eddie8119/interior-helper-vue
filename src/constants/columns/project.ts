@@ -5,7 +5,7 @@ export const PROJECT_COLUMNS: Column[] = [
   { field: 'title' },
   { field: 'type' },
   { field: 'task_done_progress', minWidth: 100 },
-  { field: 'task_todo' },
+  { field: 'task_todo_left' },
   { field: 'task_in_progress' },
   { field: 'createdAt', align: 'center' },
 ];

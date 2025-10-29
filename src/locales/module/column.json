@@ -4,7 +4,9 @@
       "edit": "Edit",
       "title": "Name",
       "type": "Type",
-      "task_progress": "Task Progress",
+      "task_done_progress": "Task Done Progress",
+      "task_todo_left": "Task Todo Left",
+      "task_in_progress": "Task In Progress",
       "createdAt": "Created At",
       "email": "Email",
       "role": "Role",
@@ -16,7 +18,9 @@
       "edit": "編輯",
       "title": "名稱",
       "type": "類型",
-      "task_progress": "任務進度",
+      "task_done_progress": "任務完成進度",
+      "task_todo_left": "剩餘待辦任務",
+      "task_in_progress": "進行中任務",
       "createdAt": "建立時間",
       "email": "電子郵件",
       "role": "角色",
@@ -28,7 +32,7 @@
       "edit": "編集",
       "title": "名前",
       "type": "タイプ",
-      "task_progress": "タスク進行状況",
+      "task_done_progress": "タスク進行状況",
       "createdAt": "作成日"
     }
   }

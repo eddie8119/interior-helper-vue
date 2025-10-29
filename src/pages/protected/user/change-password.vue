@@ -50,7 +50,7 @@ const { handleSubmit, errors, isSubmitting, resetForm } = useForm<ChangePassword
 
 const { errorMessage, handleError } = useFormError({
   statusCodes: [400],
-  defaultErrorKey: t('error.change_password_failed'),
+  defaultErrorKey: t('message.error.change'),
 });
 
 const { changePassword } = useUser();
@@ -66,11 +66,11 @@ const onSubmit = handleSubmit(async (values: ChangePasswordData) => {
     const { success, message } = await changePassword(values);
 
     if (success) {
-      ElMessage.success(t('message.success.change_password'));
+      ElMessage.success(t('message.success.change'));
       resetForm();
       logoutAction();
     } else {
-      errorMessage.value = message || t('message.error.change_password');
+      errorMessage.value = message || t('message.error.change');
     }
   } catch (error) {
     handleError(error as AxiosError);

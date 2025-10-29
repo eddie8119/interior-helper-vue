@@ -44,15 +44,21 @@
       "success": {
         "create": "Create successfully",
         "update": "Update successfully",
-        "change_password": "Password changed successfully",
-        "project_deleted": "Project deleted successfully"
+        "deleted": "Deleted successfully",
+        "change": "Changed successfully"
       },
       "error": {
         "failed_to_fetch_weather_data": "Failed to fetch weather data",
         "created": "Failed to create",
         "update": "Failed to update",
-        "change_password": "Failed to change password",
-        "project_deleted": "Failed to delete project"
+        "deleted": "Failed to delete",
+        "change": "Failed to change",
+        "login": "Login failed",
+        "register": "Register failed",
+        "activate_account": "Activate account failed",
+        "resend_activation": "Resend activation failed",
+        "change_password": "Change password failed",
+        "reset_password": "Reset password failed"
       }
     }
   },
@@ -101,15 +107,21 @@
       "success": {
         "create": "建立成功",
         "update": "更新成功",
-        "change_password": "密碼變更成功",
-        "project_deleted": "專案刪除成功"
+        "deleted": "刪除成功",
+        "change": "變更成功"
       },
       "error": {
         "created": "建立失敗",
         "update": "更新失敗",
-        "change_password": "密碼變更失敗",
-        "failed_to_fetch_weather_data": "取得天氣資料失敗",
-        "project_deleted": "專案刪除失敗"
+        "deleted": "刪除失敗",
+        "change": "變更失敗",
+        "login": "登入失敗",
+        "register": "註冊失敗",
+        "activate_account": "啟用失敗",
+        "resend_activation": "重新發送啟用郵件失敗",
+        "forgot_password": "忘記密碼失敗",
+        "reset_password": "重置密碼失敗",
+        "change_password": "變更密碼失敗"
       }
     }
   },

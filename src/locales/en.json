@@ -32,7 +32,9 @@
     "edit": "Edit",
     "title": "Name",
     "type": "Type",
-    "task_progress": "Task Progress",
+    "task_done_progress": "Task Done Progress",
+    "task_todo_left": "Task Todo Left",
+    "task_in_progress": "Task In Progress",
     "createdAt": "Created At",
     "email": "Email",
     "role": "Role",
@@ -194,15 +196,21 @@
     "success": {
       "create": "Create successfully",
       "update": "Update successfully",
-      "change_password": "Password changed successfully",
-      "project_deleted": "Project deleted successfully"
+      "deleted": "Deleted successfully",
+      "change": "Changed successfully"
     },
     "error": {
       "failed_to_fetch_weather_data": "Failed to fetch weather data",
       "created": "Failed to create",
       "update": "Failed to update",
-      "change_password": "Failed to change password",
-      "project_deleted": "Failed to delete project"
+      "deleted": "Failed to delete",
+      "change": "Failed to change",
+      "login": "Login failed",
+      "register": "Register failed",
+      "activate_account": "Activate account failed",
+      "resend_activation": "Resend activation failed",
+      "change_password": "Change password failed",
+      "reset_password": "Reset password failed"
     }
   },
   "nav": {

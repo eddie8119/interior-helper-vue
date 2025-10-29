@@ -4,7 +4,7 @@
     "edit": "編集",
     "title": "名前",
     "type": "タイプ",
-    "task_progress": "タスク進行状況",
+    "task_done_progress": "タスク進行状況",
     "createdAt": "作成日"
   },
   "common": {

@@ -42,7 +42,6 @@ export function useProjects(): UseProjectsReturn {
       return response.data;
     },
     staleTime: 1000 * 10 * 3,
-    gcTime: 1000 * 60 * 5,
   });
 
   const {
@@ -58,7 +57,6 @@ export function useProjects(): UseProjectsReturn {
       return response.data;
     },
     staleTime: 1000 * 10 * 3,
-    gcTime: 1000 * 60 * 5,
   });
 
   // Watch for changes in fetchedProjects and update the store
@@ -75,6 +73,9 @@ export function useProjects(): UseProjectsReturn {
   const refetchProjects = async (): Promise<void> => {
     await refetchQueryProjects();
   };
+
+  // 注意: 返回類型中的 Ref 需要從 vue 導入
+  // 但由於這個 composable 只返回 useQuery 的原生狀態，不需要額外的 Ref 類型
 
   return {
     // 用於概覽頁面

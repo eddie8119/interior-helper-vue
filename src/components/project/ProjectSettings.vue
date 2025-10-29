@@ -107,11 +107,11 @@ const handleDelete = async () => {
     const storageKey = getProjectStorageKey(props.projectId);
     localStorage.removeItem(storageKey);
 
-    ElMessage.success(t('message.project.project_deleted_success'));
+    ElMessage.success(t('message.success.deleted'));
     router.push({ name: 'todo-projects' });
   } catch (error) {
     console.error('Failed to delete project:', error);
-    ElMessage.error(t('message.delete_failed'));
+    ElMessage.error(t('message.error.deleted'));
   } finally {
     showDeleteDialog.value = false;
   }

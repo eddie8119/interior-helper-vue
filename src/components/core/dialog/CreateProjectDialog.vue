@@ -88,13 +88,11 @@ const emit = defineEmits<{
 }>();
 const { t } = useI18n();
 const { newConstructionItem, localConstructionItems, addConstructionData } = useCommonAction();
-const { createProject, isCreatingProject, createError } = useProject('');
+const { createProject, isCreatingProject, createProjectError } = useProject();
 
 const errorMessage = computed({
-  get: () => createError.value?.message ?? '',
-  set: (_value: string) => {
-    // Error is managed by composable
-  },
+  get: () => createProjectError.value?.message ?? '',
+  set: (_value: string) => {},
 });
 
 const dialogVisible = computed({
@@ -109,7 +107,7 @@ const getInitialValues = (): CreateProjectSchema => ({
 });
 
 const { handleSubmit, meta, resetForm } = useForm({
-  validationSchema: toTypedSchema(createProjectSchema),
+  validationSchema: toTypedSchema(createProjectSchema(t)),
   initialValues: getInitialValues(),
 });
 

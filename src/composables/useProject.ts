@@ -6,7 +6,7 @@
  */
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
-import { type Ref, ref } from 'vue';
+import { type Ref } from 'vue';
 
 import type { ProjectResponse } from '@/types/response';
 import type { CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
@@ -23,17 +23,17 @@ interface UseProjectReturn {
   // 建立專案
   createProject: (data: CreateProjectSchema) => Promise<ProjectResponse | null>;
   isCreatingProject: Ref<boolean>;
-  createError: Ref<Error | null>;
+  createProjectError: Ref<Error | null>;
 
   // 更新專案
   updateProject: (data: Partial<CreateProjectSchema>) => Promise<ProjectResponse | null>;
   isUpdatingProject: Ref<boolean>;
-  updateError: Ref<Error | null>;
+  updateProjectError: Ref<Error | null>;
 
   // 刪除專案
   deleteProject: (id: string) => Promise<void>;
   isDeletingProject: Ref<boolean>;
-  deleteError: Ref<Error | null>;
+  deleteProjectError: Ref<Error | null>;
 
   // 分享專案
   fetchedSharedProject: Ref<ProjectResponse | null>;
@@ -44,23 +44,13 @@ interface UseProjectReturn {
   // 切換分享狀態
   toggleProjectShare: (id: string) => Promise<ProjectResponse | null>;
   isTogglingShare: Ref<boolean>;
-  toggleShareError: Ref<Error | null>;
+  toggleShareProjectError: Ref<Error | null>;
 }
 
 const QUERY_KEY = 'project';
 
-export function useProject(id: string): UseProjectReturn {
+export function useProject(id?: string): UseProjectReturn {
   const queryClient = useQueryClient();
-
-  // 狀態追蹤
-  const isCreatingProject = ref(false);
-  const createError = ref<Error | null>(null);
-  const isUpdatingProject = ref(false);
-  const updateError = ref<Error | null>(null);
-  const isDeletingProject = ref(false);
-  const deleteError = ref<Error | null>(null);
-  const isTogglingShare = ref(false);
-  const toggleShareError = ref<Error | null>(null);
 
   // ==================== 獲取專案資料 ====================
   const {
@@ -71,11 +61,12 @@ export function useProject(id: string): UseProjectReturn {
   } = useQuery({
     queryKey: [QUERY_KEY, id],
     queryFn: async () => {
+      if (!id) throw new Error('Project ID is required');
       const response = await projectApi.getProjectById(id);
       return response.data;
     },
+    enabled: !!id,
     staleTime: 1000 * 60 * 3,
-    gcTime: 1000 * 60 * 5,
   });
 
   const refetchProject = async (): Promise<void> => {
@@ -83,7 +74,11 @@ export function useProject(id: string): UseProjectReturn {
   };
 
   // ==================== 建立專案 ====================
-  const { mutateAsync: mutateCreate } = useMutation({
+  const {
+    mutateAsync: mutateCreate,
+    isPending: isCreatingProject,
+    error: createProjectError,
+  } = useMutation({
     mutationFn: async (data: CreateProjectSchema) => {
       const response = await projectApi.createProject(data);
       return response.data;
@@ -96,22 +91,20 @@ export function useProject(id: string): UseProjectReturn {
 
   const createProject = async (data: CreateProjectSchema): Promise<ProjectResponse | null> => {
     try {
-      isCreatingProject.value = true;
-      createError.value = null;
-
       const result = await mutateCreate(data);
       return result || null;
     } catch (err: unknown) {
-      createError.value = err instanceof Error ? err : new Error(String(err));
       console.error('建立專案失敗:', err);
       return null;
-    } finally {
-      isCreatingProject.value = false;
     }
   };
 
   // ==================== 更新專案 ====================
-  const { mutateAsync: mutateUpdate } = useMutation({
+  const {
+    mutateAsync: mutateUpdate,
+    isPending: isUpdatingProject,
+    error: updateProjectError,
+  } = useMutation({
     mutationFn: async (data: Partial<CreateProjectSchema>) => {
       const response = await projectApi.updateProject(id, data);
       return response.data;
@@ -125,9 +118,6 @@ export function useProject(id: string): UseProjectReturn {
     data: Partial<CreateProjectSchema>
   ): Promise<ProjectResponse | null> => {
     try {
-      isUpdatingProject.value = true;
-      updateError.value = null;
-
       // 如果傳入的數據不完整，則合併當前專案數據
       const currentProject = fetchedProject.value;
       let updateData: CreateProjectSchema;
@@ -148,35 +138,34 @@ export function useProject(id: string): UseProjectReturn {
       const result = await mutateUpdate(updateData);
       return result || null;
     } catch (err: unknown) {
-      updateError.value = err instanceof Error ? err : new Error(String(err));
       console.error('更新專案失敗:', err);
       return null;
-    } finally {
-      isUpdatingProject.value = false;
     }
   };
 
   // ==================== 刪除專案 ====================
-  const { mutateAsync: mutateDelete } = useMutation({
+  const {
+    mutateAsync: mutateDelete,
+    isPending: isDeletingProject,
+    error: deleteProjectError,
+  } = useMutation({
     mutationFn: async (projectId: string) => {
       const response = await projectApi.deleteProject(projectId);
       if (!response.success) {
         throw new Error('刪除專案失敗: API 未返回資料');
       }
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: ['overview-projects'] });
+    },
   });
 
   const deleteProject = async (projectId: string): Promise<void> => {
     try {
-      isDeletingProject.value = true;
-      deleteError.value = null;
-
       await mutateDelete(projectId);
     } catch (err: unknown) {
-      deleteError.value = err instanceof Error ? err : new Error(String(err));
       console.error('刪除專案失敗:', err);
-    } finally {
-      isDeletingProject.value = false;
     }
   };
 
@@ -189,11 +178,12 @@ export function useProject(id: string): UseProjectReturn {
   } = useQuery({
     queryKey: [QUERY_KEY, 'shared', id],
     queryFn: async () => {
+      if (!id) throw new Error('Project ID is required');
       const response = await projectApi.getProjectShare(id);
       return response.data;
     },
+    enabled: !!id,
     staleTime: 1000 * 60 * 3,
-    gcTime: 1000 * 60 * 5,
   });
 
   const refetchSharedProject = async (): Promise<void> => {
@@ -201,7 +191,11 @@ export function useProject(id: string): UseProjectReturn {
   };
 
   // ==================== 切換分享狀態 ====================
-  const { mutateAsync: mutateToggleShare } = useMutation({
+  const {
+    mutateAsync: mutateToggleShare,
+    isPending: isTogglingShare,
+    error: toggleShareProjectError,
+  } = useMutation({
     mutationFn: async (projectId: string) => {
       const response = await projectApi.toggleProjectShare(projectId);
       return response.data;
@@ -213,17 +207,11 @@ export function useProject(id: string): UseProjectReturn {
 
   const toggleProjectShare = async (projectId: string): Promise<ProjectResponse | null> => {
     try {
-      isTogglingShare.value = true;
-      toggleShareError.value = null;
-
       const result = await mutateToggleShare(projectId);
       return result || null;
     } catch (err: unknown) {
-      toggleShareError.value = err instanceof Error ? err : new Error(String(err));
       console.error('切換專案分享失敗:', err);
       return null;
-    } finally {
-      isTogglingShare.value = false;
     }
   };
 
@@ -236,15 +224,15 @@ export function useProject(id: string): UseProjectReturn {
     // 建立專案
     createProject,
     isCreatingProject,
-    createError,
+    createProjectError,
     // 更新專案
     updateProject,
     isUpdatingProject,
-    updateError,
+    updateProjectError,
     // 刪除專案
     deleteProject,
     isDeletingProject,
-    deleteError,
+    deleteProjectError,
     // 分享專案
     fetchedSharedProject: fetchedSharedProject as Ref<ProjectResponse | null>,
     isLoadingSharedProject,
@@ -253,6 +241,6 @@ export function useProject(id: string): UseProjectReturn {
     // 切換分享狀態
     toggleProjectShare,
     isTogglingShare,
-    toggleShareError,
+    toggleShareProjectError,
   };
 }

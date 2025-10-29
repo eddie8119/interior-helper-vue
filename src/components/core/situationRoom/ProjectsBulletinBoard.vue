@@ -23,7 +23,7 @@
           :total="row.tasks.length"
         />
       </template>
-      <template #task_todo="{ row }">
+      <template #task_todo_left="{ row }">
         <p>{{ row.tasks.filter((t) => t.status === TaskStatusEnum.TODO).length }}</p>
       </template>
       <template #task_in_progress="{ row }">

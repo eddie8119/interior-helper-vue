@@ -73,7 +73,7 @@ const emit = defineEmits<{
 const { t } = useI18n();
 
 const { handleSubmit, isSubmitting, resetForm } = useForm({
-  validationSchema: toTypedSchema(inputStringSchema),
+  validationSchema: toTypedSchema(inputStringSchema(t)),
   initialValues: { inputValue: '' },
 });
 

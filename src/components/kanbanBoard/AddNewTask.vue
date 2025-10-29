@@ -51,7 +51,7 @@ const getInitialValues = (): CreateTaskSchema => ({
 });
 
 const { isSubmitting, handleSubmit, errors, resetForm } = useForm({
-  validationSchema: toTypedSchema(createTaskSchema),
+  validationSchema: toTypedSchema(createTaskSchema(t)),
   initialValues: getInitialValues(),
 });
 

@@ -77,10 +77,9 @@ import { createCommonSchema, type CreateCommonSchema } from '@/utils/schemas/cre
 
 const { t } = useI18n();
 const { common, updateCommon } = useCommon();
-
 // Form validation setup
 const { handleSubmit, isSubmitting, setValues } = useForm({
-  validationSchema: toTypedSchema(createCommonSchema),
+  validationSchema: toTypedSchema(createCommonSchema(t)),
   initialValues: {
     construction: common.value?.construction || [],
     unit: common.value?.unit || [],

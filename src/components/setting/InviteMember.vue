@@ -84,7 +84,7 @@ const emit = defineEmits<{
 const { t } = useI18n();
 
 const { handleSubmit, errors, isSubmitting } = useForm({
-  validationSchema: toTypedSchema(emailSchema),
+  validationSchema: toTypedSchema(emailSchema(t)),
   initialValues: {
     email: '',
     role: Role.VIEWER,

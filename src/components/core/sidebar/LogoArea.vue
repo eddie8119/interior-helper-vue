@@ -1,9 +1,14 @@
 <template>
   <router-link to="/">
     <img
-      src="@/assets/icons/CompanyLogo.png"
+      src="@/assets/logos/CompanyLogoMobile-HSWE.png"
       :alt="`logo-Icon`"
-      class="icon-logo h-7 w-20 md:h-[42px] md:w-[125px]"
+      class="icon-logo --mobile h-6 w-12 md:hidden"
+    />
+    <img
+      src="@/assets/logos/CompanyLogo-HSWE.png"
+      :alt="`logo-Icon`"
+      class="icon-logo --desktop hidden h-[38px] w-[80px] md:block"
     />
   </router-link>
 </template>

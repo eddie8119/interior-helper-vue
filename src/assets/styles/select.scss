@@ -32,6 +32,7 @@
 .el-select.is-focus,
 .el-select.is-focus .el-input__wrapper {
   @apply border-brand-primary;
+
   background-color: var(--color-primary-background) !important;
 }
 
@@ -53,18 +54,21 @@
    =============================== */
 .el-select-dropdown {
   @apply background-color-difference;
+
   border: 1px solid transparent !important;
   color: var(--color-primary-text) !important;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgb(0 0 0 / 10%);
 
   .el-select-dropdown__item {
     @apply text-primary-text dark:text-primaryDark-text;
+
     background: transparent !important;
     transition: all 0.2s ease;
 
     &:hover,
     &.selected {
-      background-color: var(--color-primary-hover, rgba(255, 255, 255, 0.05)) !important;
+      background-color: var(--color-primary-hover, rgb(255 255 255 / 5%)) !important;
+
       @apply chart-text-color-difference;
     }
 

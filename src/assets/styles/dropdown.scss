@@ -22,8 +22,9 @@
   @apply text-primary-text dark:text-primaryDark-text;
   @apply bg-primary-panel dark:bg-primaryDark-panel;
   @apply overflow-hidden rounded-lg shadow-lg;
+
   border: 1px solid transparent !important;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 10%) !important;
 }
 
 /* ===============================
@@ -31,6 +32,7 @@
    =============================== */
 .el-dropdown-menu {
   @apply panel-color-difference text-color-difference p-1;
+
   border: none !important;
 }
 
@@ -43,7 +45,8 @@
   &:hover,
   &.selected {
     @apply chart-text-color-difference;
-    background-color: var(--color-primary-hover, rgba(255, 255, 255, 0.08)) !important;
+
+    background-color: var(--color-primary-hover, rgb(255 255 255 / 8%)) !important;
   }
 
   &.selected {

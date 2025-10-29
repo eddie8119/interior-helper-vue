@@ -17,22 +17,19 @@
   </ElDropdown>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { useI18n } from 'vue-i18n';
 
-interface Action {
-  label: string;
-  onClick: (row: unknown) => void;
-}
+import type { TableAction } from '@/types/common';
 
 const props = defineProps<{
-  actions: Action[];
-  row: unknown;
+  actions: TableAction<T>[];
+  row: T;
 }>();
 
 const { t } = useI18n();
 
-const handleCommand = (action: Action) => {
+const handleCommand = (action: TableAction<T>) => {
   action.onClick(props.row);
 };
 </script>

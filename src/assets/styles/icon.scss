@@ -10,15 +10,12 @@
   display: inline-block;
   width: 1.5rem;
   height: 1.5rem;
-  -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
   mask-size: contain;
-  -webkit-mask-position: center;
   mask-position: center;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .icon-mask {
     width: 1.5rem;
     height: 1.5rem;

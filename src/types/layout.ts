@@ -11,8 +11,8 @@ export interface Menu {
 }
 
 export interface Tab {
-  label: string;
   name: string;
+  label?: string;
 }
 
 // header
@@ -21,7 +21,7 @@ export interface NavItem {
   name: string;
   icon: string;
   label: string;
-  action: (value?: string) => void;
+  action: (value: string) => void;
   dropdownItems?: { label: string; value: string }[];
 }
 
@@ -29,4 +29,10 @@ export interface NavItem {
 export enum NavVariant {
   SIDEBAR = 'sidebar',
   MOBILE = 'mobile',
+}
+
+// carousel
+export enum DisplayMode {
+  CAROUSEL = 'carousel',
+  FIXED = 'fixed',
 }

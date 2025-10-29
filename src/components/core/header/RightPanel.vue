@@ -35,7 +35,7 @@
         </template>
       </ElDropdown>
       <!-- 沒有下拉選項 -->
-      <button v-else type="button" class="flex items-center" @click="nav.action && nav.action()">
+      <button v-else type="button" class="flex items-center" @click="nav.action && nav.action('')">
         <span
           class="icon-hover icon-mask"
           :style="{
@@ -68,17 +68,18 @@ import ShowNowTime from './ShowNowTime.vue';
 
 import type { NavItem } from '@/types/layout';
 
+import { useAuth } from '@/composables/useAuth';
 import { useAuthentication } from '@/composables/useAuthentication';
 import { useLocale } from '@/composables/useLocale';
 import { useAuthStore } from '@/stores/auth';
 import { Language } from '@/types/language';
 import { getIconUrl } from '@/utils/assetUrl';
-import { isAdmin } from '@/utils/auth';
 
 const { t } = useI18n();
 const authStore = useAuthStore();
 const { languages, handleLanguageChange } = useLocale();
 const { authentications, handleAuthenticationChange } = useAuthentication();
+const { isAdmin } = useAuth();
 
 const toggleTheme = inject('toggleTheme') as () => void;
 const isDarkMode = inject('isDarkMode') as Ref<boolean>;

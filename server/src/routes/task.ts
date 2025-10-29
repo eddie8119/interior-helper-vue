@@ -7,6 +7,7 @@ import {
   getTaskById,
   updateTask,
   // 批次
+  getAllTasks,
   getTasksByProjectId,
   updateTasks,
 } from '@/controllers/task';
@@ -18,6 +19,7 @@ const router = express.Router();
 router.use(authMiddleware);
 
 // 批次任務操作
+router.get('/', requireUserId, getAllTasks);
 router.get('/:projectId', requireUserId, getTasksByProjectId);
 router.patch('/:projectId', requireUserId, updateTasks);
 

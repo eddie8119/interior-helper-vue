@@ -4,6 +4,61 @@ import snakecaseKeys from 'snakecase-keys';
 
 import { supabase } from '@/lib/supabase';
 
+// 獲取該用戶的所有任務
+export const getAllTasks = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).userId;
+
+    // 查詢該用戶的所有任務
+    const { data: tasks, error: tasksError } = await supabase
+      .from('Tasks')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (tasksError) {
+      console.error('Error fetching tasks:', tasksError);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to fetch tasks',
+        error: tasksError.message,
+      });
+    }
+
+    // 為每個任務獲取材料
+    const processedTasks = await Promise.all(
+      tasks.map(async (task) => {
+        const { data: materials, error: materialsError } = await supabase
+          .from('TaskMaterials')
+          .select('*')
+          .eq('task_id', task.id);
+
+        if (materialsError) {
+          console.error(`Error fetching materials for task ${task.id}:`, materialsError);
+        }
+
+        const { user_id, ...safeTask } = task;
+        return {
+          ...safeTask,
+          materials: materials || [],
+        };
+      })
+    );
+
+    // 轉換為駝峰式命名並返回
+    return res.status(200).json({
+      success: true,
+      data: camelcaseKeys(processedTasks, { deep: true }),
+    });
+  } catch (error: any) {
+    console.error('Unexpected error fetching tasks:', error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'An unexpected error occurred',
+    });
+  }
+}
+
 // 獲取專案下的所有任務
 export const getTasksByProjectId = async (req: Request, res: Response) => {
   try {

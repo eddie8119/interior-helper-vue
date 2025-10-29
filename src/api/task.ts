@@ -5,6 +5,10 @@ import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 import request from '@/utils/request';
 
 export const taskApi = {
+  getAllTasks: (): Promise<ApiResponse<TaskResponse[]>> => {
+    return request.get(`/tasks`);
+  },
+
   // 批次任務
   getTasksByProjectId: (projectId: string): Promise<ApiResponse<TaskResponse[]>> => {
     return request.get(`/tasks/${projectId}`);

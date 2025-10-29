@@ -20,6 +20,12 @@ interface UseTasksReturn {
   fetchedTasks: Ref<TaskResponse[] | null>;
   tasksUpdatedAt: Ref<number>;
   refetchTasks: () => Promise<void>;
+  // 獲取所有任務
+  isLoadingAllTasks: Ref<boolean>;
+  errorAllTasks: Ref<Error | null>;
+  fetchedAllTasks: Ref<TaskResponse[] | null>;
+  allTasksUpdatedAt: Ref<number>;
+  refetchAllTasks: () => Promise<void>;
   // 批次更新專案任務
   updateProjectTasks: (data: TaskResponse[]) => Promise<TaskResponse[] | null>;
   isUpdatingProjectTasks: Ref<boolean>;
@@ -52,6 +58,27 @@ const QUERY_KEY = 'tasks';
 export function useTasks(projectId?: string): UseTasksReturn {
   const queryClient = useQueryClient();
   const { t } = useI18n();
+
+  // 獲取所有任務
+  const {
+    data: fetchedAllTasks,
+    isLoading: isLoadingAllTasks,
+    refetch: refetchQueryAllTasks,
+    error: errorAllTasks,
+    dataUpdatedAt: allTasksUpdatedAt,
+  } = useQuery({
+    queryKey: [QUERY_KEY, 'all'],
+    queryFn: async () => {
+      const response = await taskApi.getAllTasks();
+      return response.data;
+    },
+    staleTime: 1000 * 10 * 3, // 30秒
+  });
+
+  // 重新獲取所有任務
+  const refetchAllTasks = async (): Promise<void> => {
+    await refetchQueryAllTasks();
+  };
 
   // 獲取專案任務列表
   const {
@@ -196,6 +223,12 @@ export function useTasks(projectId?: string): UseTasksReturn {
     fetchedTasks: fetchedTasks as Ref<TaskResponse[] | null>,
     tasksUpdatedAt,
     refetchTasks,
+    // 獲取所有任務
+    isLoadingAllTasks,
+    errorAllTasks,
+    fetchedAllTasks: fetchedAllTasks as Ref<TaskResponse[] | null>,
+    allTasksUpdatedAt,
+    refetchAllTasks,
     // 批次更新專案任務
     updateProjectTasks,
     isUpdatingProjectTasks,

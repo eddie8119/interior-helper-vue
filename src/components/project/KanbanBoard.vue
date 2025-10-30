@@ -11,7 +11,7 @@
       :group-name="readOnly ? undefined : 'construction-containers'"
       :non-drag-area-selector="readOnly ? '*' : undefined"
       :should-accept-drop="() => !readOnly"
-      class="flex pt-4"
+      class="flex gap-4 pt-4"
       style="overflow-x: auto; overflow-y: visible"
       @drop="!readOnly && onConstructionContainerDrop($event)"
     >
@@ -21,7 +21,7 @@
           :construction-id="container.id"
           :project-id="projectId"
           :construction-name="container.name"
-          :tasks="filteredTasks(container.id)"
+          :tasks="filteredTasksByConstruction(container.id)"
           :days-range="daysRange"
           :read-only="readOnly"
           @delete-container="handleDeleteConstruction(index)"
@@ -145,7 +145,7 @@ const filteredTasksByStatus = computed(() => {
 });
 
 // 按工程類型過濾任務
-const filteredTasks = (constructionId: string) => {
+const filteredTasksByConstruction = (constructionId: string) => {
   return filterTasksByConstruction(filteredTasksByStatus.value, constructionId);
 };
 

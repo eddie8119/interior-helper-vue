@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="mx-2 min-w-[300px] max-w-[300px] rounded-lg bg-gray-100 p-3 shadow-sm"
-    style="overflow: visible"
-  >
+  <div class="construction-container" style="overflow: visible">
     <ContainerHeader
       v-model:selected-status="selectedStatus"
       :options="STATUS_FILTER_OPTIONS"
@@ -54,7 +51,7 @@ const props = defineProps<{
   constructionName: string;
   projectId: string;
   tasks: TaskResponse[];
-  daysRange: [number, number];
+  daysRange?: [number, number];
   readOnly?: boolean;
 }>();
 

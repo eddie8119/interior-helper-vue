@@ -25,3 +25,7 @@
   border: none;
   box-shadow: none;
 }
+
+.construction-container {
+  @apply min-w-[300px] max-w-[300px] rounded-lg bg-gray-100 p-3 shadow-sm;
+}

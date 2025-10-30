@@ -3,6 +3,7 @@
     "label": {
       "time": "Time",
       "status": "Status",
+      "construction": "Construction",
       "materials": "Materials",
       "type": "Type",
       "reminder": "Reminder",
@@ -56,6 +57,7 @@
     "label": {
       "time": "時間",
       "status": "狀態",
+      "construction": "工程",
       "materials": "材料",
       "type": "類型",
       "reminder": "提醒",

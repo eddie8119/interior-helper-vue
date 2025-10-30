@@ -2,13 +2,16 @@ import { computed, ref, type Ref } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
 import type { ProjectResponse } from '@/types/response';
+import type { ConstructionSelection } from '@/types/selection';
 
 export function useUpcomingFilters({
   fetchedAllTasks,
   fetchedOverviewProjects,
+  constructionList,
 }: {
   fetchedAllTasks: Ref<TaskResponse[] | null>;
   fetchedOverviewProjects: Ref<ProjectResponse[] | undefined>;
+  constructionList: Ref<ConstructionSelection[] | null>;
 }) {
   // Selected filters state
   const selectedConstructionIds = ref<string[]>([]);
@@ -44,11 +47,17 @@ export function useUpcomingFilters({
     });
   });
 
+  const filteredConstructionList = computed(() => {
+    const all = constructionList.value ?? [];
+    return all.filter((c) => !selectedConstructionIds.value.includes(c.id));
+  });
+
   return {
     selectedConstructionIds,
     selectedProjectIds,
     toggleConstruction,
     toggleProject,
     filteredTasks,
+    filteredConstructionList,
   };
 }

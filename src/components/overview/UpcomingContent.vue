@@ -8,25 +8,9 @@
           :construction-name="construction.name"
           :days-range="[0, 10]"
           :read-only="true"
+          :tasks="tasksByConstruction(construction.id)"
+          :project-title-list="projectTitleList"
         />
-      </div>
-    </div>
-
-    <!-- All Tasks Section -->
-    <div>
-      <h2 class="mb-4 text-lg font-semibold">All Tasks</h2>
-      <div v-if="filteredTasks.length > 0" class="space-y-2">
-        <div
-          v-for="task in filteredTasks"
-          :key="task.id"
-          class="rounded-lg border border-gray-200 bg-white p-3 shadow-sm"
-        >
-          <p class="font-medium text-gray-900">{{ task.title }}</p>
-          <p class="text-sm text-gray-600">Status: {{ task.status }}</p>
-        </div>
-      </div>
-      <div v-else class="text-center text-gray-500">
-        <p>No tasks available</p>
       </div>
     </div>
   </div>
@@ -38,15 +22,16 @@ import type { ConstructionSelection } from '@/types/selection';
 
 import UpcomingConstructionContainerItem from '@/components/overview/UpcomingConstructionContainerItem.vue';
 
-defineProps<{
+const { filteredConstructionList, filteredTasks, projectTitleList } = defineProps<{
   filteredConstructionList: ConstructionSelection[];
   filteredTasks: TaskResponse[];
+  projectTitleList: Array<{ id: string; title: string }>;
 }>();
 
 // 按工程類型過濾任務
-// const filteredTasksByConstruction = (constructionId: string) => {
-//   return filterTasksByConstruction(filteredTasks.value, constructionId);
-// };
+const tasksByConstruction = (constructionId: string): TaskResponse[] => {
+  return filteredTasks.filter((f) => f.constructionType === constructionId);
+};
 </script>
 
 <style scoped></style>

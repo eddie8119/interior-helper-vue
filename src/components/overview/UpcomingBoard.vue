@@ -12,6 +12,7 @@
     <UpcomingContent
       :filtered-construction-list="filteredConstructionList"
       :filtered-tasks="filteredTasks"
+      :project-title-list="projectTitleList"
     />
   </div>
 </template>

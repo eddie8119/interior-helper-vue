@@ -14,31 +14,27 @@
             :key="t.id"
             class="rounded-md border border-gray-200 bg-white p-3 shadow-sm"
           >
-            <div class="flex items-center justify-between">
-              <h4 class="text-sm font-semibold text-gray-800">{{ t.title }}</h4>
-              <ElTag :type="statusTagType(t.status)" size="small">{{ t.status }}</ElTag>
-            </div>
-            <div class="mt-1 text-xs text-gray-500">
-              <span v-if="t.reminderDatetime">{{ formatDate(t.reminderDatetime) }}</span>
-            </div>
-            <p v-if="t.description" class="mt-1 line-clamp-2 text-xs text-gray-600">
-              {{ t.description }}
-            </p>
+            <TaskCardBase :task="t" :read-only="true" />
           </div>
         </div>
       </div>
 
-      <div v-if="displayTasks.length === 0" class="text-center text-xs text-gray-400">
-        No upcoming tasks
+      <div v-if="displayTasks.length === 0" class="flex justify-center text-gray-300">
+        <ElIcon :size="32">
+          <DocumentRemove />
+        </ElIcon>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { DocumentRemove } from '@element-plus/icons-vue';
 import { computed } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
+
+import TaskCardBase from '@/components/kanbanBoard/TaskCardBase.vue';
 
 const props = defineProps<{
   constructionId: string;
@@ -70,36 +66,4 @@ const groupedByProject = computed<ProjectGroup[]>(() => {
 
   return Array.from(byId.values());
 });
-
-const statusTagType = (status?: string) => {
-  switch (status) {
-    case 'done':
-    case 'completed':
-      return 'success';
-    case 'inProgress':
-    case 'doing':
-      return 'warning';
-    case 'blocked':
-    case 'error':
-      return 'danger';
-    default:
-      return 'info';
-  }
-};
-
-const formatDate = (iso?: string) => {
-  if (!iso) return '';
-  try {
-    const d = new Date(iso);
-    return new Intl.DateTimeFormat(undefined, {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(d);
-  } catch {
-    return iso;
-  }
-};
 </script>

@@ -11,7 +11,7 @@
       :group-name="readOnly ? undefined : 'construction-containers'"
       :non-drag-area-selector="readOnly ? '*' : undefined"
       :should-accept-drop="() => !readOnly"
-      class="flex gap-4 pt-4"
+      class="flex pt-4"
       style="overflow-x: auto; overflow-y: visible"
       @drop="!readOnly && onConstructionContainerDrop($event)"
     >

@@ -1,7 +1,7 @@
 <template>
   <div class="my-6">
     <!-- Construction Containers Section -->
-    <div class="grid grid-cols-1 gap-4 md:flex md:flex-wrap">
+    <div class="grid grid-cols-1 md:flex md:flex-wrap">
       <div v-for="construction in filteredConstructionList" :key="construction.id">
         <UpcomingConstructionContainerItem
           :construction-id="construction.id"

@@ -6,7 +6,7 @@ import type { ConstructionSelection } from '@/types/selection';
 
 export function useUpcomingFilters({
   fetchedAllTasks,
-  fetchedOverviewProjects,
+  fetchedOverviewProjects: _fetchedOverviewProjects,
   constructionList,
 }: {
   fetchedAllTasks: Ref<TaskResponse[] | null>;
@@ -37,14 +37,10 @@ export function useUpcomingFilters({
     const byProject = selectedProjectIds.value.length
       ? all.filter((t) => !selectedProjectIds.value.includes(t.projectId))
       : all;
-    // If no construction exclusions, return as-is
+    // If no construction filters selected, return as-is
     if (!selectedConstructionIds.value.length) return byProject;
-    // Exclude tasks whose project's constructionContainer intersects with selectedConstructionIds
-    return byProject.filter((t) => {
-      const proj = fetchedOverviewProjects.value?.find((p) => p.id === t.projectId);
-      const ids = (proj?.constructionContainer || []).map((c) => c.id);
-      return !ids.some((id) => selectedConstructionIds.value.includes(id));
-    });
+    // Exclude tasks whose constructionType is in selectedConstructionIds
+    return byProject.filter((t) => !selectedConstructionIds.value.includes(t.constructionType));
   });
 
   const filteredConstructionList = computed(() => {

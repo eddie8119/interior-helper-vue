@@ -182,7 +182,6 @@ export function useProject(id?: string): UseProjectReturn {
       const response = await projectApi.getProjectShare(id);
       return response.data;
     },
-    enabled: !!id,
     staleTime: 1000 * 60 * 3,
   });
 

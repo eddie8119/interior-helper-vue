@@ -9,11 +9,7 @@
           <span class="text-xs text-gray-400">{{ group.tasks.length }}</span>
         </div>
         <div class="space-y-2">
-          <div
-            v-for="t in group.tasks"
-            :key="t.id"
-            class="rounded-md border border-gray-200 bg-white p-3 shadow-sm"
-          >
+          <div v-for="t in group.tasks" :key="t.id">
             <TaskCardBase :task="t" :read-only="true" />
           </div>
         </div>
@@ -34,7 +30,7 @@ import { computed } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
 
-import TaskCardBase from '@/components/kanbanBoard/TaskCardBase.vue';
+import TaskCardBase from '@/components/task/TaskCardBase.vue';
 
 const props = defineProps<{
   constructionId: string;

@@ -24,6 +24,7 @@ import UpcomingFilterBar from '@/components/overview/UpcomingFilterBar.vue';
 import { useOverviewSources } from '@/composables/useOverviewSources';
 import { useTasks } from '@/composables/useTasks';
 import { useUpcomingFilters } from '@/composables/useUpcomingFilters';
+import { provideTaskCardFilter } from '@/context/useTaskCardFilter';
 
 const { fetchedAllTasks, isLoadingAllTasks } = useTasks();
 const { fetchedOverviewProjects, isLoadingOverviewProjects, constructionList, projectTitleList } =
@@ -40,6 +41,8 @@ const {
   fetchedOverviewProjects,
   constructionList,
 });
+
+provideTaskCardFilter();
 </script>
 
 <style scoped></style>

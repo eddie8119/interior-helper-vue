@@ -5,7 +5,7 @@
       <!-- Grouped by project -->
       <div v-for="group in groupedByProject" :key="group.projectId">
         <div class="mb-2 flex items-center justify-between">
-          <span class="text-sm font-semibold text-gray-600">{{ group.projectTitle }}</span>
+          <span class="text-sm font-semibold text-gray-600">-- {{ group.projectTitle }} --</span>
           <span class="text-xs text-gray-400">{{ group.tasks.length }}</span>
         </div>
         <div class="space-y-2">

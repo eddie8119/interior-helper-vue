@@ -96,14 +96,25 @@ export const CONSTRUCTION_CONTAINER: ConstructionSelection[] = [
   },
 ];
 
-export const STATUS_FILTER_OPTIONS: SelectorOption[] = [
+const STATUS_FILTER_OPTIONS_BASE = [
   { value: 'all' },
   { value: 'todo' },
   { value: 'inProgress' },
   { value: 'done' },
 ] as const;
 
-export type TaskFilterStatus = (typeof STATUS_FILTER_OPTIONS)[number]['value'];
+const [STATUS_FILTER_ALL, STATUS_FILTER_TODO, STATUS_FILTER_IN_PROGRESS] =
+  STATUS_FILTER_OPTIONS_BASE;
+
+export const STATUS_FILTER_OPTIONS: readonly SelectorOption[] = STATUS_FILTER_OPTIONS_BASE;
+
+export type TaskFilterStatus = (typeof STATUS_FILTER_OPTIONS_BASE)[number]['value'];
+
+export const STATUS_FILTER_OPTIONS_WITHOUT_DONE = [
+  STATUS_FILTER_ALL,
+  STATUS_FILTER_TODO,
+  STATUS_FILTER_IN_PROGRESS,
+] as const;
 
 export const TASK_DISPLAY_OPTIONS: SelectorOption[] = [
   { value: 'all' },

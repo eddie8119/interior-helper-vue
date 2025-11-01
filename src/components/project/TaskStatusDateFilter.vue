@@ -7,7 +7,7 @@
         <Label :label="t('label.task.status')" />
         <OptionSelector
           :model-value="selectedStatus"
-          :options="STATUS_FILTER_OPTIONS"
+          :options="statusOptions"
           :class-name="'w-full sm:w-[140px]'"
           @update:model-value="handleStatusChange"
         />
@@ -15,7 +15,7 @@
       <div class="filter-container-inner">
         <Label :label="t('label.task.task_display')" />
         <OptionSelector
-          :model-value="displayMode"
+          :model-value="taskCardDisplayMode"
           :options="TASK_DISPLAY_OPTIONS"
           :class-name="'w-full sm:w-[140px]'"
           :namespace="'display'"
@@ -44,8 +44,8 @@
 </template>
 
 <script setup lang="ts">
-import { ElRadioButton, ElRadioGroup, ElSlider } from 'element-plus';
-import { ref } from 'vue';
+import { ElSlider } from 'element-plus';
+import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { TaskFilterStatus } from '@/constants/selection';
@@ -53,8 +53,21 @@ import type { TaskCardDisplayMode } from '@/constants/selection';
 
 import Label from '@/components/core/title/Label.vue';
 import OptionSelector from '@/components/ui/OptionSelector.vue';
-import { STATUS_FILTER_OPTIONS, TASK_DISPLAY_OPTIONS } from '@/constants/selection';
+import {
+  STATUS_FILTER_OPTIONS,
+  STATUS_FILTER_OPTIONS_WITHOUT_DONE,
+  TASK_DISPLAY_OPTIONS,
+} from '@/constants/selection';
 import { useTaskCardFilter } from '@/context/useTaskCardFilter';
+
+const props = withDefaults(
+  defineProps<{
+    statusDisplayMode?: 'normal' | 'withoutDone';
+  }>(),
+  {
+    statusDisplayMode: 'normal',
+  }
+);
 
 const emit = defineEmits<{
   (e: 'update:selectedStatus', value: TaskFilterStatus): void;
@@ -62,6 +75,17 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+
+const statusOptions = computed(() => {
+  switch (props.statusDisplayMode) {
+    case 'normal':
+      return STATUS_FILTER_OPTIONS;
+    case 'withoutDone':
+      return STATUS_FILTER_OPTIONS_WITHOUT_DONE;
+    default:
+      return STATUS_FILTER_OPTIONS;
+  }
+});
 
 // Status filter
 const selectedStatus = ref<TaskFilterStatus>('all');
@@ -79,7 +103,13 @@ const daysMarks: Record<number, string> = {
 };
 
 // Display mode filter - consume from parent context
-const { displayMode, updateVisibility } = useTaskCardFilter();
+const { displayMode: taskCardDisplayMode, updateVisibility } = useTaskCardFilter();
+
+onMounted(() => {
+  if (props.displayMode && taskCardDisplayMode.value !== props.displayMode) {
+    updateVisibility(props.displayMode);
+  }
+});
 
 const handleStatusChange = (status: TaskFilterStatus) => {
   selectedStatus.value = status;

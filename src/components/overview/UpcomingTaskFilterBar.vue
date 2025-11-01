@@ -43,6 +43,7 @@
       <ElCollapseTransition>
         <div v-show="showAdvanced" class="advanced-panel">
           <TaskStatusDateFilter
+            status-display-mode="withoutDone"
             @update:selected-status="selectedStatus = $event"
             @update:days-range="daysRange = $event"
           />

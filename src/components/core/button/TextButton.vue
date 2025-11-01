@@ -36,7 +36,8 @@ const buttonClasses = computed(() => {
   const baseStyles = 'inline-flex items-center justify-center transition-all duration-200 border';
 
   const variantStyles: Record<ButtonVariant, string> = {
-    primary: 'bg-brand-primary text-white hover:bg-black-100 hover:text-brand-primary',
+    primary:
+      'bg-brand-primary text-black-900 hover:bg-black-100 border-transparent hover:border-primary-border',
     secondary: 'bg-secondary-purple-a text-gray-800 hover:bg-gray-300',
     outline:
       'bg-transparent text-secondary-red hover:bg-secondary-red hover:text-white border-secondary-red',

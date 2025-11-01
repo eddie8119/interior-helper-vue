@@ -13,9 +13,9 @@ const { t } = useI18n();
 
 <style scoped>
 .spinner-circle {
+  @apply border-[5px] border-brand-primary;
   width: 48px;
   height: 48px;
-  border: 5px solid #1c99df;
   border-top-color: transparent;
   border-radius: 50%;
   animation: spin 1s linear infinite;

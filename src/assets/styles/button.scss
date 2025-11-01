@@ -15,3 +15,18 @@
     opacity: 0.8;
   }
 }
+
+// normal-button
+.normal-button {
+  @apply rounded-full bg-brand-primary px-4 py-2 leading-none text-primary-text transition-colors duration-200;
+
+  &:hover,
+  &:focus {
+    @apply border-brand-secondary bg-brand-secondary;
+  }
+
+  &.is-active {
+    @apply border border-primary-border bg-slate-50 text-slate-600; 
+  }
+}
+

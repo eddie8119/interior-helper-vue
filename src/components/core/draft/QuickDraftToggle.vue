@@ -1,6 +1,6 @@
 <template>
   <button
-    class="fixed bottom-6 right-6 z-[998] flex h-14 w-14 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+    class="fixed bottom-6 right-6 z-[998] flex h-14 w-14 items-center justify-center rounded-full bg-brand-primary text-white shadow-lg hover:bg-brand-secondary focus:outline-none focus:ring-2 focus:ring-blue-300"
     aria-label="Toggle Quick Draft"
     @click="toggleQuickDraftSlide"
   >

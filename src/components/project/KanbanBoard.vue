@@ -1,5 +1,5 @@
 <template>
-  <KanbanFilterBar
+  <TaskStatusDateFilter
     @update:selected-status="selectedStatus = $event"
     @update:days-range="daysRange = $event"
   />
@@ -46,7 +46,7 @@ import type { ConstructionSelection } from '@/types/selection';
 import { taskApi } from '@/api/task';
 import AddNewConstruction from '@/components/kanbanBoard/AddNewConstruction.vue';
 import ConstructionContainerItem from '@/components/kanbanBoard/ConstructionContainerItem.vue';
-import KanbanFilterBar from '@/components/project/KanbanFilterBar.vue';
+import TaskStatusDateFilter from '@/components/project/TaskStatusDateFilter.vue';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';

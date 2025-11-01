@@ -1,5 +1,5 @@
 <template>
-  <UpcomingFilterBar
+  <UpcomingTaskFilterBar
     :construction-list="constructionList"
     :project-title-list="projectTitleList"
     :selected-construction-ids="selectedConstructionIds"
@@ -7,6 +7,7 @@
     @toggle-construction="toggleConstruction"
     @toggle-project="toggleProject"
   />
+
   <Loading v-if="isLoadingAllTasks || isLoadingOverviewProjects" />
   <div v-else>
     <UpcomingContent
@@ -20,7 +21,7 @@
 <script setup lang="ts">
 import Loading from '@/components/core/loading/Loading.vue';
 import UpcomingContent from '@/components/overview/UpcomingContent.vue';
-import UpcomingFilterBar from '@/components/overview/UpcomingFilterBar.vue';
+import UpcomingTaskFilterBar from '@/components/overview/UpcomingTaskFilterBar.vue';
 import { useOverviewSources } from '@/composables/useOverviewSources';
 import { useTasks } from '@/composables/useTasks';
 import { useUpcomingFilters } from '@/composables/useUpcomingFilters';

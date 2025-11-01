@@ -16,8 +16,10 @@
       "day": "Day",
       "start_time": "Start Time",
       "end_time": "End Time",
-      "quick_date_selector": "Quick Day Selector",
-      "custom_time_range": "Custom Time Range",
+      "advanced_filter": {
+        "hide": "Hide Advanced Filter",
+        "show": "Show Advanced Filter"
+      },
       "collaborator": {
         "global": "Global",
         "global_default": "Global Default",
@@ -45,7 +47,7 @@
       },
       "task": {
         "task_display": "Task Display",
-        "reminder_days_range": "Reminder Days Range",
+        "due_date_range": "Due Date Range",
         "status": "All Tasks Status"
       },
       "setting": {
@@ -70,8 +72,10 @@
       "day": "天",
       "start_time": "開始時間",
       "end_time": "結束時間",
-      "quick_date_selector": "快速天數選擇器",
-      "custom_time_range": "自訂時間區間",
+      "advanced_filter": {
+        "hide": "隱藏進階篩選",
+        "show": "進階篩選"
+      },
       "collaborator": {
         "global": "全域",
         "global_default": "全域預設",
@@ -99,7 +103,7 @@
       },
       "task": {
         "task_display": "任務顯示內容",
-        "reminder_days_range": "提醒到期天數範圍",
+        "due_date_range": "到期天數區間",
         "status": "全案狀態篩選"
       },
       "setting": {

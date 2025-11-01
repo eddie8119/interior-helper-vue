@@ -32,7 +32,9 @@ export function useUpcomingFilters({
 
   // Filtered tasks according to selections
   const filteredTasks = computed(() => {
-    const all = fetchedAllTasks.value ?? [];
+    // 將沒有reminderDatetime的任務過濾掉 總覽只顯示有提醒的任務
+    const all = (fetchedAllTasks.value ?? []).filter((t) => t.reminderDatetime !== null);
+
     // Exclude selected projects
     const byProject = selectedProjectIds.value.length
       ? all.filter((t) => !selectedProjectIds.value.includes(t.projectId))

@@ -97,6 +97,7 @@
   "label": {
     "time": "Time",
     "status": "Status",
+    "construction": "Construction",
     "materials": "Materials",
     "type": "Type",
     "reminder": "Reminder",
@@ -109,8 +110,10 @@
     "day": "Day",
     "start_time": "Start Time",
     "end_time": "End Time",
-    "quick_date_selector": "Quick Day Selector",
-    "custom_time_range": "Custom Time Range",
+    "advanced_filter": {
+      "hide": "Hide Advanced Filter",
+      "show": "Show Advanced Filter"
+    },
     "collaborator": {
       "global": "Global",
       "global_default": "Global Default",
@@ -138,7 +141,7 @@
     },
     "task": {
       "task_display": "Task Display",
-      "reminder_days_range": "Reminder Days Range",
+      "due_date_range": "Due Date Range",
       "status": "All Tasks Status"
     },
     "setting": {
@@ -360,6 +363,7 @@
     "forgot_password": "Forgot Password",
     "reset_password": "Reset Password",
     "overview": "Overview",
+    "reminder_upcoming_task_in_10_days": "Upcoming Tasks Within 10 Days",
     "todo": "To Do",
     "quick_draft": "Quick Draft",
     "setting": "Setting",

@@ -97,6 +97,7 @@
   "label": {
     "time": "時間",
     "status": "狀態",
+    "construction": "工程",
     "materials": "材料",
     "type": "類型",
     "reminder": "提醒",
@@ -109,8 +110,10 @@
     "day": "天",
     "start_time": "開始時間",
     "end_time": "結束時間",
-    "quick_date_selector": "快速天數選擇器",
-    "custom_time_range": "自訂時間區間",
+    "advanced_filter": {
+      "hide": "隱藏進階篩選",
+      "show": "進階篩選"
+    },
     "collaborator": {
       "global": "全域",
       "global_default": "全域預設",
@@ -138,7 +141,7 @@
     },
     "task": {
       "task_display": "任務顯示內容",
-      "reminder_days_range": "提醒到期天數範圍",
+      "due_date_range": "到期天數區間",
       "status": "全案狀態篩選"
     },
     "setting": {
@@ -359,6 +362,7 @@
     "forgot_password": "忘記密碼",
     "reset_password": "重設密碼",
     "overview": "總覽",
+    "reminder_upcoming_task_in_10_days": "10天內即將到期任務",
     "todo": "待辦任務",
     "quick_draft": "工地待辦事項速記",
     "setting": "設定",

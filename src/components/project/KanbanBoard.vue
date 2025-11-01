@@ -39,7 +39,6 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { Container, Draggable } from 'vue3-smooth-dnd';
 
-import type { TaskFilterStatus } from '@/constants/selection';
 import type { TaskResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
 
@@ -55,6 +54,7 @@ import { useTasks } from '@/composables/useTasks';
 import { provideTaskCardFilter } from '@/context/useTaskCardFilter';
 import { provideTaskContext } from '@/context/useTaskContext';
 import { filterTasksByConstruction, processTasksWithOrder } from '@/utils/todo/taskUtils';
+import { useTaskConditionFilters } from '@/composables/useTaskConditionFilters';
 
 const props = defineProps<{
   constructionContainer: ConstructionSelection[] | null;
@@ -71,8 +71,8 @@ const emit = defineEmits<{
 // 狀態管理
 const localConstructionContainer = ref<ConstructionSelection[]>([]);
 const localTasks = ref<TaskResponse[]>([]);
-const selectedStatus = ref<TaskFilterStatus>('all');
-const daysRange = ref<[number, number]>([0, 10]);
+const { selectedStatus, daysRange, filteredTasksByConstruction } =
+  useTaskConditionFilters(localTasks);
 
 // Context 提供
 provideTaskCardFilter();
@@ -136,18 +136,6 @@ provideTaskContext({
 });
 
 // ==================== 計算屬性與過濾 ====================
-// 按狀態過濾任務
-const filteredTasksByStatus = computed(() => {
-  if (selectedStatus.value === 'all') {
-    return localTasks.value;
-  }
-  return localTasks.value.filter((task: TaskResponse) => task.status === selectedStatus.value);
-});
-
-// 按工程類型過濾任務
-const filteredTasksByConstruction = (constructionId: string) => {
-  return filterTasksByConstruction(filteredTasksByStatus.value, constructionId);
-};
 
 // 處理刪除工程容器（包含刪除容器內的所有任務）
 const handleDeleteConstruction = async (index: number) => {

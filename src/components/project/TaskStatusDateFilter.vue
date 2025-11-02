@@ -1,7 +1,8 @@
 <template>
   <div
-    class="grid grid-cols-2 items-center gap-4 rounded-xl border border-gray-200/70 p-3 sm:flex sm:flex-row sm:items-center"
+    class="grid grid-cols-1 items-center gap-4 rounded-xl border border-gray-200/70 p-3 sm:flex sm:flex-row sm:items-center md:grid-cols-2"
   >
+    <!-- Status and Display -->
     <div class="filter-container-outter gap-4">
       <div class="filter-container-inner">
         <Label :label="t('label.task.status')" />
@@ -23,6 +24,7 @@
         />
       </div>
     </div>
+    <!-- Days Range -->
     <div class="filter-container-outter">
       <div class="filter-container-inner w-full self-center sm:w-[280px]">
         <Label :label="t('label.task.due_date_range')" />

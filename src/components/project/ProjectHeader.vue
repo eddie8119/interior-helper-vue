@@ -1,19 +1,37 @@
 <template>
-  <div class="my-5 flex flex-col gap-4 md:flex-row md:justify-between">
-    <div class="flex items-center gap-4">
-      <ProjectTitle
-        :project-title="localProject?.title || undefined"
-        @update:project-title="handleUpdateTitle"
-      />
-      <ProjectTypeComponent
-        :project-type="localProject?.type || undefined"
-        @update:project-type="handleUpdateType"
-      />
+  <div class="my-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
+    <!-- 更新時間（手機置頂／桌面置右） -->
+    <div class="order-1 w-full md:order-3 md:w-auto">
+      <ShowUpdateTime :last-update-time="lastUpdateTime" />
     </div>
 
-    <div class="flex items-center gap-4">
-      <ProjectSettings :project-title="localProject?.title || undefined" :project-id="projectId" />
-      <ShowUpdateTime :last-update-time="lastUpdateTime" />
+    <!-- 左側群組：標題 + 類型 -->
+    <div
+      class="order-2 flex flex-col gap-2 md:order-1 md:flex-1 md:flex-row md:items-center md:gap-4"
+    >
+      <div class="w-full md:w-auto">
+        <ProjectTitle
+          :project-title="localProject?.title || undefined"
+          @update:project-title="handleUpdateTitle"
+        />
+      </div>
+
+      <div class="w-full md:w-auto">
+        <ProjectTypeComponent
+          :project-type="localProject?.type || undefined"
+          @update:project-type="handleUpdateType"
+        />
+      </div>
+    </div>
+
+    <!-- 右側群組：設定 -->
+    <div class="order-3 flex flex-col items-start gap-2 md:order-2 md:flex-row md:items-center">
+      <div class="w-full md:w-auto">
+        <ProjectSettings
+          :project-title="localProject?.title || undefined"
+          :project-id="projectId"
+        />
+      </div>
     </div>
   </div>
 </template>

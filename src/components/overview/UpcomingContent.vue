@@ -1,6 +1,6 @@
 <template>
   <div class="mt-6 w-full md:overflow-x-auto">
-    <div class="grid grid-cols-1 md:flex md:flex-nowrap">
+    <div class="grid grid-cols-1 gap-4 md:flex md:flex-nowrap md:gap-0">
       <div
         v-for="construction in filteredConstructionList"
         :key="construction.id"

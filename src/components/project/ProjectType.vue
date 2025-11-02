@@ -2,7 +2,7 @@
   <OptionSelector
     v-model="model"
     :options="formattedProjectTypeItems"
-    :class-name="'w-[160px]'"
+    :class-name="'w-full md:w-[160px]'"
     :namespace="'projectType'"
   />
 </template>

@@ -1,8 +1,11 @@
 <template>
-  <div class="my-6">
-    <!-- Construction Containers Section -->
-    <div class="grid grid-cols-1 md:flex md:flex-wrap">
-      <div v-for="construction in filteredConstructionList" :key="construction.id">
+  <div class="mt-6 w-full md:overflow-x-auto">
+    <div class="grid grid-cols-1 md:flex md:flex-nowrap">
+      <div
+        v-for="construction in filteredConstructionList"
+        :key="construction.id"
+        class="flex-shrink-0"
+      >
         <UpcomingConstructionContainerItem
           :construction-id="construction.id"
           :construction-name="construction.name"

@@ -27,7 +27,10 @@
       "reject": "Reject",
       "accept_invitation": "Accept Invitation",
       "back_to_home": "Back to Home",
-      "try_again": "Try Again"
+      "try_again": "Try Again",
+      "hide": "Hide",
+      "show_more": "Show More",
+      "leave_for": "Leave For"
     }
   },
   "zh-TW": {
@@ -49,7 +52,7 @@
       "resend_activation_email": "重新發送啟用郵件",
       "edit_profile": "編輯個人資料",
       "create_project": "建立專案",
-      "move_to_project": "移動到專案",
+      "move_to_project": "移動至專案",
       "moved_to_project": "已移到專案",
       "delete_completed": "刪除已完成",
       "resend": "重新發送",
@@ -58,7 +61,10 @@
       "reject": "拒絕",
       "accept_invitation": "接受邀請",
       "back_to_home": "返回首頁",
-      "try_again": "再試一次"
+      "try_again": "再試一次",
+      "hide": "隱藏",
+      "show_more": "顯示更多",
+      "leave_for": "前往"
     }
   },
   "ja": {

@@ -4,15 +4,16 @@
       "group": {
         "home": "Home",
         "main": "Main",
-        "observation_items": "Observation Items",
-        "management": "Management"
+        "record_items": "Record Items",
+        "setting": "Setting"
       },
       "menu": {
         "dashboard": "Dashboard",
-        "entitySearch": "Entity Search",
-        "devices": "Devices",
         "overview": "Overview",
-        "set-member": "Set Member"
+        "set-member": "Set Member",
+        "set_common": "Set Common",
+        "to_do": "To Do",
+        "quick_draft": "Quick Draft"
       }
     }
   },
@@ -21,15 +22,16 @@
       "group": {
         "home": "首頁",
         "main": "主",
-        "observation_items": "觀測項目",
-        "management": "管理"
+        "record_items": "紀錄項目",
+        "setting": "設定"
       },
       "menu": {
         "dashboard": "儀表板",
-        "entitySearch": "實體搜尋",
-        "devices": "裝置",
         "overview": "概況",
-        "set-member": "成員設定"
+        "set-member": "成員設定",
+        "set_common": "通用設定",
+        "to_do": "待辦任務",
+        "quick_draft": "工地待辦速記"
       }
     }
   },
@@ -38,7 +40,7 @@
       "group": {
         "home": "ホーム",
         "main": "メイン",
-        "observation_items": "観測項目",
+        "record_items": "観測項目",
         "management": "管理"
       },
       "menu": {

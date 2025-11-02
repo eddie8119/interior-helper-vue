@@ -26,7 +26,10 @@
     "reject": "Reject",
     "accept_invitation": "Accept Invitation",
     "back_to_home": "Back to Home",
-    "try_again": "Try Again"
+    "try_again": "Try Again",
+    "hide": "Hide",
+    "show_more": "Show More",
+    "leave_for": "Leave For"
   },
   "column": {
     "edit": "Edit",
@@ -220,15 +223,16 @@
     "group": {
       "home": "Home",
       "main": "Main",
-      "observation_items": "Observation Items",
-      "management": "Management"
+      "record_items": "Record Items",
+      "setting": "Setting"
     },
     "menu": {
       "dashboard": "Dashboard",
-      "entitySearch": "Entity Search",
-      "devices": "Devices",
       "overview": "Overview",
-      "set-member": "Set Member"
+      "set-member": "Set Member",
+      "set_common": "Set Common",
+      "to_do": "To Do",
+      "quick_draft": "Quick Draft"
     }
   },
   "notification": {
@@ -353,7 +357,8 @@
     "projects": "Projects List",
     "project": "Project",
     "profile": "Profile",
-    "change-password": "Change Password"
+    "change-password": "Change Password",
+    "all": "All"
   },
   "title": {
     "register": "Register",

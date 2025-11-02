@@ -12,7 +12,7 @@ export function useGlobalUI() {
   // Page condition logic
   const isQuickDraftPage = computed(() => {
     return (
-      route.path === '/todo/quick-draft' ||
+      route.path === '/todo/quick_draft' ||
       route.path.startsWith('/auth/') ||
       route.path.startsWith('/shared/project')
     );

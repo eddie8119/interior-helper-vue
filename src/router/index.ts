@@ -121,8 +121,8 @@ const routes: Array<RouteRecordRaw> = [
         ],
       },
       {
-        name: 'quick-draft',
-        path: 'quick-draft',
+        name: 'quick_draft',
+        path: 'quick_draft',
         component: () => import('../pages/protected/draft/index.vue'),
       },
     ],

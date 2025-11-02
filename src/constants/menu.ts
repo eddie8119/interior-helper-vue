@@ -13,19 +13,19 @@ export const menu: Menu[] = [
     ],
   },
   {
-    group: 'nav.group.observation_items',
+    group: 'nav.group.record_items',
     items: [
       {
-        label: 'to-do-list',
-        name: 'to-do-list',
+        label: 'to_do',
+        name: 'to_do',
         icon: 'ChartPieSlice',
         route: '/todo/projects',
       },
       {
-        label: 'quick-draft',
-        name: 'quick-draft',
+        label: 'quick_draft',
+        name: 'quick_draft',
         icon: 'ChartPieSlice',
-        route: '/todo/quick-draft',
+        route: '/todo/quick_draft',
       },
     ],
   },
@@ -34,7 +34,7 @@ export const menu: Menu[] = [
     items: [
       {
         label: 'Set Common',
-        name: 'set-common',
+        name: 'set_common',
         icon: 'ChartPieSlice',
         route: '/setting/common',
       },

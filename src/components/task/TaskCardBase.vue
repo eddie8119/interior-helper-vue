@@ -10,6 +10,12 @@
         <H3Title :title="task.title" class="ml-2" />
       </div>
       <div class="flex items-center gap-2">
+        <router-link
+          v-if="showRouter"
+          class="toggle-button"
+          :to="`/todo/project/${task.projectId}`"
+          >{{ t('button.leave_for') }}</router-link
+        >
         <TaskStatusDropdown
           :read-only="readOnly"
           :status="task.status"
@@ -78,10 +84,16 @@ import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
 import { useTaskCardFilter } from '@/context/useTaskCardFilter';
 
-const props = defineProps<{
-  task: TaskResponse;
-  readOnly?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    task: TaskResponse;
+    readOnly?: boolean;
+    showRouter?: boolean;
+  }>(),
+  {
+    showRouter: false,
+  }
+);
 
 const emit = defineEmits<{
   (e: 'update:task', taskId: string, patch: Partial<TaskResponse>): void;

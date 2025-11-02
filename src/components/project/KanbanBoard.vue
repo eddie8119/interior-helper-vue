@@ -30,7 +30,12 @@
         />
       </Draggable>
       <!-- 添加新工程類型 -->
-      <AddNewConstruction v-if="!readOnly" id="new-container" @add-container="addNewConstruction" />
+      <AddNewConstruction
+        v-if="!readOnly"
+        :existing-constructions="localConstructionContainer"
+        id="new-container"
+        @add-container="addNewConstruction"
+      />
     </Container>
   </div>
 </template>

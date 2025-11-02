@@ -34,6 +34,23 @@
         @keyup.enter="addNewConstruction"
         @keyup.esc="cancelEditing"
       />
+      <div class="divider-line" />
+
+      <div v-if="notAddedConstruction.length > 0" class="space-y-2">
+        <p class="text-sm font-medium text-gray-600">{{ t('label.quick_select') || '快速選取' }}</p>
+        <div class="flex flex-wrap gap-2">
+          <button
+            v-for="construction in notAddedConstruction"
+            :key="construction.id"
+            type="button"
+            class="normal-button px-3 py-1 text-sm"
+            :class="{ 'is-active': newContainerName !== construction.name }"
+            @click="newContainerName = construction.name"
+          >
+            {{ construction.name }}
+          </button>
+        </div>
+      </div>
 
       <div class="flex justify-between">
         <button
@@ -57,17 +74,20 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-
+import { useCommon } from '@/composables/useCommon';
 import { useEditingStateStore } from '@/stores/editingState';
+
+import type { ConstructionSelection } from '@/types/selection';
 
 const props = defineProps<{
   id: string;
+  existingConstructions: ConstructionSelection[];
 }>();
 
 const emit = defineEmits<{ (e: 'add-container', name: string): void }>();
 
 const { t } = useI18n();
-
+const { constructionItemsFromCommon } = useCommon();
 const editingStateStore = useEditingStateStore();
 const newContainerName = ref('');
 const inputRef = ref<HTMLInputElement | null>(null);
@@ -105,6 +125,14 @@ const startEditing = () => {
     }
   });
 };
+
+// 素材準備: 未添加容器
+const notAddedConstruction = computed(() => {
+  return constructionItemsFromCommon.value.filter(
+    (construction: ConstructionSelection) =>
+      !props.existingConstructions.some((c) => c.name === construction.name)
+  );
+});
 
 // 添加新容器
 const addNewConstruction = () => {

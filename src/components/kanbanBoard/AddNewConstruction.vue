@@ -23,7 +23,11 @@
     </div>
   </div>
 
-  <div v-else class="mx-2 min-w-[300px] max-w-[300px] rounded-lg bg-gray-100 p-3 shadow-sm">
+  <div
+    v-else
+    class="mx-2 min-w-[300px] max-w-[300px] rounded-lg bg-gray-100 p-3 shadow-sm"
+    @click.stop
+  >
     <div class="flex flex-col space-y-3">
       <input
         ref="inputRef"
@@ -44,8 +48,8 @@
             :key="construction.id"
             type="button"
             class="normal-button px-3 py-1 text-sm"
-            :class="{ 'is-active': newContainerName !== construction.name }"
-            @click="newContainerName = construction.name"
+            :class="{ 'is-active': isConstructionSelected(construction) }"
+            @click="toggleConstructionSelection(construction)"
           >
             {{ construction.name }}
           </button>
@@ -84,12 +88,13 @@ const props = defineProps<{
   existingConstructions: ConstructionSelection[];
 }>();
 
-const emit = defineEmits<{ (e: 'add-container', name: string): void }>();
+const emit = defineEmits<{ (e: 'add-container', constructions: ConstructionSelection[]): void }>();
 
 const { t } = useI18n();
 const { constructionItemsFromCommon } = useCommon();
 const editingStateStore = useEditingStateStore();
-const newContainerName = ref('');
+const newContainerName = ref<string>('');
+const selectedConstructions = ref<ConstructionSelection[]>([]);
 const inputRef = ref<HTMLInputElement | null>(null);
 
 // 使用計算屬性來判斷是否處於編輯狀態
@@ -110,13 +115,19 @@ watch(
   { deep: true }
 );
 
-// 計算屬性：確保名稱有效
-const isValidName = computed(() => newContainerName.value.trim().length > 0);
+// 計算屬性：確保有效的提交資料
+const isValidName = computed((): boolean => {
+  const hasManualInput =
+    newContainerName.value.trim().length > 0 && selectedConstructions.value.length === 0;
+  const hasSelectedConstructions = selectedConstructions.value.length > 0;
+  return hasManualInput || hasSelectedConstructions;
+});
 
 // 開始編輯模式
-const startEditing = () => {
+const startEditing = (): void => {
   editingStateStore.startEditing('container', props.id);
   newContainerName.value = '';
+  selectedConstructions.value = [];
 
   // 等待 DOM 更新後聚焦輸入框
   nextTick(() => {
@@ -134,22 +145,65 @@ const notAddedConstruction = computed(() => {
   );
 });
 
+// 檢查是否已選中
+const isConstructionSelected = (construction: ConstructionSelection): boolean => {
+  return selectedConstructions.value.some((s: ConstructionSelection) => s.id === construction.id);
+};
+
+// 切換選中狀態
+const toggleConstructionSelection = (construction: ConstructionSelection): void => {
+  const index = selectedConstructions.value.findIndex(
+    (s: ConstructionSelection) => s.id === construction.id
+  );
+  if (index > -1) {
+    selectedConstructions.value.splice(index, 1);
+  } else {
+    selectedConstructions.value.push(construction);
+  }
+  updateInputDisplay();
+};
+
+// 更新輸入框顯示
+const updateInputDisplay = (): void => {
+  if (selectedConstructions.value.length > 0) {
+    newContainerName.value = selectedConstructions.value
+      .map((c: ConstructionSelection) => c.name)
+      .join(', ');
+  }
+};
+
 // 添加新容器
-const addNewConstruction = () => {
-  if (isValidName.value) {
-    emit('add-container', newContainerName.value.trim());
+const addNewConstruction = (): void => {
+  const constructionsToAdd: ConstructionSelection[] = [];
+
+  // 如果有從快速選取選中的資料
+  if (selectedConstructions.value.length > 0) {
+    constructionsToAdd.push(...selectedConstructions.value);
+  }
+
+  // 如果有手動輸入的資料（且不是來自快速選取）
+  if (newContainerName.value.trim() && selectedConstructions.value.length === 0) {
+    constructionsToAdd.push({
+      id: Date.now().toString(),
+      name: newContainerName.value.trim(),
+    });
+  }
+
+  if (constructionsToAdd.length > 0) {
+    emit('add-container', constructionsToAdd);
     resetForm();
   }
 };
 
 // 取消編輯
-const cancelEditing = () => {
+const cancelEditing = (): void => {
   resetForm();
 };
 
 // 重置表單
-const resetForm = () => {
+const resetForm = (): void => {
   newContainerName.value = '';
+  selectedConstructions.value = [];
   editingStateStore.stopEditing();
 };
 </script>

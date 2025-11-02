@@ -18,16 +18,12 @@ export function useConstructionActions(
     updateCallback(containersRef.value);
   };
 
-  // 添加新容器
-  const addNewConstruction = (newContainerName: string) => {
-    if (newContainerName && newContainerName.trim()) {
-      containersRef.value = [
-        ...containersRef.value,
-        {
-          id: Date.now().toString(),
-          name: newContainerName.trim(),
-        },
-      ];
+  // 添加新容器（支援單筆或多筆）
+  const addNewConstruction = (constructions: ConstructionSelection | ConstructionSelection[]) => {
+    const constructionsArray = Array.isArray(constructions) ? constructions : [constructions];
+
+    if (constructionsArray.length > 0) {
+      containersRef.value = [...containersRef.value, ...constructionsArray];
       updateCallback(containersRef.value);
     }
   };

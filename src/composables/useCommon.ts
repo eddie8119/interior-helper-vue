@@ -18,9 +18,9 @@ interface UseCommonReturnType {
   error: Ref<Error | null>;
 
   // Computed properties
-  constructionItems: ComputedRef<ConstructionSelection[]>;
-  unitItems: ComputedRef<string[]>;
-  projectTypeItems: ComputedRef<string[]>;
+  constructionItemsFromCommon: ComputedRef<ConstructionSelection[]>;
+  unitItemsFromCommon: ComputedRef<string[]>;
+  projectTypeItemsFromCommon: ComputedRef<string[]>;
 
   // Mutations from useMutation
   createCommon: UseMutationReturnType<
@@ -58,15 +58,15 @@ export function useCommon(): UseCommonReturnType {
   });
 
   // 分離 construction 和 unit
-  const constructionItems = computed<ConstructionSelection[]>(() => {
+  const constructionItemsFromCommon = computed<ConstructionSelection[]>(() => {
     return common.value?.construction || [];
   });
 
-  const unitItems = computed(() => {
+  const unitItemsFromCommon = computed(() => {
     return common.value?.unit || [];
   });
 
-  const projectTypeItems = computed(() => {
+  const projectTypeItemsFromCommon = computed(() => {
     return common.value?.projectType || [];
   });
 
@@ -108,9 +108,9 @@ export function useCommon(): UseCommonReturnType {
     common,
     isLoading,
     error,
-    constructionItems,
-    unitItems,
-    projectTypeItems,
+    constructionItemsFromCommon,
+    unitItemsFromCommon,
+    projectTypeItemsFromCommon,
 
     // mutations
     createCommon,

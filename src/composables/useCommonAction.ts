@@ -5,7 +5,13 @@ import { useCommon } from './useCommon';
 import type { ConstructionSelection } from '@/types/selection';
 
 export function useCommonAction() {
-  const { common, constructionItems, updateCommon, unitItems, projectTypeItems } = useCommon();
+  const {
+    common,
+    constructionItemsFromCommon,
+    updateCommon,
+    unitItemsFromCommon,
+    projectTypeItemsFromCommon,
+  } = useCommon();
   // construction
   const newConstructionItem = ref<string>('');
   const localConstructionItems = ref<ConstructionSelection[]>([]);
@@ -18,7 +24,12 @@ export function useCommonAction() {
 
   // Initialize local construction items
   watch(
-    () => [constructionItems.value, unitItems.value, projectTypeItems.value] as const,
+    () =>
+      [
+        constructionItemsFromCommon.value,
+        unitItemsFromCommon.value,
+        projectTypeItemsFromCommon.value,
+      ] as const,
     ([newConstructionItems, newUnitItems, newProjectTypeItems]) => {
       if (newConstructionItems) {
         localConstructionItems.value = [...newConstructionItems] as ConstructionSelection[];

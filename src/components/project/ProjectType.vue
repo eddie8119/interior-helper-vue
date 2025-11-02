@@ -24,11 +24,11 @@ const emit = defineEmits<{
   (e: 'update:project-type', value: ProjectType): void;
 }>();
 
-const { projectTypeItems } = useCommon();
+const { projectTypeItemsFromCommon } = useCommon();
 
 const formattedProjectTypeItems = computed<SelectorOption[]>(() => {
   return (
-    projectTypeItems.value?.map((item: string) => ({
+    projectTypeItemsFromCommon.value?.map((item: string) => ({
       value: item,
     })) || []
   );

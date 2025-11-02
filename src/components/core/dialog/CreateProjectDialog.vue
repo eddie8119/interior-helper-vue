@@ -57,7 +57,7 @@
         <ElOption
           v-for="item in localConstructionItems"
           :key="item.id"
-          :label="item.name + '工程'"
+          :label="item.name + t('label.project.construction')"
           :value="item"
         />
       </ElSelect>

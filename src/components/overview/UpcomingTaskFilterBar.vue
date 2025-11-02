@@ -32,7 +32,7 @@
     </div>
     <!-- advanced filter -->
     <div class="advanced-filter">
-      <button type="button" class="advanced-toggle" @click="showAdvanced = !showAdvanced">
+      <button type="button" class="toggle-button gap-1" @click="showAdvanced = !showAdvanced">
         <span>{{
           showAdvanced ? t('label.advanced_filter.hide') : t('label.advanced_filter.show')
         }}</span>
@@ -91,14 +91,6 @@ const { t } = useI18n();
 
 .advanced-filter {
   @apply border-t border-gray-200 pt-3;
-}
-
-.advanced-toggle {
-  @apply inline-flex items-center gap-1 text-sm font-medium text-blue-600;
-}
-
-.advanced-toggle:hover {
-  @apply text-blue-900;
 }
 
 .toggle-icon {

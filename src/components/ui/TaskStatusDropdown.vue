@@ -4,13 +4,7 @@
     :disabled="readOnly"
     @command="handleCommand"
   >
-    <button
-      :class="[
-        'status-badge flex items-center px-3 py-1.5 transition-all duration-200',
-        readOnly ? '' : 'hover:shadow-sm',
-        statusClass,
-      ]"
-    >
+    <button :class="['status-badge-button', readOnly ? '' : 'hover:shadow-sm', statusClass]">
       {{ t(`option.status.${props.status}`) }}
       <svg
         v-if="!readOnly"
@@ -75,10 +69,4 @@ const statusClass = computed(() => {
 });
 </script>
 
-<style scoped>
-.status-badge {
-  font-size: 0.95rem;
-  padding: 0.15rem 0.5rem;
-  border-radius: 9999px;
-}
-</style>
+<style scoped></style>

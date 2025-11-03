@@ -1,6 +1,7 @@
+import { container } from '../../utils/email';
+
 import { footerBlock } from './partials/footer';
 import { headerBlock } from './partials/header';
-import { container } from '../../utils/email';
 
 interface PasswordResetData {
   email: string;

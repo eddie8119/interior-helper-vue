@@ -46,8 +46,8 @@ import { useI18n } from 'vue-i18n';
 
 import type { TaskResponse } from '@/types/response';
 
-import TaskCardBase from '@/components/task/TaskCardBase.vue';
 import Label from '@/components/core/title/Label.vue';
+import TaskCardBase from '@/components/task/TaskCardBase.vue';
 
 const props = defineProps<{
   constructionId: string;

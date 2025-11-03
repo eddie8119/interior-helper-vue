@@ -55,19 +55,15 @@
 
 <script setup lang="ts">
 import { CaretBottom } from '@element-plus/icons-vue';
-import { useI18n } from 'vue-i18n';
-import { ref } from 'vue';
 import { ElCollapseTransition, ElIcon } from 'element-plus';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import type { ConstructionSelection } from '@/types/selection';
 import type { TaskFilterStatus } from '@/constants/selection';
+import type { ConstructionSelection } from '@/types/selection';
 
 import Label from '@/components/core/title/Label.vue';
 import TaskStatusDateFilter from '@/components/project/TaskStatusDateFilter.vue';
-
-const selectedStatus = ref<TaskFilterStatus>('all');
-const daysRange = ref<[number, number]>([0, 10]);
-const showAdvanced = ref(false);
 
 defineProps<{
   constructionList: ConstructionSelection[];
@@ -75,11 +71,13 @@ defineProps<{
   selectedConstructionIds: string[];
   selectedProjectIds: string[];
 }>();
-
 defineEmits<{
   'toggle-construction': [id: string];
   'toggle-project': [id: string];
 }>();
+const selectedStatus = ref<TaskFilterStatus>('all');
+const daysRange = ref<[number, number]>([0, 10]);
+const showAdvanced = ref(false);
 
 const { t } = useI18n();
 </script>

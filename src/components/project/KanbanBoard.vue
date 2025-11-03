@@ -32,8 +32,8 @@
       <!-- 添加新工程類型 -->
       <AddNewConstruction
         v-if="!readOnly"
-        :existing-constructions="localConstructionContainer"
         id="new-container"
+        :existing-constructions="localConstructionContainer"
         @add-container="addNewConstruction"
       />
     </Container>
@@ -55,11 +55,11 @@ import { useConstructionActions } from '@/composables/todo/useConstructionAction
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
 import { useTaskOperations } from '@/composables/todo/useTaskOperations';
+import { useTaskConditionFilters } from '@/composables/useTaskConditionFilters';
 import { useTasks } from '@/composables/useTasks';
 import { provideTaskCardFilter } from '@/context/useTaskCardFilter';
 import { provideTaskContext } from '@/context/useTaskContext';
 import { filterTasksByConstruction, processTasksWithOrder } from '@/utils/todo/taskUtils';
-import { useTaskConditionFilters } from '@/composables/useTaskConditionFilters';
 
 const props = defineProps<{
   constructionContainer: ConstructionSelection[] | null;

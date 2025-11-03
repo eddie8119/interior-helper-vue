@@ -7,6 +7,7 @@ import { computed, ref, type Ref } from 'vue';
 
 import type { TaskFilterStatus } from '@/constants/selection';
 import type { TaskResponse } from '@/types/response';
+
 import { filterTasksByConstruction as filterByConstructionUtil } from '@/utils/todo/taskUtils';
 
 export function useTaskConditionFilters(tasksData: Ref<TaskResponse[]>) {

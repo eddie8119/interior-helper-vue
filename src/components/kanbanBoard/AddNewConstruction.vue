@@ -78,10 +78,11 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useCommon } from '@/composables/useCommon';
-import { useEditingStateStore } from '@/stores/editingState';
 
 import type { ConstructionSelection } from '@/types/selection';
+
+import { useCommon } from '@/composables/useCommon';
+import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{
   id: string;

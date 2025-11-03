@@ -1,14 +1,14 @@
 <template>
-  <div class="my-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
+  <div
+    class="mb-5 flex flex-col gap-4 md:my-5 md:flex-row md:items-center md:justify-between md:gap-6"
+  >
     <!-- 更新時間（手機置頂／桌面置右） -->
-    <div class="order-1 w-full md:order-3 md:w-auto">
+    <div class="order-1 mb-4 w-full text-right md:order-3 md:mb-0 md:w-auto md:text-left">
       <ShowUpdateTime :last-update-time="lastUpdateTime" />
     </div>
 
     <!-- 左側群組：標題 + 類型 -->
-    <div
-      class="order-2 flex flex-col gap-2 md:order-1 md:flex-1 md:flex-row md:items-center md:gap-4"
-    >
+    <div class="order-3 flex flex-col gap-4 md:order-1 md:flex-1 md:flex-row md:items-center">
       <div class="w-full md:w-auto">
         <ProjectTitle
           :project-title="localProject?.title || undefined"
@@ -25,8 +25,10 @@
     </div>
 
     <!-- 右側群組：設定 -->
-    <div class="order-3 flex flex-col items-start gap-2 md:order-2 md:flex-row md:items-center">
-      <div class="w-full md:w-auto">
+    <div
+      class="order-2 flex w-full justify-end md:order-2 md:w-auto md:items-center md:justify-start"
+    >
+      <div class="flex items-center gap-1">
         <ProjectSettings
           :project-title="localProject?.title || undefined"
           :project-id="projectId"

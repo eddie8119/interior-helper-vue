@@ -1,5 +1,5 @@
 <template>
-  <div class="mr-60 flex items-center gap-1">
+  <div class="mr-0 flex items-center justify-end gap-1 md:mr-0 md:justify-start">
     <ElButton
       v-for="button in actionButtons"
       :key="button.key"

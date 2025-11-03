@@ -1,47 +1,58 @@
 <template>
-  <TaskStatusDateFilter
-    @update:selected-status="selectedStatus = $event"
-    @update:days-range="daysRange = $event"
-  />
-  <div class="w-full overflow-auto">
-    <Container
-      orientation="horizontal"
-      :drag-handle-selector="readOnly ? '.__disabled__' : '.container-drag-handle'"
-      :get-child-payload="readOnly ? undefined : getConstructionContainerPayload"
-      :group-name="readOnly ? undefined : 'construction-containers'"
-      :non-drag-area-selector="readOnly ? '*' : undefined"
-      :should-accept-drop="() => !readOnly"
-      class="flex pt-4"
-      style="overflow-x: auto; overflow-y: visible"
-      @drop="!readOnly && onConstructionContainerDrop($event)"
-    >
-      <!-- 工程類型容器：保持一致的 Draggable 包裹，拖曳由 readOnly 與 Container 設定關閉 -->
-      <Draggable v-for="(container, index) in localConstructionContainer" :key="container.id">
-        <ConstructionContainerItem
-          :construction-id="container.id"
-          :project-id="projectId"
-          :construction-name="container.name"
-          :tasks="filteredTasksByConstruction(container.id)"
-          :days-range="daysRange"
-          :read-only="readOnly"
-          @delete-container="handleDeleteConstruction(index)"
-          @update:construction-name="updateConstructionName(index, $event)"
-          @task-drop="handleTaskDrop($event, container.id)"
+  <section class="w-full">
+    <!-- 篩選器 -->
+    <TaskStatusDateFilter
+      @update:selected-status="selectedStatus = $event"
+      @update:days-range="daysRange = $event"
+    />
+
+    <!-- 拖曳容器區域 -->
+    <div class="overflow-x-auto overflow-y-visible pt-4">
+      <Container
+        :key="isMobile ? 'vertical' : 'horizontal'"
+        :orientation="isMobile ? 'vertical' : 'horizontal'"
+        :drag-handle-selector="readOnly ? '.__disabled__' : '.container-drag-handle'"
+        :get-child-payload="readOnly ? undefined : getConstructionContainerPayload"
+        :group-name="readOnly ? undefined : 'construction-containers'"
+        :non-drag-area-selector="readOnly ? '*' : undefined"
+        :should-accept-drop="() => !readOnly"
+        class="grid grid-cols-1 gap-4 md:flex md:items-start"
+        @drop="!readOnly && onConstructionContainerDrop($event)"
+      >
+        <!-- 工程容器 -->
+        <Draggable
+          v-for="(container, index) in localConstructionContainer"
+          :key="container.id"
+          class="w-full shrink-0 md:w-[320px]"
+        >
+          <ConstructionContainerItem
+            :construction-id="container.id"
+            :project-id="projectId"
+            :construction-name="container.name"
+            :tasks="filteredTasksByConstruction(container.id)"
+            :days-range="daysRange"
+            :read-only="readOnly"
+            @delete-container="handleDeleteConstruction(index)"
+            @update:construction-name="updateConstructionName(index, $event)"
+            @task-drop="handleTaskDrop($event, container.id)"
+          />
+        </Draggable>
+
+        <!-- 新增工程類型 -->
+        <AddNewConstruction
+          v-if="!readOnly"
+          id="new-container"
+          class="w-full shrink-0 md:w-[320px]"
+          :existing-constructions="localConstructionContainer"
+          @add-container="addNewConstruction"
         />
-      </Draggable>
-      <!-- 添加新工程類型 -->
-      <AddNewConstruction
-        v-if="!readOnly"
-        id="new-container"
-        :existing-constructions="localConstructionContainer"
-        @add-container="addNewConstruction"
-      />
-    </Container>
-  </div>
+      </Container>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 import { Container, Draggable } from 'vue3-smooth-dnd';
 
 import type { TaskResponse } from '@/types/response';
@@ -55,6 +66,7 @@ import { useConstructionActions } from '@/composables/todo/useConstructionAction
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
 import { useTaskOperations } from '@/composables/todo/useTaskOperations';
+import { useResponsiveWidth } from '@/composables/useResponsiveWidth';
 import { useTaskConditionFilters } from '@/composables/useTaskConditionFilters';
 import { useTasks } from '@/composables/useTasks';
 import { provideTaskCardFilter } from '@/context/useTaskCardFilter';
@@ -91,6 +103,7 @@ const onTaskUpdate = (newTasks: TaskResponse[]) => {
 };
 
 // ==================== Composables ====================
+const { isMobile } = useResponsiveWidth();
 // 任務操作
 const { deleteTask, addNewTask, updateTask } = useTaskOperations(localTasks, onTaskUpdate);
 

@@ -131,5 +131,20 @@ module.exports = {
         'func-style': 'off',
       },
     },
+    {
+      files: ['server/**/*.ts', 'server/**/*.tsx', 'server/**/*.js', 'server/**/*.jsx'],
+      rules: {
+        // 關閉 prettier，避免它把已經良好的多行格式壓回單行
+        'prettier/prettier': 'off',
+        // 連鎖呼叫時
+        'newline-per-chained-call': 'off',
+        // 函式宣告/表達式參數：若有換行則一致每個參數獨立一行
+        'function-parameter-newline': ['error', 'consistent'],
+        // 函式呼叫引數：若有換行則一致每個引數獨立一行
+        'function-call-argument-newline': ['error', 'consistent'],
+        // 三元運算子在多行時強制換行（避免超長單行）
+        'multiline-ternary': ['error', 'always-multiline'],
+      },
+    },
   ],
 };

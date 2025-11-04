@@ -1,5 +1,5 @@
 <template>
-  <div class="panel-container">
+  <div class="panel-container p-8">
     <div class="space-y-8">
       <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
         <!-- Construction Input -->

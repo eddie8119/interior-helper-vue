@@ -6,7 +6,7 @@
     @dblclick="handleDblClick"
   >
     <!-- 提醒訊息 -->
-    <div v-if="reminderStatus !== 'none'" class="absolute left-[-10px] top-[-14px]">
+    <div v-if="reminderStatus !== 'none'" class="absolute bottom-[6px] right-[6px]">
       <StatusLabel :show-index="reminderStatus" />
     </div>
     <div class="flex items-center justify-between">

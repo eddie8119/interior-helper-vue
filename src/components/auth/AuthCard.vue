@@ -1,8 +1,9 @@
 <template>
   <div class="flex h-full w-full items-center justify-center">
     <div class="auth-container">
-      <div v-if="props.showLogo" class="flex justify-center">
-        <img src="@/assets/icons/CompanyLogo.png" alt="logo Icon" class="icon-logo w-[125px]" />
+      <div v-if="props.showLogo" class="flex items-center justify-center">
+        <img src="@/assets/icons/CompanyLogo.png" alt="logo Icon" class="icon-logo w-[40px]" />
+        <span class="text-color-difference ml-1 font-semibold">Designer Helper</span>
       </div>
 
       <!-- 標題 -->

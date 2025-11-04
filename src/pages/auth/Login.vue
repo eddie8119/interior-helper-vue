@@ -5,7 +5,7 @@
     :is-invalid="!isValid"
     @submit="onSubmit"
   >
-    <template #title> Welcome to HSWE IoT! </template>
+    <template #title> {{ t('title.welcome') }} </template>
     <template #button-text> {{ t('button.login') }} </template>
     <LoginForm
       :email="email"

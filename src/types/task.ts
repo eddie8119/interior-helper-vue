@@ -12,3 +12,9 @@ export enum TaskStatusEnum {
 }
 
 export type TaskStatus = 'todo' | 'inProgress' | 'done';
+
+export enum TaskTimeReminderStatus {
+  OVERDUE = 'overdue',
+  REMINDING = 'reminding',
+  NONE = 'none',
+}

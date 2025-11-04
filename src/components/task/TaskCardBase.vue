@@ -1,9 +1,14 @@
 <template>
   <div
     v-if="!isEditing"
-    class="task-card background-color-difference group cursor-pointer rounded-md bg-white p-1 shadow-sm duration-200"
+    class="task-card background-color-difference group relative cursor-pointer rounded-md p-1 shadow-sm duration-200"
+    :class="reminderClasses"
     @dblclick="handleDblClick"
   >
+    <!-- 提醒訊息 -->
+    <div v-if="reminderStatus !== 'none'" class="absolute left-[-10px] top-[-14px]">
+      <StatusLabel :show-index="reminderStatus" />
+    </div>
     <div class="flex items-center justify-between">
       <div class="flex items-center">
         <DragHandle v-if="!readOnly" :size="4" handle-class="task-drag-handle" />
@@ -80,8 +85,10 @@ import DateIcon from '@/components/ui/DateIcon.vue';
 import DragHandle from '@/components/ui/DragHandle.vue';
 import EditIcon from '@/components/ui/EditIcon.vue';
 import MaterialList from '@/components/ui/MaterialList.vue';
+import StatusLabel from '@/components/ui/StatusLabel.vue';
 import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
+import { useTaskReminder } from '@/composables/useTaskReminder';
 import { useTaskCardFilter } from '@/context/useTaskCardFilter';
 
 const props = withDefaults(
@@ -102,6 +109,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const { showDescription, showMaterials } = useTaskCardFilter();
+const { reminderStatus, reminderClasses } = useTaskReminder(props.task);
 
 const isEditing = ref(false);
 const { values, setValues } = useForm<Partial<TaskResponse>>();

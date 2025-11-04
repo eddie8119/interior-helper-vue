@@ -9,24 +9,33 @@ import { TaskTimeReminderStatus } from '@/types/task';
  * @returns TaskTimeReminderStatus
  */
 export function getTaskTimeReminderStatus(task: TaskResponse): TaskTimeReminderStatus {
-  if (!task.reminderDatetime || task.status === TaskStatusEnum.DONE) {
+  // 如果任務已完成，則沒有任何時間狀態
+  if (task.status === TaskStatusEnum.DONE) {
     return TaskTimeReminderStatus.NONE;
   }
 
-  const now = new Date().getTime();
-  const reminderTime = new Date(task.reminderDatetime).getTime();
-  const timeDifference = reminderTime - now;
+  const now = new Date();
 
-  // 過時條件：提醒時間已過
-  if (timeDifference < 0) {
-    return TaskTimeReminderStatus.OVERDUE;
+  // 1. 檢查逾期狀態 (基於 endDate，精確到「當下時間」)
+  if (task.endDate) {
+    const endDate = new Date(task.endDate);
+    if (endDate.getTime() < now.getTime()) {
+      return TaskTimeReminderStatus.OVERDUE;
+    }
   }
 
-  // 提醒條件：距離提醒時間小於 24 小時
-  const twentyFourHoursInMillis = 24 * 60 * 60 * 1000;
-  if (timeDifference <= twentyFourHoursInMillis) {
-    return TaskTimeReminderStatus.REMINDING;
+  // 2. 檢查提醒狀態 (基於 reminderDatetime)
+  if (task.reminderDatetime) {
+    const reminderTime = new Date(task.reminderDatetime);
+    // 如果提醒時間已過，就觸發提醒
+    if (reminderTime <= new Date()) {
+      return TaskTimeReminderStatus.REMINDING;
+    }
   }
 
+  // 3. 如果以上條件都不滿足，則無狀態
   return TaskTimeReminderStatus.NONE;
 }
+
+// 逾期狀態：檢查 endDate。如果 endDate 早於今天，任務會被標記為 OVERDUE。
+// 提醒狀態：如果任務未逾期，接著檢查 reminderDatetime。如果當前時間已經超過了設定的提醒時間，任務會被標記為 REMINDING

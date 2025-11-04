@@ -4,7 +4,7 @@
       v-model:selected-status="selectedStatus"
       :options="STATUS_FILTER_OPTIONS"
       :construction-name="props.constructionName"
-      :tasks-length="filteredTasks.length"
+      :tasks-length="filteredAndSortedTasks.length"
       :is-show-status-filter="isShowStatusFilter"
       :read-only="readOnly"
       @update:construction-name="updateConstructionName"
@@ -14,7 +14,7 @@
     <ContainerBody
       :construction-id="props.constructionId"
       :project-id="props.projectId"
-      :tasks="filteredTasks"
+      :tasks="filteredAndSortedTasks"
       :read-only="readOnly"
       @update:tasks="updateTasks"
       @task-drop="handleTaskDrop"
@@ -39,102 +39,98 @@ import { useI18n } from 'vue-i18n';
 
 import type { TaskFilterStatus } from '@/constants/selection';
 import type { TaskResponse } from '@/types/response';
+import type { EditingState } from '@/stores/editingState';
 
 import ContainerBody from '@/components/kanbanBoard/ContainerBody.vue';
 import ContainerHeader from '@/components/kanbanBoard/ContainerHeader.vue';
 import { STATUS_FILTER_OPTIONS } from '@/constants/selection';
 import { useEditingStateStore } from '@/stores/editingState';
-import { isWithinDaysRange } from '@/utils/dateUtils';
+import { isWithinDays } from '@/utils/date';
+
+declare module '@/types/response' {
+  interface TaskResponse {
+    order?: number;
+  }
+}
 
 const props = defineProps<{
   constructionId: string;
   constructionName: string;
   projectId: string;
   tasks: TaskResponse[];
-  daysRange?: [number, number];
+  daysRange: [number, number] | null;
   readOnly?: boolean;
 }>();
 
 const emit = defineEmits<{
-  // container events
   (e: 'delete-container'): void;
   (e: 'update:construction-name', name: string): void;
-  // task events
   (e: 'task-drop', dropResult: any, constructionType: string): void;
+  (e: 'update:tasks', tasks: TaskResponse[]): void;
 }>();
 
 const editingStateStore = useEditingStateStore();
 const { t } = useI18n();
 
-// 使用計算屬性來判斷當前容器是否處於編輯狀態
 const isEditing = computed(() => {
   return editingStateStore.isEditing('container', props.constructionId);
 });
 
 const selectedStatus = ref<TaskFilterStatus>('all');
 
-const filteredTasks = computed(() => {
-  let tasks = props.tasks;
+const filteredAndSortedTasks = computed(() => {
+  let tasksToDisplay: TaskResponse[] = props.tasks;
 
-  // Filter by status
   if (selectedStatus.value !== 'all') {
-    tasks = tasks.filter((task: TaskResponse) => task.status === selectedStatus.value);
+    tasksToDisplay = tasksToDisplay.filter((task) => task.status === selectedStatus.value);
   }
 
-  // Filter by days range (reminder date)
-  tasks = tasks.filter((task: TaskResponse) => {
-    // If task has no reminder, don't filter it out
-    if (!task.reminderDatetime) return true;
+  if (props.daysRange) {
+    tasksToDisplay = tasksToDisplay.filter((task) => {
+      if (!task.endDate) return false;
+      return isWithinDays(task.endDate, props.daysRange[0], props.daysRange[1]);
+    });
+  }
 
-    return isWithinDaysRange(task.reminderDatetime, props.daysRange[0], props.daysRange[1]);
-  });
-
-  return tasks;
+  return tasksToDisplay.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 });
 
 const isShowStatusFilter = computed(() => {
-  return props.tasks.some((task: TaskResponse) => task.status !== 'todo');
+  return props.tasks.some((task) => task.status !== 'todo');
 });
 
-// Watch for changes in the global editing state
 watch(
   () => editingStateStore.currentEditingState,
-  (newState) => {
-    // If this component is in edit mode, but the global state has changed to another component,
-    // cancel the edit for this component.
-    if (
-      isEditing.value &&
-      (newState.type !== 'container' || newState.id !== props.constructionId)
-    ) {
-      editingStateStore.stopEditing();
+  (newState: EditingState | null) => {
+    if (newState && (newState.type !== 'container' || newState.id !== props.constructionId)) {
+      if (isEditing.value) {
+        editingStateStore.stopEditing();
+      }
     }
-  },
-  { deep: true }
+  }
 );
 
-// 處理任務拖曳
 const handleTaskDrop = (dropResult: any) => {
   emit('task-drop', dropResult, props.constructionName);
 };
 
-// 開始編輯任務
 const startEditing = () => {
   editingStateStore.startEditing('container', props.constructionId);
 };
 
-// 處理容器名稱更新
-const updateConstructionName = (newName: string) => {
-  emit('update:construction-name', newName);
+const updateConstructionName = (name: string) => {
+  emit('update:construction-name', name);
 };
 
-// 處理刪除工程類型
 const handleDeleteConstruction = () => {
   emit('delete-container');
 };
 
-// 更新任務
-const updateTasks = (dropResult: any) => {
-  // 直接將從 ContainerBody 收到的 dropResult 轉發給父組件
-  emit('task-drop', dropResult, props.constructionName);
+const updateTasks = (tasks: TaskResponse[]) => {
+  emit('update:tasks', tasks);
+};
+
+const handleAddTask = () => {
+  // Logic to add a new task
 };
 </script>

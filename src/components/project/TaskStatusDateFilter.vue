@@ -27,7 +27,16 @@
     <!-- Days Range -->
     <div class="filter-container-outter">
       <div class="filter-container-inner w-full self-center sm:w-[280px]">
-        <Label :label="t('label.task.due_date_range')" />
+        <div class="flex items-center justify-between">
+          <Label :label="t('label.task.due_date_range')" />
+          <ElSwitch
+            v-model="isTimeFilterEnabled"
+            :active-text="t('label.actions.enable')"
+            :inactive-text="t('label.actions.disable')"
+            inline-prompt
+            @change="toggleTimeFilter"
+          />
+        </div>
         <div class="flex h-10 w-full items-center">
           <ElSlider
             v-model="daysRange"
@@ -37,6 +46,7 @@
             :max="10"
             :marks="daysMarks"
             :show-tooltip="true"
+            :disabled="!isTimeFilterEnabled"
             @change="handleDaysRangeChange"
           />
         </div>
@@ -46,8 +56,8 @@
 </template>
 
 <script setup lang="ts">
-import { ElSlider } from 'element-plus';
-import { computed, onMounted, ref } from 'vue';
+import { ElSlider, ElSwitch } from 'element-plus';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { TaskFilterStatus } from '@/constants/selection';
@@ -73,7 +83,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   (e: 'update:selectedStatus', value: TaskFilterStatus): void;
-  (e: 'update:daysRange', value: [number, number]): void;
+  (e: 'update:daysRange', value: [number, number] | null): void;
 }>();
 
 const { t } = useI18n();
@@ -92,7 +102,8 @@ const statusOptions = computed(() => {
 // Status filter
 const selectedStatus = ref<TaskFilterStatus>('all');
 
-// Days range filter (0, 1, 2, 3, 5, 7, 10, >10)
+// Days range filter
+const isTimeFilterEnabled = ref(false);
 const daysRange = ref<[number, number]>([0, 10]);
 const daysMarks: Record<number, string> = {
   0: '0',
@@ -107,13 +118,7 @@ const daysMarks: Record<number, string> = {
 // Display mode filter - consume from parent context
 const { displayMode: taskCardDisplayMode, updateVisibility } = useTaskCardFilter();
 
-onMounted(() => {
-  if (props.displayMode && taskCardDisplayMode.value !== props.displayMode) {
-    updateVisibility(props.displayMode);
-  }
-});
-
-const handleStatusChange = (status: TaskFilterStatus) => {
+const handleStatusChange = (status: any) => {
   selectedStatus.value = status;
   emit('update:selectedStatus', status);
 };
@@ -123,8 +128,16 @@ const handleDisplayModeChange = (mode: TaskCardDisplayMode) => {
 };
 
 const handleDaysRangeChange = (value: number | number[]) => {
-  if (Array.isArray(value) && value.length === 2) {
+  if (Array.isArray(value) && value.length === 2 && isTimeFilterEnabled.value) {
     emit('update:daysRange', [value[0], value[1]]);
+  }
+};
+
+const toggleTimeFilter = (enabled: boolean | string | number) => {
+  if (enabled) {
+    emit('update:daysRange', daysRange.value);
+  } else {
+    emit('update:daysRange', null);
   }
 };
 </script>

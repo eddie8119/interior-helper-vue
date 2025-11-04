@@ -5,6 +5,7 @@
   </div>
   <!-- 任務列表 -->
   <Container
+    :key="containerKey"
     group-name="tasks"
     orientation="vertical"
     :get-child-payload="getTaskPayload"
@@ -52,6 +53,10 @@ const editingStateStore = useEditingStateStore();
 // 使用計算屬性來判斷當前容器是否處於編輯狀態
 const isEditing = computed(() => {
   return editingStateStore.isEditing('container', props.constructionId);
+});
+
+const containerKey = computed(() => {
+  return props.tasks.map((task) => task.id).join('-');
 });
 
 // 停止編輯任務

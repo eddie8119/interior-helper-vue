@@ -1,12 +1,11 @@
 <template>
   <div
-    class="mb-5 flex flex-col gap-4 md:my-5 md:flex-row md:items-center md:justify-between md:gap-6"
+    class="mb-5 flex flex-col gap-4 md:my-5 md:flex-row md:items-center md:justify-between md:gap-0"
   >
     <!-- 更新時間（手機置頂／桌面置右） -->
     <div class="order-1 mb-4 w-full text-right md:order-3 md:mb-0 md:w-auto md:text-left">
       <ShowUpdateTime :last-update-time="lastUpdateTime" />
     </div>
-
     <!-- 左側群組：標題 + 類型 -->
     <div class="order-3 flex flex-col gap-4 md:order-1 md:flex-1 md:flex-row md:items-center">
       <div class="w-full md:w-auto">
@@ -15,7 +14,6 @@
           @update:project-title="handleUpdateTitle"
         />
       </div>
-
       <div class="w-full md:w-auto">
         <ProjectTypeComponent
           :project-type="localProject?.type || undefined"
@@ -23,10 +21,9 @@
         />
       </div>
     </div>
-
     <!-- 右側群組：設定 -->
     <div
-      class="order-2 flex w-full justify-end md:order-2 md:w-auto md:items-center md:justify-start"
+      class="order-2 flex w-full justify-end md:order-2 md:mr-2 md:w-auto md:items-center md:justify-start"
     >
       <div class="flex items-center gap-1">
         <ProjectSettings

@@ -1,5 +1,5 @@
 <template>
-  <p class="text200-color-difference absolute right-3 w-full text-right text-sm">
+  <p class="text200-color-difference text-right text-sm">
     {{ t('common.last_update_time') }}: {{ formattedTime }}
   </p>
 </template>

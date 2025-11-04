@@ -19,13 +19,15 @@
           d="M12 6v6m0 0v6m0-6h6m-6 0H6"
         />
       </svg>
-      <span class="mt-2 block text-gray-500">新增工程類型</span>
+      <span class="text200-color-difference mt-2 block">{{
+        t('button.add_construction_type')
+      }}</span>
     </div>
   </div>
 
   <div
     v-else
-    class="mx-2 min-w-[300px] max-w-[300px] rounded-lg bg-gray-100 p-3 shadow-sm"
+    class="panel-color-difference mx-2 min-w-[300px] max-w-[300px] rounded-lg bg-gray-100 p-3 shadow-sm"
     @click.stop
   >
     <div class="flex flex-col space-y-3">
@@ -33,7 +35,7 @@
         ref="inputRef"
         v-model="newContainerName"
         type="text"
-        class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+        class="background-color-difference text-color-difference block w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
         :placeholder="t('placeholder.project.addContainer')"
         @keyup.enter="addNewConstruction"
         @keyup.esc="cancelEditing"
@@ -41,7 +43,7 @@
       <div class="divider-line" />
 
       <div v-if="notAddedConstruction.length > 0" class="space-y-2">
-        <p class="text-sm font-medium text-gray-600">{{ t('label.quick_select') || '快速選取' }}</p>
+        <Label :label="t('label.quick_select') + ':'" />
         <div class="flex flex-wrap gap-2">
           <button
             v-for="construction in notAddedConstruction"
@@ -81,6 +83,7 @@ import { useI18n } from 'vue-i18n';
 
 import type { ConstructionSelection } from '@/types/selection';
 
+import Label from '@/components/core/title/Label.vue';
 import { useCommon } from '@/composables/useCommon';
 import { useEditingStateStore } from '@/stores/editingState';
 

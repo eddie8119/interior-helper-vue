@@ -1,7 +1,7 @@
 <template>
   <ElDialog
     v-model="dialogVisible"
-    class="bg-primary-background"
+    class="panel-color-difference"
     :width="computedWidth"
     :title="title"
     :close-on-click-modal="true"
@@ -58,7 +58,7 @@ const props = withDefaults(
   defineProps<{
     modelValue: boolean;
     title: string;
-    isSubmitting: boolean;
+    isSubmitting?: boolean;
     errorMessage?: string;
     showFooterButton?: boolean;
     isInvalid?: boolean;
@@ -110,6 +110,7 @@ const onCancel = () => {
 .flex-grow {
   flex-grow: 1;
 }
+
 .error-message {
   margin: 16px 0;
 

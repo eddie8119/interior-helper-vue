@@ -3,7 +3,7 @@
     <div v-if="isQuickDraftSlideVisible" class="fixed inset-0 z-[999]">
       <!-- Slide panel -->
       <div
-        class="absolute left-0 top-0 flex h-full w-full rounded-none bg-white pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)] shadow-xl sm:w-[65%] sm:max-w-[550px] sm:rounded-r-[20px]"
+        class="background-color-difference absolute left-0 top-0 flex h-full w-full rounded-none pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)] shadow-xl sm:w-[65%] sm:max-w-[550px] sm:rounded-r-[20px]"
       >
         <DeleteButton
           class="absolute right-4 top-4 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 sm:right-6 sm:top-6"

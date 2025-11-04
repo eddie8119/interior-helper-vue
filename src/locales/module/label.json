@@ -2,7 +2,6 @@
   "en": {
     "label": {
       "time": "Time",
-      "status": "Status",
       "construction": "Construction",
       "materials": "Materials",
       "type": "Type",
@@ -16,6 +15,12 @@
       "day": "Day",
       "start_time": "Start Time",
       "end_time": "End Time",
+      "quick_select": "Direct input or rapid repeated clicking",
+      "status": {
+        "status": "Status",
+        "overdue": "Overdue",
+        "reminding": "Reminding"
+      },
       "advanced_filter": {
         "hide": "Hide Advanced Filter",
         "show": "Show Advanced Filter"
@@ -58,7 +63,6 @@
   "zh-TW": {
     "label": {
       "time": "時間",
-      "status": "狀態",
       "construction": "工程",
       "materials": "材料",
       "type": "類型",
@@ -72,6 +76,12 @@
       "day": "天",
       "start_time": "開始時間",
       "end_time": "結束時間",
+      "quick_select": "直接輸入或是快速複選",
+      "status": {
+        "status": "狀態",
+        "overdue": "過期",
+        "reminding": "提醒"
+      },
       "advanced_filter": {
         "hide": "隱藏進階篩選",
         "show": "進階篩選"

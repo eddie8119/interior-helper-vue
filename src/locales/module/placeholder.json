@@ -25,7 +25,9 @@
         "addContainer": "Add container",
         "task": "Enter task",
         "taskDescription": "Enter task description",
-        "add_new_construction": "Add a new construction",
+        "add_construction": "Add a construction",
+        "add_unit": "Add a unit",
+        "add_project_type": "Add a project type",
         "add_new": "Add a new"
       },
       "draft": {
@@ -59,7 +61,9 @@
         "addContainer": "請輸入容器",
         "task": "請輸入任務",
         "taskDescription": "請輸入任務描述",
-        "add_new_construction": "新增工程類型",
+        "add_construction": "新增工程類型",
+        "add_unit": "新增單位",
+        "add_project_type": "新增專案類型",
         "add_new": "新增"
       },
       "draft": {

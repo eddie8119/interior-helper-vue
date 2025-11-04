@@ -20,6 +20,7 @@
     "move_to_project": "移動至專案",
     "moved_to_project": "已移到專案",
     "delete_completed": "刪除已完成",
+    "add_construction_type": "新增工程類型",
     "resend": "重新發送",
     "activate": "啟用",
     "accept": "接受",
@@ -99,7 +100,6 @@
   },
   "label": {
     "time": "時間",
-    "status": "狀態",
     "construction": "工程",
     "materials": "材料",
     "type": "類型",
@@ -113,6 +113,12 @@
     "day": "天",
     "start_time": "開始時間",
     "end_time": "結束時間",
+    "quick_select": "直接輸入或是快速複選",
+    "status": {
+      "status": "狀態",
+      "overdue": "過期",
+      "reminding": "提醒"
+    },
     "advanced_filter": {
       "hide": "隱藏進階篩選",
       "show": "進階篩選"
@@ -313,7 +319,9 @@
       "addContainer": "請輸入容器",
       "task": "請輸入任務",
       "taskDescription": "請輸入任務描述",
-      "add_new_construction": "新增工程類型",
+      "add_construction": "新增工程類型",
+      "add_unit": "新增單位",
+      "add_project_type": "新增專案類型",
       "add_new": "新增"
     },
     "draft": {

@@ -20,6 +20,7 @@
     "move_to_project": "Move to Project",
     "moved_to_project": "Moved to Project",
     "delete_completed": "Delete Completed",
+    "add_construction_type": "Add Construction Type",
     "resend": "Resend",
     "activate": "Activate",
     "accept": "Accept",
@@ -99,7 +100,6 @@
   },
   "label": {
     "time": "Time",
-    "status": "Status",
     "construction": "Construction",
     "materials": "Materials",
     "type": "Type",
@@ -113,6 +113,12 @@
     "day": "Day",
     "start_time": "Start Time",
     "end_time": "End Time",
+    "quick_select": "Direct input or rapid repeated clicking",
+    "status": {
+      "status": "Status",
+      "overdue": "Overdue",
+      "reminding": "Reminding"
+    },
     "advanced_filter": {
       "hide": "Hide Advanced Filter",
       "show": "Show Advanced Filter"
@@ -313,7 +319,9 @@
       "addContainer": "Add container",
       "task": "Enter task",
       "taskDescription": "Enter task description",
-      "add_new_construction": "Add a new construction",
+      "add_construction": "Add a construction",
+      "add_unit": "Add a unit",
+      "add_project_type": "Add a project type",
       "add_new": "Add a new"
     },
     "draft": {

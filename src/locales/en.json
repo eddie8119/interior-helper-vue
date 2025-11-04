@@ -150,7 +150,7 @@
     },
     "task": {
       "task_display": "Task Display",
-      "due_date_range": "Due Date Range",
+      "due_date_range": "Filter by expiration days range",
       "status": "All Tasks Status"
     },
     "setting": {
@@ -369,6 +369,7 @@
     "all": "All"
   },
   "title": {
+    "welcome": "Welcome to Designer Helper",
     "register": "Register",
     "register_success": "Register Success",
     "resend_activation": "Resend Activation",

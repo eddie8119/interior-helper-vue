@@ -150,7 +150,7 @@
     },
     "task": {
       "task_display": "任務顯示內容",
-      "due_date_range": "到期天數區間",
+      "due_date_range": "篩選到期天數區間",
       "status": "全案狀態篩選"
     },
     "setting": {
@@ -368,6 +368,7 @@
     "all": "全部"
   },
   "title": {
+    "welcome": "歡迎使用 Designer Helper",
     "register": "註冊",
     "register_success": "註冊成功",
     "resend_activation": "重新發送啟用郵件",

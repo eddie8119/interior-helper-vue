@@ -52,7 +52,7 @@
       },
       "task": {
         "task_display": "Task Display",
-        "due_date_range": "Due Date Range",
+        "due_date_range": "Filter by expiration days range",
         "status": "All Tasks Status"
       },
       "setting": {
@@ -113,7 +113,7 @@
       },
       "task": {
         "task_display": "任務顯示內容",
-        "due_date_range": "到期天數區間",
+        "due_date_range": "篩選到期天數區間",
         "status": "全案狀態篩選"
       },
       "setting": {

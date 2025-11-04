@@ -1,6 +1,7 @@
 {
   "en": {
     "title": {
+      "welcome": "Welcome to Designer Helper",
       "register": "Register",
       "register_success": "Register Success",
       "resend_activation": "Resend Activation",
@@ -34,6 +35,7 @@
   },
   "zh-TW": {
     "title": {
+      "welcome": "歡迎使用 Designer Helper",
       "register": "註冊",
       "register_success": "註冊成功",
       "resend_activation": "重新發送啟用郵件",

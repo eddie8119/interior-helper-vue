@@ -41,6 +41,7 @@ export const createTaskSchema = (t: TranslateFunction) =>
     constructionType: z.string(),
     projectId: z.string(),
     status: z.enum(['todo', 'inProgress', 'done']),
+    endDate: z.date().optional(),
   });
 
 export type CreateTaskSchema = z.infer<ReturnType<typeof createTaskSchema>>;

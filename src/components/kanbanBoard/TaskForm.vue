@@ -59,6 +59,19 @@
       />
 
       <!-- 提醒 -->
+      <!-- 截止日期 -->
+      <div class="space-y-2">
+        <Label label="截止日期 (可選)" />
+        <ElDatePicker
+          v-model="endDate"
+          type="date"
+          format="YYYY-MM-DD"
+          :placeholder="t('placeholder.select_date')"
+          class="w-full"
+        />
+      </div>
+
+      <!-- 提醒 -->
       <div class="space-y-2">
         <Label label="設定提醒 (可選)" />
         <ElDatePicker
@@ -133,21 +146,25 @@ const { value: title } = useField<string>('title');
 const { value: description } = useField<string>('description');
 const { value: materials } = useField<Material[]>('materials');
 const { value: reminderDatetime } = useField<Date | undefined>('reminderDatetime');
+const { value: endDate } = useField<Date | undefined>('endDate');
 
 // 切換顯示更多設定
 const toggleMoreSettings = () => {
   // 如果要關閉更多設定區域，先清除內容
   if (showMoreSettings.value) {
-    // 清除材料列表
     materials.value = [];
-    // 清除提醒日期時間
     reminderDatetime.value = undefined;
-    // 清除驗證錯誤
+    endDate.value = undefined;
     materialErrors.value = {};
-  } else if (props.initialData?.materials?.length || props.initialData?.reminderDatetime) {
+  } else if (
+    props.initialData?.materials?.length ||
+    props.initialData?.reminderDatetime ||
+    props.initialData?.endDate
+  ) {
     // 如果是打開更多設定，且有初始數據，則恢復初始數據
     materials.value = props.initialData.materials || [];
     reminderDatetime.value = props.initialData.reminderDatetime || undefined;
+    endDate.value = props.initialData.endDate || undefined;
   }
 
   // 切換顯示狀態

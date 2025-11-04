@@ -120,6 +120,7 @@ const startEditing = () => {
     description: props.task.description,
     reminderDatetime: props.task.reminderDatetime,
     materials: props.task.materials,
+    endDate: props.task.endDate,
   });
   isEditing.value = true;
 };

@@ -27,20 +27,6 @@
           />
           <span v-if="unitError" class="mt-1 text-sm text-red-500">{{ unitError }}</span>
         </div>
-
-        <!-- Project Type Input -->
-        <div>
-          <BasicArrayInput
-            v-model="localProjectTypeItems"
-            :title="t('setting.projectType')"
-            :new-item-factory="() => ({ name: '' })"
-            :name-placeholder="t('placeholder.project.add_project_type')"
-            :add-button-text="t('common.add')"
-          />
-          <span v-if="projectTypeError" class="mt-1 text-sm text-red-500">{{
-            projectTypeError
-          }}</span>
-        </div>
       </div>
 
       <!-- Submit Button -->
@@ -50,7 +36,7 @@
           size="md"
           class="h-10 px-6 sm:w-auto"
           :loading="isSubmitting"
-          :disabled="isSubmitting || !construction.length || !unit.length || !projectType.length"
+          :disabled="isSubmitting || !construction.length || !unit.length"
           @click="onSubmit"
         >
           {{ t('common.save') }}
@@ -83,7 +69,6 @@ const { handleSubmit, isSubmitting, setValues } = useForm({
   initialValues: {
     construction: common.value?.construction || [],
     unit: common.value?.unit || [],
-    projectType: common.value?.projectType || [],
   },
 });
 
@@ -91,7 +76,6 @@ const { handleSubmit, isSubmitting, setValues } = useForm({
 const { value: construction, errorMessage: constructionError } =
   useField<ConstructionSelection[]>('construction');
 const { value: unit, errorMessage: unitError } = useField<string[]>('unit');
-const { value: projectType, errorMessage: projectTypeError } = useField<string[]>('projectType');
 
 // Local copies for array inputs
 interface ConstructionItem extends Item {
@@ -99,7 +83,6 @@ interface ConstructionItem extends Item {
 }
 const localConstructionItems = ref<ConstructionItem[]>([]);
 const localUnitItems = ref<Item[]>([]);
-const localProjectTypeItems = ref<Item[]>([]);
 
 // Factory function for new construction items
 const createNewConstructionItem = () => {
@@ -113,7 +96,6 @@ const syncToLocal = () => {
     id: item.id,
   }));
   localUnitItems.value = unit.value.map((name: string) => ({ name }));
-  localProjectTypeItems.value = projectType.value.map((name: string) => ({ name }));
 };
 
 // Sync from local state to form state
@@ -125,7 +107,6 @@ const syncToForm = () => {
       id: item.id,
     }));
   unit.value = localUnitItems.value.map((item: Item) => item.name).filter(Boolean);
-  projectType.value = localProjectTypeItems.value.map((item: Item) => item.name).filter(Boolean);
 };
 
 // Watch for external changes to common data and update form values
@@ -136,7 +117,6 @@ watch(
       setValues({
         construction: newCommon.construction || [],
         unit: newCommon.unit || [],
-        projectType: newCommon.projectType || [],
       });
       syncToLocal(); // Update local state when form state changes
     }
@@ -145,7 +125,7 @@ watch(
 );
 
 // Form submission handler
-const onSubmit = handleSubmit(async (values: CreateCommonSchema) => {
+const onSubmit = handleSubmit(async () => {
   syncToForm(); // Sync local changes to form state before submitting
   try {
     if (!common.value) {
@@ -158,7 +138,6 @@ const onSubmit = handleSubmit(async (values: CreateCommonSchema) => {
       data: {
         construction: construction.value,
         unit: unit.value,
-        projectType: projectType.value,
       },
     });
 

@@ -13,7 +13,6 @@ export const createCommonSchema = (t: TranslateFunction) =>
       .array(constructionSelectionSchema)
       .min(1, t('validation.construction_required')),
     unit: z.array(z.string()).min(1, t('validation.unit_required')),
-    projectType: z.array(z.string()).min(1, t('validation.project_type_required')),
   });
 
 export type CreateCommonSchema = z.infer<ReturnType<typeof createCommonSchema>>;

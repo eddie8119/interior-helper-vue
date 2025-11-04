@@ -71,6 +71,7 @@ import { useTaskConditionFilters } from '@/composables/useTaskConditionFilters';
 import { useTasks } from '@/composables/useTasks';
 import { provideTaskCardFilter } from '@/context/useTaskCardFilter';
 import { provideTaskContext } from '@/context/useTaskContext';
+import { useEditingStateStore } from '@/stores/editingState';
 import { filterTasksByConstruction, processTasksWithOrder } from '@/utils/todo/taskUtils';
 
 const props = defineProps<{
@@ -104,6 +105,8 @@ const onTaskUpdate = (newTasks: TaskResponse[]) => {
 
 // ==================== Composables ====================
 const { isMobile } = useResponsiveWidth();
+const editingStateStore = useEditingStateStore();
+
 // 任務操作
 const { deleteTask, addNewTask, updateTask } = useTaskOperations(localTasks, onTaskUpdate);
 
@@ -165,6 +168,8 @@ onBeforeUnmount(() => {
   if (localTasks.value.length) {
     taskApi.updateProjectTasksWithBeacon(localTasks.value, props.projectId);
   }
+  // 如有處於編輯中的元件，恢復為初始狀態
+  editingStateStore.stopEditing();
 });
 </script>
 

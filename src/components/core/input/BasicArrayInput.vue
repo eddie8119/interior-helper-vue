@@ -6,8 +6,8 @@
         <input
           v-model="item.name"
           type="text"
-          class="flex-1 rounded-md border border-gray-300 p-1 text-sm"
-          :placeholder="namePlaceholder"
+          class="background-color-difference text-color-difference flex-1 rounded-md p-1 text-sm"
+          :placeholder="t(namePlaceholder)"
         />
         <button class="text-red-500 hover:text-red-700" @click="removeItem(index)">
           <svg
@@ -53,6 +53,8 @@
 </template>
 
 <script setup lang="ts" generic="T extends Item">
+import { useI18n } from 'vue-i18n';
+
 import Label from '@/components/core/title/Label.vue';
 
 export interface Item {
@@ -80,6 +82,8 @@ const props = withDefaults(
 const emit = defineEmits<{
   (e: 'update:modelValue', value: T[]): void;
 }>();
+
+const { t } = useI18n();
 
 // Note: Avoid re-emitting on deep prop changes to prevent recursive updates.
 // Parent components will receive updates explicitly via addItem/removeItem,

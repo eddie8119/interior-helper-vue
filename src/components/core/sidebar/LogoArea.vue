@@ -6,7 +6,7 @@
         :alt="`logo-Icon`"
         class="icon-logo --desktop h-[38px] w-[33px]"
       />
-      <p class="text-sm font-semibold">DesignerHelper</p>
+      <p class="text-color-difference text-sm font-semibold">DesignerHelper</p>
     </div>
   </router-link>
 </template>

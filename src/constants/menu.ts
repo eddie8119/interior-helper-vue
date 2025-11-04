@@ -18,13 +18,13 @@ export const menu: Menu[] = [
       {
         label: 'to_do',
         name: 'to_do',
-        icon: 'ChartPieSlice',
+        icon: 'ClipboardText',
         route: '/todo/projects',
       },
       {
         label: 'quick_draft',
         name: 'quick_draft',
-        icon: 'ChartPieSlice',
+        icon: 'Paperclip',
         route: '/todo/quick_draft',
       },
     ],
@@ -35,13 +35,13 @@ export const menu: Menu[] = [
       {
         label: 'Set Common',
         name: 'set_common',
-        icon: 'ChartPieSlice',
+        icon: 'Palette',
         route: '/setting/common',
       },
       {
         label: 'Set Member',
         name: 'set-member',
-        icon: 'ChartPieSlice',
+        icon: 'Palette',
         route: '/setting/member',
       },
       {

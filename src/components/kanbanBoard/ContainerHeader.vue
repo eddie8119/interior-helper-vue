@@ -8,7 +8,7 @@
         @update:construction-name="updateConstructionName"
         @editing-change="(v) => (isEditingTitle = v)"
       />
-      <span>({{ tasksLength }})</span>
+      <span class="text-color-difference">({{ tasksLength }})</span>
     </div>
 
     <div v-if="!readOnly" class="flex items-center gap-1">

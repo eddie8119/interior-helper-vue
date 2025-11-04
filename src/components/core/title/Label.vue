@@ -1,5 +1,7 @@
 <template>
-  <label class="mb-2 font-medium text-gray-500" :class="props.className">{{ props.label }}</label>
+  <label class="text200-color-difference mb-2 font-medium" :class="props.className">{{
+    props.label
+  }}</label>
 </template>
 
 <script setup lang="ts">

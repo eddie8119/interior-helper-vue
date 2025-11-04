@@ -8,7 +8,7 @@
         class="whitespace-nowrap border-b-2 px-3 py-2 text-sm transition-colors md:px-4"
         :class="[
           tab.isActive
-            ? 'rounded-t-lg border-brand-primary font-medium'
+            ? 'text-color-difference rounded-t-lg border-brand-primary font-medium'
             : 'hover:border-brand-primary/30 border-transparent text-black-400 hover:text-brand-primary',
         ]"
       >

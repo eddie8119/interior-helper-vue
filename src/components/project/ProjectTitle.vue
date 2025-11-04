@@ -1,10 +1,10 @@
 <template>
   <div v-if="!isEditingTitle">
     <button
-      class="inline-flex items-center gap-2 rounded-md text-2xl font-bold transition-all duration-300 ease-in-out hover:bg-slate-200"
+      class="text-color-difference inline-flex items-center gap-2 rounded-md text-2xl font-bold transition-all duration-300 ease-in-out hover:bg-slate-200"
       @click="startEditing"
     >
-      <span>{{ projectTitle }} 工程案</span>
+      <span>{{ projectTitle }} {{ t('project.project') }}</span>
       <EditIcon />
     </button>
   </div>
@@ -14,8 +14,8 @@
       ref="titleInputRef"
       v-model="tempTitle"
       type="text"
-      class="block h-8 w-[230px] rounded-lg border border-gray-300 bg-gray-50 px-3 text-2xl leading-tight text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-      placeholder="工程案名稱"
+      class="background-color-difference text-color-difference block h-8 w-[230px] rounded-lg border border-gray-300 px-3 text-2xl leading-tight focus:border-blue-500 focus:ring-blue-500"
+      :placeholder="t('placeholder.project_name')"
       @focus="onInputFocus"
       @blur="isEditingTitle = false"
       @keyup.enter="saveTitle"
@@ -25,6 +25,8 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
 import EditIcon from '@/components/ui/EditIcon.vue';
 import { useEditableTitle } from '@/composables/useEditableTitle';
 
@@ -35,6 +37,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:project-title', value: string): void;
 }>();
+
+const { t } = useI18n();
 
 // 使用可編輯標題的共用邏輯
 const {

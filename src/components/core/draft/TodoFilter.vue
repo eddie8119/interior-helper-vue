@@ -1,13 +1,13 @@
 <template>
   <div class="mb-4 flex flex-wrap items-center justify-between">
-    <div class="flex space-x-1 rounded-lg bg-gray-100 p-1">
+    <div class="background-color-difference flex space-x-1 rounded-lg p-1">
       <button
         v-for="filter in TODO_FILTER"
         :key="filter.value"
         class="rounded-md px-3 py-1.5 text-sm font-medium transition-all duration-200"
         :class="[
           selected === filter.value
-            ? 'bg-white text-blue-600 shadow'
+            ? 'panel-color-difference text-blue-600 shadow'
             : 'text-gray-500 hover:bg-gray-200 hover:text-gray-700',
         ]"
         @click="$emit('change-filter', filter.value)"

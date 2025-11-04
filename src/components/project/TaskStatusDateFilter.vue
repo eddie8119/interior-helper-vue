@@ -31,7 +31,7 @@
         <div class="flex h-10 w-full items-center">
           <ElSlider
             v-model="daysRange"
-            class="w-full"
+            class="slider-bar w-full"
             range
             :min="0"
             :max="10"

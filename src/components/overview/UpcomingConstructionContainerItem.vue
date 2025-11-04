@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="construction-container rounded-lg border border-gray-200 p-3"
-    style="overflow: visible"
-  >
+  <div class="construction-container rounded-lg p-3" style="overflow: visible">
     <div class="mb-2 flex items-center justify-between">
       <Label :label="constructionName" />
       <div class="flex items-center gap-2">

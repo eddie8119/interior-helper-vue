@@ -1,6 +1,6 @@
 <template>
   <div
-    class="group mb-2 rounded-lg border border-gray-100 bg-white p-4 shadow-sm transition-all duration-200 hover:border-blue-100 hover:shadow-md"
+    class="background-color-difference group mb-2 rounded-lg p-4 shadow-sm transition-all duration-200 hover:border-blue-100 hover:shadow-md"
     :class="{ 'bg-blue-50': todoItem.completed }"
   >
     <label class="flex w-full cursor-pointer items-center">
@@ -22,14 +22,14 @@
         <CheckIcon />
       </div>
       <span
-        class="flex-1 text-gray-700 transition-all"
+        class="text-color-difference flex-1 transition-all"
         :class="{ 'text-gray-400 line-through': todoItem.completed }"
       >
         {{ todoItem.content }}
       </span>
 
       <TextButton
-        variant="ghost"
+        variant="primary"
         size="sm"
         class="h-[30px] w-full max-w-[120px] lg:w-auto"
         @click="showMoveToProjectDialog = true"

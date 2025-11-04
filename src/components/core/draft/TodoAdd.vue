@@ -4,7 +4,7 @@
       v-model="todoContent"
       type="text"
       :placeholder="t('placeholder.draft.todo')"
-      class="w-full rounded-lg border-2 border-gray-200 bg-gray-50 px-4 py-3 pr-12 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:border-blue-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-100"
+      class="background-color-difference text-color-difference w-full rounded-lg border-2 border-gray-200 px-4 py-3 pr-12 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
       @keyup.enter="addTodo"
     />
     <button

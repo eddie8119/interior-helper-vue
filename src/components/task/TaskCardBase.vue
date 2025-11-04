@@ -1,13 +1,13 @@
 <template>
   <div
     v-if="!isEditing"
-    class="task-card group cursor-pointer rounded-md bg-white p-1 shadow-sm duration-200"
+    class="task-card background-color-difference group cursor-pointer rounded-md bg-white p-1 shadow-sm duration-200"
     @dblclick="handleDblClick"
   >
     <div class="flex items-center justify-between">
       <div class="flex items-center">
         <DragHandle v-if="!readOnly" :size="4" handle-class="task-drag-handle" />
-        <H3Title :title="task.title" class="ml-2" />
+        <H2Title :title="task.title" class="ml-2" />
       </div>
       <div class="flex items-center gap-2">
         <router-link
@@ -37,7 +37,7 @@
     </div>
     <!-- 任務描述 -->
     <div class="task-details grid grid-cols-1 gap-5 p-2">
-      <p v-if="showDescription" class="text-lg">{{ task.description }}</p>
+      <p v-if="showDescription" class="text-color-difference text-lg">{{ task.description }}</p>
 
       <!-- 任務材料 -->
       <div v-if="showMaterials && task.materials && task.materials.length > 0">
@@ -73,7 +73,7 @@ import { useI18n } from 'vue-i18n';
 import type { TaskResponse } from '@/types/response';
 import type { TaskStatus } from '@/types/task';
 
-import H3Title from '@/components/core/title/H3Title.vue';
+import H2Title from '@/components/core/title/H2Title.vue';
 import Label from '@/components/core/title/Label.vue';
 import TaskForm from '@/components/kanbanBoard/TaskForm.vue';
 import DateIcon from '@/components/ui/DateIcon.vue';

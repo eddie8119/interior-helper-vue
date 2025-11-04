@@ -44,7 +44,7 @@
         <ElOption :value="newConstructionItem" class="flex items-center gap-2">
           <ElInput
             v-model="newConstructionItem"
-            :placeholder="t('placeholder.project.add_new_construction')"
+            :placeholder="t('placeholder.project.add_construction')"
             size="small"
             @keyup.enter="addConstructionData"
             @click.stop

@@ -6,7 +6,16 @@ export function useResponsiveWidth() {
 
   const updateIsMobile = () => {
     if (typeof window !== 'undefined') {
-      isMobile.value = window.innerWidth <= breakpoint;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const isPortraitMobile = width <= breakpoint;
+      // 使用媒體查詢判斷觸控裝置與橫向
+      const isTouch = window.matchMedia('(pointer: coarse)').matches;
+      const isLandscape = window.matchMedia('(orientation: landscape)').matches;
+      // 針對手機橫向：高度很小（例如 <= 480px）且為觸控裝置
+      const isLandscapeMobile = isTouch && isLandscape && height <= 480;
+
+      isMobile.value = isPortraitMobile || isLandscapeMobile;
     }
   };
 
@@ -14,12 +23,14 @@ export function useResponsiveWidth() {
     updateIsMobile();
     if (typeof window !== 'undefined') {
       window.addEventListener('resize', updateIsMobile);
+      window.addEventListener('orientationchange', updateIsMobile);
     }
   });
 
   onBeforeUnmount(() => {
     if (typeof window !== 'undefined') {
       window.removeEventListener('resize', updateIsMobile);
+      window.removeEventListener('orientationchange', updateIsMobile);
     }
   });
 

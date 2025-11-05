@@ -19,6 +19,15 @@
         class="grid grid-cols-1 gap-4 md:flex md:items-start"
         @drop="!readOnly && onConstructionContainerDrop($event)"
       >
+        <!-- 新增工程類型 -->
+        <AddNewConstruction
+          v-if="!readOnly"
+          id="new-container"
+          class="w-full shrink-0 md:w-[320px]"
+          :existing-constructions="localConstructionContainer"
+          @add-container="addNewConstruction"
+        />
+
         <!-- 工程容器 -->
         <Draggable
           v-for="(container, index) in localConstructionContainer"
@@ -37,15 +46,6 @@
             @task-drop="handleTaskDrop($event, container.id)"
           />
         </Draggable>
-
-        <!-- 新增工程類型 -->
-        <AddNewConstruction
-          v-if="!readOnly"
-          id="new-container"
-          class="w-full shrink-0 md:w-[320px]"
-          :existing-constructions="localConstructionContainer"
-          @add-container="addNewConstruction"
-        />
       </Container>
     </div>
   </section>

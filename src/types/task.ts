@@ -18,3 +18,11 @@ export enum TaskTimeReminderStatus {
   REMINDING = 'reminding',
   NONE = 'none',
 }
+
+export enum TaskTimeCondition {
+  ALL = 'all',
+  OVERDUE = 'overdue',
+  TODAY = 'today',
+  THIS_WEEK = 'this-week',
+  THIS_MONTH = 'this-month',
+}

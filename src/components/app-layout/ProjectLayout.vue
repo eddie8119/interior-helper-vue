@@ -23,7 +23,7 @@ import { useRoute } from 'vue-router';
 
 import TabProject from '@/components/core/tab/TabProject.vue';
 import H1Title from '@/components/core/title/H1Title.vue';
-import { toDoTabList } from '@/constants/tab';
+import { TO_DO_TAB_LIST } from '@/constants/tab';
 
 const props = defineProps<{
   subject: string;
@@ -33,7 +33,7 @@ const props = defineProps<{
 const route = useRoute();
 
 const tabsList = computed(() => {
-  const baseTabs = [...toDoTabList];
+  const baseTabs = [...TO_DO_TAB_LIST];
 
   if (route.params.id) {
     const devicesTabIndex = baseTabs.findIndex((tab) => tab.name === 'projects');

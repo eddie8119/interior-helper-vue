@@ -24,7 +24,7 @@ import type { Tab as TabType } from '@/types/layout';
 
 import Tab from '@/components/core/tab/Tab.vue';
 import H1Title from '@/components/core/title/H1Title.vue';
-import { settingCommonTabList, toDoTabList, userTabList } from '@/constants/tab';
+import { SETTING_COMMON_TAB_LIST, TO_DO_TAB_LIST, USER_TAB_LIST } from '@/constants/tab';
 
 const props = defineProps<{
   subject: string;
@@ -33,9 +33,9 @@ const props = defineProps<{
 
 // switch 語句在未來擴展時會變得很臃腫，可以改用一個物件映射來處理。
 const tabListMap: Record<string, TabType[]> = {
-  user: userTabList,
-  toDo: toDoTabList,
-  settingCommon: settingCommonTabList,
+  user: USER_TAB_LIST,
+  toDo: TO_DO_TAB_LIST,
+  settingCommon: SETTING_COMMON_TAB_LIST,
 };
 
 const tabsList = computed(() => tabListMap[props.subject] ?? []);

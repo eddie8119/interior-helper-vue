@@ -1,6 +1,6 @@
 import type { Menu } from '@/types/layout';
 
-export const menu: Menu[] = [
+export const MENU: Menu[] = [
   {
     group: 'nav.group.home',
     items: [
@@ -52,4 +52,4 @@ export const menu: Menu[] = [
       },
     ],
   },
-];
+] as const;

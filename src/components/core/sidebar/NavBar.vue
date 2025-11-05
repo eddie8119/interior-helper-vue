@@ -33,7 +33,7 @@
 import { computed, inject, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { menu } from '@/constants/menu';
+import { MENU } from '@/constants/menu';
 import { type Menu, NavVariant } from '@/types/layout';
 import { getIconUrl } from '@/utils/assetUrl';
 
@@ -49,7 +49,7 @@ const { t } = useI18n();
 const isDarkMode = inject('isDarkMode') as Ref<boolean>;
 
 const menuList = computed<Menu[]>(() =>
-  menu.map((node) => ({
+  MENU.map((node) => ({
     ...node,
     group: t(node.group),
     items: node.items.map((item) => ({

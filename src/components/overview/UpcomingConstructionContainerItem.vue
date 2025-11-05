@@ -6,21 +6,50 @@
         <span class="text-xs text-gray-500">{{ totalTasks }}</span>
         <button
           type="button"
-          class="rounded-md bg-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-300 md:hidden"
-          @click="isExpanded = !isExpanded"
+          class="hidden rounded-md bg-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-300 md:block"
+          @click="toggleAllTask()"
         >
-          {{ isExpanded ? t('button.hide') : t('button.show_more') }}
+          {{ allTaskCollapsed ? t('button.fold.expand_all') : t('button.fold.collapse_all') }}
+          {{ t('label.task.task') }}
         </button>
+
+        <!--  手機時避免過長 預設直接關閉 -->
+        <div class="--mobile md:hidden">
+          <button
+            type="button"
+            class="rounded-md bg-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-300"
+            @click="isExpanded = !isExpanded"
+          >
+            {{ isExpanded ? t('button.hide') : t('button.show_more') }}
+          </button>
+        </div>
       </div>
     </div>
     <div class="space-y-4" :class="{ 'hidden md:block': !isExpanded }">
       <!-- Grouped by project -->
-      <div v-for="group in groupedByProject" :key="group.projectId">
+      <div
+        v-for="(group, index) in groupedByProject"
+        :key="group.projectId"
+        :class="{ 'mt-3 border-t border-gray-200 pt-3': index !== 0 }"
+      >
         <div class="mb-2 flex items-center justify-between">
-          <span class="text-sm font-semibold text-gray-600">-- {{ group.projectTitle }} --</span>
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-semibold text-gray-600">-- {{ group.projectTitle }} --</span>
+            <button
+              type="button"
+              class="rounded-md bg-gray-100 px-2 py-0.5 text-[11px] text-gray-600 hover:bg-gray-200"
+              @click="toggleTaskGroup(group.projectId)"
+            >
+              {{
+                isGroupTaskVisible(group.projectId)
+                  ? t('button.fold.collapse')
+                  : t('button.fold.expand')
+              }}{{ t('label.task.task') }}
+            </button>
+          </div>
           <span class="text-xs text-gray-400">{{ group.tasks.length }}</span>
         </div>
-        <div class="space-y-2">
+        <div v-if="isGroupTaskVisible(group.projectId)" class="space-y-2">
           <div v-for="t in group.tasks" :key="t.id">
             <TaskCardBase :task="t" :read-only="true" :show-router="true" />
           </div>
@@ -60,11 +89,15 @@ const displayTasks = computed<TaskResponse[]>(() => props.tasks ?? []);
 const { t } = useI18n();
 
 const isExpanded = ref(false);
+const allTaskCollapsed = ref(false);
+const collapsedGroups = ref<Record<string, boolean>>({});
+const expandedGroupsWhenAllTaskCollapsed = ref<Record<string, boolean>>({});
 
 const totalTasks = computed<number>(() => displayTasks.value.length);
 
 type ProjectGroup = { projectId: string; projectTitle: string; tasks: TaskResponse[] };
 
+// 分群
 const groupedByProject = computed<ProjectGroup[]>(() => {
   const byId = new Map<string, ProjectGroup>();
   const titleMap = new Map((props.projectTitleList ?? []).map((p) => [p.id, p.title]));
@@ -82,4 +115,25 @@ const groupedByProject = computed<ProjectGroup[]>(() => {
 
   return Array.from(byId.values());
 });
+
+// 摺疊
+const toggleAllTask = (): void => {
+  allTaskCollapsed.value = !allTaskCollapsed.value;
+};
+
+const toggleTaskGroup = (projectId: string): void => {
+  if (allTaskCollapsed.value) {
+    expandedGroupsWhenAllTaskCollapsed.value[projectId] =
+      !expandedGroupsWhenAllTaskCollapsed.value[projectId];
+  } else {
+    collapsedGroups.value[projectId] = !collapsedGroups.value[projectId];
+  }
+};
+
+const isGroupTaskVisible = (projectId: string): boolean => {
+  if (allTaskCollapsed.value) {
+    return !!expandedGroupsWhenAllTaskCollapsed.value[projectId];
+  }
+  return !collapsedGroups.value[projectId];
+};
 </script>

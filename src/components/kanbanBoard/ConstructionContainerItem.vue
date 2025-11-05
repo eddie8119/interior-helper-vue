@@ -38,8 +38,8 @@ import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { TaskFilterStatus } from '@/constants/selection';
-import type { TaskResponse } from '@/types/response';
 import type { EditingState } from '@/stores/editingState';
+import type { TaskResponse } from '@/types/response';
 
 import ContainerBody from '@/components/kanbanBoard/ContainerBody.vue';
 import ContainerHeader from '@/components/kanbanBoard/ContainerHeader.vue';

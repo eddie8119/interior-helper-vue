@@ -30,7 +30,13 @@
     "try_again": "再試一次",
     "hide": "隱藏",
     "show_more": "顯示更多",
-    "leave_for": "前往"
+    "leave_for": "前往",
+    "fold": {
+      "expand": "展開",
+      "collapse": "摺疊",
+      "expand_all": "展開全部",
+      "collapse_all": "摺疊全部"
+    }
   },
   "column": {
     "edit": "編輯",
@@ -149,6 +155,7 @@
       "construction": "工程"
     },
     "task": {
+      "task": "任務",
       "task_display": "任務顯示內容",
       "due_date_range": "篩選到期天數區間",
       "status": "全案狀態篩選"

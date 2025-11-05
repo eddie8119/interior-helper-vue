@@ -30,7 +30,13 @@
     "try_again": "Try Again",
     "hide": "Hide",
     "show_more": "Show More",
-    "leave_for": "Leave For"
+    "leave_for": "Leave For",
+    "fold": {
+      "expand": "Expand",
+      "collapse": "Collapse",
+      "expand_all": "Expand All",
+      "collapse_all": "Collapse All"
+    }
   },
   "column": {
     "edit": "Edit",
@@ -149,6 +155,7 @@
       "construction": "Construction"
     },
     "task": {
+      "task": "Task",
       "task_display": "Task Display",
       "due_date_range": "Filter by expiration days range",
       "status": "All Tasks Status"

@@ -51,6 +51,7 @@
         "construction": "Construction"
       },
       "task": {
+        "task": "Task",
         "task_display": "Task Display",
         "due_date_range": "Filter by expiration days range",
         "status": "All Tasks Status"
@@ -112,6 +113,7 @@
         "construction": "工程"
       },
       "task": {
+        "task": "任務",
         "task_display": "任務顯示內容",
         "due_date_range": "篩選到期天數區間",
         "status": "全案狀態篩選"

@@ -31,7 +31,13 @@
       "try_again": "Try Again",
       "hide": "Hide",
       "show_more": "Show More",
-      "leave_for": "Leave For"
+      "leave_for": "Leave For",
+      "fold": {
+        "expand": "Expand",
+        "collapse": "Collapse",
+        "expand_all": "Expand All",
+        "collapse_all": "Collapse All"
+      }
     }
   },
   "zh-TW": {
@@ -66,7 +72,13 @@
       "try_again": "再試一次",
       "hide": "隱藏",
       "show_more": "顯示更多",
-      "leave_for": "前往"
+      "leave_for": "前往",
+      "fold": {
+        "expand": "展開",
+        "collapse": "摺疊",
+        "expand_all": "展開全部",
+        "collapse_all": "摺疊全部"
+      }
     }
   },
   "ja": {

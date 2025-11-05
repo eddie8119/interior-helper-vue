@@ -2,12 +2,12 @@
   <div
     v-if="!isEditing"
     class="task-card background-color-difference group relative cursor-pointer rounded-md p-1 shadow-sm duration-200"
-    :class="reminderClasses"
+    :class="reminderLineClasses"
     @dblclick="handleDblClick"
   >
     <!-- 提醒訊息 -->
     <div v-if="reminderStatus !== 'none'" class="absolute bottom-[6px] right-[6px]">
-      <StatusLabel :show-index="reminderStatus" />
+      <StatusLabel :show-index="reminderStatus" :class-label="reminderAreaClasses" />
     </div>
     <div class="flex items-center justify-between">
       <div class="flex items-center">
@@ -109,7 +109,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const { showDescription, showMaterials } = useTaskCardFilter();
-const { reminderStatus, reminderClasses } = useTaskReminder(props.task);
+const { reminderStatus, reminderLineClasses, reminderAreaClasses } = useTaskReminder(props.task);
 
 const isEditing = ref(false);
 const { values, setValues } = useForm<Partial<TaskResponse>>();

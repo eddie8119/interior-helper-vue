@@ -6,7 +6,7 @@
         :key="construction.id"
         class="flex-shrink-0"
       >
-        <UpcomingConstructionContainerItem
+        <OverviewConstructionContainerItem
           :construction-id="construction.id"
           :construction-name="construction.name"
           :days-range="[0, 10]"
@@ -23,7 +23,7 @@
 import type { TaskResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
 
-import UpcomingConstructionContainerItem from '@/components/overview/UpcomingConstructionContainerItem.vue';
+import OverviewConstructionContainerItem from '@/components/overview/OverviewConstructionContainerItem.vue';
 
 const { filteredConstructionList, filteredTasks, projectTitleList } = defineProps<{
   filteredConstructionList: ConstructionSelection[];

@@ -10,6 +10,12 @@ export const MENU: Menu[] = [
         icon: 'Home',
         route: '/overview',
       },
+      {
+        label: 'schedule',
+        name: 'schedule',
+        icon: 'Calendar',
+        route: '/schedule',
+      },
     ],
   },
   {

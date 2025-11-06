@@ -73,6 +73,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'overview',
         component: () => import('../pages/protected/overview/index.vue'),
       },
+      {
+        name: 'schedule',
+        path: 'schedule',
+        component: () => import('../pages/protected/schedule/index.vue'),
+      },
     ],
   },
   {

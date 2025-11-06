@@ -52,7 +52,7 @@ const props = withDefaults(defineProps<Props>(), {
   showClose: true,
 });
 
-const emit = defineEmits<{
+defineEmits<{
   (e: 'update:modelValue', v: boolean): void;
   (e: 'close'): void;
 }>();

@@ -59,7 +59,7 @@ import type { ConstructionSelection } from '@/types/selection';
 import TextButton from '@/components/core/button/TextButton.vue';
 import BasicArrayInput from '@/components/core/input/BasicArrayInput.vue';
 import { useCommon } from '@/composables/useCommon';
-import { createCommonSchema, type CreateCommonSchema } from '@/utils/schemas/createCommonSchema';
+import { createCommonSchema } from '@/utils/schemas/createCommonSchema';
 
 const { t } = useI18n();
 const { common, updateCommon } = useCommon();

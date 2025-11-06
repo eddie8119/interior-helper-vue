@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/vue-query';
+import { useQuery } from '@tanstack/vue-query';
 import { type Ref, ref } from 'vue';
 
 import type { TaskResponse } from '@/types/response';

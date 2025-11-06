@@ -15,6 +15,8 @@ export function useProjectSaving(
 ) {
   // 處理窗口關閉事件
   const handleBeforeUnload = async (event: BeforeUnloadEvent): Promise<void> => {
+    event.preventDefault();
+
     if (hasProjectChanges.value && localProject.value) {
       try {
         const url = `/api/projects/${projectId}`;

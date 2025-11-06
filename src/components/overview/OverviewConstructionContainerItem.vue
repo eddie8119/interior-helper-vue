@@ -50,8 +50,8 @@
           <span class="text-xs text-gray-400">{{ group.tasks.length }}</span>
         </div>
         <div v-if="isGroupTaskVisible(group.projectId)" class="space-y-2">
-          <div v-for="t in group.tasks" :key="t.id">
-            <TaskCardBase :task="t" :read-only="true" :show-router="true" />
+          <div v-for="task in group.tasks" :key="task.id">
+            <TaskCardBase :task="task" :read-only="true" :show-router="true" />
           </div>
         </div>
       </div>

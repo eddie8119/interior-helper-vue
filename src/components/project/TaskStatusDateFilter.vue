@@ -118,7 +118,7 @@ const daysMarks: Record<number, string> = {
 // Display mode filter - consume from parent context
 const { displayMode: taskCardDisplayMode, updateVisibility } = useTaskCardFilter();
 
-const handleStatusChange = (status: any) => {
+const handleStatusChange = (status: TaskFilterStatus) => {
   selectedStatus.value = status;
   emit('update:selectedStatus', status);
 };

@@ -2,7 +2,7 @@
   <div class="space-y-4">
     <!-- Project Filters -->
     <div>
-      <Label :label="t('label.project.project') + ':'" />
+      <Label :label="t('label.project.project') + t('label.advanced_filter.filter') + ':'" />
       <div class="filter-group">
         <button
           v-for="p in projectTitleList"
@@ -17,7 +17,7 @@
     </div>
     <!-- Construction Filters -->
     <div>
-      <Label :label="t('label.construction') + ':'" />
+      <Label :label="t('label.construction') + t('label.advanced_filter.filter') + ':'" />
       <div class="filter-group">
         <button
           v-for="c in constructionList"
@@ -84,7 +84,7 @@ const { t } = useI18n();
 
 <style scoped>
 .filter-group {
-  @apply flex flex-wrap gap-2;
+  @apply mt-1 flex flex-wrap gap-2;
 }
 
 .advanced-filter {

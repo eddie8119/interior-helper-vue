@@ -6,7 +6,7 @@
     </div>
     <!-- Content Section -->
     <section class="flex-1 overflow-y-auto p-4">
-      <OverviewBoard />
+      <OverviewSection />
     </section>
   </div>
 </template>
@@ -15,7 +15,7 @@
 import { useI18n } from 'vue-i18n';
 
 import H1Title from '@/components/core/title/H1Title.vue';
-import OverviewBoard from '@/components/overview/OverviewBoard.vue';
+import OverviewSection from '@/components/overview/OverviewSection.vue';
 
 const { t } = useI18n();
 </script>

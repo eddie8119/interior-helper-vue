@@ -65,25 +65,37 @@ const fetchedTasksTimeCondition = computed(() => {
       });
     case TaskTimeCondition.TODAY:
       return fetchedAllTasks.value.filter((task: TaskResponse) => {
-        if (!task.endDate) return false;
-        const endDate = new Date(task.endDate);
-        return endDate >= today && endDate <= endOfToday;
+        const endDate = task.endDate ? new Date(task.endDate) : null;
+        const reminderDate = task.reminderDatetime ? new Date(task.reminderDatetime) : null;
+        const isEndToday = !!endDate && endDate >= today && endDate <= endOfToday;
+        const isReminderToday =
+          !!reminderDate && reminderDate >= today && reminderDate <= endOfToday;
+        return isEndToday || isReminderToday;
       });
     case TaskTimeCondition.THIS_WEEK: {
+      const day = today.getDay();
+      const daysUntilSunday = (7 - day) % 7;
       const endOfWeek = new Date(today);
-      endOfWeek.setDate(today.getDate() + 7);
+      endOfWeek.setDate(today.getDate() + daysUntilSunday);
+      endOfWeek.setHours(23, 59, 59, 999);
       return fetchedAllTasks.value.filter((task: TaskResponse) => {
-        if (!task.endDate) return false;
-        const endDate = new Date(task.endDate);
-        return endDate >= today && endDate < endOfWeek;
+        const endDate = task.endDate ? new Date(task.endDate) : null;
+        const reminderDate = task.reminderDatetime ? new Date(task.reminderDatetime) : null;
+        const isEndInRange = !!endDate && endDate >= today && endDate <= endOfWeek;
+        const isReminderInRange =
+          !!reminderDate && reminderDate >= today && reminderDate <= endOfWeek;
+        return isEndInRange || isReminderInRange;
       });
     }
     case TaskTimeCondition.THIS_MONTH: {
       const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59, 999);
       return fetchedAllTasks.value.filter((task: TaskResponse) => {
-        if (!task.endDate) return false;
-        const endDate = new Date(task.endDate);
-        return endDate >= today && endDate <= endOfMonth;
+        const endDate = task.endDate ? new Date(task.endDate) : null;
+        const reminderDate = task.reminderDatetime ? new Date(task.reminderDatetime) : null;
+        const isEndInRange = !!endDate && endDate >= today && endDate <= endOfMonth;
+        const isReminderInRange =
+          !!reminderDate && reminderDate >= today && reminderDate <= endOfMonth;
+        return isEndInRange || isReminderInRange;
       });
     }
     default:

@@ -77,6 +77,27 @@
       "day": "{count} day "
     }
   },
+  "date": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December",
+    "sunday_short": "Su",
+    "monday_short": "Mo",
+    "tuesday_short": "Tu",
+    "wednesday_short": "We",
+    "thursday_short": "Th",
+    "friday_short": "Fr",
+    "saturday_short": "Sa"
+  },
   "dialog": {
     "delete_confirm": "Do you confirm the deletion",
     "share_project_link": "Share Project Link",
@@ -119,6 +140,7 @@
     "day": "Day",
     "start_time": "Start Time",
     "end_time": "End Time",
+    "filter": "Filter",
     "quick_select": "Direct input or rapid repeated clicking",
     "status": {
       "status": "Status",
@@ -128,12 +150,11 @@
     "time_status": {
       "all": "All",
       "overdue": "Overdue Not Completed",
-      "today": "Today Todo",
-      "this_week": "This Week Todo",
-      "this_month": "This Month Todo"
+      "today": "Today Left",
+      "this_week": "This Week Left",
+      "this_month": "This Month Left"
     },
     "advanced_filter": {
-      "filter": "Filter",
       "hide": "Hide Advanced Filter",
       "show": "Show Advanced Filter"
     },
@@ -170,7 +191,12 @@
     },
     "setting": {
       "existing_list": "Existing List"
-    }
+    },
+    "actions": {
+      "enable": "Enable",
+      "disable": "Disable"
+    },
+    "date_break": "Date Break"
   },
   "link": {
     "back_to_home": "Back to Home",
@@ -201,6 +227,8 @@
       "no_invitations": "No pending invitations",
       "share_disabled_hint": "Share disabled"
     },
+    "no_tasks": "No tasks available",
+    "no_tasks_for_day": "No tasks scheduled for this day",
     "invitation": {
       "sent": "Invitation sent successfully",
       "accepted": "Invitation accepted",
@@ -249,7 +277,8 @@
     },
     "menu": {
       "dashboard": "Dashboard",
-      "overview": "Overview",
+      "overview": "Quickly View",
+      "schedule": "Schedule",
       "set-member": "Set Member",
       "set_common": "Set Common",
       "to_do": "To Do",
@@ -391,7 +420,7 @@
     "account_activation": "Account Activation",
     "forgot_password": "Forgot Password",
     "reset_password": "Reset Password",
-    "overview": "Overview",
+    "overview_remaining": "Quickly View Remaining",
     "schedule": "Schedule",
     "reminder_upcoming_task_in_10_days": "Upcoming Tasks Within 10 Days",
     "todo": "To Do",

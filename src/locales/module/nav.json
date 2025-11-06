@@ -9,7 +9,8 @@
       },
       "menu": {
         "dashboard": "Dashboard",
-        "overview": "Overview",
+        "overview": "Quickly View",
+        "schedule": "Schedule",
         "set-member": "Set Member",
         "set_common": "Set Common",
         "to_do": "To Do",
@@ -27,10 +28,11 @@
       },
       "menu": {
         "dashboard": "儀表板",
-        "overview": "概況",
+        "overview": "快速總覽剩餘任務",
+        "schedule": "行事曆",
         "set-member": "成員設定",
         "set_common": "通用設定",
-        "to_do": "待辦任務",
+        "to_do": "專案任務管理",
         "quick_draft": "工地待辦速記"
       }
     }

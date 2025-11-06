@@ -15,6 +15,7 @@
       "day": "Day",
       "start_time": "Start Time",
       "end_time": "End Time",
+      "filter": "Filter",
       "quick_select": "Direct input or rapid repeated clicking",
       "status": {
         "status": "Status",
@@ -24,12 +25,11 @@
       "time_status": {
         "all": "All",
         "overdue": "Overdue Not Completed",
-        "today": "Today Todo",
-        "this_week": "This Week Todo",
-        "this_month": "This Month Todo"
+        "today": "Today Left",
+        "this_week": "This Week Left",
+        "this_month": "This Month Left"
       },
       "advanced_filter": {
-        "filter": "Filter",
         "hide": "Hide Advanced Filter",
         "show": "Show Advanced Filter"
       },
@@ -66,7 +66,12 @@
       },
       "setting": {
         "existing_list": "Existing List"
-      }
+      },
+      "actions": {
+        "enable": "Enable",
+        "disable": "Disable"
+      },
+      "date_break": "Date Break"
     }
   },
   "zh-TW": {
@@ -85,6 +90,7 @@
       "day": "天",
       "start_time": "開始時間",
       "end_time": "結束時間",
+      "filter": "篩選",
       "quick_select": "直接輸入或是快速複選",
       "status": {
         "status": "狀態",
@@ -94,12 +100,11 @@
       "time_status": {
         "all": "全部",
         "overdue": "過期未完成",
-        "today": "今天待辦",
-        "this_week": "本周待辦",
-        "this_month": "本月待辦"
+        "today": "今天剩餘",
+        "this_week": "本周剩餘",
+        "this_month": "本月剩餘"
       },
       "advanced_filter": {
-        "filter": "篩選",
         "hide": "隱藏進階篩選",
         "show": "進階篩選"
       },
@@ -136,8 +141,17 @@
       },
       "setting": {
         "existing_list": "現有列表"
-      }
+      },
+      "actions": {
+        "enable": "啟用",
+        "disable": "停用"
+      },
+      "date_break": "日期中斷"
     }
   },
-  "ja": {}
+  "ja": {
+    "label": {
+      "date_break": "日付の中断"
+    }
+  }
 }

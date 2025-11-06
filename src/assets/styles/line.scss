@@ -11,3 +11,13 @@
   height: 1px;
   background-color: var(--tw-color-gray-200, #e5e7eb);
 }
+
+/* Break Line Styles - Vertical */
+.break-line-vertical {
+  @apply my-4;
+  width: 10px;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, #d1d5db, transparent);
+  margin-left: 30px;
+  margin-right: auto;
+}

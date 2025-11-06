@@ -131,11 +131,19 @@ const { getConstructionContainerPayload, onConstructionContainerDrop } = useDrag
 const { handleTaskDrop } = useTaskDragAndDrop(localTasks, onTaskUpdate);
 
 // ==================== 數據初始化與同步 ====================
+// 避免資料中含有 null 或不合法項目，影響模板取用 container.id
+const sanitizeConstructions = (
+  items: Array<ConstructionSelection | null | undefined>
+): ConstructionSelection[] =>
+  items.filter(
+    (c): c is ConstructionSelection => !!c && typeof c.id === 'string' && typeof c.name === 'string'
+  );
+
 // 初始化工程容器
 watch(
   () => props.constructionContainer,
   (newContainers: ConstructionSelection[] | null) => {
-    localConstructionContainer.value = [...(newContainers || [])];
+    localConstructionContainer.value = sanitizeConstructions(newContainers || []);
   },
   { immediate: true }
 );

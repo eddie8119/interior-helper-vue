@@ -6,7 +6,7 @@
     </div>
     <!-- Content Section -->
     <section class="flex-1 overflow-y-auto p-4">
-      <!-- <ScheduleBoard /> -->
+      <ScheduleSection />
     </section>
   </div>
 </template>
@@ -15,7 +15,7 @@
 import { useI18n } from 'vue-i18n';
 
 import H1Title from '@/components/core/title/H1Title.vue';
-// import ScheduleBoard from '@/components/schedule/ScheduleBoard.vue';
+import ScheduleSection from '@/components/schedule/ScheduleSection.vue';
 
 const { t } = useI18n();
 </script>

@@ -23,6 +23,6 @@ export enum TaskTimeCondition {
   ALL = 'all',
   OVERDUE = 'overdue',
   TODAY = 'today',
-  THIS_WEEK = 'this-week',
-  THIS_MONTH = 'this-month',
+  THIS_WEEK = 'this_week',
+  THIS_MONTH = 'this_month',
 }

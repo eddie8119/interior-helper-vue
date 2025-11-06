@@ -1,7 +1,7 @@
 <template>
   <Loading v-if="isLoadingAllTasks || isLoadingOverviewProjects" />
   <div v-else>
-    <OverviewTaskFilterBar
+    <OverviewTaskFilterArea
       :construction-list="constructionList"
       :project-title-list="projectTitleList"
       :selected-construction-ids="selectedConstructionIds"
@@ -9,7 +9,7 @@
       @toggle-construction="toggleConstruction"
       @toggle-project="toggleProject"
     />
-    <OverviewTab v-model:task-time-condition="taskTimeCondition" />
+    <OverviewTab v-model:task-time-condition="taskTimeCondition" class="mt-6" />
     <OverviewContent
       :filtered-construction-list="filteredConstructionList"
       :filtered-tasks="filteredTasks"
@@ -19,19 +19,21 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue';
+
+import type { TaskResponse } from '@/types/response';
+
 import Loading from '@/components/core/loading/Loading.vue';
 import OverviewContent from '@/components/overview/OverviewContent.vue';
 import OverviewTab from '@/components/overview/OverviewTab.vue';
-import OverviewTaskFilterBar from '@/components/overview/OverviewTaskFilterBar.vue';
+import OverviewTaskFilterArea from '@/components/overview/OverviewTaskFilterArea.vue';
 import { useOverviewSources } from '@/composables/useOverviewSources';
 import { useTasks } from '@/composables/useTasks';
 import { useUpcomingFilters } from '@/composables/useUpcomingFilters';
 import { provideTaskCardFilter } from '@/context/useTaskCardFilter';
-import { computed, ref } from 'vue';
 import { TaskTimeCondition } from '@/types/task';
-import type { TaskResponse } from '@/types/response';
 
-const taskTimeCondition = ref<TaskTimeCondition>(TaskTimeCondition.ALL);
+const taskTimeCondition = ref<TaskTimeCondition>(TaskTimeCondition.TODAY);
 
 const { fetchedAllTasks, isLoadingAllTasks } = useTasks();
 const { fetchedOverviewProjects, isLoadingOverviewProjects, constructionList, projectTitleList } =

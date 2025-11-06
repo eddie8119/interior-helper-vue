@@ -1,20 +1,21 @@
 <template>
-  <div class="tabs">
-    <button
+  <div class="flex gap-2">
+    <TextButton
       v-for="tab in OVERVIEW_TASK_CONDITION_TAB_LIST"
       :key="tab.name"
       class="tab-button"
       :class="{ 'is-active': taskTimeCondition === tab.name }"
       @click="handleClick(tab.name)"
     >
-      {{ t(`label.time_status.${tab.name}`) }}
-    </button>
+      {{ t(`label.time_status.${tab.name}`) }}{{ t('label.task.task') }}
+    </TextButton>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 
+import TextButton from '@/components/core/button/TextButton.vue';
 import { OVERVIEW_TASK_CONDITION_TAB_LIST } from '@/constants/tab';
 import { TaskTimeCondition } from '@/types/task';
 
@@ -32,23 +33,12 @@ const handleClick = (value: string) => {
 </script>
 
 <style scoped>
-.tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
 .tab-button {
-  padding: 8px 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f0f0f0;
+  @apply bg-primary-panel p-2 dark:bg-primaryDark-panel;
   cursor: pointer;
 }
 
 .tab-button.is-active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
+  @apply bg-brand-tertiary;
 }
 </style>

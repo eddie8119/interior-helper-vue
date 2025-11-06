@@ -30,7 +30,7 @@
       <div
         v-for="(group, index) in groupedByProject"
         :key="group.projectId"
-        :class="{ 'mt-3 border-t border-gray-200 pt-3': index !== 0 }"
+        :class="{ 'border-divider-color-difference border-t pt-3': index !== 0 }"
       >
         <div class="mb-2 flex items-center justify-between">
           <div class="flex items-center gap-2">

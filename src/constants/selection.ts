@@ -15,7 +15,7 @@ export const PROJECT_TYPES: SelectorOption[] = [
   { value: 'industrial' },
   { value: 'renovation' },
   { value: 'showroom' },
-] as const;
+];
 
 export type ProjectType = (typeof PROJECT_TYPES)[number]['value'];
 
@@ -101,7 +101,7 @@ const STATUS_FILTER_OPTIONS_BASE = [
   { value: 'todo' },
   { value: 'inProgress' },
   { value: 'done' },
-] as const;
+];
 
 const [STATUS_FILTER_ALL, STATUS_FILTER_TODO, STATUS_FILTER_IN_PROGRESS] =
   STATUS_FILTER_OPTIONS_BASE;
@@ -120,7 +120,7 @@ export const TASK_DISPLAY_OPTIONS: SelectorOption[] = [
   { value: 'all' },
   { value: 'content' },
   { value: 'materials' },
-] as const;
+];
 
 export type TaskCardDisplayMode = (typeof TASK_DISPLAY_OPTIONS)[number]['value'];
 
@@ -128,10 +128,10 @@ export const TODO_FILTER: SelectorOption[] = [
   { value: 'all' },
   { value: 'done' },
   { value: 'todo' },
-] as const;
+];
 
 export const COLLABORATOR_ROLE_OPTIONS: SelectorOption[] = [
   { value: 'viewer' },
   { value: 'editor' },
   { value: 'manager' },
-] as const;
+];

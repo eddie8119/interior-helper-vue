@@ -52,4 +52,4 @@ export const MENU: Menu[] = [
       },
     ],
   },
-] as const;
+];

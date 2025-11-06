@@ -47,6 +47,10 @@
   @apply border-primary-border dark:border-primaryDark-border;
 }
 
+.border-divider-color-difference {
+  @apply border-black-300 dark:border-black-100;
+}
+
 .border-brand-color-difference {
   @apply border-primary-chart dark:border-primaryDark-chart;
 }

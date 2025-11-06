@@ -7,12 +7,14 @@
       :class="{ 'is-active': taskTimeCondition === tab.name }"
       @click="handleClick(tab.name)"
     >
-      {{ tab.label }}
+      {{ t(`label.time_status.${tab.name}`) }}
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
 import { OVERVIEW_TASK_CONDITION_TAB_LIST } from '@/constants/tab';
 import { TaskTimeCondition } from '@/types/task';
 
@@ -21,6 +23,8 @@ defineProps<{
 }>();
 
 const emits = defineEmits<{ (e: 'update:taskTimeCondition', value: TaskTimeCondition): void }>();
+
+const { t } = useI18n();
 
 const handleClick = (value: string) => {
   emits('update:taskTimeCondition', value as TaskTimeCondition);

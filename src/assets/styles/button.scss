@@ -16,9 +16,13 @@
   }
 }
 
-// normal-button
+//
+.basic-button {
+  @apply rounded-full px-4 py-2 leading-none text-primary-text transition-colors duration-200;
+}
+
 .normal-button {
-  @apply rounded-full bg-brand-primary px-4 py-2 leading-none text-primary-text transition-colors duration-200;
+  @apply basic-button bg-brand-primary;
 
   &:hover,
   &:focus {

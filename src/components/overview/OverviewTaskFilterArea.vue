@@ -2,7 +2,7 @@
   <div class="space-y-4">
     <!-- Project Filters -->
     <div>
-      <Label :label="t('label.project.project') + t('label.advanced_filter.filter') + ':'" />
+      <Label :label="t('label.project.project') + t('label.filter') + ':'" />
       <div class="filter-group">
         <button
           v-for="p in projectTitleList"
@@ -17,7 +17,7 @@
     </div>
     <!-- Construction Filters -->
     <div>
-      <Label :label="t('label.construction') + t('label.advanced_filter.filter') + ':'" />
+      <Label :label="t('label.construction') + t('label.filter') + ':'" />
       <div class="filter-group">
         <button
           v-for="c in constructionList"

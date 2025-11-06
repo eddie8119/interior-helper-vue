@@ -9,7 +9,6 @@
         <OverviewConstructionContainerItem
           :construction-id="construction.id"
           :construction-name="construction.name"
-          :days-range="[0, 10]"
           :read-only="true"
           :tasks="tasksByConstruction(construction.id)"
           :project-title-list="projectTitleList"

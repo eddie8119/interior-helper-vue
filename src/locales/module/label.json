@@ -21,7 +21,15 @@
         "overdue": "Overdue",
         "reminding": "Reminding"
       },
+      "time_status": {
+        "all": "All",
+        "overdue": "Overdue Not Completed",
+        "today": "Today Todo",
+        "this_week": "This Week Todo",
+        "this_month": "This Month Todo"
+      },
       "advanced_filter": {
+        "filter": "Filter",
         "hide": "Hide Advanced Filter",
         "show": "Show Advanced Filter"
       },
@@ -83,7 +91,15 @@
         "overdue": "過期",
         "reminding": "提醒"
       },
+      "time_status": {
+        "all": "全部",
+        "overdue": "過期未完成",
+        "today": "今天待辦",
+        "this_week": "本周待辦",
+        "this_month": "本月待辦"
+      },
       "advanced_filter": {
+        "filter": "篩選",
         "hide": "隱藏進階篩選",
         "show": "進階篩選"
       },

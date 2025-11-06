@@ -125,7 +125,15 @@
       "overdue": "Overdue",
       "reminding": "Reminding"
     },
+    "time_status": {
+      "all": "All",
+      "overdue": "Overdue Not Completed",
+      "today": "Today Todo",
+      "this_week": "This Week Todo",
+      "this_month": "This Month Todo"
+    },
     "advanced_filter": {
+      "filter": "Filter",
       "hide": "Hide Advanced Filter",
       "show": "Show Advanced Filter"
     },
@@ -384,6 +392,7 @@
     "forgot_password": "Forgot Password",
     "reset_password": "Reset Password",
     "overview": "Overview",
+    "schedule": "Schedule",
     "reminder_upcoming_task_in_10_days": "Upcoming Tasks Within 10 Days",
     "todo": "To Do",
     "quick_draft": "Quick Draft",

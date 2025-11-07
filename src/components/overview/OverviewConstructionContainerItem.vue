@@ -5,6 +5,7 @@
       <div class="flex items-center gap-2">
         <span class="text-gray-500">{{ totalTasks }}</span>
         <button
+          v-if="totalTasks > 0"
           type="button"
           class="hidden rounded-md bg-gray-200 px-2 py-1 text-sm text-gray-700 hover:bg-gray-300 md:block"
           @click="toggleAllTask()"
@@ -118,7 +119,18 @@ const groupedByProject = computed<ProjectGroup[]>(() => {
 
 // 摺疊
 const toggleAllTask = (): void => {
+  // Flip mode
   allTaskCollapsed.value = !allTaskCollapsed.value;
+
+  if (allTaskCollapsed.value) {
+    // Entering "collapse all" mode: hide all groups by default
+    // and clear the list of groups that were manually expanded in this mode.
+    expandedGroupsWhenAllTaskCollapsed.value = {};
+  } else {
+    // Leaving "collapse all" mode: show all groups by default
+    // and clear the list of groups that were manually collapsed in normal mode.
+    collapsedGroups.value = {};
+  }
 };
 
 const toggleTaskGroup = (projectId: string): void => {

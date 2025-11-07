@@ -2,6 +2,7 @@ import { computed } from 'vue';
 
 import type { ProjectResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
+import type { ProjectTitle } from '@/types/project';
 
 import { useProjects } from '@/composables/useProjects';
 
@@ -35,7 +36,7 @@ export function useOverviewSources() {
   // Extract project id and title
   const projectTitleList = computed(() => {
     if (!fetchedOverviewProjects.value || fetchedOverviewProjects.value.length === 0) {
-      return [] as Array<{ id: string; title: string }>;
+      return [] as ProjectTitle[];
     }
     return fetchedOverviewProjects.value.map((project: ProjectResponse) => ({
       id: project.id,

@@ -21,18 +21,19 @@
 <script setup lang="ts">
 import type { TaskResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
+import type { ProjectTitle } from '@/types/project';
 
 import OverviewConstructionContainerItem from '@/components/overview/OverviewConstructionContainerItem.vue';
 
 const { filteredConstructionList, filteredTasks, projectTitleList } = defineProps<{
   filteredConstructionList: ConstructionSelection[];
   filteredTasks: TaskResponse[];
-  projectTitleList: Array<{ id: string; title: string }>;
+  projectTitleList: ProjectTitle[];
 }>();
 
 // 按工程類型過濾任務
 const tasksByConstruction = (constructionId: string): TaskResponse[] => {
-  return filteredTasks.filter((f) => f.constructionType === constructionId);
+  return filteredTasks.filter((f: TaskResponse) => f.constructionType === constructionId);
 };
 </script>
 

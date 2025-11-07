@@ -17,9 +17,10 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
+
+import Label from '@/components/core/title/Label.vue';
 import { OVERVIEW_TASK_CONDITION_TAB_LIST } from '@/constants/tab';
 import { TaskTimeCondition } from '@/types/task';
-import Label from '@/components/core/title/Label.vue';
 
 defineProps<{
   taskTimeCondition: TaskTimeCondition;

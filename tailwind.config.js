@@ -38,6 +38,10 @@ export default {
           500: 'var(--color-black-500)',
           900: 'var(--color-black-900)',
         },
+        blue: {
+          500: 'var(--color-blue-500)',
+          600: 'var(--color-blue-600)',
+        },
         primary: {
           background: 'var(--color-primary-background)',
           panel: 'var(--color-primary-panel)',

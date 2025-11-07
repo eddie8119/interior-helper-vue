@@ -6,10 +6,10 @@
         <input
           v-model="item.name"
           type="text"
-          class="background-color-difference text-color-difference flex-1 rounded-md p-1 text-sm"
+          class="input-border input-common flex-1 p-1"
           :placeholder="t(namePlaceholder)"
         />
-        <button class="text-red-500 hover:text-red-700" @click="removeItem(index)">
+        <button class="text-secondary-red hover:text-red-700" @click="removeItem(index)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-4 w-4"
@@ -30,12 +30,12 @@
       <!-- Slot for additional inputs -->
       <slot name="inputs" :item="item" :index="index" />
 
-      <div v-if="itemErrors && itemErrors[index]" class="text-xs text-red-500">
+      <div v-if="itemErrors && itemErrors[index]" class="text-xs text-secondary-red">
         {{ itemErrors[index] }}
       </div>
     </div>
     <button
-      class="flex w-full items-center justify-center rounded-md border border-dashed border-gray-300 py-1 text-sm text-gray-500 hover:bg-gray-100"
+      class="flex w-full items-center justify-center rounded-md border border-dashed border-gray-300 p-2 text-sm text-gray-500 hover:bg-gray-100"
       @click="addItem"
     >
       <svg

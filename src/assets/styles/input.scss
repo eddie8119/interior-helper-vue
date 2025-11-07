@@ -1,3 +1,11 @@
+.input-common {
+  @apply background-color-difference text-color-difference block w-full;
+}
+
+.input-border {
+  @apply rounded-lg border border-black-300 px-2 text-lg leading-7 focus:border-blue-500 focus:ring-blue-500;
+}
+
 .input-base {
   .el-input__wrapper {
     @apply box-border rounded-md transition-all duration-300;

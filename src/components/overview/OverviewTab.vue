@@ -37,12 +37,12 @@ const handleClick = (value: string) => {
 
 <style scoped>
 .tab-button {
-  @apply bg-primary-panel px-3 py-2 dark:bg-primaryDark-panel;
+  @apply bg-primary-panel px-3 py-2 text-black-400 dark:bg-primaryDark-panel;
   cursor: pointer;
 }
 
 .tab-button.is-active {
-  @apply bg-brand-tertiary;
+  @apply bg-brand-tertiary text-black-900;
 }
 
 .tab-button:first-child {

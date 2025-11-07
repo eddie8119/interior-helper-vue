@@ -17,7 +17,9 @@
     <!-- Error State -->
     <div v-else-if="sharedProjectError" class="mx-auto max-w-[1600px] px-4 py-12 sm:px-4">
       <div class="rounded-lg bg-red-50 p-6 text-center">
-        <p class="text-red-800">{{ sharedProjectError.message || '此專案不存在或未公開分享' }}</p>
+        <p class="text-secondary-red">
+          {{ sharedProjectError.message || '此專案不存在或未公開分享' }}
+        </p>
       </div>
     </div>
 

@@ -3,10 +3,10 @@
     <div class="mb-2 flex items-center justify-between">
       <Label :label="constructionName" />
       <div class="flex items-center gap-2">
-        <span class="text-xs text-gray-500">{{ totalTasks }}</span>
+        <span class="text-gray-500">{{ totalTasks }}</span>
         <button
           type="button"
-          class="hidden rounded-md bg-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-300 md:block"
+          class="hidden rounded-md bg-gray-200 px-2 py-1 text-sm text-gray-700 hover:bg-gray-300 md:block"
           @click="toggleAllTask()"
         >
           {{ allTaskCollapsed ? t('button.fold.expand_all') : t('button.fold.collapse_all') }}
@@ -17,7 +17,7 @@
         <div class="--mobile md:hidden">
           <button
             type="button"
-            class="rounded-md bg-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-300"
+            class="rounded-md bg-gray-200 px-2 py-1 text-sm text-gray-700 hover:bg-gray-300"
             @click="isExpanded = !isExpanded"
           >
             {{ isExpanded ? t('button.hide') : t('button.show_more') }}
@@ -37,7 +37,7 @@
             <span class="text-sm font-semibold text-gray-600">-- {{ group.projectTitle }} --</span>
             <button
               type="button"
-              class="rounded-md bg-gray-100 px-2 py-0.5 text-[11px] text-gray-600 hover:bg-gray-200"
+              class="rounded-md bg-gray-100 px-2 py-0.5 text-sm text-gray-600 hover:bg-gray-200"
               @click="toggleTaskGroup(group.projectId)"
             >
               {{
@@ -47,9 +47,9 @@
               }}{{ t('label.task.task') }}
             </button>
           </div>
-          <span class="text-xs text-gray-400">{{ group.tasks.length }}</span>
+          <span class="text-gray-400">{{ group.tasks.length }}</span>
         </div>
-        <div v-if="isGroupTaskVisible(group.projectId)" class="space-y-2">
+        <div v-if="isGroupTaskVisible(group.projectId)" class="space-y-4">
           <div v-for="task in group.tasks" :key="task.id">
             <TaskCardBase :task="task" :read-only="true" :show-router="true" />
           </div>

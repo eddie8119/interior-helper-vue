@@ -14,7 +14,7 @@
       <!-- Error State -->
       <div v-else-if="error" class="rounded-lg bg-white p-8 shadow-md">
         <div class="text-center">
-          <ElIcon class="mb-4 text-red-500" :size="64">
+          <ElIcon class="mb-4 text-secondary-red" :size="64">
             <WarningFilled />
           </ElIcon>
           <h2 class="mb-4 text-2xl font-bold text-gray-800">{{ t('title.invitation_error') }}</h2>

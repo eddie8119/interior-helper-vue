@@ -17,7 +17,7 @@
       ref="titleInputRef"
       v-model="tempTitle"
       type="text"
-      class="background-color-difference text-color-difference block h-9 w-[150px] rounded-lg border border-gray-300 px-2 text-lg leading-7 focus:border-blue-500 focus:ring-blue-500"
+      class="input-common input-border h-9 w-[150px]"
       :placeholder="t('placeholder.project.construction')"
       @focus="onInputFocus"
       @blur="onBlur"

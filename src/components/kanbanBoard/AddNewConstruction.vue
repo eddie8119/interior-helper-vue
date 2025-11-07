@@ -25,22 +25,17 @@
     </div>
   </div>
 
-  <div
-    v-else
-    class="panel-color-difference mx-2 min-w-[300px] max-w-[300px] rounded-lg bg-gray-100 p-3 shadow-sm"
-    @click.stop
-  >
+  <div v-else class="construction-container" @click.stop>
     <div class="flex flex-col space-y-3">
       <input
         ref="inputRef"
         v-model="newContainerName"
         type="text"
-        class="background-color-difference text-color-difference block w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+        class="input-border input-common p-2 text-lg"
         :placeholder="t('placeholder.project.addContainer')"
         @keyup.enter="addNewConstruction"
         @keyup.esc="cancelEditing"
       />
-      <div class="divider-line" />
 
       <div v-if="notAddedConstruction.length > 0" class="space-y-2">
         <Label :label="t('label.quick_select') + ':'" />

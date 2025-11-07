@@ -11,22 +11,23 @@
     <template #inputs="{ item }">
       <div class="flex items-center gap-2">
         <div class="flex items-center">
-          <span class="mr-1 text-xs text-gray-500">{{ quantityLabel }}:</span>
+          <span class="text200-color-difference mr-1 text-xs">{{ quantityLabel }}:</span>
+
           <input
             v-model.number="item.quantity"
             type="number"
             min="1"
-            class="w-16 rounded-md border border-gray-300 p-1 text-sm"
+            class="input-border input-common w-16 p-1 text-sm"
             :placeholder="quantityPlaceholder"
           />
         </div>
         <div class="flex items-center">
-          <span class="mr-1 text-xs text-gray-500">{{ priceLabel }}:</span>
+          <span class="text200-color-difference mr-1 text-xs">{{ priceLabel }}:</span>
           <input
             v-model.number="item.unitPrice"
             type="number"
             min="0"
-            class="w-20 rounded-md border border-gray-300 p-1 text-sm"
+            class="input-border input-common w-20 p-1 text-sm"
             :placeholder="pricePlaceholder"
           />
         </div>
@@ -61,9 +62,9 @@ withDefaults(
   {
     namePlaceholder: '材料名稱',
     quantityLabel: '數量',
-    quantityPlaceholder: '輸入數量',
+    quantityPlaceholder: '輸入',
     priceLabel: '單價',
-    pricePlaceholder: '輸入單價',
+    pricePlaceholder: '輸入',
     addButtonText: '添加材料',
     itemErrors: () => ({}),
   }

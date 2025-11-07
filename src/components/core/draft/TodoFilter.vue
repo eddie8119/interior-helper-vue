@@ -17,7 +17,7 @@
     </div>
 
     <button
-      class="mt-2 flex items-center rounded-md px-3 py-1 text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-600 sm:mt-0"
+      class="mt-2 flex items-center rounded-md px-3 py-1 text-sm font-medium text-secondary-red hover:bg-red-50 hover:text-secondary-red sm:mt-0"
       @click="$emit('clear-done')"
     >
       <TrashButton />

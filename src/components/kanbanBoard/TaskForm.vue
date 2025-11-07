@@ -6,19 +6,21 @@
         ref="inputRef"
         v-model="title"
         type="text"
-        class="block w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+        class="input-border input-common p-2"
         :placeholder="t('placeholder.project.task')"
       />
-      <span v-if="props.errors.title" class="text-sm text-red-500">{{ props.errors.title }}</span>
+      <span v-if="props.errors.title" class="text-sm text-secondary-red">{{
+        props.errors.title
+      }}</span>
     </div>
     <div>
       <textarea
         ref="textareaRef"
         v-model="description"
-        class="block h-[120px] w-full rounded-lg border border-gray-300 bg-white p-2 text-lg text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+        class="input-border input-common h-[120px] p-2"
         :placeholder="t('placeholder.project.taskDescription')"
       />
-      <span v-if="props.errors.description" class="text-sm text-red-500">
+      <span v-if="props.errors.description" class="text-sm text-secondary-red">
         {{ props.errors.description }}
       </span>
     </div>
@@ -49,7 +51,7 @@
     </div>
 
     <!-- 更多設定區域 -->
-    <div v-if="showMoreSettings" class="space-y-4 rounded-md border border-gray-200 bg-gray-50 p-3">
+    <div v-if="showMoreSettings" class="card-color-difference space-y-4 rounded-md p-3">
       <!-- 材料 -->
       <MaterialInput
         v-model="materials"
@@ -61,7 +63,7 @@
       <!-- 提醒 -->
       <!-- 截止日期 -->
       <div class="space-y-2">
-        <Label label="截止日期 (可選)" />
+        <Label label="截止日期" />
         <ElDatePicker
           v-model="endDate"
           type="date"

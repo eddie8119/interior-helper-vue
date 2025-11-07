@@ -15,7 +15,8 @@
     </p>
     <div v-if="props.isCrucial" class="mt-2 text-center text-lg">
       <p>
-        若確認刪除，請在下方輸入 <span class="font-semibold text-red-500">{{ props.target }}</span>
+        若確認刪除，請在下方輸入
+        <span class="font-semibold text-secondary-red">{{ props.target }}</span>
       </p>
 
       <ElInput v-model="typeCheck" :placeholder="t('placeholder.project.project_name')" />

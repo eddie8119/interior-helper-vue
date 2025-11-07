@@ -144,7 +144,7 @@ const toggleTimeFilter = (enabled: boolean | string | number) => {
 
 <style scoped>
 .filter-container-outter {
-  @apply flex rounded-lg bg-gray-50/70 p-4;
+  @apply flex rounded-lg bg-gray-100 p-4 dark:bg-primaryDark-panel;
 }
 
 .filter-container-inner {

@@ -10,8 +10,8 @@
           {{ group.day }}
         </h2>
         <div class="flex flex-col">
-          <span class="text-sm font-medium text-secondary-red">{{ group.weekDay }}</span>
-          <span class="text200-color-difference text-xs">{{ group.monthYear }}</span>
+          <span class="font-medium text-secondary-red">{{ group.weekDay }}</span>
+          <span class="text200-color-difference text-sm">{{ group.monthYear }}</span>
         </div>
       </div>
     </div>

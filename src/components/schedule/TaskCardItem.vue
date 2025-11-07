@@ -6,29 +6,36 @@
       class="card-color-difference flex min-h-[120px] cursor-pointer flex-col justify-between rounded-lg p-4 transition-all hover:shadow-md"
       @click="toggleExpand"
     >
-      <div class="mb-2 text-xs font-medium text-gray-500">
-        {{ formatTime(task.reminderDatetime || task.endDate) }}
-      </div>
-      <div class="mb-3 line-clamp-2 text-sm font-semibold text-gray-900">
-        {{ task.title }}
-      </div>
       <div class="flex items-center justify-between">
-        <div class="flex gap-1">
-          <span v-if="task.materials && task.materials.length > 0" class="text-xs text-gray-500">
-            📦
-          </span>
-          <span v-if="task.description" class="text-xs text-gray-500">📝</span>
+        <div class="mb-2 font-medium text-gray-500">
+          {{ formatTime(task.reminderDatetime || task.endDate) }}
         </div>
-        <button type="button" class="rounded p-1 hover:bg-gray-100" @click.stop="toggleExpand">
+        <button
+          type="button"
+          class="h-6 w-6 rounded bg-black-100 hover:bg-gray-100"
+          @click.stop="toggleExpand"
+        >
           <ElIcon class="text-gray-600"><ArrowRight /></ElIcon>
         </button>
+      </div>
+      <H2Title :title="task.title" class="ml-2" />
+      <div v-if="task.description" class="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+        {{ task.description }}
+      </div>
+      <div class="flex gap-1">
+        <span v-if="task.materials && task.materials.length > 0" class="text-gray-500"> 📦 </span>
+        <span v-if="task.description" class="text-gray-500">📝</span>
       </div>
     </div>
 
     <!-- Expanded View -->
     <div v-else class="card-color-difference w-full min-w-[300px] rounded-lg p-4 shadow-md">
       <div class="mb-3 flex items-start justify-between">
-        <button type="button" class="rounded p-1 hover:bg-gray-100" @click="toggleExpand">
+        <button
+          type="button"
+          class="h-6 w-6 rounded bg-black-100 hover:bg-gray-100"
+          @click="toggleExpand"
+        >
           <ElIcon class="text-gray-600"><ArrowLeft /></ElIcon>
         </button>
       </div>
@@ -53,6 +60,7 @@ import type { TaskResponse } from '@/types/response';
 
 import TaskCardBase from '@/components/task/TaskCardBase.vue';
 import { formatTime } from '@/utils/dateUtils';
+import H2Title from '@/components/core/title/H2Title.vue';
 
 const props = defineProps<{
   task: TaskResponse;

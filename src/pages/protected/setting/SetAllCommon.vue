@@ -11,7 +11,7 @@
             :name-placeholder="t('placeholder.project.add_construction')"
             :add-button-text="t('common.add')"
           />
-          <span v-if="constructionError" class="mt-1 text-sm text-red-500">{{
+          <span v-if="constructionError" class="mt-1 text-sm text-secondary-red">{{
             constructionError
           }}</span>
         </div>
@@ -25,7 +25,7 @@
             :name-placeholder="t('placeholder.project.add_unit')"
             :add-button-text="t('common.add')"
           />
-          <span v-if="unitError" class="mt-1 text-sm text-red-500">{{ unitError }}</span>
+          <span v-if="unitError" class="mt-1 text-sm text-secondary-red">{{ unitError }}</span>
         </div>
       </div>
 

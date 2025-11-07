@@ -1,6 +1,6 @@
 <template>
   <div class="relative flex items-center">
-    <div class="h-4 w-24 overflow-hidden rounded-full bg-black-200">
+    <div class="h-4 w-24 overflow-hidden rounded-full bg-black-200 dark:bg-black-500">
       <div
         class="h-full rounded-full bg-secondary-blue-a"
         :style="{ width: `${progressWidth}%` }"

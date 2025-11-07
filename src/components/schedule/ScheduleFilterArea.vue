@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="schedule-filter-area space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
-  >
+  <div class="panel-container space-y-4">
     <!-- Project Filters -->
     <div>
       <Label :label="t('label.project.project') + t('label.filter') + ':'" />

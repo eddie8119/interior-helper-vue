@@ -1,9 +1,8 @@
 <template>
   <Loading v-if="isLoadingAllTasks || isLoadingOverviewProjects" />
-  <div v-else class="schedule-section flex h-full gap-4">
+  <div v-else class="flex h-full gap-4">
     <!-- Left Sidebar -->
-    <div class="left-sidebar flex w-80 flex-shrink-0 flex-col gap-0 overflow-hidden">
-      <!-- Calendar - 1/3 height -->
+    <div class="flex w-80 flex-shrink-0 flex-col gap-4 overflow-hidden">
       <div class="overflow-hidden">
         <ScheduleCalendar
           :selected-date="selectedDate"
@@ -12,7 +11,6 @@
         />
       </div>
 
-      <!-- Filter Area - 2/3 height -->
       <div class="flex-1 overflow-y-auto">
         <ScheduleFilterArea
           :construction-list="constructionList"
@@ -26,9 +24,7 @@
     </div>
 
     <!-- Right Content - Daily View -->
-    <div
-      class="right-content flex-1 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm"
-    >
+    <div class="panel-container relative flex-1 overflow-hidden">
       <ScheduleDailyView
         :tasks="filteredTasks"
         :selected-date="selectedDate"
@@ -84,16 +80,4 @@ const handleDeleteTask = async (taskId: string) => {
 };
 </script>
 
-<style scoped>
-.schedule-section {
-  @apply h-full;
-}
-
-.left-sidebar {
-  @apply flex flex-col;
-}
-
-.right-content {
-  @apply relative;
-}
-</style>
+<style scoped></style>

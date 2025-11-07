@@ -18,7 +18,8 @@
           <ElIcon class="text-gray-600"><ArrowRight /></ElIcon>
         </button>
       </div>
-      <H2Title :title="task.title" class="ml-2" />
+
+      <H2Title :title="task.title + ' - ' + projectName" />
       <div v-if="task.description" class="w-full overflow-hidden text-ellipsis whitespace-nowrap">
         {{ task.description }}
       </div>
@@ -54,13 +55,15 @@
 <script setup lang="ts">
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue';
 import { ElIcon } from 'element-plus';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
+import type { ProjectTitle } from '@/types/project';
 
 import TaskCardBase from '@/components/task/TaskCardBase.vue';
 import { formatTime } from '@/utils/dateUtils';
 import H2Title from '@/components/core/title/H2Title.vue';
+import { useProjectTitleList } from '@/context/useProjectTitleList';
 
 const props = defineProps<{
   task: TaskResponse;
@@ -74,6 +77,14 @@ const emit = defineEmits<{
 }>();
 
 const isExpanded = ref(props.expanded);
+
+// Get project title from context
+const { projectTitleList } = useProjectTitleList();
+
+const projectName = computed(() => {
+  const project = projectTitleList.value.find((p: ProjectTitle) => p.id === props.task.projectId);
+  return project?.title ?? props.task.projectId;
+});
 
 const toggleExpand = () => {
   isExpanded.value = !isExpanded.value;

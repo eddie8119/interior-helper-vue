@@ -24,7 +24,7 @@
     </div>
 
     <!-- Right Content - Daily View -->
-    <div class="panel-container relative flex-1 overflow-hidden">
+    <div class="panel-container relative h-full flex-1 overflow-hidden">
       <ScheduleDailyView
         :tasks="filteredTasks"
         :selected-date="selectedDate"
@@ -45,6 +45,7 @@ import ScheduleFilterArea from '@/components/schedule/ScheduleFilterArea.vue';
 import { useOverviewSources } from '@/composables/useOverviewSources';
 import { useSchedule } from '@/composables/useSchedule';
 import { useTasks } from '@/composables/useTasks';
+import { provideProjectTitleList } from '@/context/useProjectTitleList';
 import { provideTaskCardFilter } from '@/context/useTaskCardFilter';
 
 // Fetch data
@@ -67,8 +68,9 @@ const {
   constructionList,
 });
 
-// Provide task card filter context
+// Provide contexts
 provideTaskCardFilter();
+provideProjectTitleList(projectTitleList);
 
 // Task handlers
 const handleUpdateTask = async (taskId: string, patch: Partial<TaskResponse>) => {

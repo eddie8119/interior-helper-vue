@@ -3,3 +3,8 @@ export interface ConstructionContainerData {
   name: string;
   order: number;
 }
+
+export interface ProjectTitle {
+  id: string;
+  title: string;
+}

@@ -71,7 +71,7 @@
         <!-- Logged in user -->
         <div v-if="authStore.isAuthenticated" class="space-y-4">
           <div class="rounded-lg bg-blue-50 p-4">
-            <p class="text-sm text-blue-800">
+            <p class="text-sm text-blue-700">
               {{ t('message.invitation.ready_to_accept') }}
             </p>
           </div>

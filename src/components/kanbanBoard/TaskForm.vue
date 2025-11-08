@@ -28,7 +28,7 @@
     <!-- 展開更多設定按鈕 -->
     <div class="flex items-center justify-center">
       <button
-        class="flex items-center text-blue-600 hover:text-blue-800 focus:outline-none"
+        class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none"
         @click="toggleMoreSettings"
       >
         <span class="mr-1">{{ showMoreSettings ? '- Less' : '+ More' }}(可選) </span>

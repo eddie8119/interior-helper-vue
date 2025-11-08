@@ -1,5 +1,5 @@
 <template>
-  <div class="panel-container space-y-4">
+  <div class="panel-container h-full space-y-4">
     <!-- Project Filters -->
     <div>
       <Label :label="t('label.project.project') + t('label.filter') + ':'" />

@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-full flex-col">
     <!-- Content Section -->
-    <section class="flex-1 overflow-y-auto p-4">
+    <section class="flex-1 overflow-y-auto">
       <ScheduleSection />
     </section>
   </div>

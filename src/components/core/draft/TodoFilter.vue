@@ -7,7 +7,7 @@
         class="rounded-md px-3 py-1.5 text-sm font-medium transition-all duration-200"
         :class="[
           selected === filter.value
-            ? 'panel-color-difference text-blue-600 shadow'
+            ? 'panel-color-difference text-blue-500 shadow'
             : 'text-gray-500 hover:bg-gray-200 hover:text-gray-700',
         ]"
         @click="$emit('change-filter', filter.value)"

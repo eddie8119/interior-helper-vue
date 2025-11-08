@@ -3,7 +3,7 @@
     <!-- Collapsed View -->
     <div
       v-if="!isExpanded"
-      class="card-color-difference flex min-h-[120px] cursor-pointer flex-col justify-between rounded-lg p-4 transition-all hover:shadow-md"
+      class="flex min-h-[120px] cursor-pointer flex-col justify-between rounded-lg bg-primary-card p-4 transition-all hover:shadow-md"
       @click="toggleExpand"
     >
       <div class="flex items-center justify-between">
@@ -19,7 +19,10 @@
         </button>
       </div>
 
-      <H2Title :title="task.title + ' - ' + projectName" />
+      <H2Title
+        :title="task.title + ' - ' + projectName"
+        :class-name="'dark:text-primaryDark-text'"
+      />
       <div v-if="task.description" class="w-full overflow-hidden text-ellipsis whitespace-nowrap">
         {{ task.description }}
       </div>
@@ -30,7 +33,7 @@
     </div>
 
     <!-- Expanded View -->
-    <div v-else class="card-color-difference w-full min-w-[300px] rounded-lg p-4 shadow-md">
+    <div v-else class="w-full min-w-[300px] rounded-lg bg-primary-card p-4 shadow-md">
       <div class="mb-3 flex items-start justify-between">
         <button
           type="button"

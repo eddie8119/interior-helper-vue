@@ -49,7 +49,7 @@ const { t } = useI18n();
 
 const statusOptions = [
   { value: TaskStatusEnum.TODO, color: 'bg-gray-400', textColor: 'text-gray-800' },
-  { value: TaskStatusEnum.IN_PROGRESS, color: 'bg-blue-400', textColor: 'text-blue-800' },
+  { value: TaskStatusEnum.IN_PROGRESS, color: 'bg-blue-400', textColor: 'text-blue-700' },
   { value: TaskStatusEnum.DONE, color: 'bg-green-400', textColor: 'text-green-800' },
 ];
 

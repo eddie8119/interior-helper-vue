@@ -2,9 +2,7 @@
   <div class="basic-container card-color-difference flex h-full flex-col p-3">
     <!-- Header -->
     <div class="mb-4 flex items-center justify-between">
-      <h3 class="text-color-difference text-base font-semibold">
-        {{ currentMonth }} {{ currentYear }}
-      </h3>
+      <h3 class="text-black text-base">{{ currentMonth }} {{ currentYear }}</h3>
       <div class="flex gap-2">
         <button
           type="button"

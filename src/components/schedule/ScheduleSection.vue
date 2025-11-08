@@ -1,8 +1,8 @@
 <template>
   <Loading v-if="isLoadingAllTasks || isLoadingOverviewProjects" />
-  <div v-else class="flex h-full gap-4">
-    <!-- Left Sidebar -->
-    <div class="flex w-80 flex-shrink-0 flex-col gap-4 overflow-hidden">
+  <div v-else class="flex h-full flex-col gap-4 lg:flex-row">
+    <!-- Left Sidebar - Calendar & Filter (Desktop: fixed width, Mobile: full width) -->
+    <div class="flex w-full flex-shrink-0 flex-col gap-4 overflow-hidden lg:w-80">
       <div class="overflow-hidden">
         <ScheduleCalendar
           :selected-date="selectedDate"
@@ -11,7 +11,7 @@
         />
       </div>
 
-      <div class="flex-1 overflow-y-auto">
+      <div class="flex-1 overflow-y-auto lg:flex-1">
         <ScheduleFilterArea
           :construction-list="constructionList"
           :project-title-list="projectTitleList"
@@ -23,8 +23,8 @@
       </div>
     </div>
 
-    <!-- Right Content - Daily View -->
-    <div class="panel-container relative h-full flex-1 overflow-hidden">
+    <!-- Center Content - Daily View (Desktop: flex-1, Mobile: full width) -->
+    <div class="panel-container relative h-full w-full flex-1 overflow-hidden">
       <ScheduleDailyView
         :tasks="filteredTasks"
         :selected-date="selectedDate"
@@ -32,26 +32,88 @@
         @delete="handleDeleteTask"
       />
     </div>
+
+    <!-- Right Sidebar - Unscheduled Tasks (Desktop: fixed width, Mobile: hidden) -->
+    <div class="w-90 hidden flex-shrink-0 overflow-hidden lg:block">
+      <UnscheduledTaskList
+        :tasks="unscheduledTasks"
+        @update:task="handleUpdateTask"
+        @delete="handleDeleteTask"
+      />
+    </div>
   </div>
+
+  <!-- mobile unscheduled -->
+  <div v-if="showMobileUnscheduled" class="fixed inset-x-0 bottom-0 z-50 lg:hidden">
+    <div class="flex h-[60vh] flex-col rounded-t-2xl bg-white shadow-2xl dark:bg-gray-900">
+      <!-- Header -->
+      <div
+        class="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-700"
+      >
+        <h3 class="text-lg font-semibold">{{ t('title.unscheduled_task') }}</h3>
+        <button
+          type="button"
+          class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          @click="showMobileUnscheduled = false"
+        >
+          <ElIcon :size="24"><Close /></ElIcon>
+        </button>
+      </div>
+
+      <!-- Content -->
+      <div class="flex-1 overflow-y-auto p-4 md:p-7">
+        <UnscheduledTaskList
+          :tasks="unscheduledTasks"
+          @update:task="handleUpdateTask"
+          @delete="handleDeleteTask"
+        />
+      </div>
+    </div>
+
+    <!-- Backdrop -->
+    <div class="bg-black/50 fixed inset-0 z-40" @click="showMobileUnscheduled = false" />
+  </div>
+
+  <!-- Mobile toggle - Show Unscheduled Tasks -->
+  <button
+    v-if="unscheduledTasks.length > 0"
+    type="button"
+    class="fixed bottom-[51vh] right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-brand-primary text-white shadow-lg hover:shadow-xl lg:hidden"
+    @click="showMobileUnscheduled = true"
+  >
+    <ElIcon :size="24" color="black"><DocumentCopy stroke-width="1" /></ElIcon>
+    <span
+      class="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-secondary-yellow text-xs font-bold text-gray-900"
+    >
+      {{ unscheduledTasks.length }}
+    </span>
+  </button>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { Close, DocumentCopy } from '@element-plus/icons-vue';
+import { ElIcon } from 'element-plus';
+
 import type { TaskResponse } from '@/types/response';
 
 import Loading from '@/components/core/loading/Loading.vue';
 import ScheduleCalendar from '@/components/schedule/ScheduleCalendar.vue';
 import ScheduleDailyView from '@/components/schedule/ScheduleDailyView.vue';
 import ScheduleFilterArea from '@/components/schedule/ScheduleFilterArea.vue';
+import UnscheduledTaskList from '@/components/schedule/UnscheduledTaskList.vue';
 import { useOverviewSources } from '@/composables/useOverviewSources';
 import { useSchedule } from '@/composables/useSchedule';
 import { useTasks } from '@/composables/useTasks';
 import { provideProjectTitleList } from '@/context/useProjectTitleList';
 import { provideTaskCardFilter } from '@/context/useTaskCardFilter';
 
+const { t } = useI18n();
+
 // Fetch data
 const { fetchedAllTasks, isLoadingAllTasks, updateTask, deleteTask } = useTasks();
-const { fetchedOverviewProjects, isLoadingOverviewProjects, constructionList, projectTitleList } =
-  useOverviewSources();
+const { isLoadingOverviewProjects, constructionList, projectTitleList } = useOverviewSources();
 
 // Schedule logic
 const {
@@ -61,16 +123,19 @@ const {
   toggleConstruction,
   toggleProject,
   filteredTasks,
+  unscheduledTasks,
   taskDates,
 } = useSchedule({
   fetchedAllTasks,
-  fetchedOverviewProjects,
   constructionList,
 });
 
 // Provide contexts
 provideTaskCardFilter();
 provideProjectTitleList(projectTitleList);
+
+// Mobile state
+const showMobileUnscheduled = ref(false);
 
 // Task handlers
 const handleUpdateTask = async (taskId: string, patch: Partial<TaskResponse>) => {

@@ -1,16 +1,13 @@
 import { computed, ref, type Ref } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
-import type { ProjectResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
 
 export function useSchedule({
   fetchedAllTasks,
-  fetchedOverviewProjects,
   constructionList,
 }: {
   fetchedAllTasks: Ref<TaskResponse[] | null>;
-  fetchedOverviewProjects: Ref<ProjectResponse[] | undefined>;
   constructionList: Ref<ConstructionSelection[] | null>;
 }) {
   // Selected date for calendar
@@ -33,11 +30,30 @@ export function useSchedule({
     selectedProjectIds.value = toggleFromList(selectedProjectIds.value, id);
   };
 
-  // Filtered tasks according to selections
+  // Filtered tasks according to selections (only tasks with dates)
   const filteredTasks = computed(() => {
     // Get all tasks with reminder or end date
     const all = (fetchedAllTasks.value ?? []).filter(
       (t) => t.reminderDatetime !== null || t.endDate !== null
+    );
+
+    // Exclude selected projects
+    const byProject = selectedProjectIds.value.length
+      ? all.filter((t) => !selectedProjectIds.value.includes(t.projectId))
+      : all;
+
+    // If no construction filters selected, return as-is
+    if (!selectedConstructionIds.value.length) return byProject;
+
+    // Exclude tasks whose constructionType is in selectedConstructionIds
+    return byProject.filter((t) => !selectedConstructionIds.value.includes(t.constructionType));
+  });
+
+  // Unscheduled tasks (tasks without reminderDatetime and endDate)
+  const unscheduledTasks = computed(() => {
+    // Get all tasks without reminder or end date
+    const all = (fetchedAllTasks.value ?? []).filter(
+      (t) => t.reminderDatetime === null && t.endDate === null
     );
 
     // Exclude selected projects
@@ -80,6 +96,7 @@ export function useSchedule({
     toggleConstruction,
     toggleProject,
     filteredTasks,
+    unscheduledTasks,
     filteredConstructionList,
     taskDates,
   };

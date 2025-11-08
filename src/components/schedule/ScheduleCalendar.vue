@@ -1,9 +1,9 @@
 <template>
-  <div class="basic-container card-color-difference flex h-full flex-col p-3">
+  <div class="basic-container card-color-difference flex h-full flex-col p-1 md:p-3">
     <!-- Header -->
-    <div class="mb-4 flex items-center justify-between">
+    <header class="mb-2 flex items-center justify-between">
       <h3 class="text-black text-base">{{ currentMonth }} {{ currentYear }}</h3>
-      <div class="flex gap-2">
+      <nav class="flex gap-2" aria-label="Month navigation">
         <button
           type="button"
           class="rounded p-1 text-gray-500 transition-colors hover:bg-gray-200"
@@ -20,16 +20,21 @@
         >
           <ElIcon class="text-base"><ArrowRight /></ElIcon>
         </button>
-      </div>
-    </div>
+      </nav>
+    </header>
 
-    <!-- Calendar Grid -->
-    <div class="grid grid-cols-7 gap-2.5">
+    <!-- Desktop Calendar Grid (lg and above) -->
+    <div
+      class="--desktop hidden grid-cols-7 gap-2.5 lg:grid"
+      role="grid"
+      :aria-label="`${currentMonth} ${currentYear}`"
+    >
       <!-- Weekday headers -->
       <div
         v-for="day in weekDays"
         :key="`header-${day}`"
         class="py-2 text-center text-xs font-semibold text-gray-600"
+        role="columnheader"
       >
         {{ day }}
       </div>
@@ -41,6 +46,9 @@
         type="button"
         class="relative flex aspect-square items-center justify-center rounded-lg border-none transition-all duration-200"
         :class="getDateButtonClasses(date)"
+        :aria-selected="date.isSelected"
+        :aria-current="date.isToday ? 'date' : undefined"
+        :aria-label="getDateAria(date)"
         @click="selectDate(date)"
       >
         <span>{{ date.day }}</span>
@@ -51,13 +59,48 @@
         />
       </button>
     </div>
+
+    <!-- Mobile Horizontal Scroll Calendar (lg below) -->
+    <div
+      class="--mobile flex flex-col gap-3 lg:hidden"
+      role="group"
+      :aria-label="`${currentMonth} ${currentYear}`"
+    >
+      <!-- Horizontal scrollable dates -->
+      <div ref="mobileScroll" class="overflow-x-auto scroll-smooth">
+        <div class="flex gap-2">
+          <button
+            v-for="date in calendarDates"
+            :key="`mobile-${date.key}`"
+            type="button"
+            class="relative flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border-none transition-all duration-200"
+            :class="getDateButtonClasses(date)"
+            @click="selectDate(date)"
+            :data-key="`mobile-${date.key}`"
+            :aria-selected="date.isSelected"
+            :aria-current="date.isToday ? 'date' : undefined"
+            :aria-label="getDateAria(date)"
+          >
+            <div class="flex flex-col items-center">
+              <span class="text-xs">{{ weekDays[date.date.getDay()] }}</span>
+              <span class="text-sm font-medium">{{ date.day }}</span>
+            </div>
+            <span
+              v-if="date.hasTask"
+              class="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full"
+              :class="date.isSelected ? 'bg-white' : 'bg-blue-500'"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue';
 import { ElIcon } from 'element-plus';
-import { computed, ref } from 'vue';
+import { computed, onMounted, nextTick, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { CalendarDate } from '@/utils/calendarUtils';
@@ -69,6 +112,7 @@ import {
   getPreviousMonth,
   getWeekDayNames,
 } from '@/utils/calendarUtils';
+import { getDateAria as buildDateAria } from '@/utils/aria';
 
 const props = defineProps<{
   selectedDate: Date;
@@ -112,6 +156,9 @@ const selectDate = (dateObj: CalendarDate) => {
   emit('update:selectedDate', dateObj.date);
 };
 
+const getDateAria = (dateObj: CalendarDate): string =>
+  buildDateAria(dateObj, currentMonth.value, currentYear.value);
+
 const previousMonth = () => {
   currentDate.value = getPreviousMonth(currentDate.value);
 };
@@ -119,6 +166,24 @@ const previousMonth = () => {
 const nextMonth = () => {
   currentDate.value = getNextMonth(currentDate.value);
 };
+
+// Mobile: center selected/today on initial render
+const mobileScroll = ref<HTMLDivElement | null>(null);
+
+onMounted(async () => {
+  await nextTick();
+  const container = mobileScroll.value;
+  if (!container) return;
+  const selected: CalendarDate | undefined =
+    calendarDates.value.find((d: CalendarDate) => d.isSelected) ||
+    calendarDates.value.find((d: CalendarDate) => d.isToday);
+  if (!selected) return;
+  const key = `mobile-${selected.key}`;
+  const el = container.querySelector(`[data-key="${key}"]`) as HTMLElement | null;
+  if (!el) return;
+  const target = el.offsetLeft - (container.clientWidth / 2 - el.clientWidth / 2);
+  container.scrollLeft = Math.max(0, target);
+});
 </script>
 
 <style scoped></style>

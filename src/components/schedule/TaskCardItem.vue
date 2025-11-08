@@ -1,23 +1,34 @@
 <template>
-  <div :class="['flex-shrink-0', isExpanded ? 'w-full min-w-[300px]' : 'w-[200px]']">
+  <div
+    :class="['min-w-0', isExpanded ? 'w-full basis-full' : 'w-[140px] flex-shrink-0 md:w-[150px]']"
+  >
     <!-- Collapsed View -->
     <div
       v-if="!isExpanded"
       class="flex min-h-[120px] cursor-pointer flex-col justify-between rounded-lg bg-primary-card p-4 transition-all hover:shadow-md"
+      role="button"
+      tabindex="0"
+      :aria-expanded="isExpanded"
       @click="toggleExpand"
+      @keydown.enter.prevent="toggleExpand"
+      @keydown.space.prevent="toggleExpand"
     >
-      <div class="flex items-center justify-between">
+      <header class="flex items-center justify-between">
         <div class="mb-2 font-medium text-gray-500">
-          {{ formatTime(task.reminderDatetime || task.endDate) }}
+          <time v-if="dueAt" :datetime="dueISO">
+            {{ formatTime(dueAt) }}
+          </time>
+          <span v-else class="text-xs text-gray-400">無截止日</span>
         </div>
         <button
           type="button"
           class="h-6 w-6 rounded bg-black-100 hover:bg-gray-100"
+          aria-label="Expand task card"
           @click.stop="toggleExpand"
         >
           <ElIcon class="text-gray-600"><ArrowRight /></ElIcon>
         </button>
-      </div>
+      </header>
 
       <H2Title
         :title="task.title + ' - ' + projectName"
@@ -33,16 +44,17 @@
     </div>
 
     <!-- Expanded View -->
-    <div v-else class="w-full min-w-[300px] rounded-lg bg-primary-card p-4 shadow-md">
-      <div class="mb-3 flex items-start justify-between">
+    <div v-else class="w-full rounded-lg bg-primary-card p-4 shadow-md">
+      <header class="mb-3 flex items-start justify-between">
         <button
           type="button"
           class="h-6 w-6 rounded bg-black-100 hover:bg-gray-100"
+          aria-label="Collapse task card"
           @click="toggleExpand"
         >
           <ElIcon class="text-gray-600"><ArrowLeft /></ElIcon>
         </button>
-      </div>
+      </header>
 
       <!-- Full Task Card Content -->
       <TaskCardBase
@@ -88,6 +100,10 @@ const projectName = computed(() => {
   const project = projectTitleList.value.find((p: ProjectTitle) => p.id === props.task.projectId);
   return project?.title ?? props.task.projectId;
 });
+
+// Metadata for due/reminder time used in template semantics
+const dueAt = computed(() => props.task.reminderDatetime || props.task.endDate || null);
+const dueISO = computed(() => (dueAt.value ? new Date(dueAt.value).toISOString() : ''));
 
 const toggleExpand = () => {
   isExpanded.value = !isExpanded.value;

@@ -4,7 +4,7 @@
       <p class="text-gray-400">{{ t('message.no_tasks') }}</p>
     </div>
 
-    <div v-else class="space-y-8 p-4">
+    <div v-else class="space-y-8 p-1 md:p-4">
       <template v-for="(group, index) in groupedTasks" :key="group.dateKey">
         <DayGroup
           :group="group"

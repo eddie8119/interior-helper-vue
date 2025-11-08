@@ -3,29 +3,31 @@
   <div v-if="showBreakLine" class="break-line-vertical" />
 
   <div :ref="setDayRef" class="day-section">
-    <!-- Date Header -->
-    <div class="sticky top-0 z-10 mb-4 pb-2">
-      <div class="flex items-baseline gap-4">
-        <h2 class="text-color-difference text-6xl font-bold">
-          {{ group.day }}
-        </h2>
-        <div class="flex flex-col">
-          <span class="font-medium text-secondary-red">{{ group.weekDay }}</span>
-          <span class="text200-color-difference text-sm">{{ group.monthYear }}</span>
+    <div class="flex flex-row items-start gap-4 lg:flex-col">
+      <!-- Date Header -->
+      <div class="flex-shrink-0 lg:sticky lg:top-0 lg:z-10 lg:mb-4 lg:pb-2">
+        <div class="flex items-baseline gap-4">
+          <h2 class="text-color-difference text-6xl font-bold">
+            {{ group.day }}
+          </h2>
+          <div class="flex flex-col">
+            <span class="font-medium text-secondary-red">{{ group.weekDay }}</span>
+            <span class="text200-color-difference text-sm">{{ group.monthYear }}</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex flex-wrap gap-3">
-      <TaskCardItem
-        v-for="task in group.tasks"
-        :key="task.id"
-        :task="task"
-        :expanded="expandedTaskIds.has(task.id)"
-        @update:expanded="(value) => updateTaskExpanded(task.id, value)"
-        @update:task="handleUpdateTask"
-        @delete="handleDeleteTask"
-      />
+      <div class="flex flex-1 flex-wrap gap-2 sm:gap-3">
+        <TaskCardItem
+          v-for="task in group.tasks"
+          :key="task.id"
+          :task="task"
+          :expanded="expandedTaskIds.has(task.id)"
+          @update:expanded="(value) => updateTaskExpanded(task.id, value)"
+          @update:task="handleUpdateTask"
+          @delete="handleDeleteTask"
+        />
+      </div>
     </div>
   </div>
 </template>

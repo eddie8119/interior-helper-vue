@@ -26,6 +26,10 @@ export const OVERVIEW_TASK_CONDITION_TAB_LIST: Tab[] = [
     name: TaskTimeCondition.ALL,
   },
   {
+    label: 'Unscheduled',
+    name: TaskTimeCondition.UNSCHEDULED,
+  },
+  {
     label: 'Overdue',
     name: TaskTimeCondition.OVERDUE,
   },

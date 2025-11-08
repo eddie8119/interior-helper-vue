@@ -57,6 +57,12 @@ const fetchedTasksTimeCondition = computed(() => {
   switch (taskTimeCondition.value) {
     case TaskTimeCondition.ALL:
       return fetchedAllTasks.value;
+    case TaskTimeCondition.UNSCHEDULED:
+      return fetchedAllTasks.value.filter((task: TaskResponse) => {
+        const endDate = task.endDate ? new Date(task.endDate) : null;
+        const reminderDate = task.reminderDatetime ? new Date(task.reminderDatetime) : null;
+        return !endDate && !reminderDate;
+      });
     case TaskTimeCondition.OVERDUE:
       return fetchedAllTasks.value.filter((task: TaskResponse) => {
         const endDate = task.endDate ? new Date(task.endDate) : null;

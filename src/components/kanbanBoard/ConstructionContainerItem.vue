@@ -102,12 +102,17 @@ const isShowStatusFilter = computed(() => {
 watch(
   () => editingStateStore.currentEditingState,
   (newState: EditingState | null) => {
-    if (newState && (newState.type !== 'container' || newState.id !== props.constructionId)) {
-      if (isEditing.value) {
+    // If another component is being edited, stop editing this container
+    if (
+      newState &&
+      newState.type === 'container' &&
+      newState.id !== props.constructionId &&
+      isEditing.value
+    ) {
         editingStateStore.stopEditing();
       }
-    }
-  }
+  },
+  { deep: true }
 );
 
 const handleTaskDrop = (dropResult: any) => {

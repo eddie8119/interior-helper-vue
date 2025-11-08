@@ -22,12 +22,15 @@ export const useEditingStateStore = defineStore('editingState', () => {
    * @param id ID of the component (can be container ID or task ID)
    */
   function startEditing(type: EditingComponentType, id: string | number): void {
+    // Convert id to string for consistency
+    const stringId = String(id);
+
     // If already editing this component, do nothing
-    if (currentEditingState.value.type === type && currentEditingState.value.id === id) {
+    if (currentEditingState.value.type === type && currentEditingState.value.id === stringId) {
       return;
     }
     // Update to new editing state
-    currentEditingState.value = { type, id };
+    currentEditingState.value = { type, id: stringId };
   }
 
   /**
@@ -44,7 +47,9 @@ export const useEditingStateStore = defineStore('editingState', () => {
    * @returns boolean indicating if the component is being edited
    */
   function isEditing(type: EditingComponentType, id: string | number): boolean {
-    return currentEditingState.value.type === type && currentEditingState.value.id === id;
+    // Convert id to string for consistent comparison
+    const stringId = String(id);
+    return currentEditingState.value.type === type && currentEditingState.value.id === stringId;
   }
 
   /**
@@ -55,11 +60,21 @@ export const useEditingStateStore = defineStore('editingState', () => {
     return currentEditingState.value.type !== 'none';
   }
 
+  /**
+   * Check if a different component type is currently being edited
+   * @param type Type of component to check against
+   * @returns boolean indicating if a different component type is being edited
+   */
+  function isOtherTypeEditing(type: EditingComponentType): boolean {
+    return currentEditingState.value.type !== 'none' && currentEditingState.value.type !== type;
+  }
+
   return {
     currentEditingState,
     startEditing,
     stopEditing,
     isEditing,
     isAnyEditing,
+    isOtherTypeEditing,
   };
 });

@@ -98,6 +98,7 @@ import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
 import { useTaskReminder } from '@/composables/useTaskReminder';
 import { useTaskCardFilter } from '@/context/useTaskCardFilter';
+import { useEditingStateStore } from '@/stores/editingState';
 
 const props = withDefaults(
   defineProps<{
@@ -118,6 +119,7 @@ const emit = defineEmits<{
 const { t } = useI18n();
 const { showDescription, showMaterials } = useTaskCardFilter();
 const { reminderStatus, reminderLineClasses, reminderAreaClasses } = useTaskReminder(props.task);
+const editingStateStore = useEditingStateStore();
 
 const isEditing = ref(false);
 const { values, setValues } = useForm<Partial<TaskResponse>>();
@@ -140,6 +142,7 @@ const showDescriptionDivider = computed(
 const showMaterialsDivider = computed(() => hasMaterials.value && hasReminder.value);
 
 const startEditing = () => {
+  editingStateStore.startEditing('task', props.task.id);
   setValues({
     title: props.task.title,
     description: props.task.description,
@@ -155,11 +158,13 @@ const handleDblClick = () => {
 };
 
 const cancelEditing = () => {
+  editingStateStore.stopEditing();
   isEditing.value = false;
 };
 
 const onUpdateTask = async () => {
   emit('update:task', props.task.id, values);
+  editingStateStore.stopEditing();
   isEditing.value = false;
 };
 

@@ -2,15 +2,17 @@
 import axios, { type AxiosRequestConfig, isAxiosError } from 'axios';
 
 import router from '@/router';
-import { clearTokens, getAccessToken, getRefreshToken, setAccessToken } from '@/utils/auth';
+import { useAuthStore } from '@/stores/auth';
+import { getAccessToken, getRefreshToken, isAccessTokenValid, setAccessToken } from '@/utils/auth';
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
 }
 
-// 登出並清理
+// 登出並清理（與 auth store 同步）
 const logout = async () => {
-  clearTokens();
+  const authStore = useAuthStore();
+  authStore.logout(); // 這會調用 resetAuthState() 清理 tokens 和狀態
   await router.replace({ name: 'login' });
 };
 
@@ -49,8 +51,16 @@ const onTokenRefreshed = (token: string) => {
 
 // ========== Request Interceptor ==========
 instance.interceptors.request.use(
-  (config) => {
+  async (config) => {
     const token = getAccessToken();
+
+    // 在發送請求前檢查 token 是否有效
+    if (token && !isAccessTokenValid()) {
+      console.warn('Access token expired before request, logging out');
+      await logout();
+      return Promise.reject(new Error('Token expired'));
+    }
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

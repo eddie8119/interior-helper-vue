@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 import AppLayout from '@/layouts/AppLayout.vue';
 import { useAuthStore } from '@/stores/auth';
+import { isAccessTokenValid } from '@/utils/auth';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -189,19 +190,23 @@ router.beforeEach((to, _from, next) => {
   ];
   const isPublicPage = publicPages.includes(to.path);
 
-  if (!isPublicPage && !authStore.isAuthenticated) {
-    return next({
-      name: 'login',
-      query: { redirect: to.fullPath },
-    });
+  // 檢查是否為受保護的頁面
+  if (!isPublicPage) {
+    // 驗證 token 是否有效
+    if (!authStore.isAuthenticated || !isAccessTokenValid()) {
+      // Token 無效或過期，清理狀態並重定向到登入頁
+      authStore.logout();
+      return next({
+        name: 'login',
+        query: { redirect: to.fullPath },
+      });
+    }
   }
 
+  // 已登入用戶訪問公開頁面，重定向到首頁
   if (authStore.isAuthenticated && isPublicPage) {
     return next({ name: 'overview' });
   }
-
-  // isAdmin 是 Vue 的 ComputedRef 物件，而不是一個單純的布林值。
-  // 在 JavaScript 中，任何物件（包括 ComputedRef 物件）在布林判斷中都會被視為 true
 
   next();
 });

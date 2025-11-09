@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import { clearTokens } from '@/utils/auth';
+import { clearTokens, isAccessTokenValid } from '@/utils/auth';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -29,10 +29,18 @@ export const useAuthStore = defineStore('auth', {
       clearTokens();
     },
 
+    /**
+     * 初始化認證狀態，驗證 token 有效性
+     * 如果 token 無效或過期，自動清理並登出
+     */
     initializeAuthState() {
-      this.isAuthenticated = false;
-      const accessToken = localStorage.getItem('access_token');
-      if (accessToken) this.isAuthenticated = true;
+      // 檢查 access token 是否存在且有效
+      if (isAccessTokenValid()) {
+        this.isAuthenticated = true;
+      } else {
+        // Token 不存在或已過期，清理狀態
+        this.resetAuthState();
+      }
     },
 
     // 登入成功時呼叫

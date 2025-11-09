@@ -51,7 +51,7 @@
     </div>
 
     <!-- 更多設定區域 -->
-    <div v-if="showMoreSettings" class="card-color-difference space-y-4 rounded-md p-3">
+    <div v-if="showMoreSettings" class="input-border space-y-4 p-3">
       <!-- 材料 -->
       <MaterialInput
         v-model="materials"

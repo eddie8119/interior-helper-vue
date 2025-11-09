@@ -149,6 +149,7 @@
     },
     "time_status": {
       "all": "All",
+      "unscheduled": "Unscheduled",
       "overdue": "Overdue Not Completed",
       "today": "Today Left",
       "this_week": "This Week Left",
@@ -227,8 +228,11 @@
       "no_invitations": "No pending invitations",
       "share_disabled_hint": "Share disabled"
     },
+    "no_done": "No done",
+    "no_undone": "No undone",
     "no_tasks": "No tasks available",
     "no_tasks_for_day": "No tasks scheduled for this day",
+    "no_unscheduled_task": "No unscheduled tasks",
     "invitation": {
       "sent": "Invitation sent successfully",
       "accepted": "Invitation accepted",
@@ -354,6 +358,7 @@
     "phone": "Phone",
     "company": "Company",
     "search": "Search",
+    "select_date": "Select date",
     "select_date_and_time": "Select date and time",
     "project": {
       "project": "Please select project",
@@ -422,6 +427,7 @@
     "reset_password": "Reset Password",
     "overview_remaining": "Quickly View Remaining",
     "schedule": "Schedule",
+    "unscheduled_task": "Unscheduled Task",
     "reminder_upcoming_task_in_10_days": "Upcoming Tasks Within 10 Days",
     "todo": "To Do",
     "quick_draft": "Quick Draft",
@@ -434,16 +440,7 @@
     "delete_confirm": "Delete Confirm",
     "create_project": "Create Project",
     "move_note": "Move Note",
-    "subTitle": {
-      "latest_calibration": "Latest Calibration",
-      "statistics": "Statistics",
-      "measure_history": "Measure History",
-      "calibration_history": "Calibration History",
-      "replace_history": "Replace History",
-      "alarm_history": "Alarm History",
-      "real_time_read": "Real Time Read(5 minutes range)",
-      "history_read": "History Read"
-    }
+    "subTitle": {}
   },
   "validation": {
     "name_required": "Name is required",

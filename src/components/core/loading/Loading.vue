@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-full w-full flex-col items-center justify-center">
     <div class="spinner-circle" />
-    <p class="loading-text text-blue-500">{{ t('common.loading') }}...</p>
+    <p class="loading-text text-color-difference">{{ t('common.loading') }}...</p>
   </div>
 </template>
 
@@ -13,7 +13,7 @@ const { t } = useI18n();
 
 <style scoped>
 .spinner-circle {
-  @apply border-[5px] border-blue-500;
+  @apply border-[5px] border-primary-text dark:border-primaryDark-text;
   width: 48px;
   height: 48px;
   border-top-color: transparent;

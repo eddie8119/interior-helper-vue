@@ -16,6 +16,7 @@
       "phone": "Phone",
       "company": "Company",
       "search": "Search",
+      "select_date": "Select date",
       "select_date_and_time": "Select date and time",
       "project": {
         "project": "Please select project",
@@ -52,6 +53,7 @@
       "phone": "電話",
       "company": "公司",
       "search": "搜尋",
+      "select_date": "選擇日期",
       "select_date_and_time": "選擇日期和時間",
       "project": {
         "project": "請選擇專案",

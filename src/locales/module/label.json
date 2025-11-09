@@ -24,6 +24,7 @@
       },
       "time_status": {
         "all": "All",
+        "unscheduled": "Unscheduled",
         "overdue": "Overdue Not Completed",
         "today": "Today Left",
         "this_week": "This Week Left",
@@ -99,6 +100,7 @@
       },
       "time_status": {
         "all": "全部",
+        "unscheduled": "尚未排程",
         "overdue": "過期未完成",
         "today": "今天剩餘",
         "this_week": "本周剩餘",

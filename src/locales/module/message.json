@@ -22,8 +22,11 @@
         "no_invitations": "No pending invitations",
         "share_disabled_hint": "Share disabled"
       },
+      "no_done": "No done",
+      "no_undone": "No undone",
       "no_tasks": "No tasks available",
       "no_tasks_for_day": "No tasks scheduled for this day",
+      "no_unscheduled_task": "No unscheduled tasks",
       "invitation": {
         "sent": "Invitation sent successfully",
         "accepted": "Invitation accepted",
@@ -87,8 +90,11 @@
         "no_invitations": "無待處理邀請",
         "share_disabled_hint": "分享功能已關閉"
       },
+      "no_done": "無已完成事項",
+      "no_undone": "無未完成事項",
       "no_tasks": "暫無任務",
       "no_tasks_for_day": "當天無任務安排",
+      "no_unscheduled_task": "所有任務都已排程",
       "invitation": {
         "sent": "邀請已成功發送",
         "accepted": "已接受邀請",

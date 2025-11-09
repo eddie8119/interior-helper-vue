@@ -109,8 +109,8 @@ watch(
       newState.id !== props.constructionId &&
       isEditing.value
     ) {
-        editingStateStore.stopEditing();
-      }
+      editingStateStore.stopEditing();
+    }
   },
   { deep: true }
 );
@@ -133,9 +133,5 @@ const handleDeleteConstruction = () => {
 
 const updateTasks = (tasks: TaskResponse[]) => {
   emit('update:tasks', tasks);
-};
-
-const handleAddTask = () => {
-  // Logic to add a new task
 };
 </script>

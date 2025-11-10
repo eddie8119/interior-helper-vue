@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-[calc(100vh-108px)] flex-col">
+  <div class="flex flex-col md:h-[calc(100vh-108px)]">
     <!-- 頂部區域 -->
     <div class="mb-2 flex items-center">
       <H1Title :title="t('title.overview_remaining') + t('label.task.task')" />

@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-6 w-full md:overflow-x-auto">
+  <div class="w-full md:mt-6 md:overflow-x-auto">
     <div class="grid grid-cols-1 gap-4 md:flex md:flex-nowrap md:gap-0">
       <div
         v-for="construction in filteredConstructionList"

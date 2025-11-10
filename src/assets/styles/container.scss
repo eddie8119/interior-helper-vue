@@ -27,5 +27,5 @@
 }
 
 .construction-container {
-  @apply panel-color-difference mx-2 w-full rounded-lg p-3 shadow-sm sm:min-w-[300px] sm:max-w-[300px];
+  @apply panel-color-difference w-full rounded-lg p-3 shadow-sm sm:min-w-[300px] sm:max-w-[300px] md:mx-2;
 }

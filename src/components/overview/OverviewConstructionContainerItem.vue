@@ -17,6 +17,7 @@
         <!--  手機時避免過長 預設直接關閉 -->
         <div class="--mobile md:hidden">
           <button
+            v-if="totalTasks > 0"
             type="button"
             class="rounded-md bg-gray-200 px-2 py-1 text-sm text-gray-700 hover:bg-gray-300"
             @click="isExpanded = !isExpanded"
@@ -26,6 +27,8 @@
         </div>
       </div>
     </div>
+
+    <!--  -->
     <div class="space-y-4" :class="{ 'hidden md:block': !isExpanded }">
       <!-- Grouped by project -->
       <div

@@ -14,8 +14,8 @@ export enum TaskStatusEnum {
 export type TaskStatus = 'todo' | 'inProgress' | 'done';
 
 export enum TaskTimeAlertStatus {
-  OVERDUE = 'overdue',
-  REMINDING = 'reminding',
+  OVERDUE = 'overdue', //超過截止時間
+  REMINDING = 'reminding', //超過提醒時間
   NONE = 'none',
 }
 

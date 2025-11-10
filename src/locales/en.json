@@ -51,6 +51,8 @@
     "action": "Action"
   },
   "common": {
+    "no": "No",
+    "keyword": "Keyword",
     "cancel": "Cancel",
     "save": "Save",
     "add": "Add",
@@ -126,6 +128,7 @@
     "update_failed": "Update failed"
   },
   "label": {
+    "search": "Search",
     "time": "Time",
     "construction": "Construction",
     "materials": "Materials",

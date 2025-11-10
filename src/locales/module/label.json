@@ -1,6 +1,7 @@
 {
   "en": {
     "label": {
+      "search": "Search",
       "time": "Time",
       "construction": "Construction",
       "materials": "Materials",
@@ -80,6 +81,7 @@
   },
   "zh-TW": {
     "label": {
+      "search": "搜尋",
       "time": "時間",
       "construction": "工程",
       "materials": "材料",

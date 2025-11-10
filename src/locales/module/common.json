@@ -1,6 +1,8 @@
 {
   "en": {
     "common": {
+      "no": "No",
+      "keyword": "Keyword",
       "cancel": "Cancel",
       "save": "Save",
       "add": "Add",
@@ -30,6 +32,8 @@
   },
   "zh-TW": {
     "common": {
+      "no": "無",
+      "keyword": "關鍵字",
       "cancel": "取消",
       "save": "儲存",
       "add": "新增",

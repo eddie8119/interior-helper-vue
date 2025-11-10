@@ -34,7 +34,7 @@
     </div>
 
     <!-- Right Sidebar - Unscheduled Tasks (Desktop: fixed width, Mobile: hidden) -->
-    <div class="w-90 hidden flex-shrink-0 overflow-hidden lg:block">
+    <div class="hidden w-[340px] flex-shrink-0 overflow-hidden lg:block">
       <UnscheduledTaskList
         :tasks="unscheduledTasks"
         @update:task="handleUpdateTask"

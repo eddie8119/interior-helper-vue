@@ -27,3 +27,9 @@ export enum TaskTimeCondition {
   THIS_WEEK = 'this_week',
   THIS_MONTH = 'this_month',
 }
+
+export enum TaskScheduleDisplayMode {
+  ReminderDateTime = 'reminderDateTime',
+  EndDateTime = 'endDateTime',
+  All = 'all',
+}

@@ -1,8 +1,8 @@
 <template>
-  <div class="flex h-full w-full flex-col items-center justify-center">
+  <section class="flex min-h-[70vh] flex-col items-center justify-center">
     <div class="spinner-circle" />
     <p class="loading-text text-color-difference">{{ t('common.loading') }}...</p>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">

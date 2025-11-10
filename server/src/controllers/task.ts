@@ -57,7 +57,7 @@ export const getAllTasks = async (req: Request, res: Response) => {
       message: error.message || 'An unexpected error occurred',
     });
   }
-}
+};
 
 // 獲取專案下的所有任務
 export const getTasksByProjectId = async (req: Request, res: Response) => {
@@ -228,7 +228,8 @@ export const createTask = async (req: Request, res: Response) => {
     }
 
     const snakeCaseData = snakecaseKeys(req.body, { deep: true });
-    const { title, description, construction_type, reminder_datetime, materials } = snakeCaseData;
+    const { title, description, construction_type, reminder_datetime, materials, end_datetime } =
+      snakeCaseData;
 
     // 驗證必要欄位
     if (!title) {
@@ -248,6 +249,7 @@ export const createTask = async (req: Request, res: Response) => {
           description,
           construction_type,
           reminder_datetime,
+          end_datetime,
           project_id: projectId,
           user_id: userId,
           updated_at: new Date().toISOString(),
@@ -269,9 +271,7 @@ export const createTask = async (req: Request, res: Response) => {
     let taskMaterials = [];
     if (materials && Array.isArray(materials) && materials.length > 0) {
       // Filter out empty materials
-      const validMaterials = materials.filter(
-        (m: any) => m.name && m.name.trim() !== ''
-      );
+      const validMaterials = materials.filter((m: any) => m.name && m.name.trim() !== '');
 
       if (validMaterials.length > 0) {
         const materialsToInsert = validMaterials.map((material: any) => ({
@@ -349,8 +349,15 @@ export const updateTask = async (req: Request, res: Response) => {
     }
 
     const snakeCaseData = snakecaseKeys(req.body, { deep: true });
-    const { title, description, construction_type, reminder_datetime, materials, status } =
-      snakeCaseData;
+    const {
+      title,
+      description,
+      construction_type,
+      reminder_datetime,
+      materials,
+      status,
+      end_datetime,
+    } = snakeCaseData;
 
     // 更新任務
     const { data: updatedTask, error: updateError } = await supabase
@@ -360,6 +367,7 @@ export const updateTask = async (req: Request, res: Response) => {
         description,
         construction_type,
         reminder_datetime,
+        end_datetime,
         status,
         updated_at: new Date().toISOString(),
       })
@@ -507,6 +515,7 @@ export const updateTasks = async (req: Request, res: Response) => {
               description: task.description,
               construction_type: task.construction_type,
               reminder_datetime: task.reminder_datetime,
+              end_datetime: task.end_datetime,
               status: task.status,
               updated_at: new Date().toISOString(),
             })

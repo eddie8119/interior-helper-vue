@@ -61,21 +61,21 @@
       />
 
       <!-- 提醒 -->
-      <!-- 截止日期 -->
+      <!-- 截止時間 -->
       <div class="space-y-2">
-        <Label label="截止日期" />
+        <Label :label="t('label.end_datetime')" />
         <ElDatePicker
           v-model="endDate"
           type="date"
-          format="YYYY-MM-DD"
+          format="YYYY-MM-DD HH:mm:ss"
           :placeholder="t('placeholder.select_date')"
           class="w-full"
         />
       </div>
 
-      <!-- 提醒 -->
+      <!-- 提醒時間 -->
       <div class="space-y-2">
-        <Label label="設定提醒 (可選)" />
+        <Label :label="t('label.reminder_datetime')" />
         <ElDatePicker
           v-model="reminderDatetime"
           type="datetime"

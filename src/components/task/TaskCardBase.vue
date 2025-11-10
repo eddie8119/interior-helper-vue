@@ -64,6 +64,11 @@
         <p class="mr-2">{{ t('label.reminder') }}</p>
         <span>{{ formatDate(reminderDatetime) }}</span>
       </div>
+      <div v-if="hasEndDate" class="flex items-center text-gray-500">
+        <DateIcon />
+        <p class="mr-2">{{ t('label.end') }}</p>
+        <span>{{ formatDate(endDatetime) }}</span>
+      </div>
     </div>
   </div>
   <div v-else class="rounded-md border p-2">
@@ -83,6 +88,7 @@ import { useForm } from 'vee-validate';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type { UpdateTimeType } from '@/types/common';
 import type { TaskResponse } from '@/types/response';
 import type { TaskStatus } from '@/types/task';
 
@@ -128,18 +134,20 @@ const descriptionText = computed(() => props.task.description?.trim() ?? '');
 const materialsList = computed(() =>
   Array.isArray(props.task.materials) ? props.task.materials : []
 );
-const reminderDatetime = computed<null | string | Date | number>(
-  () => props.task.reminderDatetime ?? null
-);
+const reminderDatetime = computed<UpdateTimeType>(() => props.task.reminderDatetime ?? null);
+const endDatetime = computed<UpdateTimeType>(() => props.task.endDate ?? null);
 
 const hasDescription = computed(() => showDescription.value && descriptionText.value.length > 0);
 const hasMaterials = computed(() => showMaterials.value && materialsList.value.length > 0);
 const hasReminder = computed(() => Boolean(reminderDatetime.value));
+const hasEndDate = computed(() => Boolean(endDatetime.value));
 
 const showDescriptionDivider = computed(
   () => hasDescription.value && (hasMaterials.value || hasReminder.value)
 );
-const showMaterialsDivider = computed(() => hasMaterials.value && hasReminder.value);
+const showMaterialsDivider = computed(
+  () => hasMaterials.value && (hasReminder.value || hasEndDate.value)
+);
 
 const startEditing = () => {
   editingStateStore.startEditing('task', props.task.id);

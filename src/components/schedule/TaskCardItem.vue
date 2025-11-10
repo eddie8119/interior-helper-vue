@@ -72,13 +72,13 @@ import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue';
 import { ElIcon } from 'element-plus';
 import { computed, ref } from 'vue';
 
-import type { TaskResponse } from '@/types/response';
 import type { ProjectTitle } from '@/types/project';
+import type { TaskResponse } from '@/types/response';
 
-import TaskCardBase from '@/components/task/TaskCardBase.vue';
-import { formatTime } from '@/utils/dateUtils';
 import H2Title from '@/components/core/title/H2Title.vue';
+import TaskCardBase from '@/components/task/TaskCardBase.vue';
 import { useProjectTitleList } from '@/context/useProjectTitleList';
+import { formatTime } from '@/utils/dateUtils';
 
 const props = defineProps<{
   task: TaskResponse;

@@ -19,9 +19,9 @@
 </template>
 
 <script setup lang="ts">
+import type { ProjectTitle } from '@/types/project';
 import type { TaskResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
-import type { ProjectTitle } from '@/types/project';
 
 import OverviewConstructionContainerItem from '@/components/overview/OverviewConstructionContainerItem.vue';
 

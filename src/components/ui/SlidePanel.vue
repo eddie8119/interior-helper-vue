@@ -81,9 +81,11 @@ const panelStyle = computed(() => {
 .from-right.slide-panel-enter {
   transform: translateX(550px);
 }
+
 .from-right.slide-panel-enter-to {
   transform: translateX(0);
 }
+
 .from-right.slide-panel-leave-to {
   transform: translateX(550px);
 }
@@ -92,9 +94,11 @@ const panelStyle = computed(() => {
 .from-left.slide-panel-enter {
   transform: translateX(-550px);
 }
+
 .from-left.slide-panel-enter-to {
   transform: translateX(0);
 }
+
 .from-left.slide-panel-leave-to {
   transform: translateX(-550px);
 }

@@ -14,6 +14,7 @@ const { t } = useI18n();
 <style scoped>
 .spinner-circle {
   @apply border-[5px] border-primary-text dark:border-primaryDark-text;
+
   width: 48px;
   height: 48px;
   border-top-color: transparent;

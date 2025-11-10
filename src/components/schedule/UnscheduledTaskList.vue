@@ -36,15 +36,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { Calendar } from '@element-plus/icons-vue';
 import { ElIcon } from 'element-plus';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { TaskResponse } from '@/types/response';
 
-import TaskCardItem from '@/components/schedule/TaskCardItem.vue';
 import H2Title from '@/components/core/title/H2Title.vue';
+import TaskCardItem from '@/components/schedule/TaskCardItem.vue';
+
+defineProps<Props>();
+
+const emit = defineEmits<Emits>();
 
 const { t } = useI18n();
 
@@ -52,14 +56,10 @@ interface Props {
   tasks: TaskResponse[];
 }
 
-defineProps<Props>();
-
 interface Emits {
   (e: 'update:task', taskId: string, patch: Partial<TaskResponse>): void;
   (e: 'delete', taskId: string): void;
 }
-
-const emit = defineEmits<Emits>();
 
 // Expanded task tracking
 const expandedTaskIds = ref<Set<string>>(new Set());

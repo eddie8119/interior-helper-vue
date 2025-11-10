@@ -91,10 +91,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { Close, DocumentCopy } from '@element-plus/icons-vue';
 import { ElIcon } from 'element-plus';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { TaskResponse } from '@/types/response';
 

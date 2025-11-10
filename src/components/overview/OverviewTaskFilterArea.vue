@@ -60,8 +60,8 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { TaskFilterStatus } from '@/constants/selection';
-import type { ConstructionSelection } from '@/types/selection';
 import type { ProjectTitle } from '@/types/project';
+import type { ConstructionSelection } from '@/types/selection';
 
 import Label from '@/components/core/title/Label.vue';
 import TaskStatusDateFilter from '@/components/project/TaskStatusDateFilter.vue';

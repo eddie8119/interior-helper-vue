@@ -75,11 +75,11 @@
             type="button"
             class="relative flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border-none transition-all duration-200"
             :class="getDateButtonClasses(date)"
-            @click="selectDate(date)"
             :data-key="`mobile-${date.key}`"
             :aria-selected="date.isSelected"
             :aria-current="date.isToday ? 'date' : undefined"
             :aria-label="getDateAria(date)"
+            @click="selectDate(date)"
           >
             <div class="flex flex-col items-center">
               <span class="text-xs">{{ weekDays[date.date.getDay()] }}</span>
@@ -100,11 +100,12 @@
 <script setup lang="ts">
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue';
 import { ElIcon } from 'element-plus';
-import { computed, onMounted, nextTick, ref } from 'vue';
+import { computed, nextTick, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { CalendarDate } from '@/utils/calendarUtils';
 
+import { getDateAria as buildDateAria } from '@/utils/aria';
 import {
   generateCalendarDates,
   getMonthName,
@@ -112,7 +113,6 @@ import {
   getPreviousMonth,
   getWeekDayNames,
 } from '@/utils/calendarUtils';
-import { getDateAria as buildDateAria } from '@/utils/aria';
 
 const props = defineProps<{
   selectedDate: Date;

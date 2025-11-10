@@ -15,7 +15,7 @@ import Loading from '@/components/core/loading/Loading.vue';
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7); /* 半透明黑底 */
+  background-color: rgb(0 0 0 / 70%); /* 半透明黑底 */
   display: flex;
   flex-direction: column;
   justify-content: center;

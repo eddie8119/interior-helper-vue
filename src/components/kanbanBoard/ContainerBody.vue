@@ -16,7 +16,7 @@
     :behaviour="'move'"
     :drag-handle-selector="'.task-drag-handle'"
     class="grid max-h-[330px] grid-cols-1 gap-3"
-    style="overflow-y: auto; overflow-x: visible; touch-action: pan-y"
+    style="overflow: visible auto; touch-action: pan-y"
     @drop="!readOnly && handleTaskDrop($event)"
   >
     <!-- 任務列表 -->
@@ -97,17 +97,18 @@ const shouldAcceptDrop = (sourceContainerOptions: any) => {
 
 .task-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
 }
 
 .task-item:active {
   cursor: grabbing;
   transform: scale(0.98);
 }
+
 .task-ghost-drop {
   transition: all 0.3s ease;
   border: 2px dashed #60a5fa;
-  background-color: rgba(96, 165, 250, 0.1);
+  background-color: rgb(96 165 250 / 10%);
   margin: 8px 0;
   border-radius: 8px;
   min-height: 60px;

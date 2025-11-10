@@ -38,6 +38,7 @@ const handleClick = (value: string) => {
 <style scoped>
 .tab-button {
   @apply bg-primary-panel px-3 py-2 text-black-400 dark:bg-primaryDark-panel;
+
   cursor: pointer;
 }
 
@@ -48,15 +49,17 @@ const handleClick = (value: string) => {
 .tab-button:first-child {
   padding-left: 1.25rem; /* 20px */
 }
+
 .tab-button:last-child {
   padding-right: 1.25rem; /* 20px */
 }
 
 /* Add separators between items */
 .tab-button + .tab-button {
-  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  border-left: 1px solid rgb(0 0 0 / 8%);
 }
+
 .dark .tab-button + .tab-button {
-  border-left-color: rgba(255, 255, 255, 0.15);
+  border-left-color: rgb(255 255 255 / 15%);
 }
 </style>

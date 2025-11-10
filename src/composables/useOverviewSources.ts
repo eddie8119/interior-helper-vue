@@ -1,8 +1,8 @@
 import { computed } from 'vue';
 
+import type { ProjectTitle } from '@/types/project';
 import type { ProjectResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
-import type { ProjectTitle } from '@/types/project';
 
 import { useProjects } from '@/composables/useProjects';
 

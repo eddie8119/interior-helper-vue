@@ -44,7 +44,7 @@ const getInitialValues = (): CreateTaskSchema => ({
   title: '',
   description: '',
   materials: [],
-  reminderDatetime: undefined,
+  reminderDateTime: undefined,
   constructionType: props.constructionId,
   projectId: props.projectId,
   status: 'todo',

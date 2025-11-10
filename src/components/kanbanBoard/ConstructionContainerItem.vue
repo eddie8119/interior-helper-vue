@@ -87,8 +87,8 @@ const filteredAndSortedTasks = computed(() => {
 
   if (props.daysRange) {
     tasksToDisplay = tasksToDisplay.filter((task) => {
-      if (!task.endDate) return false;
-      return isWithinDays(task.endDate, props.daysRange[0], props.daysRange[1]);
+      if (!task.endDateTime) return false;
+      return isWithinDays(task.endDateTime, props.daysRange[0], props.daysRange[1]);
     });
   }
 

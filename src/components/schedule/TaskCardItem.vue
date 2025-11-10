@@ -102,7 +102,7 @@ const projectName = computed(() => {
 });
 
 // Metadata for due/reminder time used in template semantics
-const dueAt = computed(() => props.task.reminderDatetime || props.task.endDate || null);
+const dueAt = computed(() => props.task.reminderDateTime || props.task.endDateTime || null);
 const dueISO = computed(() => (dueAt.value ? new Date(dueAt.value).toISOString() : ''));
 
 const toggleExpand = () => {

@@ -6,7 +6,7 @@ export const createTaskSchema = (t: TranslateFunction) =>
   z.object({
     title: z.string().min(1, t('validation.title.required')),
     description: z.string().min(1, t('validation.description_required')),
-    reminderDatetime: z.date().optional(),
+    reminderDateTime: z.date().optional(),
     materials: z
       .array(
         z
@@ -41,7 +41,7 @@ export const createTaskSchema = (t: TranslateFunction) =>
     constructionType: z.string(),
     projectId: z.string(),
     status: z.enum(['todo', 'inProgress', 'done']),
-    endDate: z.date().optional(),
+    endDateTime: z.date().optional(),
   });
 
 export type CreateTaskSchema = z.infer<ReturnType<typeof createTaskSchema>>;

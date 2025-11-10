@@ -63,9 +63,9 @@
       <!-- 提醒 -->
       <!-- 截止時間 -->
       <div class="space-y-2">
-        <Label :label="t('label.end_datetime')" />
+        <Label :label="t('label.end_date_time')" />
         <ElDatePicker
-          v-model="endDate"
+          v-model="endDateTime"
           type="date"
           format="YYYY-MM-DD HH:mm:ss"
           :placeholder="t('placeholder.select_date')"
@@ -75,9 +75,9 @@
 
       <!-- 提醒時間 -->
       <div class="space-y-2">
-        <Label :label="t('label.reminder_datetime')" />
+        <Label :label="t('label.reminder_date_time')" />
         <ElDatePicker
-          v-model="reminderDatetime"
+          v-model="reminderDateTime"
           type="datetime"
           format="YYYY-MM-DD HH:mm:ss"
           :placeholder="t('placeholder.select_date_and_time')"
@@ -147,26 +147,26 @@ if (props.showMore) {
 const { value: title } = useField<string>('title');
 const { value: description } = useField<string>('description');
 const { value: materials } = useField<Material[]>('materials');
-const { value: reminderDatetime } = useField<Date | undefined>('reminderDatetime');
-const { value: endDate } = useField<Date | undefined>('endDate');
+const { value: reminderDateTime } = useField<Date | undefined>('reminderDateTime');
+const { value: endDateTime } = useField<Date | undefined>('endDateTime');
 
 // 切換顯示更多設定
 const toggleMoreSettings = () => {
   // 如果要關閉更多設定區域，先清除內容
   if (showMoreSettings.value) {
     materials.value = [];
-    reminderDatetime.value = undefined;
-    endDate.value = undefined;
+    reminderDateTime.value = undefined;
+    endDateTime.value = undefined;
     materialErrors.value = {};
   } else if (
     props.initialData?.materials?.length ||
-    props.initialData?.reminderDatetime ||
-    props.initialData?.endDate
+    props.initialData?.reminderDateTime ||
+    props.initialData?.endDateTime
   ) {
     // 如果是打開更多設定，且有初始數據，則恢復初始數據
     materials.value = props.initialData.materials || [];
-    reminderDatetime.value = props.initialData.reminderDatetime || undefined;
-    endDate.value = props.initialData.endDate || undefined;
+    reminderDateTime.value = props.initialData.reminderDateTime || undefined;
+    endDateTime.value = props.initialData.endDateTime || undefined;
   }
 
   // 切換顯示狀態

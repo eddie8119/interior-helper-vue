@@ -1,6 +1,7 @@
 # 任務提醒通知系統
 
 ## 目錄
+
 - [功能概述](#功能概述)
 - [系統架構](#系統架構)
 - [數據庫設計](#數據庫設計)
@@ -13,7 +14,7 @@
 
 ## 功能概述
 
-本系統提供任務提醒功能，根據任務的 `reminder_datetime` 自動發送提醒：
+本系統提供任務提醒功能，根據任務的 `reminder_date_time` 自動發送提醒：
 
 1. **LINE 即時提醒**：
    - 在任務提醒時間前 30 分鐘發送
@@ -42,7 +43,7 @@ src/
 ### 新增欄位
 
 ```sql
-ALTER TABLE Tasks 
+ALTER TABLE Tasks
 ADD COLUMN IF NOT EXISTS line_reminder_sent BOOLEAN DEFAULT FALSE,
 ADD COLUMN IF NOT EXISTS email_reminder_sent BOOLEAN DEFAULT FALSE,
 ADD COLUMN IF NOT EXISTS last_reminder_sent_at TIMESTAMP WITH TIME ZONE;
@@ -51,9 +52,9 @@ ADD COLUMN IF NOT EXISTS last_reminder_sent_at TIMESTAMP WITH TIME ZONE;
 ### 索引優化
 
 ```sql
-CREATE INDEX IF NOT EXISTS idx_tasks_reminder_datetime 
-ON Tasks(reminder_datetime) 
-WHERE reminder_datetime IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_tasks_reminder_date_time
+ON Tasks(reminder_date_time)
+WHERE reminder_date_time IS NOT NULL;
 ```
 
 ## API 端點
@@ -65,6 +66,7 @@ GET /api/notifications/pending-reminders
 ```
 
 **響應**
+
 ```json
 {
   "success": true,
@@ -72,7 +74,7 @@ GET /api/notifications/pending-reminders
     {
       "id": "task-123",
       "title": "設計會議",
-      "reminder_datetime": "2025-10-01T14:30:00Z",
+      "reminder_date_time": "2025-10-01T14:30:00Z",
       "user_id": "user-456"
     }
   ]
@@ -95,14 +97,15 @@ GET /api/notifications/pending-reminders
 ### 排程邏輯
 
 1. **LINE 提醒檢查**（每5分鐘執行）
+
    ```typescript
-   // 查找 reminder_datetime 在未來30分鐘內的任務
+   // 查找 reminder_date_time 在未來30分鐘內的任務
    // 且 line_reminder_sent = false
    ```
 
 2. **電子郵件摘要**（每天00:00執行）
    ```typescript
-   // 查找 reminder_datetime 為當天的所有任務
+   // 查找 reminder_date_time 為當天的所有任務
    // 且 email_reminder_sent = false
    ```
 
@@ -158,14 +161,15 @@ export class EmailNotificationService {
 ## 部署考量
 
 1. **環境變數**
+
    ```env
    # LINE Notify
    LINE_NOTIFY_TOKEN=your_line_token
-   
+
    # Email Service
    EMAIL_SERVICE=sendgrid
    SENDGRID_API_KEY=your_sendgrid_key
-   
+
    # 排程設置
    CHECK_REMINDERS_CRON="*/5 * * * *"
    DAILY_DIGEST_CRON="0 0 * * *"

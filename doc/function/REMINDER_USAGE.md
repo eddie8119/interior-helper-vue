@@ -1,6 +1,7 @@
 # 任務提醒系統使用說明
 
 ## 目錄
+
 - [系統概述](#系統概述)
 - [安裝設置](#安裝設置)
 - [使用方法](#使用方法)
@@ -10,6 +11,7 @@
 ## 系統概述
 
 任務提醒系統提供兩種提醒方式：
+
 1. **LINE 即時提醒**：在任務提醒時間前 30 分鐘發送
 2. **每日電子郵件摘要**：每天 00:00 發送當天所有待辦任務的摘要
 
@@ -38,15 +40,15 @@ cp reminder.env.example .env
 
 ```sql
 -- 為 Tasks 表添加提醒相關欄位
-ALTER TABLE Tasks 
+ALTER TABLE Tasks
 ADD COLUMN IF NOT EXISTS line_reminder_sent BOOLEAN DEFAULT FALSE,
 ADD COLUMN IF NOT EXISTS email_reminder_sent BOOLEAN DEFAULT FALSE,
 ADD COLUMN IF NOT EXISTS last_reminder_sent_at TIMESTAMP WITH TIME ZONE;
 
 -- 創建索引以優化查詢效能
-CREATE INDEX IF NOT EXISTS idx_tasks_reminder_datetime 
-ON Tasks(reminder_datetime) 
-WHERE reminder_datetime IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_tasks_reminder_date_time
+ON Tasks(reminder_date_time)
+WHERE reminder_date_time IS NOT NULL;
 ```
 
 ### 4. 創建 UserSettings 表
@@ -100,7 +102,7 @@ npm run start-reminder
 
 ### 3. 創建帶有提醒的任務
 
-在創建或編輯任務時，設置 `reminder_datetime` 字段為提醒時間。
+在創建或編輯任務時，設置 `reminder_date_time` 字段為提醒時間。
 
 ## 測試系統
 
@@ -125,7 +127,7 @@ npm run test-reminder
 
 1. 確認用戶已設置正確的 LINE Notify Token
 2. 確認 `line_notifications_enabled` 設置為 `true`
-3. 檢查任務的 `reminder_datetime` 是否正確設置
+3. 檢查任務的 `reminder_date_time` 是否正確設置
 4. 檢查服務器日誌是否有錯誤信息
 
 ### 未收到電子郵件摘要

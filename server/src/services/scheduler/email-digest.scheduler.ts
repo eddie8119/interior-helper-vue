@@ -93,9 +93,9 @@ export class EmailDigestScheduler {
           .select('*')
           .eq('user_id', userId)
           .eq('email_reminder_sent', false)
-          .gte('reminder_datetime', today.toISOString())
-          .lt('reminder_datetime', tomorrow.toISOString())
-          .order('reminder_datetime', { ascending: true });
+          .gte('reminder_date_time', today.toISOString())
+          .lt('reminder_date_time', tomorrow.toISOString())
+          .order('reminder_date_time', { ascending: true });
 
         if (tasksError) {
           console.error(`[EmailDigestScheduler] 獲取用戶 ${userId} 的任務失敗:`, tasksError);

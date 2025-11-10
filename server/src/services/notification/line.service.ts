@@ -10,7 +10,7 @@ interface Task {
   project_id: string;
   status: string;
   construction_type: number | null;
-  reminder_datetime: Date | null;
+  reminder_date_time: Date | null;
 }
 
 interface UserNotificationSettings {
@@ -88,10 +88,8 @@ export class LineNotificationService {
    * @returns 格式化的提醒消息
    */
   private buildReminderMessage(task: Task): string {
-    // task.reminder_datetime 可能為 null，需先做防護再轉換
-    const reminderTime = task.reminder_datetime
-      ? new Date(task.reminder_datetime)
-      : null;
+    // task.reminder_date_time 可能為 null，需先做防護再轉換
+    const reminderTime = task.reminder_date_time ? new Date(task.reminder_date_time) : null;
     const formattedTime = reminderTime
       ? reminderTime.toLocaleString('zh-TW', {
           year: 'numeric',

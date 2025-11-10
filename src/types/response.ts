@@ -53,8 +53,8 @@ export interface TaskResponse extends CreateTaskSchema {
   lineReminderSent: boolean;
   emailReminderSent: boolean;
   status: TaskStatus;
-  reminderDatetime: Date | undefined;
-  endDate: Date | undefined;
+  reminderDateTime: Date | undefined;
+  endDateTime: Date | undefined;
 }
 
 // 任務材料

@@ -20,8 +20,8 @@ export function useTaskConditionFilters(tasksData: Ref<TaskResponse[]>) {
     if (!daysRange.value) return tasksData.value;
     const [min, max] = daysRange.value;
     return tasksData.value.filter((task) => {
-      if (!task.endDate) return false;
-      return isWithinDays(task.endDate, min, max);
+      if (!task.endDateTime) return false;
+      return isWithinDays(task.endDateTime, min, max);
     });
   });
 

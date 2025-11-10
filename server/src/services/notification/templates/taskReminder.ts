@@ -3,7 +3,7 @@ import { footerBlock } from '../templates/partials/footer';
 import { headerBlock } from '../templates/partials/header';
 
 export const generateTaskReminderTemplate = (task: any): string => {
-  const reminderTime = task.reminder_datetime ? formatDateTime(task.reminder_datetime) : '未設置';
+  const reminderTime = task.reminder_date_time ? formatDateTime(task.reminder_date_time) : '未設置';
 
   const inner = `
     ${headerBlock('任務提醒')}

@@ -35,8 +35,8 @@ async function createTestTask() {
   }
 
   // 設置提醒時間為當前時間後 1 分鐘
-  const reminderDatetime = new Date();
-  reminderDatetime.setMinutes(reminderDatetime.getMinutes() + 1);
+  const reminderDateTime = new Date();
+  reminderDateTime.setMinutes(reminderDateTime.getMinutes() + 1);
 
   // 創建測試任務
   const { data: task, error } = await supabase
@@ -48,7 +48,7 @@ async function createTestTask() {
       status: 'pending',
       user_id: TEST_USER_ID,
       project_id: TEST_PROJECT_ID,
-      reminder_datetime: reminderDatetime.toISOString(),
+      reminder_date_time: reminderDateTime.toISOString(),
       line_reminder_sent: false,
       email_reminder_sent: false,
     })

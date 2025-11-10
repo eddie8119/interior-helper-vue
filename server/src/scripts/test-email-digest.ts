@@ -61,7 +61,7 @@ async function createTestTasks() {
         status: 'pending',
         user_id: TEST_USER_ID,
         project_id: projectId,
-        reminder_datetime: today.toISOString(),
+        reminder_date_time: today.toISOString(),
         line_reminder_sent: false,
         email_reminder_sent: false,
       })

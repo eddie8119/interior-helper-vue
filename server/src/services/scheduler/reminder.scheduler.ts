@@ -38,7 +38,7 @@ export class ReminderScheduler {
 
   /**
    * 檢查需要發送 LINE 提醒的任務
-   * 查找 reminder_datetime 在未來 30 分鐘內的任務且尚未發送提醒
+   * 查找 reminder_date_time 在未來 30 分鐘內的任務且尚未發送提醒
    */
   private async checkLineReminders(): Promise<void> {
     try {
@@ -47,16 +47,16 @@ export class ReminderScheduler {
       const thirtyMinutesLater = new Date(now.getTime() + 30 * 60 * 1000);
 
       // 查詢符合條件的任務:
-      // 1. reminder_datetime 在當前時間到 30 分鐘後之間
+      // 1. reminder_date_time 在當前時間到 30 分鐘後之間
       // 2. line_reminder_sent 為 false (尚未發送提醒)
-      // 3. reminder_datetime 不為 null
+      // 3. reminder_date_time 不為 null
       const { data: tasks, error } = await supabase
         .from('Tasks')
         .select('*')
-        .gte('reminder_datetime', now.toISOString())
-        .lte('reminder_datetime', thirtyMinutesLater.toISOString())
+        .gte('reminder_date_time', now.toISOString())
+        .lte('reminder_date_time', thirtyMinutesLater.toISOString())
         .eq('line_reminder_sent', false)
-        .not('reminder_datetime', 'is', null);
+        .not('reminder_date_time', 'is', null);
 
       if (error) {
         console.error('查詢需要提醒的任務失敗:', error);

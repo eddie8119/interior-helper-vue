@@ -34,7 +34,7 @@ export function useSchedule({
   const filteredTasks = computed(() => {
     // Get all tasks with reminder or end date
     const all = (fetchedAllTasks.value ?? []).filter(
-      (t) => t.reminderDatetime !== null || t.endDate !== null
+      (t) => t.reminderDateTime !== null || t.endDateTime !== null
     );
 
     // Exclude selected projects
@@ -49,11 +49,11 @@ export function useSchedule({
     return byProject.filter((t) => !selectedConstructionIds.value.includes(t.constructionType));
   });
 
-  // Unscheduled tasks (tasks without reminderDatetime and endDate)
+  // Unscheduled tasks (tasks without reminderDateTime and endDateTime)
   const unscheduledTasks = computed(() => {
     // Get all tasks without reminder or end date
     const all = (fetchedAllTasks.value ?? []).filter(
-      (t) => t.reminderDatetime === null && t.endDate === null
+      (t) => t.reminderDateTime === null && t.endDateTime === null
     );
 
     // Exclude selected projects
@@ -76,7 +76,7 @@ export function useSchedule({
   // Get unique dates that have tasks
   const taskDates = computed(() => {
     const dates = filteredTasks.value
-      .map((task) => task.reminderDatetime || task.endDate)
+      .map((task) => task.reminderDateTime || task.endDateTime)
       .filter((date): date is Date => date !== undefined && date !== null)
       .map((date) => {
         const d = new Date(date);

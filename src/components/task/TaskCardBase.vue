@@ -62,12 +62,12 @@
       <div v-if="hasReminder" class="flex items-center text-gray-500">
         <DateIcon />
         <p class="mr-2">{{ t('label.reminder') }}</p>
-        <span>{{ formatDate(reminderDatetime) }}</span>
+        <span>{{ formatDate(reminderDateTime) }}</span>
       </div>
-      <div v-if="hasEndDate" class="flex items-center text-gray-500">
+      <div v-if="hasEndDateTime" class="flex items-center text-gray-500">
         <DateIcon />
         <p class="mr-2">{{ t('label.end') }}</p>
-        <span>{{ formatDate(endDatetime) }}</span>
+        <span>{{ formatDate(endDateTime) }}</span>
       </div>
     </div>
   </div>
@@ -134,19 +134,19 @@ const descriptionText = computed(() => props.task.description?.trim() ?? '');
 const materialsList = computed(() =>
   Array.isArray(props.task.materials) ? props.task.materials : []
 );
-const reminderDatetime = computed<UpdateTimeType>(() => props.task.reminderDatetime ?? null);
-const endDatetime = computed<UpdateTimeType>(() => props.task.endDate ?? null);
+const reminderDateTime = computed<UpdateTimeType>(() => props.task.reminderDateTime ?? null);
+const endDateTime = computed<UpdateTimeType>(() => props.task.endDateTime ?? null);
 
 const hasDescription = computed(() => showDescription.value && descriptionText.value.length > 0);
 const hasMaterials = computed(() => showMaterials.value && materialsList.value.length > 0);
-const hasReminder = computed(() => Boolean(reminderDatetime.value));
-const hasEndDate = computed(() => Boolean(endDatetime.value));
+const hasReminder = computed(() => Boolean(reminderDateTime.value));
+const hasEndDateTime = computed(() => Boolean(endDateTime.value));
 
 const showDescriptionDivider = computed(
   () => hasDescription.value && (hasMaterials.value || hasReminder.value)
 );
 const showMaterialsDivider = computed(
-  () => hasMaterials.value && (hasReminder.value || hasEndDate.value)
+  () => hasMaterials.value && (hasReminder.value || hasEndDateTime.value)
 );
 
 const startEditing = () => {
@@ -154,9 +154,9 @@ const startEditing = () => {
   setValues({
     title: props.task.title,
     description: props.task.description,
-    reminderDatetime: props.task.reminderDatetime,
+    reminderDateTime: props.task.reminderDateTime,
     materials: props.task.materials,
-    endDate: props.task.endDate,
+    endDateTime: props.task.endDateTime,
   });
   isEditing.value = true;
 };

@@ -5,7 +5,12 @@
       "project": "Project",
       "profile": "Profile",
       "change-password": "Change Password",
-      "all": "All"
+      "all": "All",
+      "schedule": {
+        "reminderDateTime": "Reminder Schedule",
+        "endDateTime": "End Schedule",
+        "all": "All"
+      }
     }
   },
   "zh-TW": {
@@ -14,7 +19,12 @@
       "project": "專案",
       "profile": "個人資料",
       "change-password": "修改密碼",
-      "all": "全部"
+      "all": "全部",
+      "schedule": {
+        "reminderDateTime": "提醒排程",
+        "endDateTime": "截止排程",
+        "all": "全部"
+      }
     }
   },
   "ja": {}

@@ -130,7 +130,10 @@
     "construction": "Construction",
     "materials": "Materials",
     "type": "Type",
+    "end": "End",
     "reminder": "Reminder",
+    "end_date_time": "End Date",
+    "reminder_date_time": "Reminder Datetime",
     "role": "Role",
     "detail": "Detail",
     "total": "Total",
@@ -415,7 +418,12 @@
     "project": "Project",
     "profile": "Profile",
     "change-password": "Change Password",
-    "all": "All"
+    "all": "All",
+    "schedule": {
+      "reminderDateTime": "Reminder Schedule",
+      "endDateTime": "End Schedule",
+      "all": "All"
+    }
   },
   "title": {
     "welcome": "Welcome to Designer Helper",

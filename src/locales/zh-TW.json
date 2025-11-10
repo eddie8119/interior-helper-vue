@@ -129,8 +129,11 @@
     "time": "時間",
     "construction": "工程",
     "materials": "材料",
+    "end": "截止",
     "type": "類型",
     "reminder": "提醒",
+    "end_date_time": "截止時間",
+    "reminder_date_time": "提醒時間",
     "role": "角色",
     "detail": "詳情",
     "total": "總計",
@@ -414,7 +417,12 @@
     "project": "專案",
     "profile": "個人資料",
     "change-password": "修改密碼",
-    "all": "全部"
+    "all": "全部",
+    "schedule": {
+      "reminderDateTime": "提醒排程",
+      "endDateTime": "截止排程",
+      "all": "全部"
+    }
   },
   "title": {
     "welcome": "歡迎使用 Designer Helper",

@@ -6,16 +6,13 @@
       "files": ["**/*.vue"],
       "customSyntax": "postcss-html",
       "rules": {
-        "no-empty-source": null,
-        "scss/import-notation": null
+        "no-empty-source": null
       }
     },
     {
       "files": ["**/*.scss"],
       "customSyntax": "postcss-scss",
-      "rules": {
-        "scss/import-notation": null
-      }
+      "rules": {}
     }
   ],
   "rules": {
@@ -23,7 +20,6 @@
     "scss/at-rule-no-unknown": null,
     "selector-class-pattern": null,
     "scss/at-extend-no-missing-placeholder": null,
-    "import-notation": null,
     "no-descending-specificity": null,
     "declaration-property-value-keyword-no-deprecated": null
   }

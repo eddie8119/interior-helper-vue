@@ -46,6 +46,7 @@ import ContainerHeader from '@/components/kanbanBoard/ContainerHeader.vue';
 import { STATUS_FILTER_OPTIONS } from '@/constants/selection';
 import { useEditingStateStore } from '@/stores/editingState';
 import { isWithinDays } from '@/utils/date';
+import { searchTasks } from '@/utils/taskSearch';
 
 declare module '@/types/response' {
   interface TaskResponse {
@@ -59,6 +60,7 @@ const props = defineProps<{
   projectId: string;
   tasks: TaskResponse[];
   daysRange: [number, number] | null;
+  searchQuery?: string;
   readOnly?: boolean;
 }>();
 
@@ -81,10 +83,17 @@ const selectedStatus = ref<TaskFilterStatus>('all');
 const filteredAndSortedTasks = computed(() => {
   let tasksToDisplay: TaskResponse[] = props.tasks;
 
+  // Apply search filter
+  if (props.searchQuery && props.searchQuery.trim() !== '') {
+    tasksToDisplay = searchTasks(tasksToDisplay, props.searchQuery);
+  }
+
+  // Apply status filter
   if (selectedStatus.value !== 'all') {
     tasksToDisplay = tasksToDisplay.filter((task) => task.status === selectedStatus.value);
   }
 
+  // Apply date range filter
   if (props.daysRange) {
     tasksToDisplay = tasksToDisplay.filter((task) => {
       if (!task.endDateTime) return false;

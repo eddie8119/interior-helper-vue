@@ -18,9 +18,9 @@
         <router-link
           v-if="showRouter"
           class="toggle-button"
-          :to="`/todo/project/${task.projectId}`"
-          >{{ t('button.leave_for') + t('project.project') }}</router-link
-        >
+          :to="{ path: `/todo/project/${task.projectId}`, query: { taskTitle: task.title } }"
+          >{{ t('button.leave_for') }}
+        </router-link>
         <TaskStatusDropdown
           :read-only="readOnly"
           :status="task.status"

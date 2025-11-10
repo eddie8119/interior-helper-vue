@@ -2,6 +2,19 @@
   <div
     class="grid grid-cols-1 items-center gap-4 rounded-xl border border-gray-200/70 p-3 sm:flex sm:flex-row sm:items-center md:grid-cols-2"
   >
+    <!-- search -->
+    <div class="filter-container-outter">
+      <div class="filter-container-inner w-full">
+        <Label :label="t('label.search') + t('common.keyword')" />
+        <ElInput
+          v-model="searchQuery"
+          :placeholder="t('placeholder.search')"
+          class="input_table w-full md:w-64"
+          clearable
+          @input="handleSearchInput"
+        />
+      </div>
+    </div>
     <!-- Status and Display -->
     <div class="filter-container-outter gap-4">
       <div class="filter-container-inner">
@@ -56,9 +69,10 @@
 </template>
 
 <script setup lang="ts">
-import { ElSlider, ElSwitch } from 'element-plus';
-import { computed, ref } from 'vue';
+import { ElInput, ElSlider, ElSwitch } from 'element-plus';
+import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 import type { TaskFilterStatus } from '@/constants/selection';
 import type { TaskCardDisplayMode } from '@/constants/selection';
@@ -84,9 +98,11 @@ const props = withDefaults(
 const emit = defineEmits<{
   (e: 'update:selectedStatus', value: TaskFilterStatus): void;
   (e: 'update:daysRange', value: [number, number] | null): void;
+  (e: 'update:searchQuery', value: string): void;
 }>();
 
 const { t } = useI18n();
+const route = useRoute();
 
 const statusOptions = computed(() => {
   switch (props.statusDisplayMode) {
@@ -98,6 +114,9 @@ const statusOptions = computed(() => {
       return STATUS_FILTER_OPTIONS;
   }
 });
+
+// Search query
+const searchQuery = ref<string>('');
 
 // Status filter
 const selectedStatus = ref<TaskFilterStatus>('all');
@@ -140,6 +159,18 @@ const toggleTimeFilter = (enabled: boolean | string | number) => {
     emit('update:daysRange', null);
   }
 };
+
+const handleSearchInput = (value: string) => {
+  emit('update:searchQuery', value);
+};
+
+onMounted(() => {
+  const titleFromQuery = route.query.taskTitle;
+  if (typeof titleFromQuery === 'string' && titleFromQuery.trim() !== '') {
+    searchQuery.value = titleFromQuery;
+    emit('update:searchQuery', titleFromQuery);
+  }
+});
 </script>
 
 <style scoped>

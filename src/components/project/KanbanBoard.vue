@@ -4,6 +4,7 @@
     <TaskStatusDateFilter
       @update:selected-status="selectedStatus = $event"
       @update:days-range="daysRange = $event"
+      @update:search-query="searchQuery = $event"
     />
 
     <!-- 拖曳容器區域 -->
@@ -40,6 +41,7 @@
             :construction-name="container.name"
             :tasks="filteredTasksByConstruction(container.id)"
             :days-range="daysRange"
+            :search-query="searchQuery"
             :read-only="readOnly"
             @delete-container="handleDeleteConstruction(index)"
             @update:construction-name="updateConstructionName(index, $event)"
@@ -89,6 +91,7 @@ const emit = defineEmits<{
 // 狀態管理
 const localConstructionContainer = ref<ConstructionSelection[]>([]);
 const localTasks = ref<TaskResponse[]>([]);
+const searchQuery = ref<string>('');
 const { selectedStatus, daysRange, filteredTasksByConstruction } =
   useTaskConditionFilters(localTasks);
 

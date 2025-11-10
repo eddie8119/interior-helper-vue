@@ -10,9 +10,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 
-import { TaskTimeReminderStatus } from '@/types/task';
+import { TaskTimeAlertStatus } from '@/types/task';
 
-defineProps<{ showIndex: TaskTimeReminderStatus; classLabel?: string }>();
+defineProps<{ showIndex: TaskTimeAlertStatus; classLabel?: string }>();
 
 const { t } = useI18n();
 </script>

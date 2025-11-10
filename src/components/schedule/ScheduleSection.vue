@@ -11,7 +11,7 @@
         />
       </div>
 
-      <div class="flex-1 overflow-y-auto lg:flex-1">
+      <div class="flex-1 overflow-y-auto">
         <ScheduleFilterArea
           :construction-list="constructionList"
           :project-title-list="projectTitleList"

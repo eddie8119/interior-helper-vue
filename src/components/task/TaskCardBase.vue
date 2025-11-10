@@ -2,12 +2,12 @@
   <div
     v-if="!isEditing"
     class="task-card background-color-difference group relative cursor-pointer rounded-md p-1 shadow-sm duration-200"
-    :class="reminderLineClasses"
+    :class="timeAlertLineClasses"
     @dblclick="handleDblClick"
   >
     <!-- 提醒訊息 -->
-    <div v-if="reminderStatus !== 'none'" class="absolute bottom-[6px] right-[6px]">
-      <StatusLabel :show-index="reminderStatus" :class-label="reminderAreaClasses" />
+    <div v-if="timeAlertStatus !== 'none'" class="absolute bottom-[6px] right-[6px]">
+      <StatusLabel :show-index="timeAlertStatus" :class-label="timeAlertAreaClasses" />
     </div>
     <div class="flex items-center justify-between">
       <div class="flex items-center">
@@ -102,7 +102,7 @@ import MaterialList from '@/components/ui/MaterialList.vue';
 import StatusLabel from '@/components/ui/StatusLabel.vue';
 import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
-import { useTaskReminder } from '@/composables/useTaskReminder';
+import { useTaskTimeAlert } from '@/composables/useTaskTimeAlert';
 import { useTaskCardFilter } from '@/context/useTaskCardFilter';
 import { useEditingStateStore } from '@/stores/editingState';
 
@@ -124,7 +124,9 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const { showDescription, showMaterials } = useTaskCardFilter();
-const { reminderStatus, reminderLineClasses, reminderAreaClasses } = useTaskReminder(props.task);
+const { timeAlertStatus, timeAlertLineClasses, timeAlertAreaClasses } = useTaskTimeAlert(
+  props.task
+);
 const editingStateStore = useEditingStateStore();
 
 const isEditing = ref(false);

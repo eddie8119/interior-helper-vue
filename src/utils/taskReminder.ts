@@ -1,17 +1,17 @@
 import type { TaskResponse } from '@/types/response';
 
 import { TaskStatusEnum } from '@/types/task';
-import { TaskTimeReminderStatus } from '@/types/task';
+import { TaskTimeAlertStatus } from '@/types/task';
 
 /**
  * 檢查任務的提醒狀態
  * @param task - 要檢查的任務對象
- * @returns TaskTimeReminderStatus
+ * @returns TaskTimeAlertStatus
  */
-export function getTaskTimeReminderStatus(task: TaskResponse): TaskTimeReminderStatus {
+export function getTaskTimeAlertStatus(task: TaskResponse): TaskTimeAlertStatus {
   // 如果任務已完成，則沒有任何時間狀態
   if (task.status === TaskStatusEnum.DONE) {
-    return TaskTimeReminderStatus.NONE;
+    return TaskTimeAlertStatus.NONE;
   }
 
   const now = new Date();
@@ -20,7 +20,7 @@ export function getTaskTimeReminderStatus(task: TaskResponse): TaskTimeReminderS
   if (task.endDateTime) {
     const endDateTime = new Date(task.endDateTime);
     if (endDateTime.getTime() < now.getTime()) {
-      return TaskTimeReminderStatus.OVERDUE;
+      return TaskTimeAlertStatus.OVERDUE;
     }
   }
 
@@ -29,12 +29,12 @@ export function getTaskTimeReminderStatus(task: TaskResponse): TaskTimeReminderS
     const reminderTime = new Date(task.reminderDateTime);
     // 如果提醒時間已過，就觸發提醒
     if (reminderTime <= new Date()) {
-      return TaskTimeReminderStatus.REMINDING;
+      return TaskTimeAlertStatus.REMINDING;
     }
   }
 
   // 3. 如果以上條件都不滿足，則無狀態
-  return TaskTimeReminderStatus.NONE;
+  return TaskTimeAlertStatus.NONE;
 }
 
 // 逾期狀態：檢查 endDateTime。如果 endDateTime 早於今天，任務會被標記為 OVERDUE。

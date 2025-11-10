@@ -18,7 +18,9 @@
           <time v-if="dueAt" :datetime="dueISO">
             {{ formatTime(dueAt) }}
           </time>
-          <span v-else class="text-xs text-gray-400">無截止日</span>
+          <span v-else class="text-xs text-gray-400"
+            >{{ t('common.no') }}{{ t('label.end_date_time') }}</span
+          >
         </div>
         <button
           type="button"
@@ -37,10 +39,7 @@
       <div v-if="task.description" class="w-full overflow-hidden text-ellipsis whitespace-nowrap">
         {{ task.description }}
       </div>
-      <div class="flex gap-1">
-        <span v-if="task.materials && task.materials.length > 0" class="text-gray-500"> 📦 </span>
-        <span v-if="task.description" class="text-gray-500">📝</span>
-      </div>
+      <span v-if="task.materials && task.materials.length > 0" class="text-gray-500"> 📦 </span>
     </div>
 
     <!-- Expanded View -->
@@ -52,7 +51,7 @@
           aria-label="Collapse task card"
           @click="toggleExpand"
         >
-          <ElIcon class="text-gray-600"><ArrowLeft /></ElIcon>
+          <ElIcon class="text-gray-600"><Close /></ElIcon>
         </button>
       </header>
 
@@ -68,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue';
+import { ArrowRight, Close } from '@element-plus/icons-vue';
 import { ElIcon } from 'element-plus';
 import { computed, ref } from 'vue';
 
@@ -79,6 +78,7 @@ import H2Title from '@/components/core/title/H2Title.vue';
 import TaskCardBase from '@/components/task/TaskCardBase.vue';
 import { useProjectTitleList } from '@/context/useProjectTitleList';
 import { formatTime } from '@/utils/dateUtils';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   task: TaskResponse;
@@ -90,6 +90,8 @@ const emit = defineEmits<{
   (e: 'update:task', taskId: string, patch: Partial<TaskResponse>): void;
   (e: 'delete', taskId: string): void;
 }>();
+
+const { t } = useI18n();
 
 const isExpanded = ref(props.expanded);
 

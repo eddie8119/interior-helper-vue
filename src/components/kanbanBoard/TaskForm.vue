@@ -62,7 +62,7 @@
 
       <!-- 提醒 -->
       <!-- 截止時間 -->
-      <div class="space-y-2">
+      <div class="flex flex-col">
         <Label :label="t('label.end_date_time')" />
         <ElDatePicker
           v-model="endDateTime"
@@ -74,7 +74,7 @@
       </div>
 
       <!-- 提醒時間 -->
-      <div class="space-y-2">
+      <div class="flex flex-col">
         <Label :label="t('label.reminder_date_time')" />
         <ElDatePicker
           v-model="reminderDateTime"

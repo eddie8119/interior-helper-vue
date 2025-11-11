@@ -150,13 +150,15 @@ const showMaterialsDivider = computed(
 );
 
 const startEditing = () => {
-  editingStateStore.startEditing('task', props.task.id);
+  const { id, title, description, reminderDateTime, materials, endDateTime } = props.task;
+
+  editingStateStore.startEditing('task', id);
   setValues({
-    title: props.task.title,
-    description: props.task.description,
-    reminderDateTime: props.task.reminderDateTime,
-    materials: props.task.materials,
-    endDateTime: props.task.endDateTime,
+    title,
+    description,
+    reminderDateTime,
+    materials,
+    endDateTime,
   });
   isEditing.value = true;
 };

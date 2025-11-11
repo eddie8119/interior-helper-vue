@@ -11,11 +11,11 @@
     <p class="text-center text-lg">
       {{ t('dialog.delete_confirm') }}
       <span class="font-semibold text-secondary-red">{{ props.subject }}: {{ props.target }}</span>
-      ? {{ t('dialog.delete_content') }}
+      ? {{ t('message.sign.delete_construction_content') }}
     </p>
     <div v-if="props.isCrucial" class="mt-2 text-center text-lg">
       <p>
-        若確認刪除，請在下方輸入
+        {{ t('message.sign.confirm_delete_input') }}
         <span class="font-semibold text-secondary-red">{{ props.target }}</span>
       </p>
 

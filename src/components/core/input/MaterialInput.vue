@@ -1,7 +1,7 @@
 <template>
   <BasicArrayInput
     :model-value="modelValue"
-    :title="titleText"
+    :title="t('label.materials')"
     :new-item-factory="newItemFactory"
     :name-placeholder="namePlaceholder"
     :add-button-text="addButtonText"
@@ -25,7 +25,7 @@
           <span class="text200-color-difference mr-1 text-xs">{{ unitLabel }}:</span>
           <select v-model="item.unit" class="input-border input-common w-20 p-1 text-sm">
             <option value="" disabled hidden>{{ unitPlaceholder }}</option>
-            <option v-for="opt in unitOptions" :key="opt" :value="opt">{{ opt }}</option>
+            <option v-for="opt in commonStore.unitItems" :key="opt" :value="opt">{{ opt }}</option>
           </select>
         </div>
         <div class="flex items-center">
@@ -44,14 +44,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import BasicArrayInput from './BasicArrayInput.vue';
 
 import type { Item as BasicItem } from './BasicArrayInput.vue';
 
-import { useCommon } from '@/composables/useCommon';
 import { useCommonStore } from '@/stores/common';
 
 export interface Item extends BasicItem {
@@ -91,6 +89,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+const commonStore = useCommonStore();
 
 const newItemFactory = (): Item => ({
   name: '',
@@ -102,21 +101,6 @@ const newItemFactory = (): Item => ({
 const onUpdate = (value: Item[]) => {
   emit('update:modelValue', value);
 };
-
-const titleText = t('label.materials');
-
-const commonStore = useCommonStore();
-const { unitItemsFromCommon, refetchCommon } = useCommon();
-
-onMounted(() => {
-  if (commonStore.unitItems.length === 0) {
-    void refetchCommon();
-  }
-});
-
-const unitOptions = computed(() => {
-  return commonStore.unitItems.length ? commonStore.unitItems : unitItemsFromCommon.value;
-});
 </script>
 
 <style scoped></style>

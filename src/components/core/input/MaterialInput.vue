@@ -9,7 +9,7 @@
     @update:model-value="onUpdate"
   >
     <template #inputs="{ item }">
-      <div class="flex items-center gap-2">
+      <div class="grid grid-cols-2 gap-2">
         <div class="flex items-center">
           <span class="text200-color-difference mr-1 text-xs">{{ quantityLabel }}:</span>
 
@@ -17,9 +17,16 @@
             v-model.number="item.quantity"
             type="number"
             min="1"
-            class="input-border input-common w-16 p-1 text-sm"
+            class="input-border input-common w-20 p-1 text-sm"
             :placeholder="quantityPlaceholder"
           />
+        </div>
+        <div class="flex items-center">
+          <span class="text200-color-difference mr-1 text-xs">{{ unitLabel }}:</span>
+          <select v-model="item.unit" class="input-border input-common w-20 p-1 text-sm">
+            <option value="" disabled hidden>{{ unitPlaceholder }}</option>
+            <option v-for="opt in unitOptions" :key="opt" :value="opt">{{ opt }}</option>
+          </select>
         </div>
         <div class="flex items-center">
           <span class="text200-color-difference mr-1 text-xs">{{ priceLabel }}:</span>
@@ -37,15 +44,20 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import BasicArrayInput from './BasicArrayInput.vue';
 
 import type { Item as BasicItem } from './BasicArrayInput.vue';
 
+import { useCommon } from '@/composables/useCommon';
+import { useCommonStore } from '@/stores/common';
+
 export interface Item extends BasicItem {
   quantity?: number;
   unitPrice?: number;
+  unit?: string;
 }
 
 withDefaults(
@@ -56,6 +68,8 @@ withDefaults(
     quantityPlaceholder?: string;
     priceLabel?: string;
     pricePlaceholder?: string;
+    unitLabel?: string;
+    unitPlaceholder?: string;
     addButtonText?: string;
     itemErrors?: Record<number, string>;
   }>(),
@@ -65,6 +79,8 @@ withDefaults(
     quantityPlaceholder: '輸入',
     priceLabel: '單價',
     pricePlaceholder: '輸入',
+    unitLabel: '單位',
+    unitPlaceholder: '選取',
     addButtonText: '添加材料',
     itemErrors: () => ({}),
   }
@@ -80,6 +96,7 @@ const newItemFactory = (): Item => ({
   name: '',
   quantity: undefined,
   unitPrice: undefined,
+  unit: '',
 });
 
 const onUpdate = (value: Item[]) => {
@@ -87,6 +104,19 @@ const onUpdate = (value: Item[]) => {
 };
 
 const titleText = t('label.materials');
+
+const commonStore = useCommonStore();
+const { unitItemsFromCommon, refetchCommon } = useCommon();
+
+onMounted(() => {
+  if (commonStore.unitItems.length === 0) {
+    void refetchCommon();
+  }
+});
+
+const unitOptions = computed(() => {
+  return commonStore.unitItems.length ? commonStore.unitItems : unitItemsFromCommon.value;
+});
 </script>
 
 <style scoped></style>

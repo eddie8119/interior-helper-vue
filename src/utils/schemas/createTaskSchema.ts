@@ -14,6 +14,7 @@ export const createTaskSchema = (t: TranslateFunction) =>
             name: z.string(),
             quantity: z.number().optional(),
             unitPrice: z.number().optional(),
+            unit: z.string().optional(),
           })
           .superRefine((data, ctx) => {
             // Only validate quantity and unitPrice if a material name has been entered.

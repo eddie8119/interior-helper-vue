@@ -232,7 +232,9 @@
       "no_collaborators": "無專案協作者",
       "no_global_collaborators": "無全公司專案協作者",
       "no_invitations": "無待處理邀請",
-      "share_disabled_hint": "分享功能已關閉"
+      "share_disabled_hint": "分享功能已關閉",
+      "delete_construction_content": "以及其內的任務資料將被刪除",
+      "confirm_delete_input": "若確認刪除，請在下方輸入"
     },
     "no_done": "無已完成事項",
     "no_undone": "無未完成事項",
@@ -330,8 +332,8 @@
     "status": {
       "all": "全部",
       "todo": "待辦",
-      "inProgress": "進行中",
-      "done": "已完成"
+      "inProgress": "進行",
+      "done": "完成"
     },
     "role": {
       "viewer": "瀏覽者",

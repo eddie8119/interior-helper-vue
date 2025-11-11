@@ -66,8 +66,8 @@
       "status": {
         "all": "全部",
         "todo": "待辦",
-        "inProgress": "進行中",
-        "done": "已完成"
+        "inProgress": "進行",
+        "done": "完成"
       },
       "role": {
         "viewer": "瀏覽者",

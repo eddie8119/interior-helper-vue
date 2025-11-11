@@ -20,7 +20,9 @@
         "no_collaborators": "No project collaborators",
         "no_global_collaborators": "No company collaborators",
         "no_invitations": "No pending invitations",
-        "share_disabled_hint": "Share disabled"
+        "share_disabled_hint": "Share disabled",
+        "delete_construction_content": "This will also delete all its related tasks.",
+        "confirm_delete_input": "To confirm deletion, please type below."
       },
       "no_done": "No done",
       "no_undone": "No undone",
@@ -88,7 +90,9 @@
         "no_collaborators": "無專案協作者",
         "no_global_collaborators": "無全公司專案協作者",
         "no_invitations": "無待處理邀請",
-        "share_disabled_hint": "分享功能已關閉"
+        "share_disabled_hint": "分享功能已關閉",
+        "delete_construction_content": "以及其內的任務資料將被刪除",
+        "confirm_delete_input": "若確認刪除，請在下方輸入"
       },
       "no_done": "無已完成事項",
       "no_undone": "無未完成事項",

@@ -15,7 +15,7 @@
     :auto-scroll-enabled="false"
     :behaviour="'move'"
     :drag-handle-selector="'.task-drag-handle'"
-    class="grid max-h-[330px] grid-cols-1 gap-3"
+    class="grid grid-cols-1 gap-3"
     style="overflow: visible auto; touch-action: pan-y"
     @drop="!readOnly && handleTaskDrop($event)"
   >

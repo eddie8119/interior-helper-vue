@@ -24,7 +24,6 @@
         <AddNewConstruction
           v-if="!readOnly"
           id="new-container"
-          class="w-full shrink-0 md:w-[320px]"
           :existing-constructions="localConstructionContainer"
           @add-container="addNewConstruction"
         />

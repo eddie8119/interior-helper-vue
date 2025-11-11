@@ -37,7 +37,7 @@
         <template #default="scope">
           <div class="flex items-center">
             <ElIcon class="mr-1"><Clock /></ElIcon>
-            {{ formatDateTime(scope.row.reminder_datetime) }}
+            {{ formatDateTime(scope.row.reminder_date_time) }}
           </div>
         </template>
       </ElTableColumn>

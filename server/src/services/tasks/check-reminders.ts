@@ -17,10 +17,10 @@ export class ReminderService {
       const { data: tasks, error } = await supabase
         .from('Tasks')
         .select('*')
-        .gte('reminder_datetime', now.toISOString())
-        .lte('reminder_datetime', thirtyMinutesLater.toISOString())
+        .gte('reminder_date_time', now.toISOString())
+        .lte('reminder_date_time', thirtyMinutesLater.toISOString())
         .eq('line_reminder_sent', false)
-        .not('reminder_datetime', 'is', null);
+        .not('reminder_date_time', 'is', null);
 
       if (error) {
         console.error('查詢需要提醒的任務失敗:', error);
@@ -61,10 +61,10 @@ export class ReminderService {
           Projects(title)
         `
         )
-        .gte('reminder_datetime', now.toISOString())
-        .lte('reminder_datetime', twentyFourHoursLater.toISOString())
-        .not('reminder_datetime', 'is', null)
-        .order('reminder_datetime', { ascending: true });
+        .gte('reminder_date_time', now.toISOString())
+        .lte('reminder_date_time', twentyFourHoursLater.toISOString())
+        .not('reminder_date_time', 'is', null)
+        .order('reminder_date_time', { ascending: true });
 
       if (error) {
         console.error('獲取待發送提醒的任務失敗:', error);

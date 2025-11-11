@@ -41,7 +41,7 @@
       </div>
     </div>
     <!-- 任務描述 -->
-    <div class="task-details grid grid-cols-1 gap-5 p-2">
+    <div class="task-details grid grid-cols-1 gap-1 p-2">
       <template v-if="hasDescription">
         <p class="text-color-difference text-lg">
           {{ descriptionText }}
@@ -50,15 +50,13 @@
       </template>
 
       <!-- 任務材料 -->
-      <template v-if="hasMaterials">
-        <div>
-          <Label :label="t('label.materials') + ':'" />
-          <MaterialList :materials="materialsList" />
-        </div>
-        <div v-if="showMaterialsDivider" class="divider-line" />
-      </template>
+      <div v-if="hasMaterials">
+        <Label :label="t('label.materials') + ':'" />
+        <MaterialList :materials="materialsList" />
+      </div>
+      <div v-if="showMaterialsDivider" class="divider-line" />
 
-      <!-- 任務提醒 -->
+      <!-- 時間提醒 -->
       <div v-if="hasReminder" class="flex items-center text-gray-500">
         <DateIcon />
         <p class="mr-2">{{ t('label.reminder') }}</p>

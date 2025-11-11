@@ -110,16 +110,40 @@ export function useTaskLocalStorage(projectId: string, fetchedTasks: Ref<any[] |
             // 使用 Object.entries 和類型守衛合併缺失的屬性
             Object.entries(fetchedTask).forEach(([key, value]) => {
               if (isKeyOfTaskResponse(key, fetchedTask)) {
-                // 特別處理數組類型
-                if (
-                  key === 'materials' &&
-                  (!localTask[key] || !localTask[key].length) &&
-                  Array.isArray(value)
-                ) {
-                  localTask[key] = [...value];
+                // 特別處理 materials：即使本地已有陣列，也要把缺少的欄位（如 unit）補齊
+                if (key === 'materials' && Array.isArray(value)) {
+                  const localMaterials = (localTask as any).materials;
+                  const fetchedMaterials = value as any[];
+
+                  if (!localMaterials || !Array.isArray(localMaterials) || !localMaterials.length) {
+                    (localTask as any).materials = [...fetchedMaterials];
+                  } else {
+                    const localById = new Map<string, any>();
+                    for (const m of localMaterials as any[]) {
+                      if (m && typeof m === 'object' && m.id) localById.set(m.id, m);
+                    }
+
+                    for (const f of fetchedMaterials) {
+                      if (f && typeof f === 'object') {
+                        const target = f.id && localById.has(f.id) ? localById.get(f.id) : null;
+                        if (target) {
+                          // 將缺少或為 null 的屬性（如 unit）從伺服器補到本地
+                          Object.keys(f).forEach((k) => {
+                            if (target[k] === undefined || target[k] === null) target[k] = f[k];
+                          });
+                        } else {
+                          // 本地沒有這筆材料，直接加入
+                          (localTask as any).materials.push({ ...f });
+                        }
+                      }
+                    }
+                  }
                 }
-                // 處理其他屬性
-                else if (!localTask[key] && value !== undefined) {
+                // 處理其他屬性：若本地缺少就補齊
+                else if (
+                  ((localTask as any)[key] === undefined || (localTask as any)[key] === null) &&
+                  value !== undefined
+                ) {
                   (localTask as Record<keyof TaskResponse, unknown>)[key] = value;
                 }
               }

@@ -279,6 +279,7 @@ export const createTask = async (req: Request, res: Response) => {
           name: material.name,
           quantity: material.quantity,
           unit_price: material.unit_price,
+          unit: material.unit,
           user_id: userId,
         }));
 
@@ -406,6 +407,7 @@ export const updateTask = async (req: Request, res: Response) => {
           name: material.name,
           quantity: material.quantity,
           unit_price: material.unit_price,
+          unit: material.unit,
           user_id: userId,
         }));
 
@@ -541,6 +543,7 @@ export const updateTasks = async (req: Request, res: Response) => {
                 name: material.name,
                 quantity: material.quantity,
                 unit_price: material.unit_price,
+                unit: material.unit,
                 user_id: userId,
               }));
 

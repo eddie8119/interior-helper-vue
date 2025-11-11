@@ -30,18 +30,25 @@ export function processTasksWithOrder(tasks: DraggableTask[] | null): DraggableT
   // 使用 Map 進行分組，性能更好
   const taskMap = new Map<string, DraggableTask[]>();
 
-  // 按工程類型分組
+  // 按工程類型分組（不修改原始任務，建立淺拷貝，材料也拷貝）
   tasks.forEach((task) => {
-    const constructionType = task.constructionType || 'uncategorized';
+    const clonedTask: DraggableTask = {
+      ...task,
+      materials: Array.isArray(task.materials)
+        ? (task.materials.map((m: any) => ({ ...m })) as any)
+        : (task.materials as any),
+    };
+
+    const constructionType = clonedTask.constructionType || 'uncategorized';
 
     if (!taskMap.has(constructionType)) {
       taskMap.set(constructionType, []);
     }
 
-    taskMap.get(constructionType)!.push(task);
+    taskMap.get(constructionType)!.push(clonedTask);
   });
 
-  // 對每組任務排序並分配 order
+  // 對每組任務排序並分配 order（只修改拷貝）
   const processedTasks: DraggableTask[] = [];
 
   taskMap.forEach((group) => {

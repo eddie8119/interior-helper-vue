@@ -4,7 +4,7 @@
       <div v-for="material in materials" :key="material.id" class="flex items-center gap-1">
         <span class="mr-1">•</span>
         <span class="mr-1 font-medium">{{ material.name }}:</span>
-        <span>{{ material.quantity }} x ${{ material.unitPrice }}</span>
+        <span>{{ material.quantity }} {{ material.unit }} x ${{ material.unitPrice }}</span>
         <span>=</span>
         <span>${{ calculatePrice(material) }}</span>
       </div>
@@ -23,6 +23,7 @@ interface Material {
   name: string;
   quantity?: number;
   unitPrice?: number;
+  unit?: string;
   taskId?: string;
   userId?: string;
   createdAt?: string;

@@ -3,12 +3,15 @@ import { ref, watch } from 'vue';
 import { useCommon } from './useCommon';
 
 import type { ConstructionSelection } from '@/types/selection';
+import type { CommonLocalStorageData } from '@/utils/storage/commonStorage';
+
+import { loadCommonLocalStorage, persistCommonLocalStorage } from '@/utils/storage/commonStorage';
 
 export function useCommonAction() {
   const {
-    common,
-    constructionItemsFromCommon,
+    fetchedCommon,
     updateCommon,
+    constructionItemsFromCommon,
     unitItemsFromCommon,
     projectTypeItemsFromCommon,
   } = useCommon();
@@ -18,9 +21,28 @@ export function useCommonAction() {
   // unit
   const newUnitItem = ref<string>('');
   const localUnitItems = ref<string[]>([]);
-  // projectType
+  // projectType (no use)
   const newProjectTypeItem = ref<string>('');
   const localProjectTypeItems = ref<string[]>([]);
+
+  const applyStoredDataToLocalState = (data: CommonLocalStorageData) => {
+    localConstructionItems.value = [...data.constructionItemsFromCommon];
+    localUnitItems.value = [...data.unitItemsFromCommon];
+    localProjectTypeItems.value = [...data.projectTypeItemsFromCommon];
+  };
+
+  const getLocalStorageSnapshot = (): CommonLocalStorageData => ({
+    constructionItemsFromCommon: [...localConstructionItems.value],
+    unitItemsFromCommon: [...localUnitItems.value],
+    projectTypeItemsFromCommon: [...localProjectTypeItems.value],
+  });
+
+  const storedCommonData = loadCommonLocalStorage();
+  if (storedCommonData) {
+    applyStoredDataToLocalState(storedCommonData);
+  }
+
+  let skipInitialWatch = Boolean(storedCommonData);
 
   // Initialize local construction items
   watch(
@@ -31,6 +53,10 @@ export function useCommonAction() {
         projectTypeItemsFromCommon.value,
       ] as const,
     ([newConstructionItems, newUnitItems, newProjectTypeItems]) => {
+      if (skipInitialWatch) {
+        skipInitialWatch = false;
+        return;
+      }
       if (newConstructionItems) {
         localConstructionItems.value = [...newConstructionItems] as ConstructionSelection[];
       }
@@ -40,6 +66,8 @@ export function useCommonAction() {
       if (newProjectTypeItems) {
         localProjectTypeItems.value = [...newProjectTypeItems] as string[];
       }
+
+      persistCommonLocalStorage(getLocalStorageSnapshot());
     },
     { immediate: true }
   );
@@ -115,6 +143,8 @@ export function useCommonAction() {
       localConstructionItems.value = updatedItems as ConstructionSelection[];
     if (type === 'unit') localUnitItems.value = updatedItems as string[];
     if (type === 'projectType') localProjectTypeItems.value = updatedItems as string[];
+
+    persistCommonLocalStorage(getLocalStorageSnapshot());
   };
 
   const addConstructionData = () => addData('construction');
@@ -133,13 +163,12 @@ export function useCommonAction() {
     projectType: string[];
   }) => {
     try {
-      if (common.value && common.value.id) {
+      if (fetchedCommon.value && fetchedCommon.value.id) {
         await updateCommon({
-          id: common.value.id,
+          id: fetchedCommon.value.id,
           data: {
             construction: updateData.construction,
             unit: updateData.unit,
-            projectType: updateData.projectType,
           },
         });
 

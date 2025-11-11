@@ -62,13 +62,13 @@ import { useCommon } from '@/composables/useCommon';
 import { createCommonSchema } from '@/utils/schemas/createCommonSchema';
 
 const { t } = useI18n();
-const { common, updateCommon } = useCommon();
+const { fetchedCommon, updateCommon } = useCommon();
 // Form validation setup
 const { handleSubmit, isSubmitting, setValues } = useForm({
   validationSchema: toTypedSchema(createCommonSchema(t)),
   initialValues: {
-    construction: common.value?.construction || [],
-    unit: common.value?.unit || [],
+    construction: fetchedCommon.value?.construction || [],
+    unit: fetchedCommon.value?.unit || [],
   },
 });
 
@@ -111,7 +111,7 @@ const syncToForm = () => {
 
 // Watch for external changes to common data and update form values
 watch(
-  common,
+  fetchedCommon,
   (newCommon) => {
     if (newCommon) {
       setValues({
@@ -128,13 +128,13 @@ watch(
 const onSubmit = handleSubmit(async () => {
   syncToForm(); // Sync local changes to form state before submitting
   try {
-    if (!common.value) {
+    if (!fetchedCommon.value) {
       ElMessage.error(t('message.no_common_data_exists'));
       return;
     }
 
     await updateCommon({
-      id: common.value.id,
+      id: fetchedCommon.value.id,
       data: {
         construction: construction.value,
         unit: unit.value,

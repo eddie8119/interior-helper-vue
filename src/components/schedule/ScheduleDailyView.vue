@@ -7,7 +7,7 @@
           <button
             class="tab-button rounded-lg px-4 py-2 text-sm font-medium transition-colors"
             :class="{ 'is-active': displayMode === mode.value }"
-            @click="displayMode = mode.value"
+            @click="$emit('update:displayMode', mode.value)"
           >
             {{ t(`tab.schedule.${mode.value}`) }}
           </button>
@@ -55,11 +55,13 @@ import { groupTasksByDate } from '@/utils/scheduleGroupUtils';
 const props = defineProps<{
   tasks: TaskResponse[];
   selectedDate: Date;
+  displayMode: TaskScheduleDisplayMode;
 }>();
 
 const emit = defineEmits<{
   (e: 'update:task', taskId: string, patch: Partial<TaskResponse>): void;
   (e: 'delete', taskId: string): void;
+  (e: 'update:displayMode', mode: TaskScheduleDisplayMode): void;
 }>();
 
 const { t } = useI18n();
@@ -67,7 +69,6 @@ const { t } = useI18n();
 const scrollContainer = ref<HTMLElement | null>(null);
 const dayRefs = ref<Map<string, HTMLElement>>(new Map());
 const expandedTaskIds = ref<Set<string>>(new Set());
-const displayMode = ref<TaskScheduleDisplayMode>(TaskScheduleDisplayMode.ReminderDateTime);
 
 const taskScheduleDisplayModeList = [
   { value: TaskScheduleDisplayMode.ReminderDateTime, label: t('schedule.display_mode.reminder') },
@@ -75,7 +76,7 @@ const taskScheduleDisplayModeList = [
   { value: TaskScheduleDisplayMode.All, label: t('schedule.display_mode.all') },
 ];
 
-const groupedTasks = computed(() => groupTasksByDate(props.tasks, t, displayMode.value));
+const groupedTasks = computed(() => groupTasksByDate(props.tasks, t, props.displayMode));
 
 const setDayRef = (dateKey: string, el: HTMLElement) => {
   if (el) {

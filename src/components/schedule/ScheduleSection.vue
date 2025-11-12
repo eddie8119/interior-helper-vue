@@ -6,7 +6,8 @@
       <div class="overflow-hidden">
         <ScheduleCalendar
           :selected-date="selectedDate"
-          :task-dates="taskDates"
+          :tasks="fetchedAllTasks"
+          :display-mode="displayMode"
           @update:selected-date="selectedDate = $event"
         />
       </div>
@@ -28,8 +29,10 @@
       <ScheduleDailyView
         :tasks="filteredTasks"
         :selected-date="selectedDate"
+        :display-mode="displayMode"
         @update:task="handleUpdateTask"
         @delete="handleDeleteTask"
+        @update:display-mode="displayMode = $event"
       />
     </div>
 
@@ -94,6 +97,7 @@
 import { Close, DocumentCopy } from '@element-plus/icons-vue';
 import { ElIcon } from 'element-plus';
 import { ref } from 'vue';
+import { TaskScheduleDisplayMode } from '@/types/task';
 import { useI18n } from 'vue-i18n';
 
 import type { TaskResponse } from '@/types/response';
@@ -116,6 +120,8 @@ const { fetchedAllTasks, isLoadingAllTasks, updateTask, deleteTask } = useTasks(
 const { isLoadingOverviewProjects, constructionList, projectTitleList } = useOverviewSources();
 
 // Schedule logic
+const displayMode = ref<TaskScheduleDisplayMode>(TaskScheduleDisplayMode.ReminderDateTime);
+
 const {
   selectedDate,
   selectedConstructionIds,
@@ -124,7 +130,6 @@ const {
   toggleProject,
   filteredTasks,
   unscheduledTasks,
-  taskDates,
 } = useSchedule({
   fetchedAllTasks,
   constructionList,

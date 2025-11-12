@@ -101,6 +101,8 @@
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue';
 import { ElIcon } from 'element-plus';
 import { computed, nextTick, onMounted, ref } from 'vue';
+import { TaskScheduleDisplayMode } from '@/types/task';
+import type { TaskResponse } from '@/types/response';
 import { useI18n } from 'vue-i18n';
 
 import type { CalendarDate } from '@/utils/calendarUtils';
@@ -116,7 +118,8 @@ import {
 
 const props = defineProps<{
   selectedDate: Date;
-  taskDates: Date[];
+  tasks: TaskResponse[] | null;
+  displayMode: TaskScheduleDisplayMode;
 }>();
 
 const emit = defineEmits<{
@@ -130,8 +133,32 @@ const currentDate = ref(new Date(props.selectedDate));
 const currentYear = computed(() => currentDate.value.getFullYear());
 const currentMonth = computed(() => getMonthName(currentDate.value, t));
 const weekDays = computed(() => getWeekDayNames(t));
+const taskDates = computed(() => {
+  if (!props.tasks) return [];
+  const dates: Date[] = [];
+  props.tasks.forEach((task: TaskResponse) => {
+    if (
+      props.displayMode === TaskScheduleDisplayMode.ReminderDateTime ||
+      props.displayMode === TaskScheduleDisplayMode.All
+    ) {
+      if (task.reminderDateTime) {
+        dates.push(new Date(task.reminderDateTime));
+      }
+    }
+    if (
+      props.displayMode === TaskScheduleDisplayMode.EndDateTime ||
+      props.displayMode === TaskScheduleDisplayMode.All
+    ) {
+      if (task.endDateTime) {
+        dates.push(new Date(task.endDateTime));
+      }
+    }
+  });
+  return dates;
+});
+
 const calendarDates = computed(() =>
-  generateCalendarDates(currentDate.value, props.selectedDate, props.taskDates)
+  generateCalendarDates(currentDate.value, props.selectedDate, taskDates.value)
 );
 
 const getDateButtonClasses = (date: CalendarDate): string[] => {

@@ -3,6 +3,7 @@
     "tab": {
       "projects": "Projects List",
       "project": "Project",
+      "projects-download": "Projects Download",
       "profile": "Profile",
       "change-password": "Change Password",
       "all": "All",
@@ -17,6 +18,7 @@
     "tab": {
       "projects": "專案群",
       "project": "專案",
+      "projects-download": "專案下載",
       "profile": "個人資料",
       "change-password": "修改密碼",
       "all": "全部",

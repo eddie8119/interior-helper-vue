@@ -5,28 +5,28 @@ export const useSlideStore = defineStore('slide', () => {
   // Quick Draft slide
   const isQuickDraftSlideVisible = ref(false);
 
-  function toggleQuickDraftSlide() {
+  const toggleQuickDraftSlide = () => {
     isQuickDraftSlideVisible.value = !isQuickDraftSlideVisible.value;
-  }
-  function showQuickDraftSlide() {
+  };
+  const showQuickDraftSlide = () => {
     isQuickDraftSlideVisible.value = true;
-  }
-  function hideQuickDraftSlide() {
+  };
+  const hideQuickDraftSlide = () => {
     isQuickDraftSlideVisible.value = false;
-  }
+  };
 
   // Notification slide
   const isNotificationSlideVisible = ref(false);
 
-  function toggleNotificationSlide() {
+  const toggleNotificationSlide = () => {
     isNotificationSlideVisible.value = !isNotificationSlideVisible.value;
-  }
-  function showNotificationSlide() {
+  };
+  const showNotificationSlide = () => {
     isNotificationSlideVisible.value = true;
-  }
-  function hideNotificationSlide() {
+  };
+  const hideNotificationSlide = () => {
     isNotificationSlideVisible.value = false;
-  }
+  };
 
   return {
     // quick draft

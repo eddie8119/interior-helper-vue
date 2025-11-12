@@ -124,6 +124,11 @@ const routes: Array<RouteRecordRaw> = [
             path: 'project/:id',
             component: () => import('../pages/protected/todo/project.vue'),
           },
+          {
+            name: 'todo-projects-download',
+            path: 'projects-download',
+            component: () => import('../pages/protected/todo/projects-download.vue'),
+          },
         ],
       },
       {

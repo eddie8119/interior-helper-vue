@@ -4,52 +4,45 @@ import { TaskTimeCondition } from '@/types/task';
 
 export const USER_TAB_LIST: Tab[] = [
   {
-    label: 'Profile',
     name: 'profile',
   },
   {
-    label: 'Change Password',
     name: 'change-password',
   },
 ];
 
 export const TO_DO_TAB_LIST: Tab[] = [
   {
-    label: 'To Do Projects',
     name: 'projects',
+  },
+  {
+    name: 'projects-download',
   },
 ];
 
 export const OVERVIEW_TASK_CONDITION_TAB_LIST: Tab[] = [
   {
-    label: 'All',
     name: TaskTimeCondition.ALL,
   },
   {
-    label: 'Unscheduled',
     name: TaskTimeCondition.UNSCHEDULED,
   },
   {
-    label: 'Overdue',
     name: TaskTimeCondition.OVERDUE,
   },
   {
-    label: 'Today',
     name: TaskTimeCondition.TODAY,
   },
   {
-    label: 'This Week',
     name: TaskTimeCondition.THIS_WEEK,
   },
   {
-    label: 'This Month',
     name: TaskTimeCondition.THIS_MONTH,
   },
 ];
 
 export const SETTING_COMMON_TAB_LIST: Tab[] = [
   {
-    label: 'Common All',
     name: 'all',
   },
 ];

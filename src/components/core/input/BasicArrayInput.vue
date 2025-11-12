@@ -55,12 +55,11 @@
 <script setup lang="ts" generic="T extends Item">
 import { useI18n } from 'vue-i18n';
 
+import type { Item } from '@/types/input';
+
 import Label from '@/components/core/title/Label.vue';
 
-export interface Item {
-  name: string;
-  [key: string]: any; // Allow other properties
-}
+type __ItemMarker = Item;
 
 const props = withDefaults(
   defineProps<{

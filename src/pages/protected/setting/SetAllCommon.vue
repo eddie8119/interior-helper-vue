@@ -19,7 +19,7 @@
       <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
         <!-- Construction Input -->
         <div>
-          <BasicArrayInput
+          <DraggableArrayInput
             v-model="localConstructionItems"
             :title="t('setting.construction')"
             :new-item-factory="createNewConstructionItem"
@@ -33,7 +33,7 @@
 
         <!-- Unit Input -->
         <div>
-          <BasicArrayInput
+          <DraggableArrayInput
             v-model="localUnitItems"
             :title="t('setting.unit')"
             :new-item-factory="() => ({ name: '' })"
@@ -54,11 +54,11 @@ import { useField, useForm } from 'vee-validate';
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { Item } from '@/components/core/input/BasicArrayInput.vue';
+import type { Item } from '@/components/core/input/DraggableArrayInput.vue';
 import type { ConstructionSelection } from '@/types/selection';
 
 import TextButton from '@/components/core/button/TextButton.vue';
-import BasicArrayInput from '@/components/core/input/BasicArrayInput.vue';
+import DraggableArrayInput from '@/components/core/input/DraggableArrayInput.vue';
 import { useCommon } from '@/composables/useCommon';
 import { createCommonSchema } from '@/utils/schemas/createCommonSchema';
 import {

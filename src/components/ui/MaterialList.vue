@@ -1,14 +1,14 @@
 <template>
-  <div v-if="materials && materials.length > 0" class="mt-1">
-    <div class="space-y-1 text-gray-500">
-      <div v-for="material in materials" :key="material.id" class="flex items-center gap-1">
-        <span class="mr-1">•</span>
-        <span class="mr-1 font-medium">{{ material.name }}:</span>
-        <span>{{ material.quantity }} {{ material.unit }} x ${{ material.unitPrice }}</span>
+  <div v-if="materials && materials.length > 0" class="text-color-difference mt-1">
+    <ul class="space-y-1">
+      <li v-for="material in materials" :key="material.id" class="flex items-center gap-1 text-sm">
+        <span>•</span>
+        <span class="font-medium">{{ material.name }}:</span>
+        <span> {{ material.quantity }} {{ material.unit }} × ${{ material.unitPrice }} </span>
         <span>=</span>
-        <span>${{ calculatePrice(material) }}</span>
-      </div>
-    </div>
+        <span class="font-semibold">${{ calculatePrice(material) }}</span>
+      </li>
+    </ul>
     <div class="mt-2 flex justify-end text-sm">
       <span>{{ t('label.total') }}: ${{ calculateTotal() }}</span>
     </div>

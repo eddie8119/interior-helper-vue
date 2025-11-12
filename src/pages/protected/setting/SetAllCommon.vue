@@ -1,22 +1,38 @@
 <template>
-  <div class="panel-container p-8">
-    <div ref="scrollContainer" class="relative space-y-8">
-      <!-- Submit Button -->
-      <TextButton
-        variant="primary"
-        size="md"
-        :class="[
-          'z-50 h-10 px-6 sm:w-auto',
-          isScrolledDown ? 'absolute bottom-0 right-0 shadow-lg' : 'absolute right-0 top-0',
-        ]"
-        :loading="isSubmitting"
-        :disabled="isSubmitting || !construction.length || !unit.length"
-        @click="onSubmit"
-      >
-        {{ t('common.save') }}
-      </TextButton>
+  <div class="panel-container p-4 sm:p-6 md:p-8">
+    <div ref="scrollContainer" class="relative pb-24 md:pb-0">
+      <!-- Submit Button: Mobile -->
+      <div class="md:hidden">
+        <TextButton
+          variant="primary"
+          size="md"
+          class="fixed inset-x-4 bottom-[calc(env(safe-area-inset-bottom)+16px)] z-50 h-12 rounded-xl shadow-lg"
+          :loading="isSubmitting"
+          :disabled="isSubmitting || !construction.length || !unit.length"
+          @click="onSubmit"
+        >
+          {{ t('common.save') }}
+        </TextButton>
+      </div>
 
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+      <!-- Submit Button: Desktop/Tablet -->
+      <div class="hidden md:block">
+        <TextButton
+          variant="primary"
+          size="md"
+          :class="[
+            'z-50 h-10 px-6',
+            isScrolledDown ? 'absolute bottom-0 right-0 shadow-lg' : 'absolute right-0 top-0',
+          ]"
+          :loading="isSubmitting"
+          :disabled="isSubmitting || !construction.length || !unit.length"
+          @click="onSubmit"
+        >
+          {{ t('common.save') }}
+        </TextButton>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-3">
         <!-- Construction Input -->
         <div>
           <DraggableArrayInput

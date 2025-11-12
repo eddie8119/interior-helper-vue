@@ -48,9 +48,21 @@ const emit = defineEmits<{ (e: 'update:status', status: TaskStatus): void }>();
 const { t } = useI18n();
 
 const statusOptions = [
-  { value: TaskStatusEnum.TODO, color: 'bg-gray-400', textColor: 'text-gray-800' },
-  { value: TaskStatusEnum.IN_PROGRESS, color: 'bg-blue-400', textColor: 'text-blue-700' },
-  { value: TaskStatusEnum.DONE, color: 'bg-green-400', textColor: 'text-green-800' },
+  {
+    value: TaskStatusEnum.TODO,
+    color: 'bg-gray-400',
+    textColor: 'text-gray-700 dark:text-gray-300',
+  },
+  {
+    value: TaskStatusEnum.IN_PROGRESS,
+    color: 'bg-blue-400',
+    textColor: 'text-blue-700 dark:text-blue-300',
+  },
+  {
+    value: TaskStatusEnum.DONE,
+    color: 'bg-green-400',
+    textColor: 'text-green-700 dark:text-green-300',
+  },
 ];
 
 const handleCommand = (command: TaskStatus) => {

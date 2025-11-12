@@ -163,6 +163,17 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
+    path: '/other',
+    component: AppLayout,
+    children: [
+      {
+        name: 'help_center',
+        path: 'help_center',
+        component: () => import('../pages/protected/other/HelpCenter.vue'),
+      },
+    ],
+  },
+  {
     path: '/notifications',
     component: AppLayout,
     children: [

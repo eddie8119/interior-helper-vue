@@ -58,4 +58,15 @@ export const MENU: Menu[] = [
       },
     ],
   },
+  {
+    group: 'nav.group.other',
+    items: [
+      {
+        label: 'Help Center',
+        name: 'help_center',
+        icon: 'Palette',
+        route: '/other/help_center',
+      },
+    ],
+  },
 ];

@@ -1,6 +1,10 @@
 <template>
   <Transition name="todo-slide">
-    <div v-if="isQuickDraftSlideVisible" class="fixed inset-0 z-[999]">
+    <div
+      v-if="isQuickDraftSlideVisible"
+      class="fixed inset-0 z-[999]"
+      @click.self="hideQuickDraftSlide"
+    >
       <!-- Slide panel -->
       <div
         class="background-color-difference absolute left-0 top-0 flex h-full w-full rounded-none pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)] shadow-xl sm:w-[65%] sm:max-w-[550px] sm:rounded-r-[20px]"

@@ -1,4 +1,4 @@
-import { formatDateKey, getMonthYear, getWeekDay } from './dateUtils';
+import { formatDate as formatDateKey, getMonthYear, getWeekDay } from '@/utils/date';
 
 import type { TaskResponse } from '@/types/response';
 

@@ -66,8 +66,9 @@
         <Label :label="t('label.end_date_time')" />
         <ElDatePicker
           v-model="endDateTime"
-          type="date"
+          type="datetime"
           format="YYYY-MM-DD HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           :placeholder="t('placeholder.select_date')"
           class="w-full"
         />
@@ -80,6 +81,7 @@
           v-model="reminderDateTime"
           type="datetime"
           format="YYYY-MM-DD HH:mm:ss"
+          value-format="YYYY-MM-DD HH:mm:ss"
           :placeholder="t('placeholder.select_date_and_time')"
           class="w-full"
         />
@@ -116,6 +118,7 @@ import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 import MaterialInput from '@/components/core/input/MaterialInput.vue';
 import Label from '@/components/core/title/Label.vue';
+import { formatDateTime } from '@/utils/date';
 
 const props = defineProps<{
   initialData?: CreateTaskSchema;
@@ -147,8 +150,8 @@ if (props.showMore) {
 const { value: title } = useField<string>('title');
 const { value: description } = useField<string>('description');
 const { value: materials } = useField<Material[]>('materials');
-const { value: reminderDateTime } = useField<Date | undefined>('reminderDateTime');
-const { value: endDateTime } = useField<Date | undefined>('endDateTime');
+const { value: reminderDateTime } = useField<string | undefined>('reminderDateTime');
+const { value: endDateTime } = useField<string | undefined>('endDateTime');
 
 // 切換顯示更多設定
 const toggleMoreSettings = () => {
@@ -165,8 +168,8 @@ const toggleMoreSettings = () => {
   ) {
     // 如果是打開更多設定，且有初始數據，則恢復初始數據
     materials.value = props.initialData.materials || [];
-    reminderDateTime.value = props.initialData.reminderDateTime || undefined;
-    endDateTime.value = props.initialData.endDateTime || undefined;
+    reminderDateTime.value = formatDateTime(props.initialData.reminderDateTime!);
+    endDateTime.value = formatDateTime(props.initialData.endDateTime!);
   }
 
   // 切換顯示狀態

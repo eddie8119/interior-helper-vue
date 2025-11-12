@@ -221,7 +221,8 @@
       "no_email_received": "No email received",
       "check_the_email": "Check the email",
       "change_password_success": "Password changed successfully!",
-      "change_password_failed": "Failed to change password, please try again later"
+      "change_password_failed": "Failed to change password, please try again later",
+      "restore_input_query": "Clear the search box to display all tasks again."
     },
     "sign": {
       "no_todo": "No todo",
@@ -232,6 +233,7 @@
       "no_collaborators": "No project collaborators",
       "no_global_collaborators": "No company collaborators",
       "no_invitations": "No pending invitations",
+      "link_copied": "Link copied",
       "share_disabled_hint": "Share disabled",
       "delete_construction_content": "This will also delete all its related tasks.",
       "confirm_delete_input": "To confirm deletion, please type below."
@@ -285,7 +287,8 @@
       "home": "Home",
       "main": "Main",
       "record_items": "Record Items",
-      "setting": "Setting"
+      "setting": "Setting",
+      "other": "Other"
     },
     "menu": {
       "dashboard": "Dashboard",
@@ -293,6 +296,7 @@
       "schedule": "Schedule",
       "set-member": "Set Member",
       "set_common": "Set Common",
+      "help_center": "User Feedback",
       "to_do": "To Do",
       "quick_draft": "Quick Draft"
     }

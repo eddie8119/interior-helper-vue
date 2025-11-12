@@ -9,7 +9,8 @@
         "no_email_received": "No email received",
         "check_the_email": "Check the email",
         "change_password_success": "Password changed successfully!",
-        "change_password_failed": "Failed to change password, please try again later"
+        "change_password_failed": "Failed to change password, please try again later",
+        "restore_input_query": "Clear the search box to display all tasks again."
       },
       "sign": {
         "no_todo": "No todo",
@@ -20,6 +21,7 @@
         "no_collaborators": "No project collaborators",
         "no_global_collaborators": "No company collaborators",
         "no_invitations": "No pending invitations",
+        "link_copied": "Link copied",
         "share_disabled_hint": "Share disabled",
         "delete_construction_content": "This will also delete all its related tasks.",
         "confirm_delete_input": "To confirm deletion, please type below."
@@ -79,7 +81,8 @@
         "no_email_received": "尚未收到電子郵件",
         "check_the_email": "請檢查您的電子郵件",
         "change_password_success": "密碼變更成功！",
-        "change_password_failed": "密碼變更失敗，請稍後再試"
+        "change_password_failed": "密碼變更失敗，請稍後再試",
+        "restore_input_query": "清除搜尋關鍵字框，即可恢復展示所有任務"
       },
       "sign": {
         "no_todo": "無待辦事項",
@@ -90,6 +93,7 @@
         "no_collaborators": "無專案協作者",
         "no_global_collaborators": "無全公司專案協作者",
         "no_invitations": "無待處理邀請",
+        "link_copied": "已複製連結",
         "share_disabled_hint": "分享功能已關閉",
         "delete_construction_content": "以及其內的任務資料將被刪除",
         "confirm_delete_input": "若確認刪除，請在下方輸入"

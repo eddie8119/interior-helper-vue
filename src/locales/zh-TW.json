@@ -221,7 +221,8 @@
       "no_email_received": "尚未收到電子郵件",
       "check_the_email": "請檢查您的電子郵件",
       "change_password_success": "密碼變更成功！",
-      "change_password_failed": "密碼變更失敗，請稍後再試"
+      "change_password_failed": "密碼變更失敗，請稍後再試",
+      "restore_input_query": "清除搜尋關鍵字框，即可恢復展示所有任務"
     },
     "sign": {
       "no_todo": "無待辦事項",
@@ -232,6 +233,7 @@
       "no_collaborators": "無專案協作者",
       "no_global_collaborators": "無全公司專案協作者",
       "no_invitations": "無待處理邀請",
+      "link_copied": "已複製連結",
       "share_disabled_hint": "分享功能已關閉",
       "delete_construction_content": "以及其內的任務資料將被刪除",
       "confirm_delete_input": "若確認刪除，請在下方輸入"
@@ -285,7 +287,8 @@
       "home": "首頁",
       "main": "主",
       "record_items": "紀錄項目",
-      "setting": "設定"
+      "setting": "設定",
+      "other": "其他"
     },
     "menu": {
       "dashboard": "儀表板",
@@ -293,6 +296,7 @@
       "schedule": "行事曆",
       "set-member": "成員設定",
       "set_common": "通用設定",
+      "help_center": "使用者回報",
       "to_do": "專案任務管理",
       "quick_draft": "工地待辦速記"
     }

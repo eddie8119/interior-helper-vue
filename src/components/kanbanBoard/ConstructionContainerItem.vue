@@ -24,10 +24,10 @@
     <div v-if="!readOnly" class="mt-3 flex justify-center">
       <button
         v-if="!isEditing"
-        class="flex items-center justify-center rounded-md bg-blue-100 px-3 py-1 text-blue-700 hover:bg-blue-200"
+        class="flex appearance-none items-center justify-center rounded-md bg-blue-100 px-3 py-1 text-blue-700 hover:bg-blue-200"
         @click="startEditing"
       >
-        + {{ t('button.add_task') }}
+        <AddIcon /> {{ t('button.add_task') }}
       </button>
     </div>
   </div>
@@ -43,6 +43,7 @@ import type { TaskResponse } from '@/types/response';
 
 import ContainerBody from '@/components/kanbanBoard/ContainerBody.vue';
 import ContainerHeader from '@/components/kanbanBoard/ContainerHeader.vue';
+import AddIcon from '@/components/ui/AddIcon.vue';
 import { STATUS_FILTER_OPTIONS } from '@/constants/selection';
 import { useEditingStateStore } from '@/stores/editingState';
 import { isWithinDays } from '@/utils/date';

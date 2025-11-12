@@ -14,28 +14,9 @@
     >
       <Draggable v-for="(item, index) in modelValue" :key="getItemKey(item, index)">
         <div class="flex flex-col space-y-2">
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1">
             <!-- 拖拽手柄 -->
-            <button
-              class="drag-handle cursor-move text-gray-400 hover:text-gray-600"
-              type="button"
-              :aria-label="t('common.drag')"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 8h16M4 16h16"
-                />
-              </svg>
-            </button>
+            <DragHandle />
 
             <!-- 輸入框 -->
             <input
@@ -52,20 +33,7 @@
               :aria-label="t('common.delete')"
               @click="removeItem(index)"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <DeleteIcon />
             </button>
           </div>
 
@@ -80,20 +48,13 @@
     </Container>
 
     <!-- 添加按鈕 -->
+
     <button
-      class="flex w-full items-center justify-center rounded-md border border-dashed border-gray-300 p-2 text-sm text-gray-500 hover:bg-gray-100"
+      class="flex w-full appearance-none items-center justify-center rounded-md border border-dashed border-gray-300 bg-transparent p-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-800 focus:outline-none"
       type="button"
       @click="addItem"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="mr-1 h-4 w-4"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-      </svg>
+      <AddIcon />
       {{ addButtonText }}
     </button>
   </div>
@@ -106,6 +67,9 @@ import { Container, Draggable, type DropResult } from 'vue3-smooth-dnd';
 import type { Item } from '@/types/input';
 
 import Label from '@/components/core/title/Label.vue';
+import AddIcon from '@/components/ui/AddIcon.vue';
+import DeleteIcon from '@/components/ui/DeleteIcon.vue';
+import DragHandle from '@/components/ui/DragHandle.vue';
 import { applyDrag } from '@/utils/dragDrop';
 
 // mark Item as used in <script> scope to avoid "declared but its value is never read"
@@ -123,7 +87,7 @@ const props = withDefaults(
   {
     title: '材料',
     namePlaceholder: '名稱',
-    addButtonText: '添加',
+    addButtonText: '',
     itemErrors: () => ({}),
   }
 );

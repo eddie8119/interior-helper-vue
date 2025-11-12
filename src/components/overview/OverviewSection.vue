@@ -33,7 +33,7 @@ import { useUpcomingFilters } from '@/composables/useUpcomingFilters';
 import { provideTaskCardFilter } from '@/context/useTaskCardFilter';
 import { TaskTimeCondition } from '@/types/task';
 
-const taskTimeCondition = ref<TaskTimeCondition>(TaskTimeCondition.TODAY);
+const taskTimeCondition = ref<TaskTimeCondition>(TaskTimeCondition.ALL);
 
 const { fetchedAllTasks, isLoadingAllTasks } = useTasks();
 const { fetchedOverviewProjects, isLoadingOverviewProjects, constructionList, projectTitleList } =

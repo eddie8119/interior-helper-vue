@@ -1,6 +1,21 @@
 <template>
   <div class="panel-container p-8">
-    <div class="space-y-8">
+    <div ref="scrollContainer" class="relative space-y-8">
+      <!-- Submit Button -->
+      <TextButton
+        variant="primary"
+        size="md"
+        :class="[
+          'z-50 h-10 px-6 sm:w-auto',
+          isScrolledDown ? 'absolute bottom-0 right-0 shadow-lg' : 'absolute right-0 top-0',
+        ]"
+        :loading="isSubmitting"
+        :disabled="isSubmitting || !construction.length || !unit.length"
+        @click="onSubmit"
+      >
+        {{ t('common.save') }}
+      </TextButton>
+
       <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
         <!-- Construction Input -->
         <div>
@@ -28,20 +43,6 @@
           <span v-if="unitError" class="mt-1 text-sm text-secondary-red">{{ unitError }}</span>
         </div>
       </div>
-
-      <!-- Submit Button -->
-      <div class="flex justify-end">
-        <TextButton
-          variant="primary"
-          size="md"
-          class="h-10 px-6 sm:w-auto"
-          :loading="isSubmitting"
-          :disabled="isSubmitting || !construction.length || !unit.length"
-          @click="onSubmit"
-        >
-          {{ t('common.save') }}
-        </TextButton>
-      </div>
     </div>
   </div>
 </template>
@@ -50,7 +51,7 @@
 import { toTypedSchema } from '@vee-validate/zod';
 import { ElMessage } from 'element-plus';
 import { useField, useForm } from 'vee-validate';
-import { ref, watch } from 'vue';
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { Item } from '@/components/core/input/BasicArrayInput.vue';
@@ -60,6 +61,13 @@ import TextButton from '@/components/core/button/TextButton.vue';
 import BasicArrayInput from '@/components/core/input/BasicArrayInput.vue';
 import { useCommon } from '@/composables/useCommon';
 import { createCommonSchema } from '@/utils/schemas/createCommonSchema';
+import {
+  addScrollListener,
+  getScrollTop,
+  removeScrollListener,
+  resolveScrollTarget,
+  type ScrollTarget,
+} from '@/utils/scroll';
 
 const { t } = useI18n();
 const { fetchedCommon, updateCommon } = useCommon();
@@ -83,6 +91,11 @@ interface ConstructionItem extends Item {
 }
 const localConstructionItems = ref<ConstructionItem[]>([]);
 const localUnitItems = ref<Item[]>([]);
+
+// Scroll state for save button position
+const isScrolledDown = ref(false);
+const scrollContainer = ref<HTMLElement | null>(null); // local container ref
+let scrollTarget: ScrollTarget | null = null; // resolved actual scroll target
 
 // Factory function for new construction items
 const createNewConstructionItem = () => {
@@ -123,6 +136,24 @@ watch(
   },
   { immediate: true, deep: true }
 );
+
+// Track scroll position to toggle button position
+const handleScroll = () => {
+  if (!scrollTarget) return;
+  isScrolledDown.value = getScrollTop(scrollTarget) > 20;
+};
+
+onMounted(() => {
+  // Resolve actual scroll target: nearest scrollable ancestor -> main -> window
+  scrollTarget = resolveScrollTarget(scrollContainer.value, 'main');
+  addScrollListener(scrollTarget, handleScroll, { passive: true });
+  handleScroll();
+});
+
+onBeforeUnmount(() => {
+  if (scrollTarget) removeScrollListener(scrollTarget, handleScroll);
+  scrollTarget = null;
+});
 
 // Form submission handler
 const onSubmit = handleSubmit(async () => {

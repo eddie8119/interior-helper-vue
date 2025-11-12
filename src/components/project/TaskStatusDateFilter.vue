@@ -73,6 +73,7 @@ import { ElInput, ElSlider, ElSwitch } from 'element-plus';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+import { ElMessage } from 'element-plus';
 
 import type { TaskFilterStatus } from '@/constants/selection';
 import type { TaskCardDisplayMode } from '@/constants/selection';
@@ -166,9 +167,13 @@ const handleSearchInput = (value: string) => {
 
 onMounted(() => {
   const titleFromQuery = route.query.taskTitle;
+
   if (typeof titleFromQuery === 'string' && titleFromQuery.trim() !== '') {
-    searchQuery.value = titleFromQuery;
-    emit('update:searchQuery', titleFromQuery);
+    setTimeout(() => {
+      searchQuery.value = titleFromQuery;
+      emit('update:searchQuery', titleFromQuery);
+    }, 1000);
+    ElMessage.success(t('message.dialog.restore_input_query'));
   }
 });
 </script>

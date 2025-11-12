@@ -26,6 +26,7 @@
     v-model="showShareDialog"
     :project-id="projectId"
     :subject="t('project.project')"
+    :initial-is-shared="fetchedProject?.isShared"
   />
 
   <!-- Collaborators Dialog -->
@@ -56,7 +57,7 @@ const props = defineProps<{
 
 const { t } = useI18n();
 const router = useRouter();
-const { deleteProject } = useProject(props.projectId);
+const { fetchedProject, deleteProject } = useProject(props.projectId);
 
 // Delete project
 const showDeleteDialog = ref(false);

@@ -65,12 +65,22 @@ const { t } = useI18n();
 const errorMessage = ref<string>('');
 const isSubmitting = ref(false);
 const isShared = ref(props.initialIsShared || false);
-const { toggleProjectShare, isTogglingShare } = useProject(props.projectId);
+const { fetchedProject, toggleProjectShare, isTogglingShare } = useProject(props.projectId);
 
 watch(
   () => props.initialIsShared,
-  (newValue: boolean) => {
-    isShared.value = newValue || false;
+  (newValue: boolean | undefined) => {
+    isShared.value = !!newValue;
+  },
+  { immediate: true }
+);
+
+watch(
+  () => fetchedProject.value?.isShared,
+  (newValue: boolean | undefined) => {
+    if (newValue !== undefined) {
+      isShared.value = newValue;
+    }
   }
 );
 
@@ -84,20 +94,15 @@ const shareLink = computed(() => {
   return `${baseUrl}/shared/project/${props.projectId}`;
 });
 
-const handleToggleShare = async () => {
-  try {
-    const result = await toggleProjectShare(props.projectId);
-    if (result) {
-      ElMessage.success(t('message.success.update'));
-      emit('update:isShared', isShared.value);
-      return;
-    }
-    // 失敗：恢復原狀態
-    isShared.value = !isShared.value;
-    ElMessage.error(t('message.error.update'));
-  } catch {
-    // 例外：恢復原狀態
-    isShared.value = !isShared.value;
+const handleToggleShare = async (newValue: boolean) => {
+  const result = await toggleProjectShare();
+
+  if (result) {
+    emit('update:isShared', newValue);
+    ElMessage.success(t('message.success.update'));
+  } else {
+    // 如果 API 呼叫失敗，isShared 的狀態會因為 vue-query 的 onError 回調而自動恢復
+    // 我們只需要顯示錯誤訊息
     ElMessage.error(t('message.error.update'));
   }
 };
@@ -106,7 +111,7 @@ const copyShareLink = () => {
   navigator.clipboard
     .writeText(shareLink.value)
     .then(() => {
-      ElMessage.success(t('message.link_copied'));
+      ElMessage.success(t('message.sign.link_copied'));
     })
     .catch(() => {
       ElMessage.error(t('message.copy_failed'));

@@ -62,7 +62,7 @@
                   </router-link>
                 </template>
                 <template v-else-if="column.field === 'createdAt'">
-                  {{ formatDateTimeWithDay(new Date(scope.row[column.field])) }}
+                  {{ formatDate(new Date(scope.row[column.field])) }}
                 </template>
                 <template v-else>
                   <span v-if="scope.row[column.field] === undefined" class="table-text"> N/A</span>
@@ -117,7 +117,7 @@ import type { Column, TableAction } from '@/types/common';
 
 import ShowUpdateTime from '@/components/core/ShowUpdateTime.vue';
 import { isAdmin } from '@/utils/auth';
-import { formatDateTimeWithDay } from '@/utils/dateTime';
+import { formatDate } from '@/utils/date';
 
 const props = withDefaults(
   defineProps<{

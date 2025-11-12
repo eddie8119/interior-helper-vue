@@ -78,7 +78,7 @@ import type { TaskResponse } from '@/types/response';
 import H2Title from '@/components/core/title/H2Title.vue';
 import TaskCardBase from '@/components/task/TaskCardBase.vue';
 import { useProjectTitleList } from '@/context/useProjectTitleList';
-import { formatTime } from '@/utils/dateUtils';
+import { formatTimeOnly as formatTime } from '@/utils/date';
 
 const props = defineProps<{
   task: TaskResponse;

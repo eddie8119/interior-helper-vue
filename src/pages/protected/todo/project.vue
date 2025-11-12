@@ -40,7 +40,7 @@ import { useTaskUpdates } from '@/composables/todo/useTaskUpdates';
 import { useProject } from '@/composables/useProject';
 import { useTasks } from '@/composables/useTasks';
 import { useUpdateTime } from '@/composables/useUpdateTime';
-import { adjustTimeZone, formatDateTimeWithMinutes } from '@/utils/dateTime';
+import { adjustTimeZone, formatDateTimeToMinutes } from '@/utils/date';
 
 const route = useRoute();
 const projectId = route.params.id as string;
@@ -118,7 +118,7 @@ const formattedUpdateTime = computed(() => {
   }
   // 否則使用從服務器獲取的更新時間
   if (localProject.value?.updatedAt) {
-    return formatDateTimeWithMinutes(adjustTimeZone(localProject.value.updatedAt));
+    return formatDateTimeToMinutes(adjustTimeZone(localProject.value.updatedAt));
   }
   return '';
 });

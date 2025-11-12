@@ -5,14 +5,14 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
 
-import { formatDateTimeWithSeconds } from '@/utils/dateTime';
+import { formatDateTime } from '@/utils/date';
 const formattedTime = ref<string>('');
 
 let timer: ReturnType<typeof setInterval>;
 
 const updateTime = (): void => {
   const now = new Date();
-  formattedTime.value = formatDateTimeWithSeconds(now);
+  formattedTime.value = formatDateTime(now);
 };
 
 // 注意這組件 是放在<keep-alive>之外的

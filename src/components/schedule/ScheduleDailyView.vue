@@ -49,7 +49,7 @@ import DayGroup from './DayGroup.vue';
 import type { TaskResponse } from '@/types/response';
 
 import { TaskScheduleDisplayMode } from '@/types/task';
-import { formatDateKey, isConsecutiveDate } from '@/utils/dateUtils';
+import { formatDate as formatDateKey, isConsecutiveDate } from '@/utils/date';
 import { groupTasksByDate } from '@/utils/scheduleGroupUtils';
 
 const props = defineProps<{

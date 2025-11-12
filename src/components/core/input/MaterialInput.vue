@@ -1,5 +1,5 @@
 <template>
-  <BasicArrayInput
+  <DraggableArrayInput
     :model-value="modelValue"
     :title="t('label.materials')"
     :new-item-factory="newItemFactory"
@@ -40,15 +40,15 @@
         </div>
       </div>
     </template>
-  </BasicArrayInput>
+  </DraggableArrayInput>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 
-import BasicArrayInput from './BasicArrayInput.vue';
+import DraggableArrayInput from './DraggableArrayInput.vue';
 
-import type { Item as BasicItem } from './BasicArrayInput.vue';
+import type { Item as BasicItem } from './DraggableArrayInput.vue';
 
 import { useCommonStore } from '@/stores/common';
 

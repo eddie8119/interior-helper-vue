@@ -1,49 +1,158 @@
 <template>
   <div
-    class="group relative flex h-44 flex-col justify-between overflow-hidden rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+    :class="[
+      'flex min-h-[120px] w-[220px] cursor-pointer flex-col rounded-lg bg-primary-card p-4 transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary',
+      isExpanded ? 'w-full basis-full' : '',
+    ]"
+    role="button"
+    tabindex="0"
+    @click="handleToggle"
+    @keydown.enter.prevent="handleToggle"
+    @keydown.space.prevent="handleToggle"
   >
-    <div class="flex items-center gap-2">
-      <h3 class="line-clamp-1 text-base font-semibold">{{ project.title }}</h3>
-      <ElTag v-if="isOwner" type="success" size="small">{{ t('label.owner') }}</ElTag>
-      <ElTag v-else type="info" size="small">{{ t('label.collaborator_role') }}</ElTag>
-    </div>
+    <header class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <h3 class="line-clamp-1 text-base font-semibold">{{ project.title }}</h3>
+        <ElTag v-if="isOwner" type="success" size="small">{{ t('label.owner') }}</ElTag>
+        <ElTag v-else type="info" size="small">{{ t('label.collaborator_role') }}</ElTag>
+      </div>
+      <button
+        type="button"
+        class="h-6 w-6 rounded bg-black-100 hover:bg-gray-100"
+        :aria-label="isExpanded ? t('button.close') : t('button.expand')"
+        @click.stop="handleToggle"
+      >
+        <ElIcon class="text-gray-600">
+          <component :is="isExpanded ? ArrowLeft : ArrowRight" />
+        </ElIcon>
+      </button>
+    </header>
 
-    <div class="mt-1 text-sm text-gray-600">
+    <div class="mt-2 text-sm text-gray-600">
       <span v-if="collaboratorCount !== undefined">
         {{ t('label.collaborator_count', { count: collaboratorCount }) }}
       </span>
     </div>
 
-    <button
-      type="button"
-      class="absolute bottom-3 right-3 inline-flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-600 transition hover:bg-gray-100"
-      @click.stop="handleExpand"
-      aria-label="expand"
+    <!-- 協作者管理區域：當前卡片被選中時顯示 -->
+    <div
+      v-if="isExpanded"
+      class="mt-3 rounded-xl border border-gray-200 bg-gray-50 p-4"
+      @click.stop
     >
-      <ArrowRight />
-    </button>
+      <div class="mb-3 flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-semibold">
+            {{ t('title.manage_collaborators') }}: {{ project.title }}
+          </h3>
+          <p class="mt-1 text-sm text-gray-600">
+            {{
+              isOwner
+                ? t('description.manage_project_collaborators_owner')
+                : t('description.manage_project_collaborators_member')
+            }}
+          </p>
+        </div>
+      </div>
+
+      <!-- 只有擁有者才能管理協作者 -->
+      <div v-if="isOwner">
+        <CollaboratorManagement
+          :collaborators="collaborators || []"
+          :is-loading="isLoadingCollaborators"
+          :is-adding="isAdding"
+          :is-updating="isUpdating"
+          :is-removing="isRemoving"
+          :empty-message="t('message.no_collaborators')"
+          @add="onAddCollaborator"
+          @update-role="onUpdateRole"
+          @remove="onRemoveCollaborator"
+        />
+      </div>
+
+      <!-- 協作者只能查看 -->
+      <div v-else>
+        <div v-if="isLoadingCollaborators" class="flex justify-center py-6">
+          <ElIcon class="is-loading" :size="24">
+            <Loading />
+          </ElIcon>
+        </div>
+        <ElTable
+          v-else-if="collaborators && collaborators.length > 0"
+          :data="collaborators"
+          style="width: 100%"
+        >
+          <ElTableColumn :label="t('column.email')">
+            <template #default="scope">
+              <div class="flex items-center gap-2">
+                <span>{{ scope.row.collaboratorEmail }}</span>
+              </div>
+            </template>
+          </ElTableColumn>
+          <ElTableColumn :label="t('column.role')" width="150">
+            <template #default="scope">
+              {{ t(`option.role.${scope.row.role}`) }}
+            </template>
+          </ElTableColumn>
+        </ElTable>
+        <p v-else class="py-6 text-center text-gray-500">
+          {{ t('message.no_collaborators') }}
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ArrowRight } from '@element-plus/icons-vue';
+import { computed } from 'vue';
+import { ArrowLeft, ArrowRight, Loading } from '@element-plus/icons-vue';
+import { ElIcon, ElTable, ElTableColumn, ElTag } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 
-import type { ProjectResponse } from '@/types/response';
+import type { ProjectResponse, CollaboratorRole } from '@/types/response';
+import CollaboratorManagement from '@/components/collaborator/CollaboratorManagement.vue';
 
 const props = defineProps<{
   project: ProjectResponse;
   isOwner: boolean;
   collaboratorCount?: number;
+  selectedProjectId: string | null;
+  collaborators?: any[];
+  isLoadingCollaborators?: boolean;
+  isAdding?: boolean;
+  isUpdating?: boolean;
+  isRemoving?: boolean;
 }>();
 
 const emit = defineEmits<{
   expand: [projectId: string];
+  collapse: [];
+  add: [payload: { collaboratorEmail: string; role: CollaboratorRole }];
+  'update-role': [payload: { collaboratorId: string; role: CollaboratorRole }];
+  remove: [collaboratorId: string];
 }>();
 
 const { t } = useI18n();
 
-const handleExpand = () => {
-  emit('expand', props.project.id);
+const isExpanded = computed(() => props.selectedProjectId === props.project.id);
+
+const handleToggle = () => {
+  if (isExpanded.value) {
+    emit('collapse');
+  } else {
+    emit('expand', props.project.id);
+  }
+};
+
+const onAddCollaborator = (payload: { collaboratorEmail: string; role: CollaboratorRole }) => {
+  emit('add', payload);
+};
+
+const onUpdateRole = (payload: { collaboratorId: string; role: CollaboratorRole }) => {
+  emit('update-role', payload);
+};
+
+const onRemoveCollaborator = (collaboratorId: string) => {
+  emit('remove', collaboratorId);
 };
 </script>

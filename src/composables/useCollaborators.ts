@@ -15,9 +15,9 @@ export const useProjectCollaborators = (projectId: string) => {
   // Fetch project collaborators
   const {
     data: collaborators,
-    isLoading,
-    error,
-    refetch,
+    isLoading: isLoadingCollaborators,
+    error: errorCollaborators,
+    refetch: refetchCollaborators,
   } = useQuery({
     queryKey: ['projectCollaborators', projectId],
     queryFn: async () => {
@@ -71,17 +71,39 @@ export const useProjectCollaborators = (projectId: string) => {
     },
   });
 
+  // Handlers with names expected by components
+  const handleAddCollaborator = (payload: {
+    collaboratorEmail: string;
+    role?: CollaboratorRole;
+  }) => {
+    if (!projectId) return;
+    addCollaboratorMutation.mutate(payload);
+  };
+
+  const handleUpdateRole = (payload: { collaboratorId: string; role: CollaboratorRole }) => {
+    if (!projectId) return;
+    updateCollaboratorMutation.mutate(payload);
+  };
+
+  const handleRemoveCollaborator = (collaboratorId: string) => {
+    if (!projectId) return;
+    removeCollaboratorMutation.mutate(collaboratorId);
+  };
+
   return {
     collaborators,
-    isLoading,
-    error,
-    refetch,
+    isLoadingCollaborators,
+    errorCollaborators,
+    refetch: refetchCollaborators,
     addCollaborator: addCollaboratorMutation.mutate,
     updateCollaborator: updateCollaboratorMutation.mutate,
     removeCollaborator: removeCollaboratorMutation.mutate,
     isAdding: addCollaboratorMutation.isPending,
     isUpdating: updateCollaboratorMutation.isPending,
     isRemoving: removeCollaboratorMutation.isPending,
+    handleAddCollaborator,
+    handleUpdateRole,
+    handleRemoveCollaborator,
   };
 };
 
@@ -93,9 +115,9 @@ export const useGlobalCollaborators = () => {
   // Fetch global collaborators
   const {
     data: collaborators,
-    isLoading,
-    error,
-    refetch,
+    isLoading: isLoadingGlobalCollaborators,
+    error: errorGlobalCollaborators,
+    refetch: refetchGlobalCollaborators,
   } = useQuery({
     queryKey: ['globalCollaborators'],
     queryFn: async () => {
@@ -148,9 +170,9 @@ export const useGlobalCollaborators = () => {
 
   return {
     collaborators,
-    isLoading,
-    error,
-    refetch,
+    isLoadingGlobalCollaborators,
+    errorGlobalCollaborators,
+    refetchGlobalCollaborators,
     addCollaborator: addCollaboratorMutation.mutate,
     updateCollaborator: updateCollaboratorMutation.mutate,
     removeCollaborator: removeCollaboratorMutation.mutate,

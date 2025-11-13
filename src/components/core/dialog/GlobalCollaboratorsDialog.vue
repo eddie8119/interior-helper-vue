@@ -7,12 +7,12 @@
     :show-footer-button="false"
     @cancel="dialogVisible = false"
   >
-    <p class="mb-4 text-sm text-gray-600">
+    <p class="text-color-difference mb-4 text-sm">
       {{ t('dialog.global_collaborators_description') }}
     </p>
     <CollaboratorManagement
       :collaborators="collaborators || []"
-      :is-loading="isLoading"
+      :is-loading="isLoadingGlobalCollaborators"
       :is-adding="isAdding"
       :is-updating="isUpdating"
       :is-removing="isRemoving"
@@ -55,20 +55,20 @@ const dialogVisible = computed({
 
 const {
   collaborators,
-  isLoading,
+  isLoadingGlobalCollaborators,
   addCollaborator,
   updateCollaborator,
   removeCollaborator,
   isAdding,
   isUpdating,
   isRemoving,
-  refetch,
+  refetchGlobalCollaborators,
 } = useGlobalCollaborators();
 
 // Refetch when dialog opens
 watch(dialogVisible, (newValue: boolean) => {
   if (newValue) {
-    refetch();
+    refetchGlobalCollaborators();
   }
 });
 

@@ -9,10 +9,10 @@ export const getAllTasks = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).userId;
 
-    // 查詢該用戶的所有任務
+    // 查詢該用戶的所有任務，並同時載入材料
     const { data: tasks, error: tasksError } = await supabase
       .from('Tasks')
-      .select('*')
+      .select('*, TaskMaterials(*)')
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
 
@@ -25,25 +25,14 @@ export const getAllTasks = async (req: Request, res: Response) => {
       });
     }
 
-    // 為每個任務獲取材料
-    const processedTasks = await Promise.all(
-      tasks.map(async (task) => {
-        const { data: materials, error: materialsError } = await supabase
-          .from('TaskMaterials')
-          .select('*')
-          .eq('task_id', task.id);
-
-        if (materialsError) {
-          console.error(`Error fetching materials for task ${task.id}:`, materialsError);
-        }
-
-        const { user_id, ...safeTask } = task;
-        return {
-          ...safeTask,
-          materials: materials || [],
-        };
-      })
-    );
+    // 處理任務數據，將材料整合到任務中
+    const processedTasks = tasks.map((task) => {
+      const { TaskMaterials, user_id, ...rest } = task;
+      return {
+        ...rest,
+        materials: TaskMaterials || [],
+      };
+    });
 
     // 轉換為駝峰式命名並返回
     return res.status(200).json({
@@ -89,10 +78,10 @@ export const getTasksByProjectId = async (req: Request, res: Response) => {
       });
     }
 
-    // 查詢專案下的所有任務
+    // 查詢專案下的所有任務，並同時載入材料
     const { data: tasks, error: tasksError } = await supabase
       .from('Tasks')
-      .select('*')
+      .select('*, TaskMaterials(*)')
       .eq('project_id', projectId)
       .order('created_at', { ascending: false });
 
@@ -105,25 +94,14 @@ export const getTasksByProjectId = async (req: Request, res: Response) => {
       });
     }
 
-    // 為每個任務獲取材料
-    const processedTasks = await Promise.all(
-      tasks.map(async (task) => {
-        const { data: materials, error: materialsError } = await supabase
-          .from('TaskMaterials')
-          .select('*')
-          .eq('task_id', task.id);
-
-        if (materialsError) {
-          console.error(`Error fetching materials for task ${task.id}:`, materialsError);
-        }
-
-        const { user_id, ...safeTask } = task;
-        return {
-          ...safeTask,
-          materials: materials || [],
-        };
-      })
-    );
+    // 處理任務數據，將材料整合到任務中
+    const processedTasks = tasks.map((task) => {
+      const { TaskMaterials, user_id, ...rest } = task;
+      return {
+        ...rest,
+        materials: TaskMaterials || [],
+      };
+    });
 
     // 轉換為駝峰式命名並返回
     return res.status(200).json({

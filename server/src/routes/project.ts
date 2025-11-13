@@ -3,6 +3,7 @@ import express from 'express';
 import {
   createProject,
   deleteProject,
+  getCollaboratingProjects,
   getOverviewProjects,
   getProject,
   getProjects,
@@ -20,6 +21,7 @@ router.get('/shared/:id', getSharedProject);
 router.use(authMiddleware);
 
 router.get('/overview', requireUserId, getOverviewProjects); // 用於概覽頁面
+router.get('/collaborating', requireUserId, getCollaboratingProjects); // 用戶作為協作者的專案
 router.get('/', requireUserId, getProjects);
 router.get('/:id', requireUserId, getProject);
 router.post('/', requireUserId, createProject);

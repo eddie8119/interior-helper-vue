@@ -61,7 +61,81 @@ export const getOverviewProjects = async (req: Request, res: Response) => {
   }
 };
 
-// 獲取當前用戶的所有案件列表
+// 獲取用戶作為協作者參與的專案（不包括擁有的）
+export const getCollaboratingProjects = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).userId;
+
+    // 獲取用戶的 email
+    const { data: user } = await supabase
+      .from('Users')
+      .select('email')
+      .eq('id', userId)
+      .single();
+
+    const userEmail = user?.email;
+
+    // 查詢用戶作為協作者的專案（project-specific）
+    const { data: projectCollaborations } = await supabase
+      .from('ProjectCollaborators')
+      .select('project_id, Projects(*)')
+      .eq('collaborator_email', userEmail);
+
+    // 查詢用戶作為全域協作者可訪問的專案
+    const { data: globalCollaborations } = await supabase
+      .from('GlobalCollaborators')
+      .select('owner_id')
+      .eq('collaborator_email', userEmail);
+
+    const ownerIds = globalCollaborations?.map((gc) => gc.owner_id) || [];
+    let globalProjects: any[] = [];
+
+    if (ownerIds.length > 0) {
+      const { data: gProjects } = await supabase
+        .from('Projects')
+        .select('*')
+        .in('user_id', ownerIds)
+        .order('created_at', { ascending: false });
+      globalProjects = gProjects || [];
+    }
+
+    // 合併協作專案，去重
+    const projectMap = new Map();
+
+    // 添加作為協作者的專案
+    projectCollaborations?.forEach((pc: any) => {
+      if (pc.Projects) {
+        projectMap.set(pc.Projects.id, pc.Projects);
+      }
+    });
+
+    // 添加全域協作者可訪問的專案
+    globalProjects.forEach((project) => {
+      projectMap.set(project.id, project);
+    });
+
+    const collaboratingProjects = Array.from(projectMap.values());
+
+    // 在返回前移除敏感欄位
+    const safeProjects = collaboratingProjects.map((project) => {
+      const { user_id, ...safeProject } = project;
+      return safeProject;
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: camelcaseKeys(safeProjects, { deep: true }),
+    });
+  } catch (error: any) {
+    console.error('Unexpected error fetching collaborating projects:', error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'An unexpected error occurred',
+    });
+  }
+};
+
+// 獲取當前用戶的所有案件列表（包括擁有和協作的）
 export const getProjects = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).userId;

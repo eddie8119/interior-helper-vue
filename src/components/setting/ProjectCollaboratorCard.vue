@@ -11,11 +11,14 @@
     @keydown.space.prevent="handleToggle"
   >
     <header class="flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <h3 class="line-clamp-1 text-base font-semibold">{{ project.title }}</h3>
-        <ElTag v-if="isOwner" type="success" size="small">{{ t('label.owner') }}</ElTag>
-        <ElTag v-else type="info" size="small">{{ t('label.collaborator_role') }}</ElTag>
-      </div>
+
+              <router-link
+          class="toggle-button"
+          :to="{ path: `/todo/project/${project.id}` }"
+        >
+         <h3 class="line-clamp-1 text-base font-semibold">{{ project.title }}</h3>
+        </router-link>
+
       <button
         type="button"
         class="h-6 w-6 rounded bg-black-100 hover:bg-gray-100"

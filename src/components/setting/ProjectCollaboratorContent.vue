@@ -5,7 +5,7 @@
     <!-- 我創建的專案 -->
     <ProjectCollaboratorSection
       :title="t('title.owned_projects')"
-      :projects="ownedProjects"
+      :projects="ownedProjectsData || []"
       :is-owner="true"
       :empty-message="t('message.no_owned_projects')"
       :selected-project-id="selectedProjectId"
@@ -24,7 +24,7 @@
     <!-- 我作為協作者的專案 -->
     <ProjectCollaboratorSection
       :title="t('title.collaborating_projects')"
-      :projects="collaboratingProjects"
+      :projects="collaboratingProjectsData || []"
       :is-owner="false"
       :empty-message="t('message.no_collaborating_projects')"
       :selected-project-id="selectedProjectId"
@@ -40,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import Loading from '@/components/core/loading/Loading.vue';
@@ -60,9 +59,6 @@ const {
   selectProject,
 } = useProjectCollaboratorManagement();
 
-const ownedProjects = computed(() => ownedProjectsData.value || []);
-const collaboratingProjects = computed(() => collaboratingProjectsData.value || []);
-
 // 協作者（內部取得）
 const {
   collaborators,
@@ -73,5 +69,5 @@ const {
   handleAddCollaborator,
   handleUpdateRole,
   handleRemoveCollaborator,
-} = useProjectCollaborators(selectedProjectId);
+} = useProjectCollaborators(selectedProjectId.value as string);
 </script>

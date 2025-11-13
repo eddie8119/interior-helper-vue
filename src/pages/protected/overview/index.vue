@@ -2,7 +2,7 @@
   <div class="flex flex-col md:h-[calc(100vh-108px)]">
     <!-- 頂部區域 -->
     <div class="mb-2 flex items-center">
-      <H1Title :title="t('title.overview_remaining') + t('label.task.task')" />
+      <H1Title :title="t('title.overview_remaining_task')" />
     </div>
     <!-- Content Section -->
     <section class="flex-1 overflow-y-auto p-4">

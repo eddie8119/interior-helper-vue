@@ -13,13 +13,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/shared/project/:id',
     name: 'shared-project',
-    component: () => import('../pages/public/SharedProject.vue'),
+    component: () => import('../pages/public/shared-project.vue'),
     meta: { public: true },
   },
   {
     path: '/invitation/accept',
     name: 'invitation-accept',
-    component: () => import('../views/InvitationAccept.vue'),
+    component: () => import('../views/invitation-accept.vue'),
     meta: { public: true },
   },
   {
@@ -30,37 +30,37 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'login',
         name: 'login',
-        component: () => import('../pages/auth/Login.vue'),
+        component: () => import('../pages/auth/login.vue'),
       },
       {
         path: 'register',
         name: 'register',
-        component: () => import('../pages/auth/Register.vue'),
+        component: () => import('../pages/auth/register.vue'),
       },
       {
         path: 'registration-success',
         name: 'registration-success',
-        component: () => import('../pages/auth/RegistrationSuccess.vue'),
+        component: () => import('../pages/auth/registration-success.vue'),
       },
       {
         path: 'account-activation',
         name: 'account-activation',
-        component: () => import('../pages/auth/AccountActivation.vue'),
+        component: () => import('../pages/auth/account-activation.vue'),
       },
       {
         path: 'forgot-password',
         name: 'forgot-password',
-        component: () => import('../pages/auth/ForgotPassword.vue'),
+        component: () => import('../pages/auth/forgot-password.vue'),
       },
       {
         path: 'reset-password',
         name: 'reset-password',
-        component: () => import('../pages/auth/ResetPassword.vue'),
+        component: () => import('../pages/auth/reset-password.vue'),
       },
       {
         path: 'resend-activation',
         name: 'resend-activation',
-        component: () => import('../pages/auth/ResendActivation.vue'),
+        component: () => import('../pages/auth/resend-activation.vue'),
       },
     ],
   },
@@ -151,14 +151,14 @@ const routes: Array<RouteRecordRaw> = [
           {
             name: 'all',
             path: 'all',
-            component: () => import('../pages/protected/setting/SetAllCommon.vue'),
+            component: () => import('../pages/protected/setting/set-all-common.vue'),
           },
         ],
       },
       {
         name: 'member',
         path: 'member',
-        component: () => import('../pages/protected/setting/SetMember.vue'),
+        component: () => import('../pages/protected/setting/set-member.vue'),
       },
     ],
   },
@@ -169,7 +169,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: 'help_center',
         path: 'help_center',
-        component: () => import('../pages/protected/other/HelpCenter.vue'),
+        component: () => import('../pages/protected/other/help-center.vue'),
       },
     ],
   },
@@ -180,7 +180,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: 'notifications',
         path: '',
-        component: () => import('../views/NotificationView.vue'),
+        component: () => import('../views/notification-view.vue'),
       },
     ],
   },

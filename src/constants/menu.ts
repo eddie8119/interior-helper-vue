@@ -47,7 +47,7 @@ export const MENU: Menu[] = [
       {
         label: 'Set Member',
         name: 'set-member',
-        icon: 'Palette',
+        icon: 'Users',
         route: '/setting/member',
       },
       {
@@ -64,7 +64,7 @@ export const MENU: Menu[] = [
       {
         label: 'Help Center',
         name: 'help_center',
-        icon: 'Palette',
+        icon: 'ChalkboardSimple',
         route: '/other/help_center',
       },
     ],

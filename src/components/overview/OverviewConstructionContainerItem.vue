@@ -4,15 +4,12 @@
       <Label :label="constructionName" />
       <div class="flex items-center gap-2">
         <span class="text-gray-500">{{ totalTasks }}</span>
-        <button
+        <CollapseAllButton
           v-if="totalTasks > 0"
-          type="button"
-          class="hidden rounded-md bg-gray-200 px-2 py-1 text-sm text-gray-700 hover:bg-gray-300 md:block"
+          :all-collapsed="allTaskCollapsed"
+          class="hidden md:block"
           @click="toggleAllTask()"
-        >
-          {{ allTaskCollapsed ? t('button.fold.expand_all') : t('button.fold.collapse_all') }}
-          {{ t('label.task.task') }}
-        </button>
+        />
 
         <!--  手機時避免過長 預設直接關閉 -->
         <div class="--mobile md:hidden">
@@ -36,12 +33,15 @@
         :key="group.projectId"
         :class="{ 'border-divider-color-difference border-t pt-3': index !== 0 }"
       >
-        <div class="mb-2 flex items-center justify-between">
+        <div class="mb-2 flex items-center justify-between gap-2">
           <div class="flex items-center gap-2">
             <span class="text-sm font-semibold text-gray-600">-- {{ group.projectTitle }} --</span>
-            <button
-              type="button"
-              class="rounded-md bg-gray-100 px-2 py-0.5 text-sm text-gray-600 hover:bg-gray-200"
+          </div>
+          <div class="flex items-center gap-2">
+            <CollapseButton
+              :is-collapsed="!isGroupTaskVisible(group.projectId)"
+              variant="secondary"
+              custom-class="py-0.5"
               @click="toggleTaskGroup(group.projectId)"
             >
               {{
@@ -49,9 +49,9 @@
                   ? t('button.fold.collapse')
                   : t('button.fold.expand')
               }}{{ t('label.task.task') }}
-            </button>
+            </CollapseButton>
+            <span class="text-gray-400">{{ group.tasks.length }}</span>
           </div>
-          <span class="text-gray-400">{{ group.tasks.length }}</span>
         </div>
         <div v-if="isGroupTaskVisible(group.projectId)" class="space-y-4">
           <div v-for="task in group.tasks" :key="task.id">
@@ -76,8 +76,11 @@ import { useI18n } from 'vue-i18n';
 
 import type { TaskResponse } from '@/types/response';
 
+import CollapseAllButton from '@/components/core/button/CollapseAllButton.vue';
+import CollapseButton from '@/components/core/button/CollapseButton.vue';
 import Label from '@/components/core/title/Label.vue';
 import TaskCardBase from '@/components/task/TaskCardBase.vue';
+import { useTaskGroupCollapse } from '@/composables/useTaskGroupCollapse';
 
 const props = defineProps<{
   constructionId: string;
@@ -88,15 +91,15 @@ const props = defineProps<{
   projectTitleList?: Array<{ id: string; title: string }>;
 }>();
 
-const displayTasks = computed<TaskResponse[]>(() => props.tasks ?? []);
-
 const { t } = useI18n();
 
 const isExpanded = ref(false);
-const allTaskCollapsed = ref(false);
-const collapsedGroups = ref<Record<string, boolean>>({});
-const expandedGroupsWhenAllTaskCollapsed = ref<Record<string, boolean>>({});
 
+// 使用摺疊功能的 composable
+const { allTaskCollapsed, toggleAllTask, toggleTaskGroup, isGroupTaskVisible } =
+  useTaskGroupCollapse();
+
+const displayTasks = computed<TaskResponse[]>(() => props.tasks ?? []);
 const totalTasks = computed<number>(() => displayTasks.value.length);
 
 type ProjectGroup = { projectId: string; projectTitle: string; tasks: TaskResponse[] };
@@ -119,36 +122,4 @@ const groupedByProject = computed<ProjectGroup[]>(() => {
 
   return Array.from(byId.values());
 });
-
-// 摺疊
-const toggleAllTask = (): void => {
-  // Flip mode
-  allTaskCollapsed.value = !allTaskCollapsed.value;
-
-  if (allTaskCollapsed.value) {
-    // Entering "collapse all" mode: hide all groups by default
-    // and clear the list of groups that were manually expanded in this mode.
-    expandedGroupsWhenAllTaskCollapsed.value = {};
-  } else {
-    // Leaving "collapse all" mode: show all groups by default
-    // and clear the list of groups that were manually collapsed in normal mode.
-    collapsedGroups.value = {};
-  }
-};
-
-const toggleTaskGroup = (projectId: string): void => {
-  if (allTaskCollapsed.value) {
-    expandedGroupsWhenAllTaskCollapsed.value[projectId] =
-      !expandedGroupsWhenAllTaskCollapsed.value[projectId];
-  } else {
-    collapsedGroups.value[projectId] = !collapsedGroups.value[projectId];
-  }
-};
-
-const isGroupTaskVisible = (projectId: string): boolean => {
-  if (allTaskCollapsed.value) {
-    return !!expandedGroupsWhenAllTaskCollapsed.value[projectId];
-  }
-  return !collapsedGroups.value[projectId];
-};
 </script>

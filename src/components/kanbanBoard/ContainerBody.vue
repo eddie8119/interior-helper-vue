@@ -3,8 +3,18 @@
   <div v-show="isEditing" class="mb-6 rounded-md border border-dashed border-brand-primary p-1">
     <AddNewTask :construction-id="constructionId" :project-id="projectId" @close="stopEditing" />
   </div>
+
+  <!-- 摺疊按鈕 -->
+  <div v-if="tasks.length > 0" class="mb-2 flex w-full justify-end md:hidden">
+    <CollapseButton :is-collapsed="isCollapsed" @click="toggleCollapse">
+      {{ isCollapsed ? t('button.fold.expand') : t('button.fold.collapse')
+      }}{{ t('label.task.task') }}
+    </CollapseButton>
+  </div>
+
   <!-- 任務列表 -->
   <Container
+    v-if="!isCollapsed"
     :key="containerKey"
     group-name="tasks"
     orientation="vertical"
@@ -19,7 +29,6 @@
     style="overflow: visible auto; touch-action: pan-y"
     @drop="!readOnly && handleTaskDrop($event)"
   >
-    <!-- 任務列表 -->
     <Draggable v-for="task in tasks" :key="task.id">
       <TaskCard :task="task" :read-only="readOnly" />
     </Draggable>
@@ -27,13 +36,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Container, Draggable } from 'vue3-smooth-dnd';
 
 import type { TaskResponse } from '@/types/response';
 
+import CollapseButton from '@/components/core/button/CollapseButton.vue';
 import AddNewTask from '@/components/kanbanBoard/AddNewTask.vue';
 import TaskCard from '@/components/kanbanBoard/TaskCard.vue';
+import { useResponsiveWidth } from '@/composables/useResponsiveWidth';
 import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{
@@ -45,10 +57,27 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:tasks', tasks: TaskResponse[]): void;
-  (e: 'task-drop', dropData: any): void;
+  (e: 'task-drop', dropData: unknown): void;
+  (e: 'collapse-change', value: boolean): void;
 }>();
 
 const editingStateStore = useEditingStateStore();
+const { t } = useI18n();
+const { isMobile } = useResponsiveWidth();
+
+const isCollapsed = computed(() => {
+  return isMobile.value ? true : false;
+});
+
+const toggleCollapse = () => {
+  isCollapsed.value = !isCollapsed.value;
+  emit('collapse-change', isCollapsed.value);
+};
+
+onMounted(() => {
+  // emit initial state to parent so header can reflect visibility
+  emit('collapse-change', isCollapsed.value);
+});
 
 // 使用計算屬性來判斷當前容器是否處於編輯狀態
 const isEditing = computed(() => {

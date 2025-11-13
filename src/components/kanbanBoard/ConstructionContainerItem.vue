@@ -6,6 +6,7 @@
       :construction-name="props.constructionName"
       :tasks-length="filteredAndSortedTasks.length"
       :is-show-status-filter="isShowStatusFilter"
+      :task-list-collapsed="taskListCollapsed"
       :read-only="readOnly"
       @update:construction-name="updateConstructionName"
       @delete-container="handleDeleteConstruction"
@@ -18,6 +19,7 @@
       :read-only="readOnly"
       @update:tasks="updateTasks"
       @task-drop="handleTaskDrop"
+      @collapse-change="taskListCollapsed = $event"
     />
 
     <!-- 添加task按鈕 -->
@@ -62,6 +64,7 @@ const props = defineProps<{
   tasks: TaskResponse[];
   daysRange: [number, number] | null;
   searchQuery?: string;
+  projectTitleList?: Array<{ id: string; title: string }>;
   readOnly?: boolean;
 }>();
 
@@ -80,6 +83,9 @@ const isEditing = computed(() => {
 });
 
 const selectedStatus = ref<TaskFilterStatus>('all');
+
+// 由 ContainerBody 控制的任務列表摺疊狀態（true=摺疊，false=展開）
+const taskListCollapsed = ref<boolean>(false);
 
 const filteredAndSortedTasks = computed(() => {
   let tasksToDisplay: TaskResponse[] = props.tasks;

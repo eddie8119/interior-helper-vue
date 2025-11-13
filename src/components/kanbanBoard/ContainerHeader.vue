@@ -13,7 +13,7 @@
 
     <div v-if="!readOnly" class="flex items-center gap-1">
       <OptionSelector
-        v-if="isShowStatusFilter && !isEditingTitle"
+        v-if="isShowStatusFilter && !isEditingTitle && !taskListCollapsed"
         :model-value="selectedStatus"
         :options="STATUS_FILTER_OPTIONS"
         :class-name="'w-[90px]'"
@@ -51,6 +51,7 @@ defineProps<{
   options: SelectorOption[];
   isShowStatusFilter: boolean;
   readOnly?: boolean;
+  taskListCollapsed?: boolean;
 }>();
 
 const emit = defineEmits<{

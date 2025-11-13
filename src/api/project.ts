@@ -9,6 +9,14 @@ export const projectApi = {
   getOverviewProjects: (): Promise<ApiResponse<ProjectResponse[]>> => {
     return request.get('/projects/overview');
   },
+  // 獲取我創建的專案
+  getOwnedProjects: (): Promise<ApiResponse<ProjectResponse[]>> => {
+    return request.get('/projects');
+  },
+  // 獲取我作為協作者參與的專案
+  getCollaboratingProjects: (): Promise<ApiResponse<ProjectResponse[]>> => {
+    return request.get('/projects/collaborating');
+  },
   getProjects: (): Promise<ApiResponse<ProjectResponse[]>> => {
     return request.get('/projects');
   },

@@ -30,7 +30,8 @@
     "try_again": "Try Again",
     "hide": "Hide",
     "show_more": "Show More",
-    "leave_for": "Leave For",
+    "open_new_tab": "Open in New Tab",
+    "copy_email": "Copy Email",
     "fold": {
       "expand": "Expand",
       "collapse": "Collapse",
@@ -100,6 +101,11 @@
     "friday_short": "Fr",
     "saturday_short": "Sa"
   },
+  "description": {
+    "project_collaborator_management": "Manage collaborators for your projects. Add, remove, or change roles for different projects.",
+    "manage_project_collaborators_owner": "As the project owner, you can manage collaborators, set their roles, and control access.",
+    "manage_project_collaborators_member": "You are a collaborator on this project. View the project's collaborator list."
+  },
   "dialog": {
     "delete_confirm": "Do you confirm the deletion",
     "share_project_link": "Share Project Link",
@@ -165,6 +171,10 @@
       "hide": "Hide Advanced Filter",
       "show": "Show Advanced Filter"
     },
+    "owner": "Owner",
+    "collaborator_role": "Collaborator",
+    "collaborator_count": "{count} collaborators",
+    "projects": "projects",
     "collaborator": {
       "global": "Global",
       "global_default": "Global Default",
@@ -238,6 +248,13 @@
       "delete_construction_content": "This will also delete all its related tasks.",
       "confirm_delete_input": "To confirm deletion, please type below."
     },
+    "no_owned_projects": "You haven't created any projects yet",
+    "no_collaborating_projects": "You are not a collaborator on any projects yet",
+    "collaborator_updated": "Collaborator role updated successfully",
+    "collaborator_removed": "Collaborator removed successfully",
+    "update_collaborator_failed": "Failed to update collaborator role",
+    "remove_collaborator_failed": "Failed to remove collaborator",
+    "invalid_email": "Please enter a valid email address",
     "no_done": "No done",
     "no_undone": "No undone",
     "no_tasks": "No tasks available",
@@ -443,7 +460,7 @@
     "account_activation": "Account Activation",
     "forgot_password": "Forgot Password",
     "reset_password": "Reset Password",
-    "overview_remaining": "Quickly View Remaining",
+    "overview_remaining_task": "Quickly View Remaining Task",
     "schedule": "Schedule",
     "unscheduled_task": "Unscheduled Task",
     "reminder_upcoming_task_in_10_days": "Upcoming Tasks Within 10 Days",
@@ -453,6 +470,10 @@
     "share": "Share",
     "manage_project_collaborators": "Manage Project Collaborators",
     "manage_global_collaborators": "Manage Global Collaborators",
+    "project_collaborator_management": "Project Collaborator Management",
+    "owned_projects": "My Projects",
+    "collaborating_projects": "Projects I Collaborate On",
+    "manage_collaborators": "Manage Collaborators",
     "collaboration_invitation": "Collaboration Invitation",
     "invitation_error": "Invitation Error",
     "delete_confirm": "Delete Confirm",

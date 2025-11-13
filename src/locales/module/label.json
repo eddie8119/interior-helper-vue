@@ -38,6 +38,10 @@
         "hide": "Hide Advanced Filter",
         "show": "Show Advanced Filter"
       },
+      "owner": "Owner",
+      "collaborator_role": "Collaborator",
+      "collaborator_count": "{count} collaborators",
+      "projects": "projects",
       "collaborator": {
         "global": "Global",
         "global_default": "Global Default",
@@ -118,6 +122,10 @@
         "hide": "隱藏進階篩選",
         "show": "進階篩選"
       },
+      "owner": "擁有者",
+      "collaborator_role": "協作者",
+      "collaborator_count": "{count} 位協作者",
+      "projects": "個專案",
       "collaborator": {
         "global": "全域",
         "global_default": "全域預設",

@@ -31,7 +31,8 @@
       "try_again": "Try Again",
       "hide": "Hide",
       "show_more": "Show More",
-      "leave_for": "Leave For",
+      "open_new_tab": "Open in New Tab",
+      "copy_email": "Copy Email",
       "fold": {
         "expand": "Expand",
         "collapse": "Collapse",
@@ -72,7 +73,8 @@
       "try_again": "再試一次",
       "hide": "隱藏",
       "show_more": "顯示更多",
-      "leave_for": "前往",
+      "open_new_tab": "新分頁開啟",
+      "copy_email": "複製信箱",
       "fold": {
         "expand": "展開",
         "collapse": "摺疊",

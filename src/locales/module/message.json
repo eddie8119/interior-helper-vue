@@ -26,6 +26,13 @@
         "delete_construction_content": "This will also delete all its related tasks.",
         "confirm_delete_input": "To confirm deletion, please type below."
       },
+      "no_owned_projects": "You haven't created any projects yet",
+      "no_collaborating_projects": "You are not a collaborator on any projects yet",
+      "collaborator_updated": "Collaborator role updated successfully",
+      "collaborator_removed": "Collaborator removed successfully",
+      "update_collaborator_failed": "Failed to update collaborator role",
+      "remove_collaborator_failed": "Failed to remove collaborator",
+      "invalid_email": "Please enter a valid email address",
       "no_done": "No done",
       "no_undone": "No undone",
       "no_tasks": "No tasks available",

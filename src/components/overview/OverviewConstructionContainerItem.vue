@@ -1,9 +1,13 @@
 <template>
   <div class="construction-container rounded-lg p-3" style="overflow: visible">
+    <!-- Header -->
     <div class="mb-2 flex items-center justify-between">
       <Label :label="constructionName" />
+
       <div class="flex items-center gap-2">
         <span class="text-gray-500">{{ totalTasks }}</span>
+
+        <!-- Collapse all button (Desktop) -->
         <CollapseAllButton
           v-if="totalTasks > 0"
           :all-collapsed="allTaskCollapsed"
@@ -11,32 +15,30 @@
           @click="toggleAllTask()"
         />
 
-        <!--  手機時避免過長 預設直接關閉 -->
-        <div class="--mobile md:hidden">
-          <button
-            v-if="totalTasks > 0"
-            type="button"
-            class="rounded-md bg-gray-200 px-2 py-1 text-sm text-gray-700 hover:bg-gray-300"
-            @click="isExpanded = !isExpanded"
-          >
-            {{ isExpanded ? t('button.hide') : t('button.show_more') }}
-          </button>
-        </div>
+        <!-- Toggle button (Mobile) -->
+        <button
+          v-if="totalTasks > 0"
+          type="button"
+          class="rounded-md bg-gray-200 px-2 py-1 text-sm text-gray-700 hover:bg-gray-300 md:hidden"
+          @click="isExpanded = !isExpanded"
+        >
+          {{ isExpanded ? t('button.hide') : t('button.show_more') }}
+        </button>
       </div>
     </div>
 
-    <!--  -->
+    <!-- Content -->
     <div class="space-y-4" :class="{ 'hidden md:block': !isExpanded }">
-      <!-- Grouped by project -->
-      <div
+      <!-- Task groups -->
+      <section
         v-for="(group, index) in groupedByProject"
         :key="group.projectId"
         :class="{ 'border-divider-color-difference border-t pt-3': index !== 0 }"
       >
-        <div class="mb-2 flex items-center justify-between gap-2">
-          <div class="flex items-center gap-2">
-            <span class="text-sm font-semibold text-gray-600">-- {{ group.projectTitle }} --</span>
-          </div>
+        <!-- Group header -->
+        <header class="mb-2 flex items-center justify-between gap-2">
+          <h3 class="text-sm font-semibold text-gray-600">-- {{ group.projectTitle }} --</h3>
+
           <div class="flex items-center gap-2">
             <CollapseButton
               :is-collapsed="!isGroupTaskVisible(group.projectId)"
@@ -52,14 +54,21 @@
             </CollapseButton>
             <span class="text-gray-400">{{ group.tasks.length }}</span>
           </div>
-        </div>
-        <div v-if="isGroupTaskVisible(group.projectId)" class="space-y-4">
-          <div v-for="task in group.tasks" :key="task.id">
-            <TaskCardBase :task="task" :read-only="true" :show-router="true" />
-          </div>
-        </div>
-      </div>
+        </header>
 
+        <!-- Group content -->
+        <div v-if="isGroupTaskVisible(group.projectId)" class="space-y-4">
+          <TaskCardBase
+            v-for="task in group.tasks"
+            :key="task.id"
+            :task="task"
+            :read-only="true"
+            :show-router="true"
+          />
+        </div>
+      </section>
+
+      <!-- Empty state -->
       <div v-if="displayTasks.length === 0" class="flex justify-center text-gray-300">
         <ElIcon :size="32">
           <DocumentRemove />

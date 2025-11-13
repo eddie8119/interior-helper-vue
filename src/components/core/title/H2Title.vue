@@ -1,9 +1,6 @@
 <template>
-  <div
-    class="text-color-difference mb-2 w-full text-lg font-medium capitalize"
-    :class="props.className"
-  >
-    <h2>{{ props.title }}</h2>
+  <div class="text-color-difference mb-2 w-full">
+    <h2 class="text-lg font-medium capitalize" :class="props.className">{{ props.title }}</h2>
   </div>
 </template>
 

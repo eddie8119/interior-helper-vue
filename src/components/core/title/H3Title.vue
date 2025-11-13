@@ -1,6 +1,6 @@
 <template>
-  <div class="nowrap text-color-difference text-base font-medium" :class="props.className">
-    <h3>{{ props.title }}</h3>
+  <div class="text-color-difference nowrap">
+    <h3 class="text-base font-medium" :class="props.className">{{ props.title }}</h3>
   </div>
 </template>
 

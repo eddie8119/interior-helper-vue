@@ -12,15 +12,19 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center">
         <DragHandle v-if="!readOnly" :size="4" handle-class="task-drag-handle" />
-        <H2Title :title="task.title" class="ml-2" />
-      </div>
-      <div class="flex items-center gap-2">
+
         <router-link
           v-if="showRouter"
           class="toggle-button"
           :to="{ path: `/todo/project/${task.projectId}`, query: { taskTitle: task.title } }"
-          >{{ t('button.leave_for') }}
+        >
+          <H2Title
+            :title="task.title"
+            :class="['ml-2', showRouter ? 'blue-text underline underline-offset-1' : '']"
+          />
         </router-link>
+      </div>
+      <div class="flex items-center gap-2">
         <TaskStatusDropdown
           :read-only="readOnly"
           :status="task.status"

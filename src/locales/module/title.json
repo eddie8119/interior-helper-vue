@@ -27,6 +27,7 @@
       "delete_confirm": "Delete Confirm",
       "create_project": "Create Project",
       "move_note": "Move Note",
+      "batch_download": "Batch Download",
       "subTitle": {}
     }
   },
@@ -59,6 +60,7 @@
       "delete_confirm": "刪除確認",
       "create_project": "新增專案",
       "move_note": "移動速記",
+      "batch_download": "批量下載",
       "subTitle": {}
     }
   },

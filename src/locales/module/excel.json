@@ -1,0 +1,80 @@
+{
+  "en": {
+    "excel": {
+      "section": {
+        "project_info": "Project Info",
+        "construction": "Construction Areas"
+      },
+      "label": {
+        "project_name": "Project Name",
+        "project_type": "Project Type",
+        "created_at": "Created At",
+        "updated_at": "Updated At",
+        "property": "Property",
+        "value": "Value"
+      },
+      "columns": {
+        "index": "Index",
+        "task_title": "Task Title",
+        "status": "Status",
+        "description": "Description",
+        "construction_type": "Construction Type",
+        "created_at": "Created At",
+        "due_date": "Due Date",
+        "reminder_date": "Reminder Date"
+      }
+    }
+  },
+  "zh-TW": {
+    "excel": {
+      "section": {
+        "project_info": "專案資訊",
+        "construction": "施工區域"
+      },
+      "label": {
+        "project_name": "專案名稱",
+        "project_type": "專案類型",
+        "created_at": "建立日期",
+        "updated_at": "更新日期",
+        "property": "屬性",
+        "value": "值"
+      },
+      "columns": {
+        "index": "序號",
+        "task_title": "任務標題",
+        "status": "狀態",
+        "description": "描述",
+        "construction_type": "施工類型",
+        "created_at": "建立日期",
+        "due_date": "截止日期",
+        "reminder_date": "提醒日期"
+      }
+    }
+  },
+  "ja": {
+    "excel": {
+      "section": {
+        "project_info": "プロジェクト情報",
+        "construction": "施工エリア"
+      },
+      "label": {
+        "project_name": "プロジェクト名",
+        "project_type": "プロジェクトタイプ",
+        "created_at": "作成日",
+        "updated_at": "更新日",
+        "property": "属性",
+        "value": "値"
+      },
+      "columns": {
+        "index": "インデックス",
+        "task_title": "タスクタイトル",
+        "status": "ステータス",
+        "description": "説明",
+        "construction_type": "施工タイプ",
+        "created_at": "作成日",
+        "due_date": "期日",
+        "reminder_date": "リマインダー日"
+      }
+    }
+  }
+}

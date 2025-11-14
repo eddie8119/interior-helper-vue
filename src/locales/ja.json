@@ -78,6 +78,30 @@
     "reset_password_failed": "パスワードのリセットに失敗しました",
     "update_failed": "更新失敗"
   },
+  "excel": {
+    "section": {
+      "project_info": "プロジェクト情報",
+      "construction": "施工エリア"
+    },
+    "label": {
+      "project_name": "プロジェクト名",
+      "project_type": "プロジェクトタイプ",
+      "created_at": "作成日",
+      "updated_at": "更新日",
+      "property": "属性",
+      "value": "値"
+    },
+    "columns": {
+      "index": "インデックス",
+      "task_title": "タスクタイトル",
+      "status": "ステータス",
+      "description": "説明",
+      "construction_type": "施工タイプ",
+      "created_at": "作成日",
+      "due_date": "期日",
+      "reminder_date": "リマインダー日"
+    }
+  },
   "label": {
     "date_break": "日付の中断"
   },

@@ -32,6 +32,10 @@
     "show_more": "Show More",
     "open_new_tab": "Open in New Tab",
     "copy_email": "Copy Email",
+    "download": "Download",
+    "batch_download": "Batch Download",
+    "select_all": "Select All",
+    "clear_all": "Clear All",
     "fold": {
       "expand": "Expand",
       "collapse": "Collapse",
@@ -49,7 +53,8 @@
     "createdAt": "Created At",
     "email": "Email",
     "role": "Role",
-    "action": "Action"
+    "action": "Action",
+    "download_excel": "Download Excel"
   },
   "common": {
     "no": "No",
@@ -132,6 +137,30 @@
     "change_password_failed": "Failed to change password",
     "reset_password_failed": "Reset password failed",
     "update_failed": "Update failed"
+  },
+  "excel": {
+    "section": {
+      "project_info": "Project Info",
+      "construction": "Construction Areas"
+    },
+    "label": {
+      "project_name": "Project Name",
+      "project_type": "Project Type",
+      "created_at": "Created At",
+      "updated_at": "Updated At",
+      "property": "Property",
+      "value": "Value"
+    },
+    "columns": {
+      "index": "Index",
+      "task_title": "Task Title",
+      "status": "Status",
+      "description": "Description",
+      "construction_type": "Construction Type",
+      "created_at": "Created At",
+      "due_date": "Due Date",
+      "reminder_date": "Reminder Date"
+    }
   },
   "label": {
     "search": "Search",
@@ -479,6 +508,7 @@
     "delete_confirm": "Delete Confirm",
     "create_project": "Create Project",
     "move_note": "Move Note",
+    "batch_download": "Batch Download",
     "subTitle": {}
   },
   "validation": {

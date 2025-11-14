@@ -32,6 +32,10 @@
     "show_more": "顯示更多",
     "open_new_tab": "新分頁開啟",
     "copy_email": "複製信箱",
+    "download": "下載",
+    "batch_download": "批量下載",
+    "select_all": "全選",
+    "clear_all": "全清",
     "fold": {
       "expand": "展開",
       "collapse": "摺疊",
@@ -49,7 +53,8 @@
     "createdAt": "建立時間",
     "email": "電子郵件",
     "role": "角色",
-    "action": "動作"
+    "action": "動作",
+    "download_excel": "下載 Excel 報表"
   },
   "common": {
     "no": "無",
@@ -132,6 +137,30 @@
     "change_password_failed": "修改密碼失敗",
     "reset_password_failed": "重置密碼失敗",
     "update_failed": "更新失敗"
+  },
+  "excel": {
+    "section": {
+      "project_info": "專案資訊",
+      "construction": "施工區域"
+    },
+    "label": {
+      "project_name": "專案名稱",
+      "project_type": "專案類型",
+      "created_at": "建立日期",
+      "updated_at": "更新日期",
+      "property": "屬性",
+      "value": "值"
+    },
+    "columns": {
+      "index": "序號",
+      "task_title": "任務標題",
+      "status": "狀態",
+      "description": "描述",
+      "construction_type": "施工類型",
+      "created_at": "建立日期",
+      "due_date": "截止日期",
+      "reminder_date": "提醒日期"
+    }
   },
   "label": {
     "search": "搜尋",
@@ -472,6 +501,7 @@
     "delete_confirm": "刪除確認",
     "create_project": "新增專案",
     "move_note": "移動速記",
+    "batch_download": "批量下載",
     "subTitle": {}
   },
   "validation": {

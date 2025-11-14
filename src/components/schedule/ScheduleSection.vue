@@ -97,7 +97,6 @@
 import { Close, DocumentCopy } from '@element-plus/icons-vue';
 import { ElIcon } from 'element-plus';
 import { ref } from 'vue';
-import { TaskScheduleDisplayMode } from '@/types/task';
 import { useI18n } from 'vue-i18n';
 
 import type { TaskResponse } from '@/types/response';
@@ -112,6 +111,7 @@ import { useSchedule } from '@/composables/useSchedule';
 import { useTasks } from '@/composables/useTasks';
 import { provideProjectTitleList } from '@/context/useProjectTitleList';
 import { provideTaskCardFilter } from '@/context/useTaskCardFilter';
+import { TaskScheduleDisplayMode } from '@/types/task';
 
 const { t } = useI18n();
 

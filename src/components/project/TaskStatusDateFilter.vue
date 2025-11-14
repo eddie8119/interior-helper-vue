@@ -70,10 +70,10 @@
 
 <script setup lang="ts">
 import { ElInput, ElSlider, ElSwitch } from 'element-plus';
+import { ElMessage } from 'element-plus';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { ElMessage } from 'element-plus';
 
 import type { TaskFilterStatus } from '@/constants/selection';
 import type { TaskCardDisplayMode } from '@/constants/selection';

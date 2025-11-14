@@ -101,12 +101,12 @@
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue';
 import { ElIcon } from 'element-plus';
 import { computed, nextTick, onMounted, ref } from 'vue';
-import { TaskScheduleDisplayMode } from '@/types/task';
-import type { TaskResponse } from '@/types/response';
 import { useI18n } from 'vue-i18n';
 
+import type { TaskResponse } from '@/types/response';
 import type { CalendarDate } from '@/utils/calendarUtils';
 
+import { TaskScheduleDisplayMode } from '@/types/task';
 import { getDateAria as buildDateAria } from '@/utils/aria';
 import {
   generateCalendarDates,

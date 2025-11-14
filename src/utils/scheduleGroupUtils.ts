@@ -1,8 +1,7 @@
-import { formatDate as formatDateKey, getMonthYear, getWeekDay } from '@/utils/date';
-
 import type { TaskResponse } from '@/types/response';
 
 import { TaskScheduleDisplayMode } from '@/types/task';
+import { formatDate as formatDateKey, getMonthYear, getWeekDay } from '@/utils/date';
 
 export interface DayGroup {
   dateKey: string;

@@ -44,8 +44,8 @@ import { useI18n } from 'vue-i18n';
 
 import Loading from '@/components/core/loading/Loading.vue';
 import ProjectCollaboratorSection from '@/components/setting/ProjectCollaboratorSection.vue';
-import { useProjectCollaboratorManagement } from '@/composables/useProjectCollaboratorManagement';
 import { useProjectCollaborators } from '@/composables/useCollaborators';
+import { useProjectCollaboratorManagement } from '@/composables/useProjectCollaboratorManagement';
 
 const { t } = useI18n();
 

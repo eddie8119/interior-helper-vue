@@ -11,13 +11,9 @@
     @keydown.space.prevent="handleToggle"
   >
     <header class="flex items-center justify-between">
-
-              <router-link
-          class="toggle-button"
-          :to="{ path: `/todo/project/${project.id}` }"
-        >
-         <h3 class="line-clamp-1 text-base font-semibold">{{ project.title }}</h3>
-        </router-link>
+      <router-link class="toggle-button" :to="{ path: `/todo/project/${project.id}` }">
+        <h3 class="line-clamp-1 text-base font-semibold">{{ project.title }}</h3>
+      </router-link>
 
       <button
         type="button"
@@ -107,12 +103,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { ArrowLeft, ArrowRight, Loading } from '@element-plus/icons-vue';
 import { ElIcon, ElTable, ElTableColumn, ElTag } from 'element-plus';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { ProjectResponse, CollaboratorRole } from '@/types/response';
+import type { CollaboratorRole, ProjectResponse } from '@/types/response';
+
 import CollaboratorManagement from '@/components/collaborator/CollaboratorManagement.vue';
 
 const props = defineProps<{

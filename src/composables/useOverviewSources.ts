@@ -4,10 +4,10 @@ import type { ProjectTitle } from '@/types/project';
 import type { ProjectResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
 
-import { useProjects } from '@/composables/useProjects';
+import { useOverviewProjects } from '@/composables/useProjects';
 
 export function useOverviewSources() {
-  const { fetchedOverviewProjects, isLoadingOverviewProjects } = useProjects();
+  const { fetchedOverviewProjects, isLoadingOverviewProjects } = useOverviewProjects();
 
   // Extract and deduplicate construction containers
   const constructionList = computed(() => {

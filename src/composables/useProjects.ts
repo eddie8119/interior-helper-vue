@@ -12,13 +12,15 @@ import type { ProjectResponse } from '@/types/response';
 import { projectApi } from '@/api/project';
 import { useProjectsStore } from '@/stores/projects';
 
-interface UseProjectsReturn {
+interface UseOverviewProjectsReturn {
   // 用於概覽頁面
   isLoadingOverviewProjects: Ref<boolean>;
   overviewError: Ref<Error | null>;
   fetchedOverviewProjects: Ref<ProjectResponse[] | undefined>;
   overviewProjectsUpdatedAt: Ref<number>;
+}
 
+interface UseProjectsReturn {
   // 用於專案頁面
   isLoadingProjects: Ref<boolean>;
   error: Ref<Error | null>;
@@ -27,9 +29,7 @@ interface UseProjectsReturn {
   projectsUpdatedAt: Ref<number>;
 }
 
-export function useProjects(): UseProjectsReturn {
-  const projectsStore = useProjectsStore();
-
+export const useOverviewProjects = (): UseOverviewProjectsReturn => {
   const {
     data: fetchedOverviewProjects,
     isLoading: isLoadingOverviewProjects,
@@ -44,6 +44,17 @@ export function useProjects(): UseProjectsReturn {
     staleTime: 1000 * 10 * 3,
   });
 
+  return {
+    isLoadingOverviewProjects,
+    overviewError,
+    fetchedOverviewProjects,
+    overviewProjectsUpdatedAt,
+  };
+};
+
+// 用於專案頁面
+export const useProjects = (): UseProjectsReturn => {
+  const projectsStore = useProjectsStore();
   const {
     data: fetchedProjects,
     isLoading: isLoadingProjects,
@@ -78,17 +89,10 @@ export function useProjects(): UseProjectsReturn {
   // 但由於這個 composable 只返回 useQuery 的原生狀態，不需要額外的 Ref 類型
 
   return {
-    // 用於概覽頁面
-    isLoadingOverviewProjects,
-    overviewError,
-    fetchedOverviewProjects,
-    overviewProjectsUpdatedAt,
-
-    // 用於專案頁面
     isLoadingProjects,
     error,
     fetchedProjects,
     refetchProjects,
     projectsUpdatedAt,
   };
-}
+};

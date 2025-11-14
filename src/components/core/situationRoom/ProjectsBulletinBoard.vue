@@ -1,5 +1,8 @@
 <template>
   <div class="relative flex flex-col">
+    <div class="absolute bottom-5 right-[16px] z-10 mb-3 flex justify-end">
+      <BatchDownloadExcelArea :projects="fetchedOverviewProjects" />
+    </div>
     <Table
       :data="fetchedOverviewProjects"
       :columns="PROJECT_COLUMNS"
@@ -29,6 +32,9 @@
       <template #task_in_progress="{ row }">
         <p>{{ row.tasks.filter((t) => t.status === TaskStatusEnum.IN_PROGRESS).length }}</p>
       </template>
+      <template #download_excel="{ row }">
+        <DownloadExcelArea :project="row" />
+      </template>
     </Table>
   </div>
 </template>
@@ -39,6 +45,8 @@ import { useI18n } from 'vue-i18n';
 
 import ProgressBar from '@/components/core/chart/ProgressBar.vue';
 import Table from '@/components/core/table/Table.vue';
+import BatchDownloadExcelArea from '@/components/projects/BatchDownloadExcelArea.vue';
+import DownloadExcelArea from '@/components/projects/DownloadExcelArea.vue';
 import { useProjects } from '@/composables/useProjects';
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth';
 import { PROJECT_COLUMNS } from '@/constants/columns/project';

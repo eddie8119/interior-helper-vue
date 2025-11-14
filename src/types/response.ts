@@ -42,6 +42,7 @@ export interface ProjectResponse {
   isShared: boolean;
   createdAt: Date;
   updatedAt: Date;
+  tasks?: TaskResponse[];
 }
 
 // 任務

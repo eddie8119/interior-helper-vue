@@ -88,7 +88,7 @@
 
 <script setup lang="ts">
 import { useForm } from 'vee-validate';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { UpdateTimeType } from '@/types/common';
@@ -132,7 +132,9 @@ const { timeAlertStatus, timeAlertLineClasses, timeAlertAreaClasses } = useTaskT
 );
 const editingStateStore = useEditingStateStore();
 
-const isEditing = ref(false);
+const isEditing = computed(() => {
+  return editingStateStore.isEditing('task', props.task.id);
+});
 const { values, setValues } = useForm<Partial<TaskResponse>>();
 
 const descriptionText = computed(() => props.task.description?.trim() ?? '');
@@ -165,7 +167,6 @@ const startEditing = () => {
     materials,
     endDateTime,
   });
-  isEditing.value = true;
 };
 
 const handleDblClick = () => {
@@ -174,13 +175,11 @@ const handleDblClick = () => {
 
 const cancelEditing = () => {
   editingStateStore.stopEditing();
-  isEditing.value = false;
 };
 
 const onUpdateTask = async () => {
   emit('update:task', props.task.id, values);
   editingStateStore.stopEditing();
-  isEditing.value = false;
 };
 
 const handleTaskStatusChange = (status: TaskStatus) => {

@@ -15,9 +15,6 @@ export const TO_DO_TAB_LIST: Tab[] = [
   {
     name: 'projects',
   },
-  {
-    name: 'projects-download',
-  },
 ];
 
 export const OVERVIEW_TASK_CONDITION_TAB_LIST: Tab[] = [

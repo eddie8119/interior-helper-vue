@@ -1,8 +1,12 @@
 <template>
   <!-- 編輯模式：添加新任務 -->
-  <div v-show="isEditing" class="mb-6 rounded-md border border-dashed border-brand-primary p-1">
-    <AddNewTask :construction-id="constructionId" :project-id="projectId" @close="stopEditing" />
-  </div>
+
+  <AddNewTask
+    v-if="isEditing"
+    :construction-id="constructionId"
+    :project-id="projectId"
+    @close="stopEditing"
+  />
 
   <!-- 摺疊按鈕 -->
   <div v-if="tasks.length > 0" class="mb-2 flex w-full justify-end md:hidden">

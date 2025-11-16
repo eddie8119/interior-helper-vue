@@ -1,108 +1,111 @@
 <template>
-  <div class="flex flex-col space-y-3">
-    <!-- 基本信息輸入 -->
-    <div>
-      <input
-        ref="inputRef"
-        v-model="title"
-        type="text"
-        class="input-border input-common p-2"
-        :placeholder="t('placeholder.project.task')"
-      />
-      <span v-if="props.errors.title" class="text-sm text-secondary-red">{{
-        props.errors.title
-      }}</span>
-    </div>
-    <div>
-      <textarea
-        ref="textareaRef"
-        v-model="description"
-        class="input-border input-common h-[120px] p-2"
-        :placeholder="t('placeholder.project.taskDescription')"
-      />
-      <span v-if="props.errors.description" class="text-sm text-secondary-red">
-        {{ props.errors.description }}
-      </span>
-    </div>
+  <div class="my-5 rounded-md border border-dashed p-2">
+    <div class="flex flex-col space-y-3">
+      <H3Title :title="showTitle" class="text-center" />
+      <!-- 基本信息輸入 -->
+      <div>
+        <input
+          ref="inputRef"
+          v-model="title"
+          type="text"
+          class="input-border input-common p-2"
+          :placeholder="t('placeholder.project.task')"
+        />
+        <span v-if="props.errors.title" class="text-sm text-secondary-red">{{
+          props.errors.title
+        }}</span>
+      </div>
+      <div>
+        <textarea
+          ref="textareaRef"
+          v-model="description"
+          class="input-border input-common h-[120px] p-2"
+          :placeholder="t('placeholder.project.taskDescription')"
+        />
+        <span v-if="props.errors.description" class="text-sm text-secondary-red">
+          {{ props.errors.description }}
+        </span>
+      </div>
 
-    <!-- 展開更多設定按鈕 -->
-    <div class="flex items-center justify-center">
-      <button
-        class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none"
-        @click="toggleMoreSettings"
-      >
-        <span class="mr-1">{{ showMoreSettings ? '- Less' : '+ More' }}(可選) </span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
-          :class="{ 'rotate-180 transform': showMoreSettings }"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+      <!-- 展開更多設定按鈕 -->
+      <div class="flex items-center justify-center">
+        <button
+          class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none"
+          @click="toggleMoreSettings"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 9l-7 7-7-7"
+          <span class="mr-1">{{ showMoreSettings ? '- Less' : '+ More' }}(可選) </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            :class="{ 'rotate-180 transform': showMoreSettings }"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- 更多設定區域 -->
+      <div v-if="showMoreSettings" class="input-border space-y-4 p-3">
+        <!-- 材料 -->
+        <MaterialInput
+          v-model="materials"
+          :item-errors="materialErrors"
+          @add="handleAddMaterial"
+          @remove="handleRemoveMaterial"
+        />
+
+        <!-- 提醒 -->
+        <!-- 截止時間 -->
+        <div class="flex flex-col">
+          <Label :label="t('label.end_date_time')" />
+          <ElDatePicker
+            v-model="endDateTime"
+            type="datetime"
+            format="YYYY-MM-DD HH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            :placeholder="t('placeholder.select_date')"
+            class="w-full"
           />
-        </svg>
-      </button>
-    </div>
+        </div>
 
-    <!-- 更多設定區域 -->
-    <div v-if="showMoreSettings" class="input-border space-y-4 p-3">
-      <!-- 材料 -->
-      <MaterialInput
-        v-model="materials"
-        :item-errors="materialErrors"
-        @add="handleAddMaterial"
-        @remove="handleRemoveMaterial"
-      />
-
-      <!-- 提醒 -->
-      <!-- 截止時間 -->
-      <div class="flex flex-col">
-        <Label :label="t('label.end_date_time')" />
-        <ElDatePicker
-          v-model="endDateTime"
-          type="datetime"
-          format="YYYY-MM-DD HH:mm:ss"
-          value-format="YYYY-MM-DD HH:mm:ss"
-          :placeholder="t('placeholder.select_date')"
-          class="w-full"
-        />
+        <!-- 提醒時間 -->
+        <div class="flex flex-col">
+          <Label :label="t('label.reminder_date_time')" />
+          <ElDatePicker
+            v-model="reminderDateTime"
+            type="datetime"
+            format="YYYY-MM-DD HH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            :placeholder="t('placeholder.select_date_and_time')"
+            class="w-full"
+          />
+        </div>
       </div>
 
-      <!-- 提醒時間 -->
-      <div class="flex flex-col">
-        <Label :label="t('label.reminder_date_time')" />
-        <ElDatePicker
-          v-model="reminderDateTime"
-          type="datetime"
-          format="YYYY-MM-DD HH:mm:ss"
-          value-format="YYYY-MM-DD HH:mm:ss"
-          :placeholder="t('placeholder.select_date_and_time')"
-          class="w-full"
-        />
+      <!-- Action Buttons -->
+      <div class="mt-4 flex justify-end space-x-2">
+        <button
+          class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+          @click="() => props.onCancel()"
+        >
+          {{ t('button.cancel') }}
+        </button>
+        <button
+          :disabled="props.disabledSaveButton"
+          class="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+          @click="() => props.onSave()"
+        >
+          {{ saveButtonText || t('button.save') }}
+        </button>
       </div>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="mt-4 flex justify-end space-x-2">
-      <button
-        class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
-        @click="() => props.onCancel()"
-      >
-        {{ t('button.cancel') }}
-      </button>
-      <button
-        :disabled="props.disabledSaveButton"
-        class="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
-        @click="() => props.onSave()"
-      >
-        {{ saveButtonText || t('button.save') }}
-      </button>
     </div>
   </div>
 </template>
@@ -110,12 +113,13 @@
 <script setup lang="ts">
 import { ElDatePicker } from 'element-plus';
 import { useField } from 'vee-validate';
-import { nextTick, onBeforeMount, ref } from 'vue';
+import { nextTick, onBeforeMount, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { Material } from '@/types/task';
 import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
+import H3Title from '@/components/core/title/H3Title.vue';
 import MaterialInput from '@/components/core/input/MaterialInput.vue';
 import Label from '@/components/core/title/Label.vue';
 import { formatDateTime } from '@/utils/date';
@@ -152,6 +156,11 @@ const { value: description } = useField<string>('description');
 const { value: materials } = useField<Material[]>('materials');
 const { value: reminderDateTime } = useField<string | undefined>('reminderDateTime');
 const { value: endDateTime } = useField<string | undefined>('endDateTime');
+
+// 顯示卡片模式
+const showTitle = computed(() =>
+  props.initialData ? t('title.edit_task') + ' - ' + props.initialData?.title : t('title.add_task')
+);
 
 // 切換顯示更多設定
 const toggleMoreSettings = () => {

@@ -18,10 +18,7 @@
           class="toggle-button"
           :to="{ path: `/todo/project/${task.projectId}`, query: { taskTitle: task.title } }"
         >
-          <H3Title
-            :title="task.title"
-            class="ml-2 blue-text underline underline-offset-1"
-          />
+          <H3Title :title="task.title" class="blue-text ml-2 underline underline-offset-1" />
         </router-link>
         <H3Title v-else :title="task.title" class="ml-2" />
       </div>
@@ -74,16 +71,16 @@
       </div>
     </div>
   </div>
-  <div v-else class="rounded-md border p-2">
-    <TaskForm
-      :initial-data="task"
-      :show-more="true"
-      :construction-id="task.constructionType"
-      :errors="{}"
-      :on-save="onUpdateTask"
-      :on-cancel="cancelEditing"
-    />
-  </div>
+
+  <TaskForm
+    v-else
+    :initial-data="task"
+    :show-more="true"
+    :construction-id="task.constructionType"
+    :errors="{}"
+    :on-save="onUpdateTask"
+    :on-cancel="cancelEditing"
+  />
 </template>
 
 <script setup lang="ts">

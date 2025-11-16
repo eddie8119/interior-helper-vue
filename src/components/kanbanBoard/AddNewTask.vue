@@ -1,16 +1,14 @@
 <template>
-  <div class="flex flex-col space-y-3">
-    <TaskForm
-      ref="taskFormRef"
-      :construction-id="props.constructionId"
-      :errors="errors"
-      :error-message="errorMessage"
-      :on-save="onAddTask"
-      :disabled-save-button="isSubmitting"
-      :on-cancel="onClose"
-      :save-button-text="t('button.add')"
-    />
-  </div>
+  <TaskForm
+    ref="taskFormRef"
+    :construction-id="props.constructionId"
+    :errors="errors"
+    :error-message="errorMessage"
+    :on-save="onAddTask"
+    :disabled-save-button="isSubmitting"
+    :on-cancel="onClose"
+    :save-button-text="t('button.add')"
+  />
 </template>
 
 <script setup lang="ts">

@@ -9,20 +9,21 @@
     {{ t('button.batch_download') }}
   </TextButton>
 
-  <BatchDownloadDialog v-model="showBatchDownloadDialog" :projects="projects" />
+  <BatchDownloadDialog v-model="showBatchDownloadDialog" :projects="projects" :tasks="tasks" />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { ProjectResponse } from '@/types/response';
+import type { ProjectResponse, TaskResponse } from '@/types/response';
 
 import TextButton from '@/components/core/button/TextButton.vue';
 import BatchDownloadDialog from '@/components/core/dialog/BatchDownloadDialog.vue';
 
 defineProps<{
   projects: ProjectResponse[];
+  tasks: TaskResponse[];
 }>();
 
 const { t } = useI18n();

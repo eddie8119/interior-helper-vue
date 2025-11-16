@@ -1,7 +1,7 @@
 <template>
   <div class="relative flex flex-col">
     <div class="absolute bottom-5 right-[16px] z-10 mb-3 flex justify-end">
-      <BatchDownloadExcelArea :projects="fetchedOverviewProjects" />
+      <BatchDownloadExcelArea :projects="fetchedOverviewProjects" :tasks="fetchedAllTasks" />
     </div>
     <Table
       :data="fetchedOverviewProjects"
@@ -33,7 +33,7 @@
         <p>{{ row.tasks.filter((t) => t.status === TaskStatusEnum.IN_PROGRESS).length }}</p>
       </template>
       <template #download_excel="{ row }">
-        <DownloadExcelArea :project="row" />
+        <DownloadExcelArea :project="row" :tasks="fetchedAllTasks" />
       </template>
     </Table>
   </div>
@@ -47,15 +47,17 @@ import ProgressBar from '@/components/core/chart/ProgressBar.vue';
 import Table from '@/components/core/table/Table.vue';
 import BatchDownloadExcelArea from '@/components/projects/BatchDownloadExcelArea.vue';
 import DownloadExcelArea from '@/components/projects/DownloadExcelArea.vue';
-import { useProjects } from '@/composables/useProjects';
+import { useTasks } from '@/composables/useTasks';
+import { useOverviewProjects } from '@/composables/useProjects';
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth';
 import { PROJECT_COLUMNS } from '@/constants/columns/project';
 import { TaskStatusEnum } from '@/types/task';
 
 const { t } = useI18n();
 const { isMobile } = useResponsiveWidth();
+const { fetchedAllTasks } = useTasks();
 const { fetchedOverviewProjects, isLoadingOverviewProjects, overviewProjectsUpdatedAt } =
-  useProjects();
+  useOverviewProjects();
 
 const tableHeight = computed(() =>
   isMobile.value

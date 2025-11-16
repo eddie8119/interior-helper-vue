@@ -20,6 +20,16 @@ export const formatDateTime = (date: Date): string => {
 };
 
 /**
+ * 將日期格式化為 MM-DD，用於檔名等簡短標示
+ */
+export const formatMonthDay = (date: Date): string => {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  return `${month}-${day}`;
+};
+
+/**
  * 格式化日期時間為 YYYY-MM-DD HH:mm 格式
  * @param date - 日期字串或 Date 物件
  * @returns 格式化後的日期時間字串

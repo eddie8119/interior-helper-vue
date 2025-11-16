@@ -72,15 +72,17 @@ import { ElMessage } from 'element-plus';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { ProjectResponse } from '@/types/response';
+import type { ProjectResponse, TaskResponse } from '@/types/response';
 
 import TextButton from '@/components/core/button/TextButton.vue';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
-import { createWorkbookWithProjects, downloadWorkbook } from '@/config/excelConfig';
+import { createWorkbookWithProjects, downloadWorkbook } from '@/config/projectExcelConfig';
+import { formatMonthDay } from '@/utils/date';
 
 const props = defineProps<{
   modelValue: boolean;
   projects: ProjectResponse[];
+  tasks: TaskResponse[];
 }>();
 
 const emit = defineEmits<{
@@ -101,7 +103,7 @@ const dialogVisible = computed({
 
 // 全選
 const selectAll = () => {
-  selectedProjectIds.value = props.projects.map((p) => p.id);
+  selectedProjectIds.value = (props.projects ?? []).map((p) => p.id);
 };
 
 // 全清
@@ -110,7 +112,7 @@ const clearAll = () => {
 };
 
 // 計算屬性：數量與狀態
-const totalCount = computed(() => props.projects.length);
+const totalCount = computed(() => props.projects?.length ?? 0);
 const selectedCount = computed(() => selectedProjectIds.value.length);
 const isAllSelected = computed(
   () => totalCount.value > 0 && selectedCount.value === totalCount.value
@@ -152,8 +154,9 @@ const handleBatchDownloadProject = async () => {
     const selectedProjects = props.projects.filter((p) => selectedProjectIds.value.includes(p.id));
 
     // 建立 Workbook 並下載
-    const workbook = createWorkbookWithProjects(selectedProjects, t);
-    await downloadWorkbook(workbook, `Projects_Batch_${Date.now()}.xlsx`);
+    const workbook = createWorkbookWithProjects(selectedProjects, t, props.tasks);
+    const dateLabel = formatMonthDay(new Date());
+    await downloadWorkbook(workbook, `${t('project.project')}${t('button.batch_download')}_${dateLabel}.xlsx`);
 
     ElMessage.success(t('message.download_success'));
     dialogVisible.value = false;

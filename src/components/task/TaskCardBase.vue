@@ -18,11 +18,12 @@
           class="toggle-button"
           :to="{ path: `/todo/project/${task.projectId}`, query: { taskTitle: task.title } }"
         >
-          <H2Title
+          <H3Title
             :title="task.title"
-            :class="['ml-2', showRouter ? 'blue-text underline underline-offset-1' : '']"
+            class="ml-2 blue-text underline underline-offset-1"
           />
         </router-link>
+        <H3Title v-else :title="task.title" class="ml-2" />
       </div>
       <div class="flex items-center gap-2">
         <TaskStatusDropdown
@@ -47,9 +48,9 @@
     <!-- 任務描述 -->
     <div class="task-details grid grid-cols-1 gap-1 p-2">
       <template v-if="hasDescription">
-        <p class="text-color-difference text-lg">
+        <div class="description-scroll text-color-difference max-h-[150px] overflow-y-auto text-lg">
           {{ descriptionText }}
-        </p>
+        </div>
         <div v-if="showDescriptionDivider" class="divider-line" />
       </template>
 
@@ -94,7 +95,7 @@ import type { UpdateTimeType } from '@/types/common';
 import type { TaskResponse } from '@/types/response';
 import type { TaskStatus } from '@/types/task';
 
-import H2Title from '@/components/core/title/H2Title.vue';
+import H3Title from '@/components/core/title/H3Title.vue';
 import Label from '@/components/core/title/Label.vue';
 import TaskForm from '@/components/kanbanBoard/TaskForm.vue';
 import DateIcon from '@/components/ui/DateIcon.vue';

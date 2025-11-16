@@ -156,7 +156,10 @@ const handleBatchDownloadProject = async () => {
     // 建立 Workbook 並下載
     const workbook = createWorkbookWithProjects(selectedProjects, t, props.tasks);
     const dateLabel = formatMonthDay(new Date());
-    await downloadWorkbook(workbook, `${t('project.project')}${t('button.batch_download')}_${dateLabel}.xlsx`);
+    await downloadWorkbook(
+      workbook,
+      `${t('project.project')}${t('button.batch_download')}_${dateLabel}.xlsx`
+    );
 
     ElMessage.success(t('message.download_success'));
     dialogVisible.value = false;

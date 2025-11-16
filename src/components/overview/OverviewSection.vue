@@ -39,20 +39,28 @@ const { fetchedAllTasks, isLoadingAllTasks } = useTasks();
 const { fetchedOverviewProjects, isLoadingOverviewProjects, constructionList, projectTitleList } =
   useOverviewSources();
 
+const filterTasksByTime = (
+  tasks: TaskResponse[],
+  startTime: Date,
+  endTime: Date,
+  excludeDone = true
+) => {
+  return tasks.filter((task) => {
+    if (excludeDone && task.status === 'done') return false;
+    const endDateTime = task.endDateTime ? new Date(task.endDateTime) : null;
+    const reminderDateTime = task.reminderDateTime ? new Date(task.reminderDateTime) : null;
+    const isEndInRange = !!endDateTime && endDateTime >= startTime && endDateTime <= endTime;
+    const isReminderInRange =
+      !!reminderDateTime && reminderDateTime >= startTime && reminderDateTime <= endTime;
+    return isEndInRange || isReminderInRange;
+  });
+};
+
 const fetchedTasksTimeCondition = computed(() => {
   if (!fetchedAllTasks.value) return [];
 
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const endOfToday = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate(),
-    23,
-    59,
-    59,
-    999
-  );
 
   switch (taskTimeCondition.value) {
     case TaskTimeCondition.ALL:
@@ -65,44 +73,27 @@ const fetchedTasksTimeCondition = computed(() => {
       });
     case TaskTimeCondition.OVERDUE:
       return fetchedAllTasks.value.filter((task: TaskResponse) => {
+        if (task.status === 'done') return false;
         const endDateTime = task.endDateTime ? new Date(task.endDateTime) : null;
         const reminderDateTime = task.reminderDateTime ? new Date(task.reminderDateTime) : null;
         return (endDateTime && endDateTime < now) || (reminderDateTime && reminderDateTime < now);
       });
-    case TaskTimeCondition.TODAY:
-      return fetchedAllTasks.value.filter((task: TaskResponse) => {
-        const endDateTime = task.endDateTime ? new Date(task.endDateTime) : null;
-        const reminderDateTime = task.reminderDateTime ? new Date(task.reminderDateTime) : null;
-        const isEndToday = !!endDateTime && endDateTime >= today && endDateTime <= endOfToday;
-        const isReminderToday =
-          !!reminderDateTime && reminderDateTime >= today && reminderDateTime <= endOfToday;
-        return isEndToday || isReminderToday;
-      });
+    case TaskTimeCondition.TODAY: {
+      const endOfToday = new Date(today);
+      endOfToday.setHours(23, 59, 59, 999);
+      return filterTasksByTime(fetchedAllTasks.value, today, endOfToday);
+    }
     case TaskTimeCondition.THIS_WEEK: {
+      const endOfWeek = new Date(today);
       const day = today.getDay();
       const daysUntilSunday = (7 - day) % 7;
-      const endOfWeek = new Date(today);
       endOfWeek.setDate(today.getDate() + daysUntilSunday);
       endOfWeek.setHours(23, 59, 59, 999);
-      return fetchedAllTasks.value.filter((task: TaskResponse) => {
-        const endDateTime = task.endDateTime ? new Date(task.endDateTime) : null;
-        const reminderDateTime = task.reminderDateTime ? new Date(task.reminderDateTime) : null;
-        const isEndInRange = !!endDateTime && endDateTime >= today && endDateTime <= endOfWeek;
-        const isReminderInRange =
-          !!reminderDateTime && reminderDateTime >= today && reminderDateTime <= endOfWeek;
-        return isEndInRange || isReminderInRange;
-      });
+      return filterTasksByTime(fetchedAllTasks.value, today, endOfWeek);
     }
     case TaskTimeCondition.THIS_MONTH: {
       const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59, 999);
-      return fetchedAllTasks.value.filter((task: TaskResponse) => {
-        const endDateTime = task.endDateTime ? new Date(task.endDateTime) : null;
-        const reminderDateTime = task.reminderDateTime ? new Date(task.reminderDateTime) : null;
-        const isEndInRange = !!endDateTime && endDateTime >= today && endDateTime <= endOfMonth;
-        const isReminderInRange =
-          !!reminderDateTime && reminderDateTime >= today && reminderDateTime <= endOfMonth;
-        return isEndInRange || isReminderInRange;
-      });
+      return filterTasksByTime(fetchedAllTasks.value, today, endOfMonth);
     }
     default:
       return fetchedAllTasks.value;

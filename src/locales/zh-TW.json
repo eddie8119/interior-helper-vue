@@ -156,6 +156,9 @@
       "task_title": "任務標題",
       "status": "狀態",
       "description": "描述",
+      "material_name": "材料名稱",
+      "unit_price": "單價",
+      "quantity": "數量",
       "construction_type": "施工類型",
       "created_at": "建立日期",
       "due_date": "截止日期",
@@ -463,7 +466,6 @@
   "tab": {
     "projects": "專案群",
     "project": "專案",
-    "projects-download": "專案下載",
     "profile": "個人資料",
     "change-password": "修改密碼",
     "all": "全部",
@@ -502,6 +504,8 @@
     "create_project": "新增專案",
     "move_note": "移動速記",
     "batch_download": "批量下載",
+    "edit_task": "編輯任務",
+    "add_task": "新增任務",
     "subTitle": {}
   },
   "validation": {

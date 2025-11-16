@@ -21,7 +21,7 @@
     </div>
 
     <!-- Task List -->
-    <div v-else class="flex flex-wrap gap-2 sm:gap-3">
+    <div v-else class="flex flex-wrap gap-2 overflow-y-auto sm:gap-3">
       <TaskCardItem
         v-for="task in tasks"
         :key="task.id"

@@ -28,6 +28,8 @@
       "create_project": "Create Project",
       "move_note": "Move Note",
       "batch_download": "Batch Download",
+      "edit_task": "Edit Task",
+      "add_task": "Add Task",
       "subTitle": {}
     }
   },
@@ -61,6 +63,8 @@
       "create_project": "新增專案",
       "move_note": "移動速記",
       "batch_download": "批量下載",
+      "edit_task": "編輯任務",
+      "add_task": "新增任務",
       "subTitle": {}
     }
   },

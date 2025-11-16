@@ -1,81 +1,119 @@
-// import { onBeforeUnmount, onMounted } from 'vue';
-// import { onBeforeRouteLeave } from 'vue-router';
-// import type { Ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
+import type { Ref } from 'vue';
 
-// import { useTasks } from '@/composables/useTasks';
-// import type { ProjectResponse, TaskResponse } from '@/types/response';
-// import type { CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
+import type { TaskResponse } from '@/types/response';
 
-// /**
-//  * @composable useProjectDataSaver
-//  *
-//  * @description
-//  * 這個 composable 封裝了專案和任務數據的自動保存邏輯。
-//  * 它處理以下情況下的數據保存：
-//  * 1. 定期自動保存（每 5 分鐘）。
-//  * 2. 在路由離開頁面前保存。
-//  * 3. 在頁面卸載（例如關閉、刷新）前保存。
-//  *
-//  * @param {string} projectId - 當前專案的 ID。
-//  * @param {Ref<ProjectResponse | null>} localProject - 本地專案數據的響應式引用。
-//  * @param {Ref<boolean>} hasProjectChanges - 指示專案數據是否有變更的響應式引用。
-//  * @param {Ref<TaskResponse[] | null>} localTasks - 本地任務數據的響應式引用。
-//  * @param {Ref<boolean>} hasTasksChanges - 指示任務數據是否有變更的響應式引用。
-//  */
-// export function useProjectDataSaver(
-//   projectId: string,
-//   localProject: Ref<ProjectResponse | null>,
-//   hasProjectChanges: Ref<boolean>,
-//   localTasks: Ref<TaskResponse[] | null>,
-//   hasTasksChanges: Ref<boolean>
-// ) {
-//   const { updateProject } = useProjects();
-//   const { updateProjectTasks } = useTasks(projectId);
+/**
+ * @composable useProjectDataSaver
+ *
+ * @description
+ * 處理專案任務的自動保存邏輯（無 localStorage / sendBeacon）
+ * - 監聽任務變更 flag
+ * - 定期自動保存（可設定間隔）
+ * - 路由離開前保存
+ * - 組件卸載前保存
+ *
+ * @param {Ref<TaskResponse[]>} tasksRef - 任務陣列的響應式引用
+ * @param {Function} updateProjectTasksApi - 批次更新任務的 API 函數
+ * @param {number} autoSaveInterval - 自動保存間隔（毫秒），預設 3 分鐘
+ */
+export function useProjectDataSaver(
+  tasksRef: Ref<TaskResponse[]>,
+  updateProjectTasksApi: (tasks: TaskResponse[]) => Promise<TaskResponse[] | null>,
+  autoSaveInterval: number = 3 * 60 * 1000 // 預設 3 分鐘
+) {
+  // 內部狀態
+  const hasTasksChanges = ref(false);
+  const isSaving = ref(false);
+  const lastSavedAt = ref<number | null>(null);
+  let autoSaveTimerId: number | null = null;
 
-//   let autoSaveInterval: number | null = null;
+  /**
+   * 標記任務已變更
+   */
+  const markTasksChanged = () => {
+    hasTasksChanges.value = true;
+  };
 
-//   const saveData = async () => {
-//     if (hasProjectChanges.value && localProject.value) {
-//       await updateProject(localProject.value as Partial<CreateProjectSchema>);
-//       hasProjectChanges.value = false;
-//     }
-//     if (hasTasksChanges.value && localTasks.value) {
-//       await updateProjectTasks(localTasks.value);
-//       hasTasksChanges.value = false;
-//     }
-//   };
+  /**
+   * 儲存任務資料
+   */
+  const saveData = async (): Promise<void> => {
+    // 防止重入
+    if (isSaving.value) {
+      return;
+    }
 
-//   // 處理窗口關閉事件
-//   const handleBeforeUnload = (event: BeforeUnloadEvent): void => {
-//     if (hasProjectChanges.value && localProject.value) {
-//       try {
-//         // 使用 sendBeacon 進行非同步請求
-//         const url = `/api/projects/${projectId}`;
-//         const data = JSON.stringify(localProject.value);
-//         navigator.sendBeacon(url, data);
-//       } catch (error) {
-//         console.error('窗口關閉或刷新時保存數據失敗:', error);
-//       }
-//     }
-//     // 注意：任務數據的 sendBeacon 邏輯較複雜，暫時依賴其他保存機制
-//   };
+    // 若無變更則跳過
+    if (!hasTasksChanges.value) {
+      return;
+    }
 
-//   onMounted(() => {
-//     // 設置定期保存
-//     autoSaveInterval = window.setInterval(saveData, 5 * 60 * 1000); // 5 分鐘
-//     window.addEventListener('beforeunload', handleBeforeUnload);
-//   });
+    // 若無任務則跳過
+    if (!tasksRef.value || tasksRef.value.length === 0) {
+      hasTasksChanges.value = false;
+      return;
+    }
 
-//   onBeforeUnmount(async () => {
-//     await saveData();
-//     window.removeEventListener('beforeunload', handleBeforeUnload);
-//     if (autoSaveInterval) {
-//       clearInterval(autoSaveInterval);
-//     }
-//   });
+    isSaving.value = true;
 
-//   onBeforeRouteLeave(async (_, __, next) => {
-//     await saveData();
-//     next();
-//   });
-// }
+    try {
+      await updateProjectTasksApi(tasksRef.value);
+      hasTasksChanges.value = false;
+      lastSavedAt.value = Date.now();
+    } catch (error) {
+      console.error('儲存任務失敗:', error);
+      // 保留 hasTasksChanges = true，下次繼續嘗試
+    } finally {
+      isSaving.value = false;
+    }
+  };
+
+  /**
+   * 手動觸發儲存（例如使用者按儲存按鈕）
+   */
+  const saveNow = async (): Promise<void> => {
+    await saveData();
+  };
+
+  // ==================== 生命週期掛鉤 ====================
+
+  onMounted(() => {
+    // 設置定期自動保存
+    if (autoSaveInterval > 0) {
+      autoSaveTimerId = window.setInterval(() => {
+        if (hasTasksChanges.value) {
+          saveData();
+        }
+      }, autoSaveInterval);
+    }
+  });
+
+  onBeforeUnmount(async () => {
+    // 卸載前儲存
+    await saveData();
+
+    // 清除定時器
+    if (autoSaveTimerId !== null) {
+      clearInterval(autoSaveTimerId);
+      autoSaveTimerId = null;
+    }
+  });
+
+  onBeforeRouteLeave(async (_, __, next) => {
+    // 路由離開前儲存
+    await saveData();
+    next();
+  });
+
+  return {
+    // 狀態
+    isSaving,
+    hasTasksChanges,
+    lastSavedAt,
+    // 方法
+    markTasksChanged,
+    saveNow,
+  };
+}

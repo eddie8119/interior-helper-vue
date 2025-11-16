@@ -59,13 +59,13 @@ import { Container, Draggable } from 'vue3-smooth-dnd';
 import type { TaskResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
 
-import { taskApi } from '@/api/task';
 import AddNewConstruction from '@/components/kanbanBoard/AddNewConstruction.vue';
 import ConstructionContainerItem from '@/components/kanbanBoard/ConstructionContainerItem.vue';
 import TaskStatusDateFilter from '@/components/project/TaskStatusDateFilter.vue';
 import { useConstructionActions } from '@/composables/todo/useConstructionActions';
 import { useDraggableConstructions } from '@/composables/todo/useDraggableConstructions';
 import { type DraggableTask, useTaskDragAndDrop } from '@/composables/todo/useDraggableTasks';
+import { useProjectDataSaver } from '@/composables/todo/useProjectDataSaver';
 import { useTaskOperations } from '@/composables/todo/useTaskOperations';
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth';
 import { useTaskConditionFilters } from '@/composables/useTaskConditionFilters';
@@ -84,15 +84,13 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:constructionContainer', value: ConstructionSelection[]): void;
-  (e: 'update:projectAllTasks', value: TaskResponse[]): void;
 }>();
 
 // 狀態管理
 const localConstructionContainer = ref<ConstructionSelection[]>([]);
-const localTasks = ref<TaskResponse[]>([]);
+const tasks = ref<TaskResponse[]>([]);
 const searchQuery = ref<string>('');
-const { selectedStatus, daysRange, filteredTasksByConstruction } =
-  useTaskConditionFilters(localTasks);
+const { selectedStatus, daysRange, filteredTasksByConstruction } = useTaskConditionFilters(tasks);
 
 // Context 提供
 provideTaskCardFilter();
@@ -101,24 +99,32 @@ const onContainerUpdate = (newContainers: ConstructionSelection[]) => {
   emit('update:constructionContainer', newContainers);
 };
 
-const onTaskUpdate = (newTasks: TaskResponse[]) => {
-  emit('update:projectAllTasks', newTasks);
-};
-
 // ==================== Composables ====================
 const { isMobile } = useResponsiveWidth();
 const editingStateStore = useEditingStateStore();
 
-// 任務操作
-const { deleteTask, addNewTask, updateTask } = useTaskOperations(localTasks, onTaskUpdate);
+// API 任務操作
+const { deleteTask: deleteTaskFromApi, updateProjectTasks } = useTasks(props.projectId);
 
-// API 任務操作（用於刪除任務）
-const { deleteTask: deleteTaskFromApi } = useTasks(props.projectId);
+// 自動保存任務（取代 localStorage）
+const { markTasksChanged } = useProjectDataSaver(
+  tasks,
+  updateProjectTasks,
+  3 * 60 * 1000 // 3 分鐘自動保存一次
+);
+
+// 任務更新時標記需要保存
+const onTaskUpdate = () => {
+  markTasksChanged();
+};
+
+// 任務操作
+const { deleteTask, addNewTask, updateTask } = useTaskOperations(tasks, onTaskUpdate);
 
 // 工程容器操作
 const { addNewConstruction, updateConstructionName, deleteConstructionWithTasks } =
   useConstructionActions(localConstructionContainer, onContainerUpdate, {
-    tasksRef: localTasks,
+    tasksRef: tasks,
     deleteTaskFromApi,
     deleteTaskFromState: deleteTask,
     filterTasksByConstruction,
@@ -130,7 +136,7 @@ const { getConstructionContainerPayload, onConstructionContainerDrop } = useDrag
   onContainerUpdate
 );
 
-const { handleTaskDrop } = useTaskDragAndDrop(localTasks, onTaskUpdate);
+const { handleTaskDrop } = useTaskDragAndDrop(tasks, onTaskUpdate);
 
 // ==================== 數據初始化與同步 ====================
 // 避免資料中含有 null 或不合法項目，影響模板取用 container.id
@@ -154,7 +160,7 @@ watch(
 watch(
   () => props.tasks,
   (newTasks: TaskResponse[] | null) => {
-    localTasks.value = processTasksWithOrder(newTasks as DraggableTask[] | null);
+    tasks.value = processTasksWithOrder(newTasks as DraggableTask[] | null);
   },
   { immediate: true, deep: true }
 );
@@ -173,12 +179,8 @@ const handleDeleteConstruction = async (index: number) => {
   await deleteConstructionWithTasks(index);
 };
 
-// 組件卸載前保存任務數據
+// 組件卸載時清理編輯狀態（任務保存由 useProjectDataSaver 自動處理）
 onBeforeUnmount(() => {
-  if (localTasks.value.length) {
-    taskApi.updateProjectTasksWithBeacon(localTasks.value, props.projectId);
-  }
-  // 如有處於編輯中的元件，恢復為初始狀態
   editingStateStore.stopEditing();
 });
 </script>

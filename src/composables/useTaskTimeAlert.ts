@@ -1,12 +1,12 @@
-import { computed } from 'vue';
+import { computed, type Ref } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
 
 import { TaskTimeAlertStatus } from '@/types/task';
 import { getTaskTimeAlertStatus } from '@/utils/taskReminder';
 
-export function useTaskTimeAlert(task: TaskResponse) {
-  const timeAlertStatus = computed(() => getTaskTimeAlertStatus(task));
+export function useTaskTimeAlert(task: Ref<TaskResponse>) {
+  const timeAlertStatus = computed(() => getTaskTimeAlertStatus(task.value));
 
   const timeAlertLineClasses = computed(() => {
     switch (timeAlertStatus.value) {

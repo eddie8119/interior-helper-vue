@@ -85,7 +85,7 @@
 
 <script setup lang="ts">
 import { useForm } from 'vee-validate';
-import { computed } from 'vue';
+import { computed, toRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { UpdateTimeType } from '@/types/common';
@@ -125,9 +125,8 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const { showDescription, showMaterials } = useTaskCardFilter();
-const { timeAlertStatus, timeAlertLineClasses, timeAlertAreaClasses } = useTaskTimeAlert(
-  props.task
-);
+const taskRef = toRef(props, 'task');
+const { timeAlertStatus, timeAlertLineClasses, timeAlertAreaClasses } = useTaskTimeAlert(taskRef);
 const editingStateStore = useEditingStateStore();
 
 const isEditing = computed(() => {

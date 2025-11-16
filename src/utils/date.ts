@@ -68,6 +68,23 @@ export const formatTimeOnly = (date: Date | undefined): string => {
 };
 
 /**
+ * 格式化日期時間為 M/D HH:mm，用於任務卡片等簡短顯示
+ * @param date - 日期字串、時間戳或 Date 物件
+ */
+export const formatShortDateTime = (date: string | number | Date | null | undefined): string => {
+  if (!date) return '';
+  const d = new Date(date);
+  if (Number.isNaN(d.getTime())) return '';
+
+  const month = d.getMonth() + 1;
+  const day = d.getDate();
+  const hours = String(d.getHours()).padStart(2, '0');
+  const minutes = String(d.getMinutes()).padStart(2, '0');
+
+  return `${month}/${day} ${hours}:${minutes}`;
+};
+
+/**
  * 計算並格式化相對時間
  * @param rawTimestamp - 時間戳字串
  * @param t - i18n 翻譯函式

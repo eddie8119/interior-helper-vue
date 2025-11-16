@@ -62,12 +62,12 @@
       <div v-if="hasReminder" class="flex items-center text-gray-500">
         <DateIcon />
         <p class="mr-2">{{ t('label.reminder') }}</p>
-        <span>{{ formatDate(reminderDateTime) }}</span>
+        <span>{{ formatShortDateTime(reminderDateTime) }}</span>
       </div>
       <div v-if="hasEndDateTime" class="flex items-center text-gray-500">
         <DateIcon />
         <p class="mr-2">{{ t('label.end') }}</p>
-        <span>{{ formatDate(endDateTime) }}</span>
+        <span>{{ formatShortDateTime(endDateTime) }}</span>
       </div>
     </div>
   </div>
@@ -105,6 +105,7 @@ import TrashButton from '@/components/ui/TrashButton.vue';
 import { useTaskTimeAlert } from '@/composables/useTaskTimeAlert';
 import { useTaskCardFilter } from '@/context/useTaskCardFilter';
 import { useEditingStateStore } from '@/stores/editingState';
+import { formatShortDateTime } from '@/utils/date';
 
 const props = withDefaults(
   defineProps<{
@@ -182,13 +183,6 @@ const onUpdateTask = async () => {
 const handleTaskStatusChange = (status: TaskStatus) => {
   if (props.readOnly) return;
   emit('update:task', props.task.id, { ...props.task, status });
-};
-
-// 格式化日期
-const formatDate = (dateString: string | Date | number | null) => {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
 };
 </script>
 

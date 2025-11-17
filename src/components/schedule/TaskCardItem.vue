@@ -22,6 +22,7 @@
             >{{ t('common.no') }}{{ t('label.end_date_time') }}</span
           >
         </div>
+
         <button
           type="button"
           class="h-6 w-6 rounded bg-black-100 hover:bg-gray-100"
@@ -40,6 +41,9 @@
         {{ task.description }}
       </div>
       <span v-if="task.materials && task.materials.length > 0" class="text-gray-500"> 📦 </span>
+      <div class="mt-2 flex justify-end">
+        <TaskStatusDropdown :read-only="true" :status="task.status" />
+      </div>
     </div>
 
     <!-- Expanded View -->
@@ -69,12 +73,13 @@
 <script setup lang="ts">
 import { ArrowRight, Close } from '@element-plus/icons-vue';
 import { ElIcon } from 'element-plus';
-import { computed, ref } from 'vue';
+import { computed, onDeactivated, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { ProjectTitle } from '@/types/project';
 import type { TaskResponse } from '@/types/response';
 
+import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import H2Title from '@/components/core/title/H2Title.vue';
 import TaskCardBase from '@/components/task/TaskCardBase.vue';
 import { useProjectTitleList } from '@/context/useProjectTitleList';
@@ -111,6 +116,14 @@ const toggleExpand = () => {
   isExpanded.value = !isExpanded.value;
   emit('update:expanded', isExpanded.value);
 };
+
+onDeactivated(() => {
+  if (isExpanded.value) {
+    isExpanded.value = false;
+    emit('update:expanded', false);
+  }
+});
+
 
 const handleUpdateTask = (taskId: string, patch: Partial<TaskResponse>) => {
   emit('update:task', taskId, patch);

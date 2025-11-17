@@ -132,7 +132,7 @@ watch(
 );
 
 const handleTaskDrop = (dropResult: any) => {
-  emit('task-drop', dropResult, props.constructionName);
+  emit('task-drop', dropResult, props.constructionId);
 };
 
 const startEditing = () => {

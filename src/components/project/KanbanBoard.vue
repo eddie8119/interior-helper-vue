@@ -9,17 +9,7 @@
 
     <!-- 拖曳容器區域 -->
     <div class="overflow-x-auto overflow-y-visible pt-4">
-      <Container
-        :key="isMobile ? 'vertical' : 'horizontal'"
-        :orientation="isMobile ? 'vertical' : 'horizontal'"
-        :drag-handle-selector="readOnly ? '.__disabled__' : '.container-drag-handle'"
-        :get-child-payload="readOnly ? undefined : getConstructionContainerPayload"
-        :group-name="readOnly ? undefined : 'construction-containers'"
-        :non-drag-area-selector="readOnly ? '*' : undefined"
-        :should-accept-drop="() => !readOnly"
-        class="grid grid-cols-1 gap-4 md:flex md:items-start"
-        @drop="!readOnly && onConstructionContainerDrop($event)"
-      >
+      <div class="grid grid-cols-1 gap-4 md:flex md:items-start">
         <!-- 新增工程類型 -->
         <AddNewConstruction
           v-if="!readOnly"
@@ -28,26 +18,39 @@
           @add-container="addNewConstruction"
         />
 
-        <!-- 工程容器 -->
-        <Draggable
-          v-for="(container, index) in localConstructionContainer"
-          :key="container.id"
-          class="w-full shrink-0 md:w-[320px]"
+        <!-- 可拖拽的工程容器區域 -->
+        <Container
+          :key="isMobile ? 'vertical' : 'horizontal'"
+          :orientation="isMobile ? 'vertical' : 'horizontal'"
+          :drag-handle-selector="readOnly ? '.__disabled__' : '.container-drag-handle'"
+          :get-child-payload="readOnly ? undefined : getConstructionContainerPayload"
+          :group-name="readOnly ? undefined : 'construction-containers'"
+          :non-drag-area-selector="readOnly ? '*' : undefined"
+          :should-accept-drop="() => !readOnly"
+          class="flex flex-1 gap-4"
+          @drop="(event) => !readOnly && onConstructionContainerDrop(event)"
         >
-          <ConstructionContainerItem
-            :construction-id="container.id"
-            :project-id="projectId"
-            :construction-name="container.name"
-            :tasks="filteredTasksByConstruction(container.id)"
-            :days-range="daysRange"
-            :search-query="searchQuery"
-            :read-only="readOnly"
-            @delete-container="handleDeleteConstruction(index)"
-            @update:construction-name="updateConstructionName(index, $event)"
-            @task-drop="handleTaskDrop($event, container.id)"
-          />
-        </Draggable>
-      </Container>
+          <!-- 工程容器 -->
+          <Draggable
+            v-for="(container, index) in localConstructionContainer"
+            :key="container.id"
+            class="w-full shrink-0 md:w-[320px]"
+          >
+            <ConstructionContainerItem
+              :construction-id="container.id"
+              :project-id="projectId"
+              :construction-name="container.name"
+              :tasks="filteredTasksByConstruction(container.id)"
+              :days-range="daysRange"
+              :search-query="searchQuery"
+              :read-only="readOnly"
+              @delete-container="handleDeleteConstruction(index)"
+              @update:construction-name="updateConstructionName(index, $event)"
+              @task-drop="handleTaskDrop($event, container.id)"
+            />
+          </Draggable>
+        </Container>
+      </div>
     </div>
   </section>
 </template>
@@ -107,7 +110,7 @@ const editingStateStore = useEditingStateStore();
 const { deleteTask: deleteTaskFromApi, updateProjectTasks } = useTasks(props.projectId);
 
 // 自動保存任務（取代 localStorage）
-const { markTasksChanged } = useProjectDataSaver(
+const { markTasksChanged, saveNow } = useProjectDataSaver(
   tasks,
   updateProjectTasks,
   3 * 60 * 1000 // 3 分鐘自動保存一次
@@ -116,6 +119,12 @@ const { markTasksChanged } = useProjectDataSaver(
 // 任務更新時標記需要保存
 const onTaskUpdate = () => {
   markTasksChanged();
+};
+
+// 拖拽操作後立即保存
+const onTaskDragUpdate = async () => {
+  markTasksChanged();
+  await saveNow(); // 立即保存，不等待自動保存
 };
 
 // 任務操作
@@ -136,7 +145,7 @@ const { getConstructionContainerPayload, onConstructionContainerDrop } = useDrag
   onContainerUpdate
 );
 
-const { handleTaskDrop } = useTaskDragAndDrop(tasks, onTaskUpdate);
+const { handleTaskDrop } = useTaskDragAndDrop(tasks, onTaskDragUpdate);
 
 // ==================== 數據初始化與同步 ====================
 // 避免資料中含有 null 或不合法項目，影響模板取用 container.id

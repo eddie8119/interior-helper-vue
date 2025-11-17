@@ -31,7 +31,7 @@
     :drag-handle-selector="'.task-drag-handle'"
     class="grid grid-cols-1 gap-3"
     style="overflow: visible auto; touch-action: pan-y"
-    @drop="!readOnly && handleTaskDrop($event)"
+    @drop="(event) => !readOnly && handleTaskDrop(event)"
   >
     <Draggable v-for="task in tasks" :key="task.id">
       <TaskCard :task="task" :read-only="readOnly" />

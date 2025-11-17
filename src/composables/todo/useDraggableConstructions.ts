@@ -34,7 +34,7 @@ export function useDraggableConstructions(
       itemToAdd = newContainers.splice(removedIndex, 1)[0];
     }
 
-    if (addedIndex !== null) {
+    if (addedIndex !== null && itemToAdd) {
       newContainers.splice(addedIndex, 0, itemToAdd);
     }
 

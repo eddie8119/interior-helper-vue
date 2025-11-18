@@ -53,7 +53,7 @@
           type="button"
           class="h-6 w-6 rounded bg-black-100 hover:bg-gray-100"
           aria-label="Collapse task card"
-          @click="toggleExpand"
+          @click="handleCloseClick"
         >
           <ElIcon class="text-gray-600"><Close /></ElIcon>
         </button>
@@ -83,6 +83,7 @@ import H2Title from '@/components/core/title/H2Title.vue';
 import TaskCardBase from '@/components/task/TaskCardBase.vue';
 import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import { useProjectTitleList } from '@/context/useProjectTitleList';
+import { useEditingStateStore } from '@/stores/editingState';
 import { formatTimeOnly as formatTime } from '@/utils/date';
 
 const props = defineProps<{
@@ -97,6 +98,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+const editingStateStore = useEditingStateStore();
 
 const isExpanded = ref(props.expanded);
 
@@ -115,6 +117,12 @@ const dueISO = computed(() => (dueAt.value ? new Date(dueAt.value).toISOString()
 const toggleExpand = () => {
   isExpanded.value = !isExpanded.value;
   emit('update:expanded', isExpanded.value);
+};
+
+const handleCloseClick = () => {
+  // 確保 isEditing 為 false
+  editingStateStore.stopEditing();
+  toggleExpand();
 };
 
 onDeactivated(() => {

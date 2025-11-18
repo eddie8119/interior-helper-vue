@@ -15,6 +15,7 @@
       @update:password="password = $event"
       @blur:email="handleBlurEmail"
       @blur:password="handleBlurPassword"
+      @sso-login="handleSsoLogin"
     />
   </AuthCard>
 </template>
@@ -25,6 +26,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
+import type { SsoProvider } from '@/constants/provider';
 import type { LoginData } from '@/types/user';
 import type { AxiosError } from 'axios';
 
@@ -41,7 +43,7 @@ const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
-const { login } = useAuth();
+const { login, ssoLogin } = useAuth();
 
 const { handleSubmit, errors, isSubmitting } = useFormValidation<LoginData>(createLoginSchema(t), {
   email: '',
@@ -83,4 +85,12 @@ const onSubmit = handleSubmit(async (values: LoginData) => {
     authStore.resetAuthState();
   }
 });
+
+const handleSsoLogin = async (provider: SsoProvider) => {
+  try {
+    await ssoLogin(provider);
+  } catch (error) {
+    handleError(error as AxiosError);
+  }
+};
 </script>

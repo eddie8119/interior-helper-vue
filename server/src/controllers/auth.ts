@@ -103,3 +103,105 @@ export const refresh = async (req: Request, res: Response) => {
     });
   }
 };
+
+// ==================== SSO 登入 ====================
+export const ssoLogin = async (req: Request, res: Response) => {
+  try {
+    const { provider } = req.params as { provider: 'google' | 'facebook' | 'apple' };
+
+    if (!['google', 'facebook', 'apple'].includes(provider)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid SSO provider',
+      });
+    }
+
+    const redirectUrl = `${process.env.CLIENT_URL || 'http://localhost:3000'}/auth/sso/callback?provider=${provider}`;
+
+    // 生成 OAuth 授權 URL
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: provider as 'google' | 'facebook' | 'apple',
+      options: {
+        redirectTo: redirectUrl,
+        skipBrowserRedirect: true,
+      },
+    });
+
+    if (error || !data.url) {
+      console.error('SSO login error:', error);
+      return res.status(500).json({
+        success: false,
+        message: error?.message || 'Failed to generate SSO login URL',
+      });
+    }
+
+    res.json({
+      success: true,
+      data: {
+        url: data.url,
+      },
+      message: 'SSO login URL generated successfully',
+    });
+  } catch (error) {
+    console.error('SSO login error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'SSO login failed',
+    });
+  }
+};
+
+export const ssoCallback = async (req: Request, res: Response) => {
+  try {
+    const { provider } = req.params as { provider: 'google' | 'facebook' | 'apple' };
+    const { code } = req.body;
+
+    if (!code) {
+      return res.status(400).json({
+        success: false,
+        message: 'Authorization code is required',
+      });
+    }
+
+    if (!['google', 'facebook', 'apple'].includes(provider)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid SSO provider',
+      });
+    }
+
+    const { data: sessionData, error: exchangeError } =
+      await supabase.auth.exchangeCodeForSession(code);
+
+    if (exchangeError || !sessionData.session || !sessionData.user) {
+      console.error('SSO callback error:', exchangeError);
+      return res.status(401).json({
+        success: false,
+        message: exchangeError?.message || 'SSO authentication failed',
+      });
+    }
+
+    res.json({
+      success: true,
+      data: {
+        user: {
+          id: sessionData.user.id,
+          email: sessionData.user.email,
+          name: sessionData.user.user_metadata?.name || sessionData.user.user_metadata?.full_name,
+          avatar: sessionData.user.user_metadata?.avatar_url,
+          provider: sessionData.user.app_metadata?.provider,
+          createdAt: sessionData.user.created_at,
+        },
+        access_token: sessionData.session.access_token,
+        refresh_token: sessionData.session.refresh_token,
+      },
+      message: 'SSO login successful',
+    });
+  } catch (error) {
+    console.error('SSO callback error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'SSO authentication failed',
+    });
+  }
+};

@@ -1,3 +1,4 @@
+import type { SsoProvider } from '@/constants/provider';
 import type { ApiResponse } from '@/types/request';
 import type { AuthResponse } from '@/types/response';
 import type { LoginSchema } from '@/utils/schemas/loginSchema';
@@ -10,5 +11,11 @@ export const authApi = {
   },
   logout: (data: { refreshToken: string }): Promise<ApiResponse<AuthResponse>> => {
     return request.post('/auth/logout', data);
+  },
+  ssoLogin: (provider: SsoProvider): Promise<ApiResponse<{ url: string }>> => {
+    return request.post(`/auth/sso/${provider}`);
+  },
+  ssoCallback: (provider: SsoProvider, code: string): Promise<ApiResponse<AuthResponse>> => {
+    return request.post(`/auth/sso/${provider}/callback`, { code });
   },
 };

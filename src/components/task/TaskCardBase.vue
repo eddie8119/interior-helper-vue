@@ -9,67 +9,15 @@
     <div v-if="timeAlertStatus !== 'none'" class="absolute bottom-[6px] right-[6px]">
       <StatusLabel :show-index="timeAlertStatus" :class-label="timeAlertAreaClasses" />
     </div>
-    <div class="flex items-center justify-between">
-      <div class="flex items-center">
-        <DragHandle v-if="!readOnly" :size="4" handle-class="task-drag-handle" />
-
-        <router-link
-          v-if="showRouter"
-          class="toggle-button"
-          :to="{ path: `/todo/project/${task.projectId}`, query: { taskTitle: task.title } }"
-        >
-          <H3Title :title="task.title" class="blue-text ml-2 underline underline-offset-1" />
-        </router-link>
-        <H3Title v-else :title="task.title" class="ml-2" />
-      </div>
-      <div class="flex items-center gap-2">
-        <TaskStatusDropdown
-          :read-only="readOnly"
-          :status="task.status"
-          @update:status="handleTaskStatusChange"
-        />
-        <button
-          v-if="!readOnly"
-          class="rounded-full bg-blue-100 p-1 hover:bg-blue-200"
-          @click="startEditing"
-        >
-          <EditIcon :size="'h-4 w-4'" />
-        </button>
-        <TrashButton
-          v-if="!readOnly"
-          class="invisible group-hover:visible"
-          @click="$emit('delete', task.id)"
-        />
-      </div>
-    </div>
-    <!-- 任務描述 -->
-    <div class="task-details grid grid-cols-1 gap-1 p-2">
-      <template v-if="hasDescription">
-        <div class="description-scroll text-color-difference max-h-[150px] overflow-y-auto text-lg">
-          {{ descriptionText }}
-        </div>
-        <div v-if="showDescriptionDivider" class="divider-line" />
-      </template>
-
-      <!-- 任務材料 -->
-      <div v-if="hasMaterials">
-        <Label :label="t('label.materials') + ':'" />
-        <MaterialList :materials="materialsList" />
-      </div>
-      <div v-if="showMaterialsDivider" class="divider-line" />
-
-      <!-- 時間提醒 -->
-      <div v-if="hasReminder" class="flex items-center text-gray-500">
-        <DateIcon />
-        <p class="mr-2">{{ t('label.reminder') }}</p>
-        <span>{{ formatShortDateTime(reminderDateTime) }}</span>
-      </div>
-      <div v-if="hasEndDateTime" class="flex items-center text-gray-500">
-        <DateIcon />
-        <p class="mr-2">{{ t('label.end') }}</p>
-        <span>{{ formatShortDateTime(endDateTime) }}</span>
-      </div>
-    </div>
+    <TaskCardHeader
+      :task="task"
+      :read-only="readOnly"
+      :show-router="showRouter"
+      @edit="startEditing"
+      @delete="$emit('delete', $event)"
+      @update:status="handleTaskStatusChange"
+    />
+    <TaskCardDetails :task="task" />
   </div>
 
   <TaskForm
@@ -86,26 +34,16 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate';
 import { computed, toRef } from 'vue';
-import { useI18n } from 'vue-i18n';
 
-import type { UpdateTimeType } from '@/types/common';
 import type { TaskResponse } from '@/types/response';
 import type { TaskStatus } from '@/types/task';
 
-import H3Title from '@/components/core/title/H3Title.vue';
-import Label from '@/components/core/title/Label.vue';
 import TaskForm from '@/components/kanbanBoard/TaskForm.vue';
-import DateIcon from '@/components/ui/DateIcon.vue';
-import DragHandle from '@/components/ui/DragHandle.vue';
-import EditIcon from '@/components/ui/EditIcon.vue';
-import MaterialList from '@/components/ui/MaterialList.vue';
+import TaskCardDetails from '@/components/task/TaskCardDetails.vue';
+import TaskCardHeader from '@/components/task/TaskCardHeader.vue';
 import StatusLabel from '@/components/ui/StatusLabel.vue';
-import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
-import TrashButton from '@/components/ui/TrashButton.vue';
 import { useTaskTimeAlert } from '@/composables/useTaskTimeAlert';
-import { useTaskCardFilter } from '@/context/useTaskCardFilter';
 import { useEditingStateStore } from '@/stores/editingState';
-import { formatShortDateTime } from '@/utils/date';
 
 const props = withDefaults(
   defineProps<{
@@ -123,8 +61,6 @@ const emit = defineEmits<{
   (e: 'delete', taskId: string): void;
 }>();
 
-const { t } = useI18n();
-const { showDescription, showMaterials } = useTaskCardFilter();
 const taskRef = toRef(props, 'task');
 const { timeAlertStatus, timeAlertLineClasses, timeAlertAreaClasses } = useTaskTimeAlert(taskRef);
 const editingStateStore = useEditingStateStore();
@@ -133,25 +69,6 @@ const isEditing = computed(() => {
   return editingStateStore.isEditing('task', props.task.id);
 });
 const { values, setValues } = useForm<Partial<TaskResponse>>();
-
-const descriptionText = computed(() => props.task.description?.trim() ?? '');
-const materialsList = computed(() =>
-  Array.isArray(props.task.materials) ? props.task.materials : []
-);
-const reminderDateTime = computed<UpdateTimeType>(() => props.task.reminderDateTime ?? null);
-const endDateTime = computed<UpdateTimeType>(() => props.task.endDateTime ?? null);
-
-const hasDescription = computed(() => showDescription.value && descriptionText.value.length > 0);
-const hasMaterials = computed(() => showMaterials.value && materialsList.value.length > 0);
-const hasReminder = computed(() => Boolean(reminderDateTime.value));
-const hasEndDateTime = computed(() => Boolean(endDateTime.value));
-
-const showDescriptionDivider = computed(
-  () => hasDescription.value && (hasMaterials.value || hasReminder.value)
-);
-const showMaterialsDivider = computed(
-  () => hasMaterials.value && (hasReminder.value || hasEndDateTime.value)
-);
 
 const startEditing = () => {
   const { id, title, description, reminderDateTime, materials, endDateTime } = props.task;

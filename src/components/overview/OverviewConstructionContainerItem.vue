@@ -1,8 +1,8 @@
 <template>
   <div class="construction-container rounded-lg p-3" style="overflow: visible">
     <!-- Header -->
-    <div class="mb-2 flex items-center justify-between">
-      <Label :label="constructionName" />
+    <div class="flex items-center justify-between md:mb-2">
+      <Label :label="constructionName" :class-name="'!mb-0 md:mb-2'" />
 
       <div class="flex items-center gap-2">
         <span class="text-gray-500">{{ totalTasks }}</span>
@@ -15,11 +15,11 @@
           @click="toggleAllTask()"
         />
 
-        <!-- Toggle button (Mobile) -->
+        <!-- hide button (Mobile) -->
         <button
           v-if="totalTasks > 0"
           type="button"
-          class="rounded-md bg-gray-200 px-2 py-1 text-sm text-gray-700 hover:bg-gray-300 md:hidden"
+          class="rounded-md bg-gray-200 px-2 py-1 text-xs text-gray-700 hover:bg-gray-300 md:hidden"
           @click="isExpanded = !isExpanded"
         >
           {{ isExpanded ? t('button.hide') : t('button.show_more') }}

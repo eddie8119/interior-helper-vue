@@ -47,9 +47,9 @@ import ProgressBar from '@/components/core/chart/ProgressBar.vue';
 import Table from '@/components/core/table/Table.vue';
 import BatchDownloadExcelArea from '@/components/projects/BatchDownloadExcelArea.vue';
 import DownloadExcelArea from '@/components/projects/DownloadExcelArea.vue';
-import { useTasks } from '@/composables/useTasks';
 import { useOverviewProjects } from '@/composables/useProjects';
 import { useResponsiveWidth } from '@/composables/useResponsiveWidth';
+import { useTasks } from '@/composables/useTasks';
 import { PROJECT_COLUMNS } from '@/constants/columns/project';
 import { TaskStatusEnum } from '@/types/task';
 

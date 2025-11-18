@@ -1,5 +1,7 @@
 import { differenceInDays } from 'date-fns';
 
+import type { UpdateTimeType } from '@/types/common';
+
 // --- Formatting Functions ---
 
 /**
@@ -71,7 +73,7 @@ export const formatTimeOnly = (date: Date | undefined): string => {
  * 格式化日期時間為 M/D HH:mm，用於任務卡片等簡短顯示
  * @param date - 日期字串、時間戳或 Date 物件
  */
-export const formatShortDateTime = (date: string | number | Date | null | undefined): string => {
+export const formatShortDateTime = (date: UpdateTimeType): string => {
   if (!date) return '';
   const d = new Date(date);
   if (Number.isNaN(d.getTime())) return '';
@@ -156,7 +158,7 @@ export const getWeekDay = (date: Date, t: (key: string) => string): string => {
  * @param targetDate - 目標日期
  * @returns 距離天數 (負數表示過去)
  */
-export const getDaysUntil = (targetDate: string | Date | number | null): number | null => {
+export const getDaysUntil = (targetDate: UpdateTimeType): number | null => {
   if (!targetDate) return null;
 
   const now = new Date();

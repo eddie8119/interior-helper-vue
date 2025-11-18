@@ -1,9 +1,9 @@
 import { useDebounceFn } from '@vueuse/core';
-import type { Ref } from 'vue';
 
 import type { ProjectResponse } from '@/types/response';
 import type { ConstructionSelection, ProjectType } from '@/types/selection';
 import type { CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
+import type { Ref } from 'vue';
 
 /**
  * 處理專案更新操作（標題、類型、工程容器）

@@ -79,9 +79,9 @@ import { useI18n } from 'vue-i18n';
 import type { ProjectTitle } from '@/types/project';
 import type { TaskResponse } from '@/types/response';
 
-import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import H2Title from '@/components/core/title/H2Title.vue';
 import TaskCardBase from '@/components/task/TaskCardBase.vue';
+import TaskStatusDropdown from '@/components/ui/TaskStatusDropdown.vue';
 import { useProjectTitleList } from '@/context/useProjectTitleList';
 import { formatTimeOnly as formatTime } from '@/utils/date';
 
@@ -123,7 +123,6 @@ onDeactivated(() => {
     emit('update:expanded', false);
   }
 });
-
 
 const handleUpdateTask = (taskId: string, patch: Partial<TaskResponse>) => {
   emit('update:task', taskId, patch);

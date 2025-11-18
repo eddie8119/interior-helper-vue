@@ -36,6 +36,7 @@
 </template>
 
 <script setup lang="ts">
+import type { UpdateTimeType } from '@/types/common';
 import type { ProjectResponse } from '@/types/response';
 import type { ProjectType as ProjectTypeValue } from '@/types/selection';
 
@@ -47,7 +48,7 @@ import ProjectTypeComponent from '@/components/project/ProjectType.vue';
 defineProps<{
   localProject: ProjectResponse | null;
   projectId: string;
-  lastUpdateTime: string | number | Date | null;
+  lastUpdateTime: UpdateTimeType;
 }>();
 
 const emit = defineEmits<{

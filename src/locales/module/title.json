@@ -30,6 +30,9 @@
       "batch_download": "Batch Download",
       "edit_task": "Edit Task",
       "add_task": "Add Task",
+      "sso_processing": "Processing SSO Login",
+      "sso_success": "SSO Login Successful",
+      "sso_error": "SSO Login Failed",
       "subTitle": {}
     }
   },
@@ -65,6 +68,9 @@
       "batch_download": "批量下載",
       "edit_task": "編輯任務",
       "add_task": "新增任務",
+      "sso_processing": "正在處理 SSO 登入",
+      "sso_success": "SSO 登入成功",
+      "sso_error": "SSO 登入失敗",
       "subTitle": {}
     }
   },

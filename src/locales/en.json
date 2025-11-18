@@ -10,6 +10,7 @@
     "submit": "Submit",
     "register": "Register",
     "login": "Login",
+    "back_to_login": "Back to Login",
     "change_password": "Change Password",
     "forgot_password": "Forgot Password",
     "reset_password": "Reset Password",
@@ -41,6 +42,11 @@
       "collapse": "Collapse",
       "expand_all": "Expand All",
       "collapse_all": "Collapse All"
+    },
+    "sso": {
+      "google": "Sign in with Google",
+      "facebook": "Sign in with Facebook",
+      "apple": "Sign in with Apple"
     }
   },
   "column": {
@@ -186,6 +192,7 @@
     "end_time": "End Time",
     "filter": "Filter",
     "quick_select": "Direct input or rapid repeated clicking",
+    "or": "Or",
     "status": {
       "status": "Status",
       "overdue": "Overdue",
@@ -244,8 +251,7 @@
     "actions": {
       "enable": "Enable",
       "disable": "Disable"
-    },
-    "date_break": "Date Break"
+    }
   },
   "link": {
     "back_to_home": "Back to Home",
@@ -292,6 +298,8 @@
     "no_tasks": "No tasks available",
     "no_tasks_for_day": "No tasks scheduled for this day",
     "no_unscheduled_task": "No unscheduled tasks",
+    "sso_processing": "Processing your SSO login, please wait...",
+    "sso_success": "SSO login successful! Redirecting...",
     "invitation": {
       "sent": "Invitation sent successfully",
       "accepted": "Invitation accepted",
@@ -514,6 +522,9 @@
     "batch_download": "Batch Download",
     "edit_task": "Edit Task",
     "add_task": "Add Task",
+    "sso_processing": "Processing SSO Login",
+    "sso_success": "SSO Login Successful",
+    "sso_error": "SSO Login Failed",
     "subTitle": {}
   },
   "validation": {

@@ -38,6 +38,8 @@
       "no_tasks": "No tasks available",
       "no_tasks_for_day": "No tasks scheduled for this day",
       "no_unscheduled_task": "No unscheduled tasks",
+      "sso_processing": "Processing your SSO login, please wait...",
+      "sso_success": "SSO login successful! Redirecting...",
       "invitation": {
         "sent": "Invitation sent successfully",
         "accepted": "Invitation accepted",
@@ -110,6 +112,8 @@
       "no_tasks": "暫無任務",
       "no_tasks_for_day": "當天無任務安排",
       "no_unscheduled_task": "所有任務都已排程",
+      "sso_processing": "正在處理您的 SSO 登入，請稍候...",
+      "sso_success": "SSO 登入成功！正在跳轉...",
       "invitation": {
         "sent": "邀請已成功發送",
         "accepted": "已接受邀請",

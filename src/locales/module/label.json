@@ -21,6 +21,7 @@
       "end_time": "End Time",
       "filter": "Filter",
       "quick_select": "Direct input or rapid repeated clicking",
+      "or": "Or",
       "status": {
         "status": "Status",
         "overdue": "Overdue",
@@ -79,8 +80,7 @@
       "actions": {
         "enable": "Enable",
         "disable": "Disable"
-      },
-      "date_break": "Date Break"
+      }
     }
   },
   "zh-TW": {
@@ -105,6 +105,7 @@
       "end_time": "結束時間",
       "filter": "篩選",
       "quick_select": "直接輸入或是快速複選",
+      "or": "或",
       "status": {
         "status": "狀態",
         "overdue": "過期",
@@ -163,8 +164,7 @@
       "actions": {
         "enable": "啟用",
         "disable": "停用"
-      },
-      "date_break": "日期中斷"
+      }
     }
   },
   "ja": {

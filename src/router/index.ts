@@ -62,6 +62,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'resend-activation',
         component: () => import('../pages/auth/resend-activation.vue'),
       },
+      {
+        path: 'sso/callback',
+        name: 'sso-callback',
+        component: () => import('../pages/auth/sso-callback.vue'),
+      },
     ],
   },
   {

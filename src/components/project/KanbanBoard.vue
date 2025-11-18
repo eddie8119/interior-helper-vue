@@ -9,7 +9,7 @@
 
     <!-- 拖曳容器區域 -->
     <div class="overflow-x-auto overflow-y-visible pt-4">
-      <div class="grid grid-cols-1 gap-4 md:flex md:items-start">
+      <div class="grid grid-cols-1 gap-4 md:flex md:items-start md:gap-0">
         <!-- 新增工程類型 -->
         <AddNewConstruction
           v-if="!readOnly"

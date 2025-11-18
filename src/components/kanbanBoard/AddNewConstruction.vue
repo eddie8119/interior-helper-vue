@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!isEditing"
-    class="flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-3 hover:border-gray-400 md:mx-2 md:w-[300px]"
+    class="flex w-full flex-shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-3 hover:border-gray-400 md:mx-2 md:w-[300px] md:min-w-[300px]"
     @click="startEditing"
   >
     <div class="text-center">

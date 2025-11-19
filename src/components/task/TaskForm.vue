@@ -53,41 +53,12 @@
       </div>
 
       <!-- 更多設定區域 -->
-      <div v-if="showMoreSettings" class="input-border space-y-4 p-3">
-        <!-- 材料 -->
-        <MaterialInput
-          v-model="materials"
-          :item-errors="materialErrors"
-          @add="handleAddMaterial"
-          @remove="handleRemoveMaterial"
-        />
-
-        <!-- 提醒 -->
-        <!-- 提醒時間 -->
-        <div class="flex flex-col">
-          <Label :label="t('label.reminder_date_time')" />
-          <ElDatePicker
-            v-model="reminderDateTime"
-            type="datetime"
-            format="YYYY-MM-DD HH:mm:ss"
-            value-format="YYYY-MM-DD HH:mm:ss"
-            :placeholder="t('placeholder.select_date_and_time')"
-            class="w-full"
-          />
-        </div>
-        <!-- 截止時間 -->
-        <div class="flex flex-col">
-          <Label :label="t('label.end_date_time')" />
-          <ElDatePicker
-            v-model="endDateTime"
-            type="datetime"
-            format="YYYY-MM-DD HH:mm:ss"
-            value-format="YYYY-MM-DD HH:mm:ss"
-            :placeholder="t('placeholder.select_date')"
-            class="w-full"
-          />
-        </div>
-      </div>
+      <TaskFormMoreSettings
+        v-if="showMoreSettings"
+        :item-errors="materialErrors"
+        @add-material="handleAddMaterial"
+        @remove-material="handleRemoveMaterial"
+      />
 
       <!-- Action Buttons -->
       <div class="mt-4 flex justify-end space-x-2">
@@ -110,7 +81,6 @@
 </template>
 
 <script setup lang="ts">
-import { ElDatePicker } from 'element-plus';
 import { useField } from 'vee-validate';
 import { computed, nextTick, onBeforeMount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -118,9 +88,8 @@ import { useI18n } from 'vue-i18n';
 import type { Material } from '@/types/task';
 import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
-import MaterialInput from '@/components/core/input/MaterialInput.vue';
 import H3Title from '@/components/core/title/H3Title.vue';
-import Label from '@/components/core/title/Label.vue';
+import TaskFormMoreSettings from '@/components/task/TaskFormMoreSettings.vue';
 import { formatDateTime } from '@/utils/date';
 
 const props = defineProps<{

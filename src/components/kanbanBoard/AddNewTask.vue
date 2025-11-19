@@ -48,12 +48,15 @@ const getInitialValues = (): CreateTaskSchema => ({
   status: 'todo',
 });
 
-const { isSubmitting, handleSubmit, errors, resetForm } = useForm({
+const { isSubmitting, handleSubmit, errors, resetForm, setValues } = useForm({
   validationSchema: toTypedSchema(createTaskSchema(t)),
   initialValues: getInitialValues(),
 });
 
-// 提交狀態
+// 設置初始值以建立 form context
+setValues(getInitialValues());
+
+// 提交狀態 - 使用 handleSubmit 進行驗證
 const onAddTask = handleSubmit(async (values: CreateTaskSchema) => {
   if (!taskFormRef.value) return;
 
@@ -74,7 +77,7 @@ const onAddTask = handleSubmit(async (values: CreateTaskSchema) => {
       errorMessage.value = message ?? '';
       return;
     }
-    if (success) {
+    if (success && data) {
       addNewTask(data);
       onClose();
     }

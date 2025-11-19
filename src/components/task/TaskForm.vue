@@ -71,7 +71,8 @@
         <button
           :disabled="props.disabledSaveButton"
           class="rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
-          @click="() => props.onSave()"
+          type="submit"
+          @click.prevent="handleSave"
         >
           {{ saveButtonText || t('button.save') }}
         </button>
@@ -90,7 +91,6 @@ import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 import H3Title from '@/components/core/title/H3Title.vue';
 import TaskFormMoreSettings from '@/components/task/TaskFormMoreSettings.vue';
-import { formatDateTime } from '@/utils/date';
 
 const props = defineProps<{
   initialData?: CreateTaskSchema;
@@ -145,8 +145,8 @@ const toggleMoreSettings = () => {
   ) {
     // 如果是打開更多設定，且有初始數據，則恢復初始數據
     materials.value = props.initialData.materials || [];
-    reminderDateTime.value = formatDateTime(props.initialData.reminderDateTime!);
-    endDateTime.value = formatDateTime(props.initialData.endDateTime!);
+    reminderDateTime.value = props.initialData.reminderDateTime;
+    endDateTime.value = props.initialData.endDateTime;
   }
 
   // 切換顯示狀態
@@ -185,19 +185,13 @@ const clearMaterialErrors = () => {
   materialErrors.value = {};
 };
 
-// 驗證材料資料 - 現在使用 Zod 的驗證邏輯
-const validateMaterials = () => {
-  // 清除之前的錯誤
-  clearMaterialErrors();
-
-  // 所有驗證都由 vee-validate 和 Zod 處理
-  // 因此我們只需要確保材料數據格式正確
-  return true;
+// 處理保存按鈕點擊
+const handleSave = () => {
+  props.onSave();
 };
 
 // 提供方法給父組件
 defineExpose({
-  validateMaterials,
   clearMaterialErrors,
   focusInput: () => {
     nextTick(() => {

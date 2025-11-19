@@ -3,7 +3,7 @@ import axios, { type AxiosRequestConfig, isAxiosError } from 'axios';
 
 import router from '@/router';
 import { useAuthStore } from '@/stores/auth';
-import { getAccessToken, getRefreshToken, isAccessTokenValid, setAccessToken } from '@/utils/auth';
+import { getAccessToken, getRefreshToken, setAccessToken } from '@/utils/auth';
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
@@ -54,13 +54,6 @@ instance.interceptors.request.use(
   async (config) => {
     const token = getAccessToken();
 
-    // 在發送請求前檢查 token 是否有效
-    if (token && !isAccessTokenValid()) {
-      console.warn('Access token expired before request, logging out');
-      await logout();
-      return Promise.reject(new Error('Token expired'));
-    }
-
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -89,14 +82,14 @@ instance.interceptors.response.use(
 
           // 使用不帶攔截器的 refreshAxiosInstance 來刷新 token
           const { data } = await refreshAxiosInstance.post('/auth/token/refresh/', {
-            refresh: refreshToken,
+            refresh_token: refreshToken,
           });
 
-          const { access } = data;
-          setAccessToken(access);
+          const { access_token } = data;
+          setAccessToken(access_token);
 
           // 當第一個請求（請求 A）成功拿到新的 access token 後
-          onTokenRefreshed(access);
+          onTokenRefreshed(access_token);
           // 用新鑰匙開門的動作
           return instance(originalRequest);
         } catch (refreshError: unknown) {

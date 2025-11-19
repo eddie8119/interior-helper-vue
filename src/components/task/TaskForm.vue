@@ -63,19 +63,6 @@
         />
 
         <!-- 提醒 -->
-        <!-- 截止時間 -->
-        <div class="flex flex-col">
-          <Label :label="t('label.end_date_time')" />
-          <ElDatePicker
-            v-model="endDateTime"
-            type="datetime"
-            format="YYYY-MM-DD HH:mm:ss"
-            value-format="YYYY-MM-DD HH:mm:ss"
-            :placeholder="t('placeholder.select_date')"
-            class="w-full"
-          />
-        </div>
-
         <!-- 提醒時間 -->
         <div class="flex flex-col">
           <Label :label="t('label.reminder_date_time')" />
@@ -85,6 +72,18 @@
             format="YYYY-MM-DD HH:mm:ss"
             value-format="YYYY-MM-DD HH:mm:ss"
             :placeholder="t('placeholder.select_date_and_time')"
+            class="w-full"
+          />
+        </div>
+        <!-- 截止時間 -->
+        <div class="flex flex-col">
+          <Label :label="t('label.end_date_time')" />
+          <ElDatePicker
+            v-model="endDateTime"
+            type="datetime"
+            format="YYYY-MM-DD HH:mm:ss"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            :placeholder="t('placeholder.select_date')"
             class="w-full"
           />
         </div>

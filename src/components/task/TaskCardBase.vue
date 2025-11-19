@@ -38,9 +38,9 @@ import { computed, toRef } from 'vue';
 import type { TaskResponse } from '@/types/response';
 import type { TaskStatus } from '@/types/task';
 
-import TaskForm from '@/components/kanbanBoard/TaskForm.vue';
 import TaskCardDetails from '@/components/task/TaskCardDetails.vue';
 import TaskCardHeader from '@/components/task/TaskCardHeader.vue';
+import TaskForm from '@/components/task/TaskForm.vue';
 import StatusLabel from '@/components/ui/StatusLabel.vue';
 import { useTaskTimeAlert } from '@/composables/useTaskTimeAlert';
 import { useEditingStateStore } from '@/stores/editingState';

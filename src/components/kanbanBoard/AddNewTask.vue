@@ -20,7 +20,7 @@ import { useI18n } from 'vue-i18n';
 import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 import { taskApi } from '@/api/task';
-import TaskForm from '@/components/kanbanBoard/TaskForm.vue';
+import TaskForm from '@/components/task/TaskForm.vue';
 import { useTaskContext } from '@/context/useTaskContext';
 import { createTaskSchema } from '@/utils/schemas/createTaskSchema';
 

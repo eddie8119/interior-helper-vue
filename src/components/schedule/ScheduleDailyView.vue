@@ -1,19 +1,17 @@
 <template>
   <div class="flex h-full flex-col">
     <!-- Display Mode Tabs -->
-    <nav class="flex items-center justify-end">
-      <ul class="flex gap-2">
-        <li v-for="mode in taskScheduleDisplayModeList" :key="mode.value">
-          <button
-            class="tab-button rounded-lg px-4 py-2 text-sm font-medium transition-colors"
-            :class="{ 'is-active': displayMode === mode.value }"
-            @click="$emit('update:displayMode', mode.value)"
-          >
-            {{ t(`tab.schedule.${mode.value}`) }}
-          </button>
-        </li>
-      </ul>
-    </nav>
+    <div class="flex items-center justify-end">
+      <PillTab
+        :model-value="displayMode"
+        :tabs="taskScheduleDisplayModeList"
+        @update:model-value="$emit('update:displayMode', $event)"
+      >
+        <template #item="{ tab }">
+          {{ t(`tab.schedule.${tab.value}`) }}
+        </template>
+      </PillTab>
+    </div>
 
     <!-- Tasks Container -->
     <div ref="scrollContainer" class="flex-1 overflow-y-auto scroll-smooth">
@@ -48,6 +46,7 @@ import DayGroup from './DayGroup.vue';
 
 import type { TaskResponse } from '@/types/response';
 
+import PillTab from '@/components/core/tab/PillTab.vue';
 import { TaskScheduleDisplayMode } from '@/types/task';
 import { formatDate as formatDateKey, isConsecutiveDate } from '@/utils/date';
 import { groupTasksByDate } from '@/utils/scheduleGroupUtils';
@@ -70,11 +69,11 @@ const scrollContainer = ref<HTMLElement | null>(null);
 const dayRefs = ref<Map<string, HTMLElement>>(new Map());
 const expandedTaskIds = ref<Set<string>>(new Set());
 
-const taskScheduleDisplayModeList = [
-  { value: TaskScheduleDisplayMode.ReminderDateTime, label: t('schedule.display_mode.reminder') },
-  { value: TaskScheduleDisplayMode.EndDateTime, label: t('schedule.display_mode.end') },
-  { value: TaskScheduleDisplayMode.All, label: t('schedule.display_mode.all') },
-];
+const taskScheduleDisplayModeList = computed(() => [
+  { value: TaskScheduleDisplayMode.ReminderDateTime },
+  { value: TaskScheduleDisplayMode.EndDateTime },
+  { value: TaskScheduleDisplayMode.All },
+]);
 
 const groupedTasks = computed(() => groupTasksByDate(props.tasks, t, props.displayMode));
 
@@ -122,15 +121,3 @@ watch(
   { immediate: false }
 );
 </script>
-
-<style scoped>
-.tab-button {
-  @apply bg-primary-panel text-black-400 dark:bg-primaryDark-panel;
-
-  cursor: pointer;
-}
-
-.tab-button.is-active {
-  @apply bg-brand-tertiary text-black-900;
-}
-</style>

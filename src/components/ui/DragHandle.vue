@@ -1,5 +1,5 @@
 <template>
-  <div :class="[handleClass, 'cursor-grab rounded-full p-1 hover:bg-gray-200']">
+  <div :class="[handleClass, 'drag-handle cursor-grab rounded-full p-1 hover:bg-gray-200']">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       :class="iconClass"

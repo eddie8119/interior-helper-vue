@@ -44,15 +44,15 @@ const email = ref<string>('');
 const { resetPassword, isResettingPassword } = useUser();
 
 // Base64URL decode helper
-function base64UrlDecode(input: string): string {
+const base64UrlDecode = (input: string): string => {
   let base64 = input.replace(/-/g, '+').replace(/_/g, '/');
   const pad = base64.length % 4;
   if (pad) base64 += '='.repeat(4 - pad);
   return atob(base64);
-}
+};
 
 // Decode JWT and extract email
-function decodeEmailFromAccessToken(token: string): string | undefined {
+const decodeEmailFromAccessToken = (token: string): string | undefined => {
   try {
     const parts = token.split('.');
     if (parts.length < 2) return undefined;
@@ -62,7 +62,7 @@ function decodeEmailFromAccessToken(token: string): string | undefined {
   } catch {
     return undefined;
   }
-}
+};
 
 const { handleSubmit, errors } = useFormValidation(createResetPasswordSchema(t), {
   newPassword: '',

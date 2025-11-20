@@ -1,6 +1,6 @@
 <template>
   <AuthCard
-    :error-message="resendErrorMessage"
+    :error-message="displayErrorMessage"
     :message="resendMessage"
     :loading="isResending"
     :show-submit-button="false"
@@ -49,31 +49,30 @@ const { resendActivation, isResending, resendError } = useUser();
 const resendMessage = ref<string | null>(null);
 const email = ref<string | undefined>(route.query.email as string | undefined);
 
-const resendErrorMessage = computed(() => resendError.value?.message ?? null);
+const localErrorMessage = ref<string | null>(null);
+
+const displayErrorMessage = computed(() => {
+  return localErrorMessage.value ?? resendError.value?.message ?? null;
+});
 
 const handleResendEmail = async () => {
   resendMessage.value = null;
-  resendError.value = null;
+  localErrorMessage.value = null;
 
   if (!email.value) {
-    resendError.value = new Error(t('error.invalid_email'));
+    localErrorMessage.value = t('error.invalid_email');
     return;
   }
-
   try {
     const { success, message } = await resendActivation({ email: email.value });
 
     if (success) {
       resendMessage.value = t('message.dialog.check_the_email');
     } else {
-      resendError.value = new Error(message || t('error.resend_activation_failed'));
+      localErrorMessage.value = message || t('error.resend_activation_failed');
     }
-  } catch (error: any) {
-    if (error?.response?.data?.message) {
-      resendError.value = new Error(error.response.data.message);
-    } else {
-      resendError.value = new Error(t('error.resend_activation_failed'));
-    }
+  } catch (error: unknown) {
+    console.error('Failed to resend activation email:', error);
   }
 };
 </script>

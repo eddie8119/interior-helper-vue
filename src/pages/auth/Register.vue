@@ -32,6 +32,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import type { RegisterData } from '@/types/user';
+import type { AxiosError } from 'axios';
 
 import AuthCard from '@/components/auth/AuthCard.vue';
 import RegisterForm from '@/components/auth/RegisterForm.vue';
@@ -103,7 +104,7 @@ const onSubmit = handleSubmit(async (values: RegisterData) => {
       }, 500);
     }
   } catch (error) {
-    handleError(error as any);
+    handleError(error as AxiosError);
   }
 });
 </script>

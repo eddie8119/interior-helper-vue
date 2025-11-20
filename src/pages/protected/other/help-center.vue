@@ -81,9 +81,7 @@ const openInNewTab = () => {
 };
 
 const copyEmail = async () => {
-  try {
-    await navigator.clipboard.writeText(email);
-  } catch (e) {}
+  await navigator.clipboard.writeText(email);
 };
 
 onMounted(() => {

@@ -64,7 +64,7 @@
 
           <div class="flex items-center justify-between">
             <span class="font-semibold text-gray-700">{{ t('label.invitation.expires_at') }}:</span>
-            <span class="text-gray-600">{{ formatDate(invitation.expiresAt) }}</span>
+            <span class="text-gray-600">{{ formatDateTimeToMinutes(invitation.expiresAt) }}</span>
           </div>
         </div>
 
@@ -119,12 +119,16 @@
 <script setup lang="ts">
 import { Avatar, Loading, WarningFilled } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
+import type { AxiosError } from 'axios';
+
+import { useFormError } from '@/composables/useFormError';
 import { useAcceptInvitation, useInvitationByToken } from '@/composables/useInvitations';
 import { useAuthStore } from '@/stores/auth';
+import { formatDateTimeToMinutes } from '@/utils/date';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -135,6 +139,10 @@ const token = computed(() => route.query.token as string);
 
 const { invitation, isLoading, error, refetch } = useInvitationByToken(token);
 const { accept, isAccepting } = useAcceptInvitation();
+const { handleError } = useFormError({
+  statusCodes: [400, 401, 403, 404, 410],
+  defaultErrorKey: t('message.invitation.accept_failed'),
+});
 
 onMounted(() => {
   if (!token.value) {
@@ -143,16 +151,6 @@ onMounted(() => {
     refetch();
   }
 });
-
-const formatDate = (date: Date) => {
-  return new Date(date).toLocaleDateString('zh-TW', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-};
 
 const handleAccept = async () => {
   if (!invitation.value) return;
@@ -169,8 +167,8 @@ const handleAccept = async () => {
         router.push('/overview');
       }
     }, 1500);
-  } catch (err: any) {
-    ElMessage.error(err.message || t('message.invitation.accept_failed'));
+  } catch (err) {
+    handleError(err as AxiosError);
   }
 };
 </script>

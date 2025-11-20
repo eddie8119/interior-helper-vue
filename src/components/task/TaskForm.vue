@@ -186,8 +186,8 @@ const clearMaterialErrors = () => {
 };
 
 // 處理保存按鈕點擊
-const handleSave = () => {
-  props.onSave();
+const handleSave = async () => {
+  await props.onSave();
 };
 
 // 提供方法給父組件

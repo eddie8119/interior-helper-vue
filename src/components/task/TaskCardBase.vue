@@ -25,15 +25,18 @@
     :initial-data="task"
     :show-more="true"
     :construction-id="task.constructionType"
-    :errors="{}"
+    :errors="errors"
+    :disabled-save-button="isSubmitting"
     :on-save="onUpdateTask"
     :on-cancel="cancelEditing"
   />
 </template>
 
 <script setup lang="ts">
+import { toTypedSchema } from '@vee-validate/zod';
 import { useForm } from 'vee-validate';
-import { computed, toRef } from 'vue';
+import { computed, nextTick, toRef } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import type { TaskResponse } from '@/types/response';
 import type { TaskStatus } from '@/types/task';
@@ -44,6 +47,7 @@ import TaskForm from '@/components/task/TaskForm.vue';
 import StatusLabel from '@/components/ui/StatusLabel.vue';
 import { useTaskTimeAlert } from '@/composables/useTaskTimeAlert';
 import { useEditingStateStore } from '@/stores/editingState';
+import { createTaskSchema } from '@/utils/schemas/createTaskSchema';
 
 const props = withDefaults(
   defineProps<{
@@ -64,11 +68,32 @@ const emit = defineEmits<{
 const taskRef = toRef(props, 'task');
 const { timeAlertStatus, timeAlertLineClasses, timeAlertAreaClasses } = useTaskTimeAlert(taskRef);
 const editingStateStore = useEditingStateStore();
+const { t } = useI18n();
 
 const isEditing = computed(() => {
   return editingStateStore.isEditing('task', props.task.id);
 });
-const { values, setValues } = useForm<Partial<TaskResponse>>();
+
+const getInitialValues = () => ({
+  title: props.task.title,
+  description: props.task.description,
+  materials: props.task.materials || [],
+  reminderDateTime: props.task.reminderDateTime || undefined,
+  endDateTime: props.task.endDateTime || undefined,
+  constructionType: props.task.constructionType,
+  projectId: props.task.projectId,
+  status: props.task.status,
+});
+
+const { setValues, handleSubmit, errors, isSubmitting } = useForm({
+  validationSchema: toTypedSchema(createTaskSchema(t)),
+  initialValues: getInitialValues(),
+});
+
+// 設置初始值以建立 form context
+nextTick(() => {
+  setValues(getInitialValues());
+});
 
 const startEditing = () => {
   const { id, title, description, reminderDateTime, materials, endDateTime } = props.task;
@@ -77,9 +102,9 @@ const startEditing = () => {
   setValues({
     title,
     description,
-    reminderDateTime,
+    reminderDateTime: reminderDateTime || undefined,
     materials,
-    endDateTime,
+    endDateTime: endDateTime || undefined,
   });
 };
 
@@ -91,10 +116,26 @@ const cancelEditing = () => {
   editingStateStore.stopEditing();
 };
 
-const onUpdateTask = async () => {
-  emit('update:task', props.task.id, values);
-  editingStateStore.stopEditing();
-};
+const onUpdateTask = handleSubmit(
+  async (validatedValues) => {
+    // 過濾掉空的材料行
+    const filteredMaterials = (validatedValues.materials || []).filter(
+      (m) => m.name && m.name.trim() !== ''
+    );
+
+    const updateData = {
+      ...validatedValues,
+      materials: filteredMaterials,
+    };
+
+    emit('update:task', props.task.id, updateData);
+    editingStateStore.stopEditing();
+  },
+  (errors) => {
+    // 驗證失敗時的處理
+    console.warn('TaskCardBase form validation failed:', errors);
+  }
+);
 
 const handleTaskStatusChange = (status: TaskStatus) => {
   if (props.readOnly) return;

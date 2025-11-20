@@ -130,7 +130,12 @@ export function useProject(id?: string): UseProjectReturn {
     mutationFn: async (projectId: string) => {
       await projectApi.deleteProject(projectId);
     },
-    onSuccess: () => {
+    onSuccess: (_data, deletedId) => {
+      // 刪除成功：移除該專案的 detail 查詢，避免自動 refetch 已刪除的資源
+      if (deletedId) {
+        queryClient.removeQueries({ queryKey: [QUERY_KEY, deletedId], exact: true });
+      }
+      // 同步更新列表資料
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY] });
       queryClient.invalidateQueries({ queryKey: ['overview-projects'] });
     },

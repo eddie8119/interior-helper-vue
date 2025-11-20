@@ -62,6 +62,7 @@
         />
       </ElSelect>
     </ElFormItem>
+    <FloorPlanUploadInput />
   </BasicEditDialog>
 </template>
 
@@ -74,6 +75,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
+import FloorPlanUploadInput from '@/components/project/FloorPlanUploadInput.vue';
 import { useCommonAction } from '@/composables/useCommonAction';
 import { useProject } from '@/composables/useProject';
 import { PROJECT_TYPES } from '@/constants/selection';
@@ -104,6 +106,7 @@ const getInitialValues = (): CreateProjectSchema => ({
   title: '',
   type: 'residential',
   constructionContainer: [],
+  floorPlanUrls: [],
 });
 
 const { handleSubmit, meta, resetForm } = useForm({
@@ -120,7 +123,6 @@ const {
   handleBlur: handleBlurConstructionContainer,
   errorMessage: constructionContainerError,
 } = useField('constructionContainer');
-
 const onSubmit = handleSubmit(async (values: CreateProjectSchema) => {
   const result = await createProject(values);
   if (!result) return;

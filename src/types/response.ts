@@ -43,6 +43,7 @@ export interface ProjectResponse {
   createdAt: Date;
   updatedAt: Date;
   tasks?: TaskResponse[];
+  floorPlanUrls?: string[];
 }
 
 // 任務

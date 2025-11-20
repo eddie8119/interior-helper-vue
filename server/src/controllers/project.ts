@@ -341,7 +341,7 @@ export const createProject = async (req: Request, res: Response) => {
     const userId = (req as any).userId;
 
     const snakeCaseData = snakecaseKeys(req.body, { deep: true });
-    const { title, type, construction_container } = snakeCaseData;
+    const { title, type, construction_container, floor_plan_urls } = snakeCaseData;
 
     // 驗證必要欄位
     if (!title || !type || !construction_container) {
@@ -359,6 +359,7 @@ export const createProject = async (req: Request, res: Response) => {
           title,
           type,
           construction_container,
+          floor_plan_urls,
           user_id: userId,
           updated_at: new Date().toISOString(),
         },
@@ -424,7 +425,7 @@ export const updateProject = async (req: Request, res: Response) => {
     }
 
     const snakeCaseData = snakecaseKeys(req.body, { deep: true });
-    const { title, type, construction_container } = snakeCaseData;
+    const { title, type, construction_container, floor_plan_urls } = snakeCaseData;
 
     // 更新專案
     const { data: updatedProject, error: updateError } = await supabase
@@ -433,6 +434,7 @@ export const updateProject = async (req: Request, res: Response) => {
         title,
         type,
         construction_container,
+        floor_plan_urls,
         updated_at: new Date().toISOString(),
       })
       .eq('id', projectId)

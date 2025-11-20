@@ -1,39 +1,18 @@
 <template>
   <ElFormItem :label="t('label.project.floor_plan')" :error="errorMessage">
-    <div class="space-y-4">
+    <div class="w-full space-y-4">
       <!-- 上傳區域 -->
-      <div class="rounded-lg border-2 border-dashed border-gray-300 p-6">
-        <div class="text-center">
-          <div
-            class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-lg bg-gray-50"
-          >
-            <svg
-              class="h-8 w-8 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-              />
-            </svg>
-          </div>
-          <p class="mb-2 text-sm text-gray-600">{{ t('placeholder.project.floor_plan') }}</p>
-          <ElButton type="primary" @click="triggerFileInput">
-            {{ t('button.upload_image') }}
-          </ElButton>
-          <p class="mt-2 text-xs text-gray-500">{{ t('label.project.supported_formats') }}</p>
-        </div>
-      </div>
+      <UploadArea ref="uploadAreaRef" @file-select="handleFileSelect" @file-drop="handleFileDrop" />
 
-      <!-- 圖片預覽區域 (水平滑動) -->
+      <!-- 圖片預覽 -->
       <div v-if="previews.length > 0" class="space-y-2">
         <div class="flex items-center justify-between">
-          <p class="text-sm font-medium text-gray-700">已上傳 {{ previews.length }} 張圖片</p>
-          <ElButton type="danger" size="small" @click="clearAllImages"> 清空所有 </ElButton>
+          <p class="text-sm font-medium text-gray-700">
+            {{ t('label.project.uploaded_images_count', { count: previews.length }) }}
+          </p>
+          <ElButton type="danger" size="small" @click="clearAllImages">
+            {{ t('button.clear_all') }}
+          </ElButton>
         </div>
         <div class="overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 p-4">
           <div class="flex gap-4">
@@ -48,27 +27,14 @@
               >
                 {{ index + 1 }}
               </div>
-              <ElButton
-                type="danger"
-                size="small"
-                class="absolute right-2 top-2"
-                @click="removeImage(index)"
-              >
-                ✕
-              </ElButton>
+
+              <div class="absolute right-2 top-2">
+                <TrashButton @click="removeImage(index)" />
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <input
-        ref="fileInputRef"
-        type="file"
-        accept="image/*"
-        multiple
-        class="hidden"
-        @change="handleFileSelect"
-      />
     </div>
   </ElFormItem>
 </template>
@@ -79,27 +45,38 @@ import { useField } from 'vee-validate';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-interface Props {
-  fieldName?: string;
-}
+import UploadArea from '@/components/core/input/UploadArea.vue';
+import TrashButton from '@/components/ui/TrashButton.vue';
 
-const props = withDefaults(defineProps<Props>(), {
-  fieldName: 'floorPlanUrls',
-});
+const props = withDefaults(
+  defineProps<{
+    fieldName?: string;
+  }>(),
+  {
+    fieldName: 'floorPlanUrls',
+  }
+);
 
 const { t } = useI18n();
-const fileInputRef = ref<HTMLInputElement>();
+const uploadAreaRef = ref();
 const previews = ref<string[]>([]);
 
 const { value, errorMessage } = useField(props.fieldName);
 
-const triggerFileInput = () => {
-  fileInputRef.value?.click();
-};
-
 const handleFileSelect = (event: Event) => {
   const target = event.target as HTMLInputElement;
   const files = target.files;
+  if (files) {
+    Array.from(files).forEach((file) => {
+      handleFileUpload(file);
+    });
+    // 重置 input 以便重新選擇相同檔案
+    target.value = '';
+  }
+};
+
+const handleFileDrop = (event: DragEvent) => {
+  const files = event.dataTransfer?.files;
   if (files) {
     Array.from(files).forEach((file) => {
       handleFileUpload(file);
@@ -138,8 +115,9 @@ const removeImage = (index: number) => {
 const clearAllImages = () => {
   previews.value = [];
   value.value = [];
-  if (fileInputRef.value) {
-    fileInputRef.value.value = '';
+  // 重置 UploadArea 的 input
+  if (uploadAreaRef.value?.fileInputRef) {
+    uploadAreaRef.value.fileInputRef.value = '';
   }
 };
 </script>

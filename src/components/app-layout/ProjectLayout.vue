@@ -38,10 +38,18 @@ const tabsList = computed(() => {
   if (route.params.id) {
     const devicesTabIndex = baseTabs.findIndex((tab) => tab.name === 'projects');
     if (devicesTabIndex !== -1) {
-      baseTabs.splice(devicesTabIndex + 1, 0, {
-        label: 'Project',
-        name: 'project',
-      });
+      baseTabs.splice(
+        devicesTabIndex + 1,
+        0,
+        {
+          label: 'Project',
+          name: 'project',
+        },
+        {
+          label: 'Floor Plan',
+          name: 'floor-plan',
+        }
+      );
     }
   }
 

@@ -29,9 +29,6 @@
       <template #task_todo_left="{ row }">
         <p>{{ row.tasks.filter((t) => t.status === TaskStatusEnum.TODO).length }}</p>
       </template>
-      <template #task_in_progress="{ row }">
-        <p>{{ row.tasks.filter((t) => t.status === TaskStatusEnum.IN_PROGRESS).length }}</p>
-      </template>
       <template #floorPlanUrls="{ row }">
         <FloorPlanPreviewIcon :floor-plan-urls="row.floorPlanUrls" :project-id="row.id" />
       </template>

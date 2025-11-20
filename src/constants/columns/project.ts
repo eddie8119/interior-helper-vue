@@ -8,5 +8,6 @@ export const PROJECT_COLUMNS: Column[] = [
   { field: 'task_todo_left' },
   { field: 'task_in_progress' },
   { field: 'createdAt', align: 'center' },
+  { field: 'floorPlanUrls' },
   { field: 'download_excel' },
 ];

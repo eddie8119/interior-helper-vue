@@ -32,6 +32,9 @@
       <template #task_in_progress="{ row }">
         <p>{{ row.tasks.filter((t) => t.status === TaskStatusEnum.IN_PROGRESS).length }}</p>
       </template>
+      <template #floorPlanUrls="{ row }">
+        <FloorPlanPreviewIcon :floor-plan-urls="row.floorPlanUrls" :project-id="row.id" />
+      </template>
       <template #download_excel="{ row }">
         <DownloadExcelArea :project="row" :tasks="fetchedAllTasks" />
       </template>
@@ -45,6 +48,7 @@ import { useI18n } from 'vue-i18n';
 
 import ProgressBar from '@/components/core/chart/ProgressBar.vue';
 import Table from '@/components/core/table/Table.vue';
+import FloorPlanPreviewIcon from '@/components/project/FloorPlanPreviewIcon.vue';
 import BatchDownloadExcelArea from '@/components/projects/BatchDownloadExcelArea.vue';
 import DownloadExcelArea from '@/components/projects/DownloadExcelArea.vue';
 import { useOverviewProjects } from '@/composables/useProjects';

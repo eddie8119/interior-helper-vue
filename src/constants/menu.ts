@@ -30,7 +30,7 @@ export const MENU: Menu[] = [
       {
         label: 'quick_draft',
         name: 'quick_draft',
-        icon: 'Paperclip',
+        icon: 'Lightning',
         route: '/todo/quick_draft',
       },
     ],

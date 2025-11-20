@@ -5,7 +5,7 @@
     size="sm"
     class="px-2 sm:w-auto"
     @click="showBatchDownloadDialog = true"
-    ><span>📥</span>
+    ><img src="@/assets/icons/Download.svg" alt="Download" class="mr-1 h-4 w-4" />
     {{ t('button.batch_download') }}
   </TextButton>
 

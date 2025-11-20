@@ -6,7 +6,7 @@
     class="px-2 sm:w-auto"
     :disabled="!project"
     @click="handleDownloadProject"
-    ><span>📥</span>
+    ><img src="@/assets/icons/Download.svg" alt="Download" class="mr-1 h-4 w-4" />
     {{ t('button.download') }}
   </TextButton>
 </template>

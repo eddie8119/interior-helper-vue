@@ -4,12 +4,11 @@
     aria-label="Toggle Quick Draft"
     @click="toggleQuickDraftSlide"
   >
-    <PencilIcon />
+    <img src="@/assets/icons/Lightning.svg" alt="Quick Draft" class="h-6 w-6" />
   </button>
 </template>
 
 <script setup lang="ts">
-import PencilIcon from '@/components/ui/PencilIcon.vue';
 import { useSlideStore } from '@/stores/slide';
 
 const slideStore = useSlideStore();

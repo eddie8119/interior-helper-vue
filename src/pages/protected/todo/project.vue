@@ -25,19 +25,19 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
-import { useRoute } from 'vue-router';
 
 import Loading from '@/components/core/loading/Loading.vue';
 import ProjectHeader from '@/components/project/ProjectHeader.vue';
 const KanbanBoard = defineAsyncComponent(() => import('@/components/project/KanbanBoard.vue'));
+
 import { useProjectUpdates } from '@/composables/todo/useProjectUpdates';
 import { useProject } from '@/composables/useProject';
+import { useProjectId } from '@/composables/useProjectId';
 import { useTasks } from '@/composables/useTasks';
 import { useUpdateTime } from '@/composables/useUpdateTime';
 import { adjustTimeZone, formatDateTimeToMinutes } from '@/utils/date';
 
-const route = useRoute();
-const projectId = route.params.id as string;
+const { projectId } = useProjectId();
 
 // 獲取專案與任務資料
 const { isLoadingProject, fetchedProject, updateProject } = useProject(projectId);

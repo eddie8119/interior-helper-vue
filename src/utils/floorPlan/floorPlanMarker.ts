@@ -8,6 +8,7 @@ export interface TaskMarker {
   y: number;
   title: string;
   description?: string;
+  taskId?: string; // 關聯的任務 ID
 }
 
 export interface MarkerPositionParams {

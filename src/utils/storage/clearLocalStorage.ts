@@ -23,8 +23,6 @@ export function clearAllProjectLocalStorage(): void {
     keysToRemove.forEach((key) => {
       localStorage.removeItem(key);
     });
-
-    console.log(`已清除 ${keysToRemove.length} 個專案相關的 localStorage 項目`);
   } catch (error) {
     console.error('清除專案 localStorage 時發生錯誤:', error);
   }

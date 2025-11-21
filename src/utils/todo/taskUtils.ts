@@ -35,8 +35,8 @@ export function processTasksWithOrder(tasks: DraggableTask[] | null): DraggableT
     const clonedTask: DraggableTask = {
       ...task,
       materials: Array.isArray(task.materials)
-        ? (task.materials.map((m: any) => ({ ...m })) as any)
-        : (task.materials as any),
+        ? task.materials.map((m) => ({ ...m }))
+        : task.materials,
     };
 
     const constructionType = clonedTask.constructionType || 'uncategorized';
@@ -45,7 +45,10 @@ export function processTasksWithOrder(tasks: DraggableTask[] | null): DraggableT
       taskMap.set(constructionType, []);
     }
 
-    taskMap.get(constructionType)!.push(clonedTask);
+    const group = taskMap.get(constructionType);
+    if (group) {
+      group.push(clonedTask);
+    }
   });
 
   // 對每組任務排序並分配 order（只修改拷貝）
@@ -79,7 +82,10 @@ export function reorderAllTasks(tasks: DraggableTask[]): void {
       containerMap.set(type, []);
     }
 
-    containerMap.get(type)!.push(task);
+    const group = containerMap.get(type);
+    if (group) {
+      group.push(task);
+    }
   });
 
   containerMap.forEach((group) => {

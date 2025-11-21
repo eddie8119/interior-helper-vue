@@ -33,8 +33,8 @@ export function initTaskLocalStorage<T>(projectId: string, fetchedTask: T): Ref<
   if (storedData) {
     // 檢查版本是否一致，如果資料庫數據更新則使用資料庫數據
     // 這裡假設 fetchedTask 和 storedData 都有 updatedAt 屬性
-    const fetchedDate = new Date((fetchedTask as any).updatedAt);
-    const storedDate = new Date((storedData as any).updatedAt);
+    const fetchedDate = new Date((fetchedTask as { updatedAt?: Date | string }).updatedAt || 0);
+    const storedDate = new Date((storedData as { updatedAt?: Date | string }).updatedAt || 0);
 
     if (storedDate < fetchedDate) {
       // 資料庫數據更新，使用資料庫數據

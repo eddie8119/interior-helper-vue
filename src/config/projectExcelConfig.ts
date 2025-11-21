@@ -209,7 +209,7 @@ export const createProjectWorksheet = (
       );
 
       tasksForContainer.forEach((task: TaskResponse) => {
-        const materials = (task as any).materials || [];
+        const materials = task.materials || [];
 
         if (materials.length === 0) {
           // 沒有材料的任務
@@ -230,23 +230,25 @@ export const createProjectWorksheet = (
           row.getCell(6).alignment = CENTER_ALIGNMENT;
         } else {
           // 有材料的任務 - 每個材料獨立一行
-          materials.forEach((material: any, index: number) => {
-            const row = worksheet.addRow([
-              index === 0 ? task.title || '-' : '', // 只在第一行顯示任務標題
-              index === 0 ? getStatusText(task.status) : '', // 只在第一行顯示狀態
-              index === 0 ? task.description || '-' : '', // 只在第一行顯示描述
-              material.name || '-',
-              material.unitPrice || '-',
-              `${material.quantity || 0} ${material.unit || ''}`,
-            ]);
+          materials.forEach(
+            (material: NonNullable<TaskResponse['materials']>[number], index: number) => {
+              const row = worksheet.addRow([
+                index === 0 ? task.title || '-' : '', // 只在第一行顯示任務標題
+                index === 0 ? getStatusText(task.status) : '', // 只在第一行顯示狀態
+                index === 0 ? task.description || '-' : '', // 只在第一行顯示描述
+                material.name || '-',
+                material.unitPrice || '-',
+                `${material.quantity || 0} ${material.unit || ''}`,
+              ]);
 
-            row.getCell(1).alignment = LEFT_ALIGNMENT;
-            row.getCell(2).alignment = CENTER_ALIGNMENT;
-            row.getCell(3).alignment = LEFT_ALIGNMENT;
-            row.getCell(4).alignment = LEFT_ALIGNMENT;
-            row.getCell(5).alignment = CENTER_ALIGNMENT;
-            row.getCell(6).alignment = CENTER_ALIGNMENT;
-          });
+              row.getCell(1).alignment = LEFT_ALIGNMENT;
+              row.getCell(2).alignment = CENTER_ALIGNMENT;
+              row.getCell(3).alignment = LEFT_ALIGNMENT;
+              row.getCell(4).alignment = LEFT_ALIGNMENT;
+              row.getCell(5).alignment = CENTER_ALIGNMENT;
+              row.getCell(6).alignment = CENTER_ALIGNMENT;
+            }
+          );
         }
       });
     });

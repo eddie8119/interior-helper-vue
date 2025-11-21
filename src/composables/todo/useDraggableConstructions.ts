@@ -23,7 +23,11 @@ export function useDraggableConstructions(
     return containersRef.value[index];
   };
 
-  const onConstructionContainerDrop = (dropResult: any) => {
+  const onConstructionContainerDrop = (dropResult: {
+    removedIndex: number | null;
+    addedIndex: number | null;
+    payload: ConstructionSelection;
+  }) => {
     const { removedIndex, addedIndex, payload } = dropResult;
     if (removedIndex === null && addedIndex === null) return;
 

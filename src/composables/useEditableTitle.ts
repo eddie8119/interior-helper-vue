@@ -8,7 +8,11 @@ import { useEditingStateStore } from '@/stores/editingState';
  * @param emit 事件發射器
  * @param titlePropName 標題屬性名稱，默認為 'title'
  */
-export function useEditableTitle(props: Record<string, any>, emit: any, titlePropName = 'title') {
+export function useEditableTitle(
+  props: Record<string, unknown> & { id: string },
+  emit: (event: string, ...args: unknown[]) => void,
+  titlePropName = 'title'
+) {
   const editingStateStore = useEditingStateStore();
 
   const isEditingTitle = ref(false);
@@ -54,11 +58,12 @@ export function useEditableTitle(props: Record<string, any>, emit: any, titlePro
 
   // 儲存標題
   const saveTitle = () => {
-    const trimmedTitle = tempTitle.value.trim();
+    const currentValue = tempTitle.value;
+    const trimmedTitle = typeof currentValue === 'string' ? currentValue.trim() : '';
 
     // 如果標題為空，恢復原標題
     if (!trimmedTitle) {
-      tempTitle.value = props[titlePropName];
+      tempTitle.value = String(props[titlePropName] || '');
     }
 
     isEditingTitle.value = false;
@@ -71,16 +76,16 @@ export function useEditableTitle(props: Record<string, any>, emit: any, titlePro
 
   // 取消編輯
   const cancelEdit = () => {
-    tempTitle.value = props[titlePropName];
+    tempTitle.value = String(props[titlePropName] || '');
     isEditingTitle.value = false;
   };
 
   // 監聽 props 變化
   watch(
     () => props[titlePropName],
-    (newTitle: string) => {
+    (newTitle: unknown) => {
       if (!isEditingTitle.value) {
-        tempTitle.value = newTitle || '';
+        tempTitle.value = String(newTitle || '');
       }
     }
   );

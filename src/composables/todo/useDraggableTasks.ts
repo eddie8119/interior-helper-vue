@@ -20,7 +20,14 @@ export function useTaskDragAndDrop(
   allTasksRef: Ref<DraggableTask[] | null>,
   updateCallback: (updatedTasks: DraggableTask[]) => void
 ) {
-  const handleTaskDrop = (dropResult: any, targetConstructionType: string) => {
+  const handleTaskDrop = (
+    dropResult: {
+      removedIndex: number | null;
+      addedIndex: number | null;
+      payload: DraggableTask;
+    },
+    targetConstructionType: string
+  ) => {
     const { removedIndex, addedIndex, payload } = dropResult;
 
     if (allTasksRef.value === null || (removedIndex === null && addedIndex === null)) {
@@ -48,7 +55,7 @@ export function useTaskDragAndDrop(
       .filter((t) => t.constructionType === targetConstructionType)
       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
-    const taskAfter = tasksInTargetContainer[addedIndex];
+    const taskAfter = addedIndex !== null ? tasksInTargetContainer[addedIndex] : undefined;
 
     let insertIndex = -1;
     if (taskAfter) {

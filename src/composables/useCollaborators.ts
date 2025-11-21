@@ -35,8 +35,10 @@ export const useProjectCollaborators = (projectId: string) => {
       queryClient.invalidateQueries({ queryKey: ['projectCollaborators', projectId] });
       ElMessage.success(t('message.invitation.sent'));
     },
-    onError: (error: any) => {
-      const message = error.response?.data?.message || t('message.invitation.send_failed');
+    onError: (error: unknown) => {
+      const message =
+        (error as { response?: { data?: { message?: string } } }).response?.data?.message ||
+        t('message.invitation.send_failed');
       ElMessage.error(message);
     },
   });
@@ -51,8 +53,10 @@ export const useProjectCollaborators = (projectId: string) => {
       queryClient.invalidateQueries({ queryKey: ['projectCollaborators', projectId] });
       ElMessage.success(t('message.collaborator_updated'));
     },
-    onError: (error: any) => {
-      const message = error.response?.data?.message || t('message.update_collaborator_failed');
+    onError: (error: unknown) => {
+      const message =
+        (error as { response?: { data?: { message?: string } } }).response?.data?.message ||
+        t('message.update_collaborator_failed');
       ElMessage.error(message);
     },
   });
@@ -65,8 +69,10 @@ export const useProjectCollaborators = (projectId: string) => {
       queryClient.invalidateQueries({ queryKey: ['projectCollaborators', projectId] });
       ElMessage.success(t('message.collaborator_removed'));
     },
-    onError: (error: any) => {
-      const message = error.response?.data?.message || t('message.remove_collaborator_failed');
+    onError: (error: unknown) => {
+      const message =
+        (error as { response?: { data?: { message?: string } } }).response?.data?.message ||
+        t('message.remove_collaborator_failed');
       ElMessage.error(message);
     },
   });
@@ -134,8 +140,10 @@ export const useGlobalCollaborators = () => {
       queryClient.invalidateQueries({ queryKey: ['globalCollaborators'] });
       ElMessage.success(t('message.invitation.sent'));
     },
-    onError: (error: any) => {
-      const message = error.response?.data?.message || t('message.invitation.send_failed');
+    onError: (error: unknown) => {
+      const message =
+        (error as { response?: { data?: { message?: string } } }).response?.data?.message ||
+        t('message.invitation.send_failed');
       ElMessage.error(message);
     },
   });
@@ -148,8 +156,10 @@ export const useGlobalCollaborators = () => {
       queryClient.invalidateQueries({ queryKey: ['globalCollaborators'] });
       ElMessage.success(t('message.global_collaborator_updated'));
     },
-    onError: (error: any) => {
-      const message = error.response?.data?.message || t('message.update_collaborator_failed');
+    onError: (error: unknown) => {
+      const message =
+        (error as { response?: { data?: { message?: string } } }).response?.data?.message ||
+        t('message.update_collaborator_failed');
       ElMessage.error(message);
     },
   });
@@ -162,8 +172,10 @@ export const useGlobalCollaborators = () => {
       queryClient.invalidateQueries({ queryKey: ['globalCollaborators'] });
       ElMessage.success(t('message.global_collaborator_removed'));
     },
-    onError: (error: any) => {
-      const message = error.response?.data?.message || t('message.remove_collaborator_failed');
+    onError: (error: unknown) => {
+      const message =
+        (error as { response?: { data?: { message?: string } } }).response?.data?.message ||
+        t('message.remove_collaborator_failed');
       ElMessage.error(message);
     },
   });

@@ -2,7 +2,8 @@ import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { CollaboratorInvitationResponse, CollaboratorRole } from '@/types/response';
+import type { CollaboratorRole } from '@/types/collaborator';
+import type { CollaboratorInvitationResponse } from '@/types/response';
 
 import {
   acceptInvitation,
@@ -115,9 +116,9 @@ export const useCreateInvitation = () => {
     try {
       await createProjectInvitation(projectId, collaboratorEmail, role);
       ElMessage.success(t('message.invitation.sent'));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to create project invitation:', error);
-      if (error.response?.status === 409) {
+      if ((error as { response?: { status?: number } }).response?.status === 409) {
         ElMessage.error(t('message.invitation.already_exists'));
       } else {
         ElMessage.error(t('message.invitation.send_failed'));
@@ -133,9 +134,9 @@ export const useCreateInvitation = () => {
     try {
       await createGlobalInvitation(collaboratorEmail, role);
       ElMessage.success(t('message.invitation.sent'));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to create global invitation:', error);
-      if (error.response?.status === 409) {
+      if ((error as { response?: { status?: number } }).response?.status === 409) {
         ElMessage.error(t('message.invitation.already_exists'));
       } else {
         ElMessage.error(t('message.invitation.send_failed'));
@@ -166,9 +167,9 @@ export const useMyInvitations = () => {
     try {
       const data = await getMyInvitations();
       invitations.value = data;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to fetch invitations:', err);
-      error.value = err.message || t('message.error.failed_to_fetch');
+      error.value = (err as Error).message || t('message.error.failed_to_fetch');
     } finally {
       isLoading.value = false;
     }
@@ -183,7 +184,7 @@ export const useMyInvitations = () => {
 };
 
 // 通过token获取邀请详情
-export const useInvitationByToken = (token: any) => {
+export const useInvitationByToken = (token: { value: string | null }) => {
   const { t } = useI18n();
   const invitation = ref<CollaboratorInvitationResponse | null>(null);
   const isLoading = ref(false);
@@ -200,11 +201,12 @@ export const useInvitationByToken = (token: any) => {
     try {
       const data = await getInvitationByToken(token.value);
       invitation.value = data;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to fetch invitation:', err);
-      if (err.response?.status === 404) {
+      const errorResponse = err as { response?: { status?: number } };
+      if (errorResponse.response?.status === 404) {
         error.value = t('message.invitation.not_found');
-      } else if (err.response?.status === 410) {
+      } else if (errorResponse.response?.status === 410) {
         error.value = t('message.invitation.expired');
       } else {
         error.value = t('message.invitation.load_failed');

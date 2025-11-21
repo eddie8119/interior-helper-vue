@@ -75,7 +75,7 @@ import FloorPlanCanvas from './FloorPlanCanvas.vue';
 import FloorPlanToolbar from './FloorPlanToolbar.vue';
 import TaskSidebar from './TaskSidebar.vue';
 
-import type { TaskResponse } from '@/types/response';
+import type { FloorPlanItem, TaskResponse } from '@/types/response';
 import type { CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
 
 import UploadArea from '@/components/core/input/UploadArea.vue';
@@ -88,7 +88,7 @@ import { useFloorPlan } from '@/composables/useFloorPlan';
 
 const props = withDefaults(
   defineProps<{
-    floorPlanUrls?: string[];
+    floorPlanUrls?: FloorPlanItem[] | null;
     projectId: string;
     tasks: TaskResponse[] | null;
     updateProject: (data: Partial<CreateProjectSchema>) => Promise<unknown>;
@@ -174,6 +174,7 @@ const {
   isResettingFloorPlan,
   allFloorPlanUrls,
   currentFloorPlanImage,
+  currentFloorPlanKey,
   prevImage,
   nextImage,
   addUploadedImage,
@@ -181,7 +182,7 @@ const {
   confirmResetFloorPlan,
   cancelResetFloorPlan,
 } = useFloorPlanImage({
-  floorPlanUrls: computed(() => props.floorPlanUrls || []),
+  floorPlanUrls: computed(() => props.floorPlanUrls ?? []),
   updateProject: props.updateProject,
   onResetComplete: () => {
     resetZoom();
@@ -197,7 +198,6 @@ const { handleFileSelect, handleFileDrop } = useFloorPlanUploadHandler({
 // 釘選功能 composable
 const {
   isAddingPin,
-  selectedTaskIdForPin,
   pinPosition,
   isDraggingPin,
   selectTaskForPin,
@@ -209,6 +209,7 @@ const {
 } = useFloorPlanPinning({
   tasks: tasksRef,
   currentFloorPlanImage,
+  currentFloorPlanKey,
   scale,
   translateX,
   translateY,

@@ -16,7 +16,15 @@ export const createProjectSchema = (t: TranslateFunction) =>
     constructionContainer: z
       .array(constructionSelectionSchema)
       .min(1, t('validation.construction_required')),
-    floorPlanUrls: z.array(z.string()).optional(),
+    floorPlanUrls: z
+      .array(
+        z.object({
+          key: z.string(),
+          data: z.string(),
+        })
+      )
+      .optional()
+      .nullable(),
   });
 
 export const createProjectDetailSchema = (t: TranslateFunction) =>

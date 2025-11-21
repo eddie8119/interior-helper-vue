@@ -6,6 +6,7 @@
 import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
 
+import type { FloorPlanItem } from '@/types/response';
 import type { CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
 
 import { isValidImageFile, processImageFile } from '@/utils/floorPlan/floorPlanImage';
@@ -42,7 +43,7 @@ export const useFloorPlanUpload = (options: UseFloorPlanUploadOptions) => {
   const uploadFloorPlanImages = async (files: File[]) => {
     isUploadingFloorPlan.value = true;
     try {
-      const imageUrls: string[] = [];
+      const items: FloorPlanItem[] = [];
 
       for (const file of files) {
         if (!isValidImageFile(file)) {
@@ -51,20 +52,19 @@ export const useFloorPlanUpload = (options: UseFloorPlanUploadOptions) => {
         }
 
         try {
-          const imageUrl = await processImageFile(file);
-          imageUrls.push(imageUrl);
+          const data = await processImageFile(file);
+          items.push({ key: crypto.randomUUID(), data });
         } catch (error) {
           ElMessage.error(`處理圖片 ${file.name} 失敗`);
           console.error('Failed to process image:', error);
         }
       }
 
-      if (imageUrls.length > 0) {
-        // 更新專案的 floorPlanUrls
+      if (items.length > 0) {
         await updateProject({
-          floorPlanUrls: imageUrls,
+          floorPlanUrls: items,
         });
-        ElMessage.success(`成功上傳 ${imageUrls.length} 張平面圖`);
+        ElMessage.success(`成功上傳 ${items.length} 張平面圖`);
       }
     } catch (error) {
       ElMessage.error('上傳平面圖失敗');

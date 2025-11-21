@@ -4,6 +4,12 @@ import type { InvitationStatus, InvitationType } from '@/types/invitation';
 import type { TaskStatus } from '@/types/task';
 import type { CreateTaskSchema } from '@/utils/schemas/createTaskSchema';
 
+// 平面圖項目
+export interface FloorPlanItem {
+  key: string;
+  data: string; // base64 編碼的圖片資料
+}
+
 export interface AuthResponse {
   user: {
     id: string;
@@ -43,7 +49,7 @@ export interface ProjectResponse {
   createdAt: Date;
   updatedAt: Date;
   tasks?: TaskResponse[];
-  floorPlanUrls?: string[];
+  floorPlanUrls?: (FloorPlanItem | string)[]; // 支援新舊格式
 }
 
 // 任務

@@ -8,7 +8,7 @@ import { computed, ref, type Ref } from 'vue';
 import type { TaskResponse } from '@/types/response';
 
 export interface PinLocation {
-  floorPlanUrl: string;
+  floorPlanKey: string;
   xPercent: number;
   yPercent: number;
 }
@@ -16,6 +16,7 @@ export interface PinLocation {
 export interface UseFloorPlanPinningOptions {
   tasks: Ref<TaskResponse[] | null>;
   currentFloorPlanImage: Ref<string>;
+  currentFloorPlanKey: Ref<string>; // 新增：當前圖片的 key
   scale: Ref<number>;
   translateX: Ref<number>;
   translateY: Ref<number>;
@@ -27,7 +28,7 @@ export interface UseFloorPlanPinningOptions {
 export const useFloorPlanPinning = (options: UseFloorPlanPinningOptions) => {
   const {
     tasks,
-    currentFloorPlanImage,
+    currentFloorPlanKey,
     scale,
     translateX,
     translateY,
@@ -116,7 +117,7 @@ export const useFloorPlanPinning = (options: UseFloorPlanPinningOptions) => {
 
   // 結束拖拽並保存位置
   const endDraggingPin = async (event: MouseEvent): Promise<boolean> => {
-    if (!isDraggingPin.value || !selectedTaskIdForPin.value || !currentFloorPlanImage.value) {
+    if (!isDraggingPin.value || !selectedTaskIdForPin.value || !currentFloorPlanKey.value) {
       isDraggingPin.value = false;
       return false;
     }
@@ -128,7 +129,7 @@ export const useFloorPlanPinning = (options: UseFloorPlanPinningOptions) => {
     }
 
     const pinLocation: PinLocation = {
-      floorPlanUrl: currentFloorPlanImage.value,
+      floorPlanKey: currentFloorPlanKey.value,
       xPercent: coords.xPercent,
       yPercent: coords.yPercent,
     };
@@ -162,22 +163,20 @@ export const useFloorPlanPinning = (options: UseFloorPlanPinningOptions) => {
 
   // 獲取當前圖片上的所有釘選
   const pinsOnCurrentImage = computed(() => {
-    if (!tasks.value || !currentFloorPlanImage.value) return [];
+    if (!tasks.value || !currentFloorPlanKey.value) return [];
 
     return tasks.value
-      .filter((task) => task.pinLocation?.floorPlanUrl === currentFloorPlanImage.value)
+      .filter((task) => {
+        const pin = task.pinLocation as PinLocation | undefined;
+        // 支援新格式（floorPlanKey）和舊格式（floorPlanUrl）
+        return pin?.floorPlanKey === currentFloorPlanKey.value;
+      })
       .map((task) => ({
         taskId: task.id,
         taskTitle: task.title,
         pinLocation: task.pinLocation as PinLocation,
       }));
   });
-
-  // 檢查任務是否在當前圖片上有釘選
-  const isTaskPinnedOnCurrentImage = (taskId: string): boolean => {
-    const pin = getTaskPinLocation(taskId);
-    return pin?.floorPlanUrl === currentFloorPlanImage.value;
-  };
 
   // 計算大頭釘在容器中的像素位置
   const getPinPixelPosition = (pinLoc: PinLocation): { x: number; y: number } | null => {
@@ -212,7 +211,6 @@ export const useFloorPlanPinning = (options: UseFloorPlanPinningOptions) => {
     updatePinPosition,
     endDraggingPin,
     getTaskPinLocation,
-    isTaskPinnedOnCurrentImage,
     getPinPixelPosition,
 
     // 計算屬性

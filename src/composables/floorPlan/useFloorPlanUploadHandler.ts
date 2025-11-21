@@ -3,12 +3,19 @@
  * 處理文件選擇和拖拽上傳邏輯
  */
 
+import type { FloorPlanItem } from '@/types/response';
+
 export interface UseFloorPlanUploadHandlerOptions {
-  onImageAdded: (imageUrl: string) => void;
+  onImageAdded: (image: FloorPlanItem) => Promise<void> | void;
 }
 
 export const useFloorPlanUploadHandler = (options: UseFloorPlanUploadHandlerOptions) => {
   const { onImageAdded } = options;
+
+  // 生成唯一的 key
+  const generateFloorPlanKey = (): string => {
+    return crypto.randomUUID();
+  };
 
   // 處理文件轉換為 base64
   const processFile = (file: File): Promise<string> => {
@@ -31,8 +38,12 @@ export const useFloorPlanUploadHandler = (options: UseFloorPlanUploadHandlerOpti
     const file = target.files?.[0];
     if (file) {
       try {
-        const imageUrl = await processFile(file);
-        onImageAdded(imageUrl);
+        const data = await processFile(file);
+        const floorPlanItem: FloorPlanItem = {
+          key: generateFloorPlanKey(),
+          data,
+        };
+        await onImageAdded(floorPlanItem);
       } catch (error) {
         console.error('Error processing file:', error);
       }
@@ -44,8 +55,12 @@ export const useFloorPlanUploadHandler = (options: UseFloorPlanUploadHandlerOpti
     const file = event.dataTransfer?.files[0];
     if (file) {
       try {
-        const imageUrl = await processFile(file);
-        onImageAdded(imageUrl);
+        const data = await processFile(file);
+        const floorPlanItem: FloorPlanItem = {
+          key: generateFloorPlanKey(),
+          data,
+        };
+        await onImageAdded(floorPlanItem);
       } catch (error) {
         console.error('Error processing file:', error);
       }

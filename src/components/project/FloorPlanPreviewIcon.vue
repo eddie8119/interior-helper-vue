@@ -2,9 +2,9 @@
   <div class="relative inline-flex items-center">
     <!-- 小記號 -->
     <button
-      v-if="validFloorPlanUrls.length > 0"
+      v-if="previewImageUrls.length > 0"
       ref="buttonRef"
-      :title="`${validFloorPlanUrls.length} 張平面圖`"
+      :title="`${previewImageUrls.length} 張平面圖`"
       class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 transition-all hover:bg-blue-200 hover:shadow-md"
       @mouseenter="showTooltip = true"
       @mouseleave="showTooltip = false"
@@ -21,28 +21,28 @@
     <Teleport to="body">
       <Transition name="fade">
         <div
-          v-if="showTooltip && validFloorPlanUrls.length > 0"
+          v-if="showTooltip && previewImageUrls.length > 0"
           class="fixed z-50 rounded-lg border border-gray-200 bg-white p-3 shadow-xl"
           :style="tooltipStyle"
         >
           <!-- 圖片預覽區域 -->
           <div class="space-y-2">
             <p class="text-xs font-semibold text-gray-700">
-              平面圖預覽 ({{ validFloorPlanUrls.length }} 張)
+              平面圖預覽 ({{ previewImageUrls.length }} 張)
             </p>
             <div class="flex max-w-xs gap-2 overflow-x-auto">
               <img
-                v-for="(url, index) in validFloorPlanUrls.slice(0, 3)"
+                v-for="(url, index) in previewImageUrls.slice(0, 3)"
                 :key="index"
                 :src="url"
                 :alt="`Floor plan ${index + 1}`"
                 class="h-20 w-20 flex-shrink-0 rounded border border-gray-200 object-cover"
               />
               <div
-                v-if="validFloorPlanUrls.length > 3"
+                v-if="previewImageUrls.length > 3"
                 class="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded border border-gray-200 bg-gray-50 text-xs font-semibold text-gray-600"
               >
-                +{{ validFloorPlanUrls.length - 3 }}
+                +{{ previewImageUrls.length - 3 }}
               </div>
             </div>
             <p class="text-xs text-gray-500">點擊圖標查看完整平面圖</p>
@@ -57,13 +57,15 @@
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+import type { FloorPlanItem } from '@/types/response';
+
 interface Props {
-  floorPlanUrls?: string[];
+  floorPlanUrls?: FloorPlanItem[];
   projectId: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  floorPlanUrls: () => [],
+  floorPlanUrls: () => [] as FloorPlanItem[],
 });
 
 const router = useRouter();
@@ -71,8 +73,11 @@ const showTooltip = ref(false);
 const buttonRef = ref<HTMLButtonElement>();
 
 // 確保 floorPlanUrls 是有效的陣列
-const validFloorPlanUrls = computed(() => {
-  return Array.isArray(props.floorPlanUrls) ? props.floorPlanUrls : [];
+const previewImageUrls = computed(() => {
+  if (!Array.isArray(props.floorPlanUrls)) return [] as string[];
+  return props.floorPlanUrls
+    .map((item) => item?.data)
+    .filter((data): data is string => typeof data === 'string' && data.length > 0);
 });
 
 // 計算 tooltip 位置

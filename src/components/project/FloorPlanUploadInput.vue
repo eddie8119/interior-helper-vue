@@ -45,6 +45,8 @@ import { useField } from 'vee-validate';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import type { FloorPlanItem } from '@/types/response';
+
 import UploadArea from '@/components/core/input/UploadArea.vue';
 import TrashButton from '@/components/ui/TrashButton.vue';
 
@@ -60,6 +62,7 @@ const props = withDefaults(
 const { t } = useI18n();
 const uploadAreaRef = ref();
 const previews = ref<string[]>([]);
+const items = ref<FloorPlanItem[]>([]);
 
 const { value, errorMessage } = useField(props.fieldName);
 
@@ -102,18 +105,21 @@ const handleFileUpload = (file: File) => {
   reader.onload = (e) => {
     const result = e.target?.result as string;
     previews.value.push(result);
-    value.value = previews.value; // 更新表單值為陣列
+    items.value.push({ key: crypto.randomUUID(), data: result });
+    value.value = items.value;
   };
   reader.readAsDataURL(file);
 };
 
 const removeImage = (index: number) => {
   previews.value.splice(index, 1);
-  value.value = previews.value;
+  items.value.splice(index, 1);
+  value.value = items.value;
 };
 
 const clearAllImages = () => {
   previews.value = [];
+  items.value = [];
   value.value = [];
   // 重置 UploadArea 的 input
   if (uploadAreaRef.value?.fileInputRef) {

@@ -15,9 +15,9 @@ declare module 'vue3-smooth-dnd' {
     dragClass?: string;
     dropClass?: string;
     removeOnDropOut?: boolean;
-    getChildPayload?: (index: number) => any;
-    shouldAnimateDrop?: (sourceContainerOptions: any, payload: any) => boolean;
-    shouldAcceptDrop?: (sourceContainerOptions: any, payload: any) => boolean;
+    getChildPayload?: (index: number) => unknown;
+    shouldAnimateDrop?: (sourceContainerOptions: unknown, payload: unknown) => boolean;
+    shouldAcceptDrop?: (sourceContainerOptions: unknown, payload: unknown) => boolean;
     getGhostParent?: () => HTMLElement;
   }>;
 
@@ -28,7 +28,7 @@ declare module 'vue3-smooth-dnd' {
   export interface DropResult {
     addedIndex: number | null;
     removedIndex: number | null;
-    payload?: any;
+    payload?: unknown;
     element?: HTMLElement;
   }
 }

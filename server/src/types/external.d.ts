@@ -13,7 +13,7 @@ declare module 'line-notify-nodejs' {
       imageFullsize?: string;
       stickerPackageId?: number;
       stickerId?: number;
-    }): Promise<any>;
+    }): Promise<{ status: number; message: string }>;
   }
 }
 

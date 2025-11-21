@@ -142,10 +142,11 @@ const onSubmit = handleSubmit(async (values: ResetPasswordData) => {
     } else {
       errorMessage.value = message || t('error.reset_password_failed');
     }
-  } catch (error: any) {
-    if (error?.response?.data?.message) {
-      errorMessage.value = error.response.data.message;
-      if (error.response.data.message.includes('invalid or expired')) {
+  } catch (error: unknown) {
+    const err = error as { response?: { data?: { message?: string } } };
+    if (err?.response?.data?.message) {
+      errorMessage.value = err.response.data.message;
+      if (err.response.data.message.includes('invalid or expired')) {
         setTimeout(() => {
           router.push({ name: 'forgot-password' });
         }, 3000);

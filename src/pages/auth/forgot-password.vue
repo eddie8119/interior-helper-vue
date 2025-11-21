@@ -55,9 +55,10 @@ const onSubmit = handleSubmit(async (values: ForgotPasswordData) => {
     } else {
       forgotPasswordError.value = new Error(message || t('error.reset_password_failed'));
     }
-  } catch (error: any) {
-    if (error?.response?.data?.message) {
-      forgotPasswordError.value = new Error(error.response.data.message);
+  } catch (error: unknown) {
+    const err = error as { response?: { data?: { message?: string } } };
+    if (err?.response?.data?.message) {
+      forgotPasswordError.value = new Error(err.response.data.message);
     } else {
       forgotPasswordError.value = new Error(t('error.reset_password_failed'));
     }

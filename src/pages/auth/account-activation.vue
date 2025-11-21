@@ -108,9 +108,10 @@ const activateAccountFlow = async () => {
       email: email.value,
     });
     activationStatus.value = 'success';
-  } catch (error: any) {
-    if (error?.response?.data?.message) {
-      errorMessage.value = error.response.data.message;
+  } catch (error: unknown) {
+    const err = error as { response?: { data?: { message?: string } } };
+    if (err?.response?.data?.message) {
+      errorMessage.value = err.response.data.message;
     } else {
       errorMessage.value = t('error.activation_failed');
     }

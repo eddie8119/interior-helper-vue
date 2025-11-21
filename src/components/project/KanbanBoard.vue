@@ -91,9 +91,10 @@ const emit = defineEmits<{
 
 // 狀態管理
 const localConstructionContainer = ref<ConstructionSelection[]>([]);
-const tasks = ref<TaskResponse[]>([]);
+const localTasks = ref<TaskResponse[]>([]);
 const searchQuery = ref<string>('');
-const { selectedStatus, daysRange, filteredTasksByConstruction } = useTaskConditionFilters(tasks);
+const { selectedStatus, daysRange, filteredTasksByConstruction } =
+  useTaskConditionFilters(localTasks);
 
 // Context 提供
 provideTaskCardFilter();
@@ -111,7 +112,7 @@ const { deleteTask: deleteTaskFromApi, updateProjectTasks } = useTasks(props.pro
 
 // 自動保存任務（取代 localStorage）
 const { markTasksChanged, saveNow } = useProjectDataSaver(
-  tasks,
+  localTasks,
   updateProjectTasks,
   3 * 60 * 1000 // 3 分鐘自動保存一次
 );
@@ -128,12 +129,12 @@ const onTaskDragUpdate = async () => {
 };
 
 // 任務操作
-const { deleteTask, addNewTask, updateTask } = useTaskOperations(tasks, onTaskUpdate);
+const { deleteTask, addNewTask, updateTask } = useTaskOperations(localTasks, onTaskUpdate);
 
 // 工程容器操作
 const { addNewConstruction, updateConstructionName, deleteConstructionWithTasks } =
   useConstructionActions(localConstructionContainer, onContainerUpdate, {
-    tasksRef: tasks,
+    tasksRef: localTasks,
     deleteTaskFromApi,
     deleteTaskFromState: deleteTask,
     filterTasksByConstruction,
@@ -145,7 +146,7 @@ const { getConstructionContainerPayload, onConstructionContainerDrop } = useDrag
   onContainerUpdate
 );
 
-const { handleTaskDrop } = useTaskDragAndDrop(tasks, onTaskDragUpdate);
+const { handleTaskDrop } = useTaskDragAndDrop(localTasks, onTaskDragUpdate);
 
 // ==================== 數據初始化與同步 ====================
 // 避免資料中含有 null 或不合法項目，影響模板取用 container.id
@@ -169,7 +170,7 @@ watch(
 watch(
   () => props.tasks,
   (newTasks: TaskResponse[] | null) => {
-    tasks.value = processTasksWithOrder(newTasks as DraggableTask[] | null);
+    localTasks.value = processTasksWithOrder(newTasks as DraggableTask[] | null);
   },
   { immediate: true, deep: true }
 );

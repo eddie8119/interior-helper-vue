@@ -99,8 +99,8 @@ const handleAccept = async (token: string) => {
     await accept(token);
     ElMessage.success(t('message.invitation.accepted'));
     refetch();
-  } catch (err: any) {
-    ElMessage.error(err.message || t('message.invitation.accept_failed'));
+  } catch (err: unknown) {
+    ElMessage.error((err as Error).message || t('message.invitation.accept_failed'));
   }
 };
 
@@ -109,8 +109,8 @@ const handleReject = async (id: string) => {
     await reject(id);
     ElMessage.success(t('message.invitation.rejected'));
     refetch();
-  } catch (err: any) {
-    ElMessage.error(err.message || t('message.invitation.reject_failed'));
+  } catch (err: unknown) {
+    ElMessage.error((err as Error).message || t('message.invitation.reject_failed'));
   }
 };
 </script>

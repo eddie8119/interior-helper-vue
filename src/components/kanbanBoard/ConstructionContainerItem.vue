@@ -71,9 +71,15 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'delete-container'): void;
   (e: 'update:construction-name', name: string): void;
-  (e: 'task-drop', dropResult: any, constructionType: string): void;
+  (e: 'task-drop', dropResult: DropResult, constructionType: string): void;
   (e: 'update:tasks', tasks: TaskResponse[]): void;
 }>();
+
+interface DropResult {
+  removedIndex: number | null;
+  addedIndex: number | null;
+  payload: TaskResponse;
+}
 
 const editingStateStore = useEditingStateStore();
 const { t } = useI18n();
@@ -131,7 +137,7 @@ watch(
   { deep: true }
 );
 
-const handleTaskDrop = (dropResult: any) => {
+const handleTaskDrop = (dropResult: DropResult) => {
   emit('task-drop', dropResult, props.constructionId);
 };
 

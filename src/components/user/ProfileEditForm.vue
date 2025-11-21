@@ -126,9 +126,10 @@ const validateForm = (): boolean => {
     schema.parse(props.editFormData);
     emit('update:edit-form-errors', errors);
     return true;
-  } catch (error: any) {
-    if (error.errors) {
-      error.errors.forEach((err: any) => {
+  } catch (error: unknown) {
+    const zodError = error as { errors?: Array<{ path: string[]; message: string }> };
+    if (zodError.errors) {
+      zodError.errors.forEach((err) => {
         const path = err.path[0];
         if (path) {
           errors[path] = err.message;

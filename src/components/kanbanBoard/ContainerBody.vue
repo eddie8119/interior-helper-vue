@@ -102,8 +102,19 @@ const getTaskPayload = (index: number) => {
   return props.tasks[index];
 };
 
+interface DropResult {
+  removedIndex: number | null;
+  addedIndex: number | null;
+  payload: unknown;
+}
+
+interface SourceContainerOptions {
+  groupName: string;
+  [key: string]: unknown;
+}
+
 // 處理任務拖曳
-const handleTaskDrop = (dropResult: any) => {
+const handleTaskDrop = (dropResult: DropResult) => {
   const { removedIndex, addedIndex } = dropResult;
 
   // 如果沒有發生任何移動，則不執行任何操作
@@ -114,7 +125,7 @@ const handleTaskDrop = (dropResult: any) => {
 };
 
 // 判斷是否接受拖曳
-const shouldAcceptDrop = (sourceContainerOptions: any) => {
+const shouldAcceptDrop = (sourceContainerOptions: SourceContainerOptions) => {
   // 只接受來自 'tasks' 群組的拖曳物件
   return sourceContainerOptions.groupName === 'tasks';
 };

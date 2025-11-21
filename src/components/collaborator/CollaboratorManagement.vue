@@ -98,8 +98,15 @@ import TextButton from '@/components/core/button/TextButton.vue';
 import OptionSelector from '@/components/ui/OptionSelector.vue';
 import { COLLABORATOR_ROLE_OPTIONS } from '@/constants/selection';
 
-const props = defineProps<{
-  collaborators: any[];
+interface Collaborator {
+  id: string;
+  collaboratorEmail: string;
+  role: CollaboratorRole;
+  [key: string]: unknown;
+}
+
+defineProps<{
+  collaborators: Collaborator[];
   isLoading: boolean;
   isAdding: boolean;
   isUpdating: boolean;
@@ -133,7 +140,7 @@ const handleAddCollaborator = () => {
   newCollaboratorRole.value = 'viewer';
 };
 
-const onRoleChange = (collaboratorId: string, value: any) => {
+const onRoleChange = (collaboratorId: string, value: unknown) => {
   const role = value as CollaboratorRole;
   emit('updateRole', { collaboratorId, role });
 };

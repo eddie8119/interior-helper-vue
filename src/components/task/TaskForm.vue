@@ -101,8 +101,8 @@ const props = defineProps<{
   };
   errorMessage?: string;
   showMore?: boolean;
-  onSave: Function;
-  onCancel: Function;
+  onSave: () => void;
+  onCancel: () => void;
   saveButtonText?: string;
   disabledSaveButton?: boolean;
 }>();

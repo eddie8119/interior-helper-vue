@@ -104,7 +104,7 @@
 
 <script setup lang="ts">
 import { ArrowLeft, ArrowRight, Loading } from '@element-plus/icons-vue';
-import { ElIcon, ElTable, ElTableColumn, ElTag } from 'element-plus';
+import { ElIcon, ElTable, ElTableColumn } from 'element-plus';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -112,12 +112,19 @@ import type { CollaboratorRole, ProjectResponse } from '@/types/response';
 
 import CollaboratorManagement from '@/components/collaborator/CollaboratorManagement.vue';
 
+interface Collaborator {
+  id: string;
+  collaboratorEmail: string;
+  role: string;
+  [key: string]: unknown;
+}
+
 const props = defineProps<{
   project: ProjectResponse;
   isOwner: boolean;
   collaboratorCount?: number;
   selectedProjectId: string | null;
-  collaborators?: any[];
+  collaborators?: Collaborator[];
   isLoadingCollaborators?: boolean;
   isAdding?: boolean;
   isUpdating?: boolean;

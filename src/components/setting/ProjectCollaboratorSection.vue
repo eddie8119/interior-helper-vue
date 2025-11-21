@@ -38,6 +38,13 @@ import type { CollaboratorRole, ProjectResponse } from '@/types/response';
 import H2Title from '@/components/core/title/H2Title.vue';
 import ProjectCollaboratorCard from '@/components/setting/ProjectCollaboratorCard.vue';
 
+interface Collaborator {
+  id: string;
+  collaboratorEmail: string;
+  role: string;
+  [key: string]: unknown;
+}
+
 const props = defineProps<{
   title: string;
   projects: ProjectResponse[];
@@ -45,7 +52,7 @@ const props = defineProps<{
   emptyMessage: string;
   selectedProjectId: string | null;
   selectedProject: ProjectResponse | null;
-  collaborators: any[] | undefined;
+  collaborators: Collaborator[] | undefined;
   isLoadingCollaborators: boolean;
   isAdding: boolean;
   isUpdating: boolean;

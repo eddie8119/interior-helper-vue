@@ -5,15 +5,15 @@ import type { TaskResponse } from '@/types/response';
 import { TaskTimeAlertStatus } from '@/types/task';
 import { getTaskTimeAlertStatus } from '@/utils/taskReminder';
 
-export function useTaskTimeAlert(task: Ref<TaskResponse>) {
+export function useTaskTimeAlertStyle(task: Ref<TaskResponse>) {
   const timeAlertStatus = computed(() => getTaskTimeAlertStatus(task.value));
 
-  const timeAlertLineClasses = computed(() => {
+  const timeAlertStyleClasses = computed(() => {
     switch (timeAlertStatus.value) {
       case TaskTimeAlertStatus.OVERDUE:
-        return 'border-2 border-dashed border-secondary-red';
+        return 'border-2 border-dashed border-secondary-red bg-red-100';
       case TaskTimeAlertStatus.REMINDING:
-        return 'border-2 border-dashed border-secondary-yellow';
+        return 'border-2 border-dashed border-secondary-yellow bg-yellow-100';
       default:
         return '';
     }
@@ -30,5 +30,5 @@ export function useTaskTimeAlert(task: Ref<TaskResponse>) {
     }
   });
 
-  return { timeAlertStatus, timeAlertLineClasses, timeAlertAreaClasses } as const;
+  return { timeAlertStatus, timeAlertStyleClasses, timeAlertAreaClasses } as const;
 }

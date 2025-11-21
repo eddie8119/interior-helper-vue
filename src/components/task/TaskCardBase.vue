@@ -2,7 +2,7 @@
   <div
     v-if="!isEditing"
     class="task-card background-color-difference group relative cursor-pointer rounded-md p-1 shadow-sm duration-200"
-    :class="timeAlertLineClasses"
+    :class="timeAlertStyleClasses"
     @dblclick="handleDblClick"
   >
     <!-- 提醒訊息 -->
@@ -45,7 +45,7 @@ import TaskCardDetails from '@/components/task/TaskCardDetails.vue';
 import TaskCardHeader from '@/components/task/TaskCardHeader.vue';
 import TaskForm from '@/components/task/TaskForm.vue';
 import StatusLabel from '@/components/ui/StatusLabel.vue';
-import { useTaskTimeAlert } from '@/composables/useTaskTimeAlert';
+import { useTaskTimeAlertStyle } from '@/composables/style/useTaskTimeAlertStyle';
 import { useEditingStateStore } from '@/stores/editingState';
 import { createTaskSchema } from '@/utils/schemas/createTaskSchema';
 
@@ -66,7 +66,8 @@ const emit = defineEmits<{
 }>();
 
 const taskRef = toRef(props, 'task');
-const { timeAlertStatus, timeAlertLineClasses, timeAlertAreaClasses } = useTaskTimeAlert(taskRef);
+const { timeAlertStatus, timeAlertStyleClasses, timeAlertAreaClasses } =
+  useTaskTimeAlertStyle(taskRef);
 const editingStateStore = useEditingStateStore();
 const { t } = useI18n();
 

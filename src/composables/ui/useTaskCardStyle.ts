@@ -2,13 +2,15 @@ import { computed, type Ref } from 'vue';
 
 import type { TaskResponse } from '@/types/response';
 
+import { TaskStatusEnum } from '@/types/task';
 import { TaskTimeAlertStatus } from '@/types/task';
 import { getTaskTimeAlertStatus } from '@/utils/taskReminder';
 
-export function useTaskTimeAlertStyle(task: Ref<TaskResponse>) {
+export function useTaskCardStyle(task: Ref<TaskResponse>) {
+  // Alert
   const timeAlertStatus = computed(() => getTaskTimeAlertStatus(task.value));
 
-  const timeAlertStyleClasses = computed(() => {
+  const timeAlertClasses = computed(() => {
     switch (timeAlertStatus.value) {
       case TaskTimeAlertStatus.OVERDUE:
         return 'border-2 border-dashed border-secondary-red bg-red-100';
@@ -30,5 +32,20 @@ export function useTaskTimeAlertStyle(task: Ref<TaskResponse>) {
     }
   });
 
-  return { timeAlertStatus, timeAlertStyleClasses, timeAlertAreaClasses } as const;
+  // 完成任務的樣式
+  const taskStatusClasses = computed(() => {
+    switch (task.value.status) {
+      case TaskStatusEnum.DONE:
+        return 'bg-green-100';
+      default:
+        return '';
+    }
+  });
+
+  return {
+    timeAlertStatus,
+    timeAlertClasses,
+    timeAlertAreaClasses,
+    taskStatusClasses,
+  } as const;
 }

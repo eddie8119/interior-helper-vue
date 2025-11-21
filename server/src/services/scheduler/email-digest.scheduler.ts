@@ -18,12 +18,9 @@ export class EmailDigestScheduler {
     // 每天 00:00 執行
     const cronExpression = process.env.DAILY_EMAIL_DIGEST_CRON || '0 0 * * *';
 
-    console.log(`[EmailDigestScheduler] 啟動排程器，表達式: ${cronExpression}`);
-
     this.scheduledTask = cron.schedule(
       cronExpression,
       async () => {
-        console.log(`[EmailDigestScheduler] 開始執行每日摘要任務: ${new Date().toISOString()}`);
         await this.sendDailyDigests();
       },
       {
@@ -38,7 +35,6 @@ export class EmailDigestScheduler {
   stop(): void {
     if (this.scheduledTask) {
       this.scheduledTask.stop();
-      console.log('[EmailDigestScheduler] 排程器已停止');
     }
   }
 
@@ -47,7 +43,6 @@ export class EmailDigestScheduler {
    * 可用於測試或手動補發
    */
   async manualTrigger(): Promise<{ success: boolean; count: number }> {
-    console.log('[EmailDigestScheduler] 手動觸發發送每日摘要');
     return await this.sendDailyDigests();
   }
 
@@ -72,7 +67,6 @@ export class EmailDigestScheduler {
       }
 
       if (!settings || settings.length === 0) {
-        console.log('[EmailDigestScheduler] 沒有啟用郵件通知的用戶');
         return { success: true, count: 0 };
       }
 
@@ -103,7 +97,6 @@ export class EmailDigestScheduler {
         }
 
         if (!tasks || tasks.length === 0) {
-          console.log(`[EmailDigestScheduler] 用戶 ${userId} 今天沒有需要提醒的任務`);
           continue;
         }
 
@@ -129,7 +122,6 @@ export class EmailDigestScheduler {
         }
       }
 
-      console.log(`[EmailDigestScheduler] 成功發送 ${totalSent} 封每日摘要郵件`);
       return { success: true, count: totalSent };
     } catch (error) {
       console.error('[EmailDigestScheduler] 發送每日摘要時發生錯誤:', error);

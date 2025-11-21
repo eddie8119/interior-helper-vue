@@ -17,7 +17,7 @@ export class EmailService {
   /**
    * 發送單個任務提醒郵件
    */
-  async sendTaskReminder(userId: string, task: any): Promise<boolean> {
+  async sendTaskReminder(userId: string, task: Record<string, unknown>): Promise<boolean> {
     try {
       const { data: userData } = await supabase.auth.admin.getUserById(userId);
       if (!userData?.user?.email) {
@@ -42,10 +42,9 @@ export class EmailService {
   /**
    * 發送每日任務摘要郵件
    */
-  async sendDailyDigest(userId: string, tasks: any[]): Promise<boolean> {
+  async sendDailyDigest(userId: string, tasks: Record<string, unknown>[]): Promise<boolean> {
     try {
       if (tasks.length === 0) {
-        console.log(`用戶 ${userId} 今天沒有需要提醒的任務`);
         return true;
       }
 

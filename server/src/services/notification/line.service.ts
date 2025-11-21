@@ -13,10 +13,6 @@ interface Task {
   reminder_date_time: Date | null;
 }
 
-interface UserNotificationSettings {
-  line_notify_token: string | null;
-}
-
 export class LineNotificationService {
   /**
    * 發送任務提醒到 LINE
@@ -47,7 +43,6 @@ export class LineNotificationService {
       // 5. 更新任務的提醒狀態
       await this.updateTaskReminderStatus(task.id);
 
-      console.log(`成功發送 LINE 提醒給用戶 ${userId} 關於任務 ${task.id}`);
       return true;
     } catch (error) {
       console.error('發送 LINE 提醒失敗:', error);

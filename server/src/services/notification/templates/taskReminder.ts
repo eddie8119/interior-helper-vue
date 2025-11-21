@@ -2,8 +2,8 @@ import { container, formatDateTime } from '../../utils/email';
 import { footerBlock } from '../templates/partials/footer';
 import { headerBlock } from '../templates/partials/header';
 
-export const generateTaskReminderTemplate = (task: any): string => {
-  const reminderTime = task.reminder_date_time ? formatDateTime(task.reminder_date_time) : '未設置';
+export const generateTaskReminderTemplate = (task: Record<string, unknown>): string => {
+  const reminderTime = task.reminder_date_time ? formatDateTime(task.reminder_date_time as string | number | Date) : '未設置';
 
   const inner = `
     ${headerBlock('任務提醒')}

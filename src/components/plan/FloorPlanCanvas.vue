@@ -15,6 +15,7 @@
       :src="floorPlanImage"
       :style="imageStyle"
       class="select-none transition-transform duration-200"
+      style="max-width: none; max-height: none; object-fit: contain"
       alt="平面圖"
       draggable="false"
       @load="$emit('image-load')"

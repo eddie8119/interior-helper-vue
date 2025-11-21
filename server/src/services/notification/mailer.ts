@@ -22,20 +22,13 @@ const transporter = nodemailer.createTransport({
 if (process.env.NODE_ENV !== 'test') {
   transporter
     .verify()
-    .then(() => console.log('[mailer] 郵件服務連接成功'))
     .catch((err) => console.error('[mailer] 郵件服務連接失敗:', err));
 }
 
 export const sendMail = async (options: nodemailer.SendMailOptions) => {
   try {
     const from = options.from || process.env.EMAIL_FROM;
-    console.log('[mailer] Sending email', {
-      to: options.to,
-      subject: options.subject,
-      from,
-    });
     const info = await transporter.sendMail({ ...options, from });
-    console.log('[mailer] Email sent', { messageId: info.messageId, response: info.response });
     return info;
   } catch (err) {
     console.error('[mailer] Failed to send email', err);

@@ -206,8 +206,15 @@ export const createTask = async (req: Request, res: Response) => {
     }
 
     const snakeCaseData = snakecaseKeys(req.body, { deep: true });
-    const { title, description, construction_type, reminder_date_time, materials, end_date_time, pin_location } =
-      snakeCaseData;
+    const {
+      title,
+      description,
+      construction_type,
+      reminder_date_time,
+      materials,
+      end_date_time,
+      pin_location,
+    } = snakeCaseData;
 
     // 驗證必要欄位
     if (!title) {

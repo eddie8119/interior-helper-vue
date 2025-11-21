@@ -10,14 +10,12 @@ emailDigestScheduler.start();
 
 // 處理應用關閉時停止排程服務
 process.on('SIGINT', () => {
-  console.log('正在關閉應用...');
   reminderScheduler.stop();
   emailDigestScheduler.stop();
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
-  console.log('正在關閉應用...');
   reminderScheduler.stop();
   emailDigestScheduler.stop();
   process.exit(0);

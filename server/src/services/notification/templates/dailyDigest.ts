@@ -2,7 +2,7 @@ import { container, formatDateTime } from '../../utils/email';
 import { footerBlock } from '../templates/partials/footer';
 import { headerBlock } from '../templates/partials/header';
 
-export const generateDailyDigestTemplate = (tasks: any[]): string => {
+export const generateDailyDigestTemplate = (tasks: Record<string, unknown>[]): string => {
   const today = new Date().toLocaleDateString('zh-TW');
   const taskListHtml = tasks
     .map(
@@ -12,7 +12,7 @@ export const generateDailyDigestTemplate = (tasks: any[]): string => {
         <p style="color: #555; margin-bottom: 10px;">${task.description || '無描述'}</p>
         <p style="color: #777; font-size: 14px;">
           <strong>提醒時間:</strong> ${
-            task.reminder_date_time ? formatDateTime(task.reminder_date_time) : '未設置'
+            task.reminder_date_time ? formatDateTime(task.reminder_date_time as string | number | Date) : '未設置'
           }<br>
           <strong>狀態:</strong> ${task.status}<br>
         </p>

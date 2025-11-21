@@ -27,8 +27,6 @@ export class ReminderService {
         return { success: false, count: 0 };
       }
 
-      console.log(`找到 ${tasks.length} 個需要發送 LINE 提醒的任務`);
-
       // 為每個任務發送提醒
       let successCount = 0;
       for (const task of tasks) {
@@ -47,7 +45,7 @@ export class ReminderService {
    * 獲取待發送提醒的任務列表
    * 用於管理界面顯示
    */
-  async getPendingReminders(): Promise<any[]> {
+  async getPendingReminders(): Promise<unknown[]> {
     try {
       const now = new Date();
       const twentyFourHoursLater = new Date(now.getTime() + 24 * 60 * 60 * 1000);

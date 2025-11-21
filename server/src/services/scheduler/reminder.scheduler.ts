@@ -18,11 +18,8 @@ export class ReminderScheduler {
     // 每 5 分鐘檢查一次需要發送 LINE 提醒的任務
     // cron 表達式: '*/5 * * * *' 表示每 5 分鐘執行一次
     this.lineReminderJob = cron.schedule('*/5 * * * *', async () => {
-      console.log('執行 LINE 提醒檢查...' + new Date().toISOString());
       await this.checkLineReminders();
     });
-
-    console.log('提醒排程服務已啟動');
   }
 
   /**
@@ -32,7 +29,6 @@ export class ReminderScheduler {
     if (this.lineReminderJob) {
       this.lineReminderJob.stop();
       this.lineReminderJob = null;
-      console.log('提醒排程服務已停止');
     }
   }
 
@@ -62,8 +58,6 @@ export class ReminderScheduler {
         console.error('查詢需要提醒的任務失敗:', error);
         return;
       }
-
-      console.log(`找到 ${tasks.length} 個需要發送 LINE 提醒的任務`);
 
       // 為每個任務發送提醒
       for (const task of tasks) {

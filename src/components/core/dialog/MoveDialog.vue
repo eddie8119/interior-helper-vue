@@ -47,8 +47,8 @@ import type { ProjectResponse } from '@/types/response';
 import type { TodoItemDraft } from '@/types/todo';
 
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
-import { useProjects } from '@/composables/useProjects';
-import { useTasks } from '@/composables/useTasks';
+import { useProjects } from '@/composables/query/useProjects';
+import { useTasks } from '@/composables/query/useTasks';
 import { useProjectsStore } from '@/stores/projects';
 
 const props = defineProps<{

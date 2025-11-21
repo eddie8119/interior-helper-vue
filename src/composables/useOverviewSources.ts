@@ -4,7 +4,7 @@ import type { ProjectTitle } from '@/types/project';
 import type { ProjectResponse } from '@/types/response';
 import type { ConstructionSelection } from '@/types/selection';
 
-import { useOverviewProjects } from '@/composables/useProjects';
+import { useOverviewProjects } from '@/composables/query/useProjects';
 
 export function useOverviewSources() {
   const { fetchedOverviewProjects, isLoadingOverviewProjects } = useOverviewProjects();

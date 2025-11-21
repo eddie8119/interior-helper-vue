@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue';
 
-import { useCommon } from './useCommon';
+import { useCommon } from './query/useCommon';
 
 import type { ConstructionSelection } from '@/types/selection';
 import type { CommonLocalStorageData } from '@/utils/storage/commonStorage';

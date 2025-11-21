@@ -40,7 +40,7 @@ import { useRoute } from 'vue-router';
 
 import check from '@/assets/images/check.png';
 import AuthCard from '@/components/auth/AuthCard.vue';
-import { useUser } from '@/composables/useUser';
+import { useUser } from '@/composables/query/useUser';
 
 const { t } = useI18n();
 const route = useRoute();

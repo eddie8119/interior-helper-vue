@@ -75,7 +75,7 @@ import type { ConstructionSelection } from '@/types/selection';
 
 import TextButton from '@/components/core/button/TextButton.vue';
 import DraggableArrayInput from '@/components/core/input/DraggableArrayInput.vue';
-import { useCommon } from '@/composables/useCommon';
+import { useCommon } from '@/composables/query/useCommon';
 import { createCommonSchema } from '@/utils/schemas/createCommonSchema';
 import {
   addScrollListener,

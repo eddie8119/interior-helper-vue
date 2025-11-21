@@ -11,7 +11,7 @@
 import type { TaskResponse } from '@/types/response';
 
 import TaskCardBase from '@/components/task/TaskCardBase.vue';
-import { useTasks } from '@/composables/useTasks';
+import { useTasks } from '@/composables/query/useTasks';
 import { useTaskContext } from '@/context/useTaskContext';
 
 const props = defineProps<{

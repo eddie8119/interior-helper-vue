@@ -68,7 +68,7 @@ import ShowNowTime from './ShowNowTime.vue';
 
 import type { NavItem } from '@/types/layout';
 
-import { useAuth } from '@/composables/useAuth';
+import { useAuth } from '@/composables/query/useAuth';
 import { useAuthentication } from '@/composables/useAuthentication';
 import { useLocale } from '@/composables/useLocale';
 import { useAuthStore } from '@/stores/auth';

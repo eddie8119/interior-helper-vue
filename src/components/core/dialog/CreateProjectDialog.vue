@@ -76,8 +76,8 @@ import { useI18n } from 'vue-i18n';
 
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
 import FloorPlanUploadInput from '@/components/project/FloorPlanUploadInput.vue';
+import { useProject } from '@/composables/query/useProject';
 import { useCommonAction } from '@/composables/useCommonAction';
-import { useProject } from '@/composables/useProject';
 import { PROJECT_TYPES } from '@/constants/selection';
 import { createProjectSchema, type CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
 

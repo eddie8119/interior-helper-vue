@@ -96,7 +96,7 @@ import { Clock } from '@element-plus/icons-vue';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useNotifications } from '@/composables/useNotifications';
+import { useNotifications } from '@/composables/query/useNotifications';
 
 const { t } = useI18n();
 

@@ -40,7 +40,7 @@ import { useRoute } from 'vue-router';
 import Loading from '@/components/core/loading/Loading.vue';
 import H1Title from '@/components/core/title/H1Title.vue';
 import KanbanBoard from '@/components/project/KanbanBoard.vue';
-import { useProjectShare } from '@/composables/useProjectShare';
+import { useProjectShare } from '@/composables/query/useProjectShare';
 
 const route = useRoute();
 const projectId = route.params.id as string;

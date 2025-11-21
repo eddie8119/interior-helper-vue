@@ -26,8 +26,8 @@ import type { ForgotPasswordData } from '@/types/user';
 
 import AuthCard from '@/components/auth/AuthCard.vue';
 import ForgotPasswordForm from '@/components/auth/ForgotPasswordForm.vue';
+import { useUser } from '@/composables/query/useUser';
 import { useFormValidation } from '@/composables/useFormValidation';
-import { useUser } from '@/composables/useUser';
 import { forgotPasswordSchema } from '@/utils/schemas/forgotPasswordSchema';
 
 const { t } = useI18n();

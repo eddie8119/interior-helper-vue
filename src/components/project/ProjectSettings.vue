@@ -47,7 +47,7 @@ import CollaboratorDialog from '@/components/core/dialog/CollaboratorDialog.vue'
 import DeleteDialog from '@/components/core/dialog/DeleteDialog.vue';
 import GlobalCollaboratorsDialog from '@/components/core/dialog/GlobalCollaboratorsDialog.vue';
 import ShareLinkDialog from '@/components/core/dialog/ShareLinkDialog.vue';
-import { useProject } from '@/composables/useProject';
+import { useProject } from '@/composables/query/useProject';
 import { getProjectStorageKey } from '@/utils/storage/projectStorage';
 
 const props = defineProps<{

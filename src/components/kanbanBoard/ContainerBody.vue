@@ -49,7 +49,7 @@ import type { TaskResponse } from '@/types/response';
 import CollapseButton from '@/components/core/button/CollapseButton.vue';
 import AddNewTask from '@/components/kanbanBoard/AddNewTask.vue';
 import TaskCard from '@/components/task/TaskCard.vue';
-import { useResponsiveWidth } from '@/composables/useResponsiveWidth';
+import { useResponsiveWidth } from '@/composables/ui/useResponsiveWidth';
 import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{

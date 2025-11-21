@@ -32,7 +32,7 @@ import type { AxiosError } from 'axios';
 
 import AuthCard from '@/components/auth/AuthCard.vue';
 import LoginForm from '@/components/auth/LoginForm.vue';
-import { useAuth } from '@/composables/useAuth';
+import { useAuth } from '@/composables/query/useAuth';
 import { useFormError } from '@/composables/useFormError';
 import { useFormValidation } from '@/composables/useFormValidation';
 import { useAuthStore } from '@/stores/auth';

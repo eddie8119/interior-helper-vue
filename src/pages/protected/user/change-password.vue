@@ -31,9 +31,9 @@ import type { AxiosError } from 'axios';
 
 import AuthCard from '@/components/auth/AuthCard.vue';
 import ChangePasswordForm from '@/components/auth/ChangePasswordForm.vue';
+import { useUser } from '@/composables/query/useUser';
 import { useAuthentication } from '@/composables/useAuthentication';
 import { useFormError } from '@/composables/useFormError';
-import { useUser } from '@/composables/useUser';
 import { type ChangePasswordData } from '@/types/user';
 import { createChangePasswordSchema } from '@/utils/schemas/changePasswordSchema';
 

@@ -30,10 +30,10 @@ import Loading from '@/components/core/loading/Loading.vue';
 import ProjectHeader from '@/components/project/ProjectHeader.vue';
 const KanbanBoard = defineAsyncComponent(() => import('@/components/project/KanbanBoard.vue'));
 
+import { useProject } from '@/composables/query/useProject';
+import { useTasks } from '@/composables/query/useTasks';
 import { useProjectUpdates } from '@/composables/todo/useProjectUpdates';
-import { useProject } from '@/composables/useProject';
 import { useProjectId } from '@/composables/useProjectId';
-import { useTasks } from '@/composables/useTasks';
 import { useUpdateTime } from '@/composables/useUpdateTime';
 import { adjustTimeZone, formatDateTimeToMinutes } from '@/utils/date';
 

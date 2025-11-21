@@ -36,9 +36,9 @@ import type { AxiosError } from 'axios';
 
 import AuthCard from '@/components/auth/AuthCard.vue';
 import RegisterForm from '@/components/auth/RegisterForm.vue';
+import { useUser } from '@/composables/query/useUser';
 import { useFormError } from '@/composables/useFormError';
 import { useFormValidation } from '@/composables/useFormValidation';
-import { useUser } from '@/composables/useUser';
 import router from '@/router';
 import { useAuthStore } from '@/stores/auth';
 import { createRegisterSchema } from '@/utils/schemas/registerSchema';

@@ -31,8 +31,8 @@ import type { ResetPasswordData } from '@/types/user';
 
 import AuthCard from '@/components/auth/AuthCard.vue';
 import ResetPasswordForm from '@/components/auth/ResetPasswordForm.vue';
+import { useUser } from '@/composables/query/useUser';
 import { useFormValidation } from '@/composables/useFormValidation';
-import { useUser } from '@/composables/useUser';
 import { createResetPasswordSchema } from '@/utils/schemas/resetPasswordSchema';
 
 const { t } = useI18n();

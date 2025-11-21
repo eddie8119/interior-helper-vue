@@ -14,7 +14,7 @@ import type { ProjectType } from '@/types/selection';
 import type { SelectorOption } from '@/types/selection';
 
 import OptionSelector from '@/components/ui/OptionSelector.vue';
-import { useCommon } from '@/composables/useCommon';
+import { useCommon } from '@/composables/query/useCommon';
 
 const props = defineProps<{
   projectType: ProjectType | undefined;

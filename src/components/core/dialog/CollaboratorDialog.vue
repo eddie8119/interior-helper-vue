@@ -32,7 +32,7 @@ import type { CollaboratorRole } from '@/types/response';
 
 import CollaboratorManagement from '@/components/collaborator/CollaboratorManagement.vue';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
-import { useProjectCollaborators } from '@/composables/useCollaborators';
+import { useProjectCollaborators } from '@/composables/query/useCollaborators';
 
 const props = defineProps<{
   modelValue: boolean;

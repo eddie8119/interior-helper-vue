@@ -55,7 +55,7 @@ import { useI18n } from 'vue-i18n';
 import TextButton from '@/components/core/button/TextButton.vue';
 import H1Title from '@/components/core/title/H1Title.vue';
 import ProfileEditForm from '@/components/user/ProfileEditForm.vue';
-import { useUser } from '@/composables/useUser';
+import { useUser } from '@/composables/query/useUser';
 
 const { t } = useI18n();
 const { userProfile, isLoadingProfile, refetchProfile, updateProfile, isUpdatingProfile } =

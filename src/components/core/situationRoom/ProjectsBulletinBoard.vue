@@ -48,9 +48,9 @@ import Table from '@/components/core/table/Table.vue';
 import FloorPlanPreviewIcon from '@/components/project/FloorPlanPreviewIcon.vue';
 import BatchDownloadExcelArea from '@/components/projects/BatchDownloadExcelArea.vue';
 import DownloadExcelArea from '@/components/projects/DownloadExcelArea.vue';
-import { useOverviewProjects } from '@/composables/useProjects';
-import { useResponsiveWidth } from '@/composables/useResponsiveWidth';
-import { useTasks } from '@/composables/useTasks';
+import { useOverviewProjects } from '@/composables/query/useProjects';
+import { useTasks } from '@/composables/query/useTasks';
+import { useResponsiveWidth } from '@/composables/ui/useResponsiveWidth';
 import { PROJECT_COLUMNS } from '@/constants/columns/project';
 import { TaskStatusEnum } from '@/types/task';
 

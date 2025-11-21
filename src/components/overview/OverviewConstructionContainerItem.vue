@@ -89,7 +89,7 @@ import CollapseAllButton from '@/components/core/button/CollapseAllButton.vue';
 import CollapseButton from '@/components/core/button/CollapseButton.vue';
 import Label from '@/components/core/title/Label.vue';
 import TaskCardBase from '@/components/task/TaskCardBase.vue';
-import { useTaskGroupCollapse } from '@/composables/useTaskGroupCollapse';
+import { useTaskGroupCollapse } from '@/composables/ui/useTaskGroupCollapse';
 
 const props = defineProps<{
   constructionId: string;

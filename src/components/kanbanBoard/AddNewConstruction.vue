@@ -79,7 +79,7 @@ import { useI18n } from 'vue-i18n';
 import type { ConstructionSelection } from '@/types/selection';
 
 import Label from '@/components/core/title/Label.vue';
-import { useCommon } from '@/composables/useCommon';
+import { useCommon } from '@/composables/query/useCommon';
 import { useEditingStateStore } from '@/stores/editingState';
 
 const props = defineProps<{

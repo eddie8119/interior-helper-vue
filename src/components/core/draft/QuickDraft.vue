@@ -50,7 +50,7 @@ import type { DraftResponse } from '@/types/response';
 import type { TodoFilterType, TodoItemDraft } from '@/types/todo';
 
 import H1Title from '@/components/core/title/H1Title.vue';
-import { useDraft } from '@/composables/useDraft';
+import { useDraft } from '@/composables/query/useDraft';
 import { useLocalStorageRef } from '@/composables/useLocalStorage';
 
 const LOCAL_STORAGE_KEY = 'quick_draft_todos';

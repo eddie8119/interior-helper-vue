@@ -45,7 +45,7 @@ import TaskCardDetails from '@/components/task/TaskCardDetails.vue';
 import TaskCardHeader from '@/components/task/TaskCardHeader.vue';
 import TaskForm from '@/components/task/TaskForm.vue';
 import StatusLabel from '@/components/ui/StatusLabel.vue';
-import { useTaskTimeAlertStyle } from '@/composables/style/useTaskTimeAlertStyle';
+import { useTaskTimeAlertStyle } from '@/composables/ui/useTaskTimeAlertStyle';
 import { useEditingStateStore } from '@/stores/editingState';
 import { createTaskSchema } from '@/utils/schemas/createTaskSchema';
 

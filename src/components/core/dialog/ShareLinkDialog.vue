@@ -45,7 +45,7 @@ import { useI18n } from 'vue-i18n';
 
 import TextButton from '@/components/core/button/TextButton.vue';
 import BasicEditDialog from '@/components/core/dialog/BasicEditDialog.vue';
-import { useProject } from '@/composables/useProject';
+import { useProject } from '@/composables/query/useProject';
 
 const props = defineProps<{
   modelValue: boolean;

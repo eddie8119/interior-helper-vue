@@ -35,8 +35,8 @@ import { useRoute } from 'vue-router';
 import type { ResendActivationData } from '@/types/user';
 
 import AuthCard from '@/components/auth/AuthCard.vue';
+import { useUser } from '@/composables/query/useUser';
 import { useFormValidation } from '@/composables/useFormValidation';
-import { useUser } from '@/composables/useUser';
 import { resendActivationSchema } from '@/utils/schemas/resendActivationSchema';
 
 const { t } = useI18n();

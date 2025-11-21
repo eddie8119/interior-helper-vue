@@ -52,7 +52,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import TextButton from '@/components/core/button/TextButton.vue';
-import { useResponsiveWidth } from '@/composables/useResponsiveWidth';
+import { useResponsiveWidth } from '@/composables/ui/useResponsiveWidth';
 
 const props = withDefaults(
   defineProps<{

@@ -73,7 +73,7 @@ import { Link } from '@element-plus/icons-vue';
 import { reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useUserSettings } from '@/composables/useUserSettings';
+import { useUserSettings } from '@/composables/query/useUserSettings';
 
 const { t } = useI18n();
 

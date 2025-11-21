@@ -17,9 +17,9 @@
 <script setup lang="ts">
 import Loading from '@/components/core/loading/Loading.vue';
 import FloorPlanContainer from '@/components/plan/FloorPlanContainer.vue';
-import { useProject } from '@/composables/useProject';
+import { useProject } from '@/composables/query/useProject';
+import { useTasks } from '@/composables/query/useTasks';
 import { useProjectId } from '@/composables/useProjectId';
-import { useTasks } from '@/composables/useTasks';
 
 const { projectId } = useProjectId();
 const { isLoadingProject, fetchedProject, updateProject } = useProject(projectId);

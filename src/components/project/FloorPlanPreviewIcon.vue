@@ -87,10 +87,7 @@ const tooltipStyle = computed(() => {
 });
 
 const navigateToFloorPlan = () => {
-  router.push({
-    name: 'floor-plan',
-    params: { id: props.projectId },
-  });
+  router.push(`/todo/plan/${props.projectId}`);
 };
 </script>
 

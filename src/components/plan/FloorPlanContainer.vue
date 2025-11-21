@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-full w-full bg-gray-50">
     <!-- 主要內容區域 -->
-    <div class="flex-1 bg-gray-50">
+    <div class="min-w-0 flex-1 bg-gray-50">
       <div v-if="!currentFloorPlanImage" class="flex h-full items-center justify-center">
         <!-- 上傳區域 -->
         <UploadArea @file-select="handleFileSelect" @file-drop="handleFileDrop" />
@@ -49,7 +49,9 @@
     </div>
 
     <!-- 右側任務列表 -->
-    <div class="w-80 border-l border-gray-200 bg-white">
+    <div
+      class="sticky top-0 z-10 max-h-screen w-80 shrink-0 overflow-y-auto border-l border-gray-200 bg-white"
+    >
       <TaskSidebar
         :tasks="sortedTasks"
         :task-markers="taskMarkers"
@@ -141,7 +143,6 @@ const {
 // 圖片管理 composable
 const {
   currentImageIndex,
-  uploadedImages,
   isResettingFloorPlan,
   allFloorPlanUrls,
   currentFloorPlanImage,

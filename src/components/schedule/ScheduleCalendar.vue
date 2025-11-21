@@ -55,7 +55,7 @@
         <span
           v-if="date.hasTask"
           class="absolute bottom-0.5 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full"
-          :class="date.isSelected ? 'bg-white' : 'bg-blue-500'"
+          :class="date.isSelected ? 'bg-white' : 'bg-brand-tertiary'"
         />
       </button>
     </div>
@@ -88,7 +88,7 @@
             <span
               v-if="date.hasTask"
               class="absolute bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full"
-              :class="date.isSelected ? 'bg-white' : 'bg-blue-500'"
+              :class="date.isSelected ? 'bg-white' : 'bg-brand-tertiary'"
             />
           </button>
         </div>
@@ -172,7 +172,7 @@ const getDateButtonClasses = (date: CalendarDate): string[] => {
 
   if (date.isSelected) {
     classes.push(
-      'bg-secondary-red text-white font-bold shadow-lg shadow-red-500/35 hover:bg-secondary-red'
+      'bg-brand-tertiary text-white font-bold shadow-lg shadow-yellow-500/35 hover:bg-brand-tertiary'
     );
   }
 

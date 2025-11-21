@@ -13,9 +13,9 @@ export function useTaskCardStyle(task: Ref<TaskResponse>) {
   const timeAlertClasses = computed(() => {
     switch (timeAlertStatus.value) {
       case TaskTimeAlertStatus.OVERDUE:
-        return 'border-2 border-dashed border-secondary-red bg-red-100';
+        return 'border-2 border-dashed border-secondary-red bg-red-100 dark:bg-red-100';
       case TaskTimeAlertStatus.REMINDING:
-        return 'border-2 border-dashed border-secondary-yellow bg-yellow-100';
+        return 'border-2 border-dashed border-secondary-yellow bg-yellow-100 dark:bg-yellow-100';
       default:
         return '';
     }
@@ -36,7 +36,7 @@ export function useTaskCardStyle(task: Ref<TaskResponse>) {
   const taskStatusClasses = computed(() => {
     switch (task.value.status) {
       case TaskStatusEnum.DONE:
-        return 'bg-green-100';
+        return 'bg-green-100 dark:bg-green-100';
       default:
         return '';
     }

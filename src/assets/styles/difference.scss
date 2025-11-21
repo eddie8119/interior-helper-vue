@@ -15,6 +15,10 @@
   @apply text-primary-text dark:text-primaryDark-text;
 }
 
+.text-color-difference-hover {
+  @apply hover:text-primary-text dark:hover:text-primaryDark-text;
+}
+
 .text200-color-difference {
   @apply text-primary-text-200 dark:text-primaryDark-text-200;
 }

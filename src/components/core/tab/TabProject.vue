@@ -9,7 +9,7 @@
         :class="[
           tab.isActive
             ? 'text-color-difference rounded-t-lg border-brand-primary font-medium'
-            : 'hover:border-brand-primary/30 border-transparent text-black-400 hover:text-brand-primary',
+            : 'hover:border-brand-primary/30 text-color-difference-hover border-transparent text-black-400',
         ]"
       >
         {{ tab.label }}

@@ -43,6 +43,13 @@ export const createTaskSchema = (t: TranslateFunction) =>
     status: z.enum(['todo', 'inProgress', 'done']),
     reminderDateTime: z.string().optional(),
     endDateTime: z.string().optional(),
+    pinLocation: z
+      .object({
+        floorPlanUrl: z.string().url(),
+        xPercent: z.number().min(0).max(100),
+        yPercent: z.number().min(0).max(100),
+      })
+      .optional(),
   });
 
 export type CreateTaskSchema = z.infer<ReturnType<typeof createTaskSchema>>;

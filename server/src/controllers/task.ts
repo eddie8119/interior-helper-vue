@@ -206,7 +206,7 @@ export const createTask = async (req: Request, res: Response) => {
     }
 
     const snakeCaseData = snakecaseKeys(req.body, { deep: true });
-    const { title, description, construction_type, reminder_date_time, materials, end_date_time } =
+    const { title, description, construction_type, reminder_date_time, materials, end_date_time, pin_location } =
       snakeCaseData;
 
     // 驗證必要欄位
@@ -228,6 +228,7 @@ export const createTask = async (req: Request, res: Response) => {
           construction_type,
           reminder_date_time,
           end_date_time,
+          pin_location,
           project_id: projectId,
           user_id: userId,
           updated_at: new Date().toISOString(),
@@ -336,6 +337,7 @@ export const updateTask = async (req: Request, res: Response) => {
       materials,
       status,
       end_date_time,
+      pin_location,
     } = snakeCaseData;
 
     // 更新任務
@@ -348,6 +350,7 @@ export const updateTask = async (req: Request, res: Response) => {
         reminder_date_time,
         end_date_time,
         status,
+        pin_location,
         updated_at: new Date().toISOString(),
       })
       .eq('id', taskId)
@@ -497,6 +500,7 @@ export const updateTasks = async (req: Request, res: Response) => {
               reminder_date_time: task.reminder_date_time,
               end_date_time: task.end_date_time,
               status: task.status,
+              pin_location: task.pin_location,
               updated_at: new Date().toISOString(),
             })
             .eq('id', task.id)

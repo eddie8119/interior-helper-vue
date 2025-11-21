@@ -58,17 +58,20 @@
       <div class="flex space-x-2">
         <button
           v-if="!isLinked"
-          class="rounded bg-blue-100 px-2 py-1 text-xs text-blue-700 hover:bg-blue-200"
+          class="rounded px-2 py-1 text-xs hover:opacity-90"
+          :class="task.pinLocation
+            ? 'bg-green-100 text-green-700 hover:bg-green-200'
+            : 'bg-blue-100 text-blue-700 hover:bg-blue-200'"
           @click.stop="$emit('create-marker')"
         >
-          標記位置
+          {{ task.pinLocation ? '📍 已釘選' : '📍 標記' }}
         </button>
         <button
           v-else
           class="rounded bg-green-100 px-2 py-1 text-xs text-green-700 hover:bg-green-200"
           @click.stop="$emit('link-to-marker')"
         >
-          查看位置
+          查看
         </button>
       </div>
     </div>

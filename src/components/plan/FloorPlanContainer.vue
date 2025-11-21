@@ -28,16 +28,20 @@
 
         <!-- 平面圖容器 -->
         <FloorPlanCanvas
+          ref="canvasRef"
           :floor-plan-image="currentFloorPlanImage"
           :image-style="imageStyle"
           :task-markers="taskMarkers"
           :selected-marker-id="selectedMarkerId"
           :is-adding-marker="isAddingMarker"
+          :is-adding-pin="isAddingPin"
+          :pin-position="pinPosition"
+          :fixed-pins="fixedPins"
           :get-marker-style="getMarkerStyle"
           @wheel="handleWheel"
-          @mousedown="handleMouseDown"
-          @mousemove="handleMouseMove"
-          @mouseup="handleMouseUp"
+          @mousedown="handleCanvasMouseDown"
+          @mousemove="handleCanvasMouseMove"
+          @mouseup="handleCanvasMouseUp"
           @container-click="handleContainerClick"
           @image-load="handleImageLoad"
           @image-click="handleImageClickWithTask"
@@ -58,14 +62,14 @@
         :selected-marker-id="selectedMarkerId"
         @select-task="handleTaskSelect"
         @link-task-to-marker="handleLinkTaskToMarker"
-        @create-marker-for-task="handleCreateMarkerForTask"
+        @create-marker-for-task="selectTaskForPin"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 import FloorPlanCanvas from './FloorPlanCanvas.vue';
 import FloorPlanToolbar from './FloorPlanToolbar.vue';
@@ -76,8 +80,10 @@ import type { CreateProjectSchema } from '@/utils/schemas/createProjectSchema';
 
 import UploadArea from '@/components/core/input/UploadArea.vue';
 import { useFloorPlanImage } from '@/composables/floorPlan/useFloorPlanImage';
+import { useFloorPlanPinning } from '@/composables/floorPlan/useFloorPlanPinning';
 import { useFloorPlanTaskMarker } from '@/composables/floorPlan/useFloorPlanTaskMarker';
 import { useFloorPlanUploadHandler } from '@/composables/floorPlan/useFloorPlanUploadHandler';
+import { useTasks } from '@/composables/query/useTasks';
 import { useFloorPlan } from '@/composables/useFloorPlan';
 
 const props = withDefaults(
@@ -95,16 +101,38 @@ const props = withDefaults(
 // 模板引用
 const imageContainer = ref<HTMLDivElement>();
 const floorPlanImg = ref<HTMLImageElement>();
+const canvasRef = ref<InstanceType<typeof FloorPlanCanvas> | null>(null);
+
+// 任務管理
+const tasksRef = ref(props.tasks);
+const { updateTask } = useTasks(props.projectId);
 
 // 任務按創建時間排序（最新的在前）
 const sortedTasks = computed(() => {
-  if (!props.tasks) return [];
-  return [...props.tasks].sort((a, b) => {
+  if (!tasksRef.value) return [];
+  return [...tasksRef.value].sort((a, b) => {
     const dateA = new Date(a.createdAt).getTime();
     const dateB = new Date(b.createdAt).getTime();
     return dateB - dateA; // 降序排列，最新的在前
   });
 });
+
+// 同步子組件暴露的 DOM 引用
+onMounted(() => {
+  if (canvasRef.value) {
+    imageContainer.value = canvasRef.value.imageContainer;
+    floorPlanImg.value = canvasRef.value.floorPlanImg;
+  }
+});
+
+// 監聽 props.tasks 變化
+watch(
+  () => props.tasks,
+  (newTasks) => {
+    tasksRef.value = newTasks;
+  },
+  { deep: true }
+);
 
 // 使用平面圖 composables
 const {
@@ -166,30 +194,84 @@ const { handleFileSelect, handleFileDrop } = useFloorPlanUploadHandler({
   onImageAdded: addUploadedImage,
 });
 
-// 包裝 handleMouseDown 以傳遞 isAddingMarker
-const handleMouseDown = (event: MouseEvent) => {
-  handleMouseDownInternal(event, isAddingMarker.value);
-};
-
-// 任務與標記關聯 composable
+// 釘選功能 composable
 const {
-  handleImageClickWithTask,
-  handleTaskSelect,
-  handleCreateMarkerForTask,
-  handleLinkTaskToMarker,
-} = useFloorPlanTaskMarker({
-  taskMarkers,
-  isAddingMarker,
-  selectedMarkerId,
+  isAddingPin,
+  selectedTaskIdForPin,
+  pinPosition,
+  isDraggingPin,
+  selectTaskForPin,
+  startDraggingPin,
+  updatePinPosition,
+  endDraggingPin,
+  getPinPixelPosition,
+  pinsOnCurrentImage,
+} = useFloorPlanPinning({
+  tasks: tasksRef,
+  currentFloorPlanImage,
   scale,
   translateX,
   translateY,
   imageContainer,
   floorPlanImg,
-  createMarker,
-  selectMarker,
-  tasks: computed(() => props.tasks),
+  updateTask,
 });
+
+// 將當前圖片上的 pin 位置轉為像素點陣列供畫布渲染
+const fixedPins = computed(() => {
+  if (!pinsOnCurrentImage.value)
+    return [] as Array<{ x: number; y: number; taskId: string; title: string }>;
+  return pinsOnCurrentImage.value
+    .map((p) => {
+      const pos = getPinPixelPosition(p.pinLocation);
+      if (!pos) return null;
+      return { x: pos.x, y: pos.y, taskId: p.taskId, title: p.taskTitle };
+    })
+    .filter((v): v is { x: number; y: number; taskId: string; title: string } => !!v);
+});
+
+// 包裝 handleMouseDown 以傳遞 isAddingMarker 或釘選
+const handleCanvasMouseDown = (event: MouseEvent) => {
+  if (isAddingPin.value) {
+    startDraggingPin(event);
+  } else {
+    handleMouseDownInternal(event, isAddingMarker.value);
+  }
+};
+
+// 包裝 handleMouseMove 以支持釘選拖拽
+const handleCanvasMouseMove = (event: MouseEvent) => {
+  if (isDraggingPin.value) {
+    updatePinPosition(event);
+  } else {
+    handleMouseMove(event);
+  }
+};
+
+// 包裝 handleMouseUp 以支持釘選拖拽結束
+const handleCanvasMouseUp = async (event: MouseEvent) => {
+  if (isDraggingPin.value) {
+    await endDraggingPin(event);
+  } else {
+    handleMouseUp();
+  }
+};
+
+// 任務與標記關聯 composable
+const { handleImageClickWithTask, handleTaskSelect, handleLinkTaskToMarker } =
+  useFloorPlanTaskMarker({
+    taskMarkers,
+    isAddingMarker,
+    selectedMarkerId,
+    scale,
+    translateX,
+    translateY,
+    imageContainer,
+    floorPlanImg,
+    createMarker,
+    selectMarker,
+    tasks: computed(() => props.tasks),
+  });
 
 // 當圖片變化時重置縮放
 watch(currentFloorPlanImage, () => {

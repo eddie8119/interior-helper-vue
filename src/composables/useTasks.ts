@@ -55,7 +55,10 @@ interface CreateTaskPayload {
 
 const QUERY_KEY = 'tasks';
 
-export function useTasks(projectId?: string): UseTasksReturn {
+export function useTasks(
+  projectId?: string,
+  options?: { invalidateAllTasks?: boolean }
+): UseTasksReturn {
   const queryClient = useQueryClient();
   const { t } = useI18n();
 
@@ -172,7 +175,12 @@ export function useTasks(projectId?: string): UseTasksReturn {
       return response;
     },
     onSuccess: () => {
+      // 更新特定專案的任務查詢
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY, projectId] });
+      // 根據選項決定是否更新所有任務的查詢
+      if (options?.invalidateAllTasks) {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY, 'all'] });
+      }
     },
   });
 
@@ -201,7 +209,12 @@ export function useTasks(projectId?: string): UseTasksReturn {
       return response;
     },
     onSuccess: () => {
+      // 更新特定專案的任務查詢
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY, projectId] });
+      // 根據選項決定是否更新所有任務的查詢
+      if (options?.invalidateAllTasks) {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY, 'all'] });
+      }
     },
   });
 

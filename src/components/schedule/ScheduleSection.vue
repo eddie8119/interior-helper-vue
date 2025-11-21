@@ -116,7 +116,9 @@ import { TaskScheduleDisplayMode } from '@/types/task';
 const { t } = useI18n();
 
 // Fetch data
-const { fetchedAllTasks, isLoadingAllTasks, updateTask, deleteTask } = useTasks();
+const { fetchedAllTasks, isLoadingAllTasks, updateTask, deleteTask } = useTasks(undefined, {
+  invalidateAllTasks: true,
+});
 const { isLoadingOverviewProjects, constructionList, projectTitleList } = useOverviewSources();
 
 // Schedule logic

@@ -1,6 +1,6 @@
 <template>
   <Loading v-if="isLoadingOverviewProjects" />
-  <div v-else class="flex flex-col gap-8">
+  <div v-else class="flex flex-col gap-16">
     <ProjectsBulletinBoard
       :tasks="fetchedAllTasks"
       :projects="fetchedOverviewProjects"

@@ -5,18 +5,16 @@
 
 import { computed, ref, type Ref } from 'vue';
 
-import type { TaskResponse } from '@/types/response';
+import { useNewPinDrag } from '../pinning/useNewPinDrag';
+import { usePinPositionCalculator } from '../pinning/usePinPositionCalculator';
+import { usePinSelection } from '../pinning/usePinSelection';
 
-export interface PinLocation {
-  floorPlanKey: string;
-  xPercent: number;
-  yPercent: number;
-}
+import type { PinLocation } from '@/types/pinTypes';
+import type { TaskResponse } from '@/types/response';
 
 export interface UseFloorPlanPinningOptions {
   tasks: Ref<TaskResponse[] | null>;
-  currentFloorPlanImage: Ref<string>;
-  currentFloorPlanKey: Ref<string>; // 新增：當前圖片的 key
+  currentFloorPlanKey: Ref<string>;
   scale: Ref<number>;
   translateX: Ref<number>;
   translateY: Ref<number>;
@@ -37,77 +35,76 @@ export const useFloorPlanPinning = (options: UseFloorPlanPinningOptions) => {
     updateTask,
   } = options;
 
-  // 釘選狀態
-  const isAddingPin = ref(false);
-  const selectedTaskIdForPin = ref<string | null>(null);
-  const pinPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 });
-  const isDraggingPin = ref(false);
+  const { calculatePercentage, getPinPixelPosition } = usePinPositionCalculator({
+    imageContainer,
+    floorPlanImg,
+    scale,
+    translateX,
+    translateY,
+  });
 
-  // 選擇任務進行釘選
-  const selectTaskForPin = (taskId: string) => {
-    selectedTaskIdForPin.value = taskId;
-    isAddingPin.value = true;
-    // 初始化大頭釘位置在容器中心
+  const { isAddingPin, selectedTaskIdForPin, pinPosition, selectTaskForPin, cancelPin } =
+    usePinSelection({
+      imageContainer,
+    });
+
+  const { isDraggingPin, startDraggingPin, updatePinPosition, endDraggingPin, resetNewPinState } =
+    useNewPinDrag({
+      pinPosition,
+      isAddingPin,
+      selectedTaskIdForPin,
+      imageContainer,
+      currentFloorPlanKey,
+      calculatePercentage,
+      updateTask,
+    });
+
+  // 拖拽已存在的釘選
+  const isDraggingExistingPin = ref(false);
+  const draggingExistingTaskId = ref<string | null>(null);
+  // 拖拽門檻狀態（判斷 click vs drag）
+  const pendingExistingPinTaskId = ref<string | null>(null);
+  const existingPinPressStart = ref<{ x: number; y: number } | null>(null);
+  const DRAG_THRESHOLD_PX = 4;
+
+  const resetExistingPinDragState = () => {
+    isDraggingExistingPin.value = false;
+    draggingExistingTaskId.value = null;
+    pendingExistingPinTaskId.value = null;
+    existingPinPressStart.value = null;
+  };
+
+  // 按下已存在的釘選（先記錄，超過門檻才真正進入拖拽）
+  const startDraggingExistingPin = (taskId: string, event: MouseEvent) => {
+    pendingExistingPinTaskId.value = taskId;
+    existingPinPressStart.value = { x: event.clientX, y: event.clientY };
+    // 預先更新即時位置，便於一旦進入拖拽立即有預覽
     if (imageContainer.value) {
+      const rect = imageContainer.value.getBoundingClientRect();
       pinPosition.value = {
-        x: imageContainer.value.clientWidth / 2,
-        y: imageContainer.value.clientHeight / 2,
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
       };
     }
   };
 
-  // 取消釘選
-  const cancelPin = () => {
-    isAddingPin.value = false;
-    selectedTaskIdForPin.value = null;
-    isDraggingPin.value = false;
+  const ensureExistingPinDragHasStarted = (event: MouseEvent): boolean => {
+    if (isDraggingExistingPin.value) return true;
+    if (!pendingExistingPinTaskId.value || !existingPinPressStart.value) return false;
+
+    const dx = event.clientX - existingPinPressStart.value.x;
+    const dy = event.clientY - existingPinPressStart.value.y;
+    if (Math.sqrt(dx * dx + dy * dy) < DRAG_THRESHOLD_PX) return false;
+
+    draggingExistingTaskId.value = pendingExistingPinTaskId.value;
+    isDraggingExistingPin.value = true;
+    return true;
   };
 
-  // 計算座標百分比
-  const calculatePercentage = (
-    clientX: number,
-    clientY: number
-  ): { xPercent: number; yPercent: number } | null => {
-    if (!imageContainer.value || !floorPlanImg.value) return null;
-
-    const rect = imageContainer.value.getBoundingClientRect();
-    const clickX = clientX - rect.left;
-    const clickY = clientY - rect.top;
-
-    const centerX = imageContainer.value.clientWidth / 2;
-    const centerY = imageContainer.value.clientHeight / 2;
-
-    const imgDisplayWidth = floorPlanImg.value.naturalWidth * scale.value;
-    const imgDisplayHeight = floorPlanImg.value.naturalHeight * scale.value;
-
-    const imgLeft = centerX + translateX.value - imgDisplayWidth / 2;
-    const imgTop = centerY + translateY.value - imgDisplayHeight / 2;
-
-    const imgX = clickX - imgLeft;
-    const imgY = clickY - imgTop;
-
-    const xPercent = (imgX / imgDisplayWidth) * 100;
-    const yPercent = (imgY / imgDisplayHeight) * 100;
-
-    // 檢查是否在圖片範圍內
-    if (xPercent >= 0 && xPercent <= 100 && yPercent >= 0 && yPercent <= 100) {
-      return { xPercent, yPercent };
-    }
-
-    return null;
-  };
-
-  // 開始拖拽大頭釘
-  const startDraggingPin = (event: MouseEvent) => {
-    if (!isAddingPin.value) return;
-    isDraggingPin.value = true;
-    updatePinPosition(event);
-  };
-
-  // 更新大頭釘位置
-  const updatePinPosition = (event: MouseEvent) => {
-    if (!isDraggingPin.value || !imageContainer.value) return;
-
+  // 拖拽中更新既有釘選位置（沿用 pinPosition 作為即時位置）
+  const updateExistingPinPosition = (event: MouseEvent) => {
+    if (!imageContainer.value) return;
+    if (!ensureExistingPinDragHasStarted(event)) return; // 未超過門檻不算拖拽
     const rect = imageContainer.value.getBoundingClientRect();
     pinPosition.value = {
       x: event.clientX - rect.left,
@@ -115,16 +112,28 @@ export const useFloorPlanPinning = (options: UseFloorPlanPinningOptions) => {
     };
   };
 
-  // 結束拖拽並保存位置
-  const endDraggingPin = async (event: MouseEvent): Promise<boolean> => {
-    if (!isDraggingPin.value || !selectedTaskIdForPin.value || !currentFloorPlanKey.value) {
-      isDraggingPin.value = false;
+  // 結束拖拽並保存既有釘選位置
+  const endDraggingExistingPin = async (event: MouseEvent): Promise<boolean> => {
+    // 如果沒有 pending，直接重置
+    if (!pendingExistingPinTaskId.value) {
+      resetExistingPinDragState();
+      return false;
+    }
+
+    // 未達門檻：視為點擊，不更新位置
+    if (!isDraggingExistingPin.value) {
+      resetExistingPinDragState();
+      return false;
+    }
+
+    if (!draggingExistingTaskId.value || !currentFloorPlanKey.value) {
+      resetExistingPinDragState();
       return false;
     }
 
     const coords = calculatePercentage(event.clientX, event.clientY);
     if (!coords) {
-      isDraggingPin.value = false;
+      resetExistingPinDragState();
       return false;
     }
 
@@ -135,23 +144,23 @@ export const useFloorPlanPinning = (options: UseFloorPlanPinningOptions) => {
     };
 
     try {
-      const result = await updateTask(selectedTaskIdForPin.value, {
+      const result = await updateTask(draggingExistingTaskId.value, {
         pinLocation,
       } as Partial<TaskResponse>);
-
-      if (result.success) {
-        isAddingPin.value = false;
-        selectedTaskIdForPin.value = null;
-        isDraggingPin.value = false;
-        return true;
-      }
-      isDraggingPin.value = false;
-      return false;
+      const ok = !!result?.success;
+      resetExistingPinDragState();
+      return ok;
     } catch (error) {
-      console.error('Error saving pin location:', error);
-      isDraggingPin.value = false;
+      console.error('Error saving existing pin location:', error);
+      resetExistingPinDragState();
       return false;
     }
+  };
+
+  // 取消釘選
+  const cancelPinSelection = () => {
+    cancelPin();
+    resetNewPinState();
   };
 
   // 獲取任務的釘選位置
@@ -178,38 +187,25 @@ export const useFloorPlanPinning = (options: UseFloorPlanPinningOptions) => {
       }));
   });
 
-  // 計算大頭釘在容器中的像素位置
-  const getPinPixelPosition = (pinLoc: PinLocation): { x: number; y: number } | null => {
-    if (!imageContainer.value || !floorPlanImg.value) return null;
-
-    const centerX = imageContainer.value.clientWidth / 2;
-    const centerY = imageContainer.value.clientHeight / 2;
-
-    const imgDisplayWidth = floorPlanImg.value.naturalWidth * scale.value;
-    const imgDisplayHeight = floorPlanImg.value.naturalHeight * scale.value;
-
-    const imgLeft = centerX + translateX.value - imgDisplayWidth / 2;
-    const imgTop = centerY + translateY.value - imgDisplayHeight / 2;
-
-    const x = imgLeft + (pinLoc.xPercent / 100) * imgDisplayWidth;
-    const y = imgTop + (pinLoc.yPercent / 100) * imgDisplayHeight;
-
-    return { x, y };
-  };
-
   return {
     // 狀態
     isAddingPin,
     selectedTaskIdForPin,
     pinPosition,
     isDraggingPin,
+    isDraggingExistingPin,
+    draggingExistingTaskId,
+    pendingExistingPinTaskId,
 
     // 方法
     selectTaskForPin,
-    cancelPin,
+    cancelPin: cancelPinSelection,
     startDraggingPin,
     updatePinPosition,
     endDraggingPin,
+    startDraggingExistingPin,
+    updateExistingPinPosition,
+    endDraggingExistingPin,
     getTaskPinLocation,
     getPinPixelPosition,
 

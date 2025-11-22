@@ -17,13 +17,13 @@ interface UseTasksReturn {
   // 批次獲取專案任務列表
   isLoadingTasks: Ref<boolean>;
   errorTasks: Ref<Error | null>;
-  fetchedTasks: Ref<TaskResponse[] | null>;
+  fetchedTasks: Ref<TaskResponse[] | undefined>;
   tasksUpdatedAt: Ref<number>;
   refetchTasks: () => Promise<void>;
   // 獲取所有任務
   isLoadingAllTasks: Ref<boolean>;
   errorAllTasks: Ref<Error | null>;
-  fetchedAllTasks: Ref<TaskResponse[] | null>;
+  fetchedAllTasks: Ref<TaskResponse[] | undefined>;
   allTasksUpdatedAt: Ref<number>;
   refetchAllTasks: () => Promise<void>;
   // 批次更新專案任務
@@ -233,13 +233,13 @@ export function useTasks(
     // 獲取專案任務列表
     isLoadingTasks,
     errorTasks,
-    fetchedTasks: fetchedTasks as Ref<TaskResponse[] | null>,
+    fetchedTasks: fetchedTasks as Ref<TaskResponse[] | undefined>,
     tasksUpdatedAt,
     refetchTasks,
     // 獲取所有任務
     isLoadingAllTasks,
     errorAllTasks,
-    fetchedAllTasks: fetchedAllTasks as Ref<TaskResponse[] | null>,
+    fetchedAllTasks: fetchedAllTasks as Ref<TaskResponse[] | undefined>,
     allTasksUpdatedAt,
     refetchAllTasks,
     // 批次更新專案任務

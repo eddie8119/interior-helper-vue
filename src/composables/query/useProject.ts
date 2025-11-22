@@ -15,7 +15,7 @@ import { projectApi } from '@/api/project';
 
 interface UseProjectReturn {
   // 獲取專案資料
-  fetchedProject: Ref<ProjectResponse | null>;
+  fetchedProject: Ref<ProjectResponse | undefined>;
   isLoadingProject: Ref<boolean>;
   projectError: Ref<Error | null>;
   refetchProject: () => Promise<void>;
@@ -181,7 +181,7 @@ export function useProject(id?: string): UseProjectReturn {
 
   return {
     // 獲取專案資料
-    fetchedProject: fetchedProject as Ref<ProjectResponse | null>,
+    fetchedProject: fetchedProject as Ref<ProjectResponse | undefined>,
     isLoadingProject,
     projectError,
     refetchProject,

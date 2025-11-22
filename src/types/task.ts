@@ -28,6 +28,12 @@ export enum TaskTimeCondition {
   THIS_MONTH = 'this_month',
 }
 
+export enum TaskPinCondition {
+  ALL = 'all',
+  WITH_PIN = 'with_pin',
+  WITHOUT_PIN = 'without_pin',
+}
+
 export enum TaskScheduleDisplayMode {
   ReminderDateTime = 'reminderDateTime',
   EndDateTime = 'endDateTime',

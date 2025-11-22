@@ -1,6 +1,6 @@
 import type { Tab } from '@/types/layout';
 
-import { TaskTimeCondition } from '@/types/task';
+import { TaskPinCondition, TaskTimeCondition } from '@/types/task';
 
 export const USER_TAB_LIST: Tab[] = [
   {
@@ -35,6 +35,18 @@ export const OVERVIEW_TASK_CONDITION_TAB_LIST: Tab[] = [
   },
   {
     name: TaskTimeCondition.THIS_MONTH,
+  },
+];
+
+export const TASK_PIN_CONDITION_TAB_LIST: Tab[] = [
+  {
+    name: TaskPinCondition.WITHOUT_PIN,
+  },
+  {
+    name: TaskPinCondition.WITH_PIN,
+  },
+  {
+    name: TaskPinCondition.ALL,
   },
 ];
 

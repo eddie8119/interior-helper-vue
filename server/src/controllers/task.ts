@@ -272,13 +272,26 @@ export const createTask = async (req: Request, res: Response) => {
         const { data: insertedMaterials, error: materialsError } = await supabase
           .from('TaskMaterials')
           .insert(materialsToInsert)
-          .select();
+          .select('*');
 
         if (materialsError) {
           console.error('Error creating task materials:', materialsError);
           // 不中斷流程，但記錄錯誤
         } else {
-          taskMaterials = insertedMaterials || [];
+          if (insertedMaterials && insertedMaterials.length > 0) {
+            taskMaterials = insertedMaterials;
+          } else {
+            const { data: fetchedMaterials, error: fetchMaterialsError } = await supabase
+              .from('TaskMaterials')
+              .select('*')
+              .eq('task_id', task.id);
+
+            if (fetchMaterialsError) {
+              console.error('Error fetching task materials after insert:', fetchMaterialsError);
+            } else {
+              taskMaterials = fetchedMaterials || [];
+            }
+          }
         }
       }
     }
@@ -402,13 +415,26 @@ export const updateTask = async (req: Request, res: Response) => {
         const { data: insertedMaterials, error: materialsError } = await supabase
           .from('TaskMaterials')
           .insert(materialsToInsert)
-          .select();
+          .select('*');
 
         if (materialsError) {
           console.error('Error updating task materials:', materialsError);
           // 不中斷流程，但記錄錯誤
         } else {
-          taskMaterials = insertedMaterials;
+          if (insertedMaterials && insertedMaterials.length > 0) {
+            taskMaterials = insertedMaterials;
+          } else {
+            const { data: fetchedMaterials, error: fetchMaterialsError } = await supabase
+              .from('TaskMaterials')
+              .select('*')
+              .eq('task_id', taskId);
+
+            if (fetchMaterialsError) {
+              console.error('Error fetching task materials after update:', fetchMaterialsError);
+            } else {
+              taskMaterials = fetchedMaterials || [];
+            }
+          }
         }
       }
     } else {

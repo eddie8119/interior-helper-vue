@@ -36,6 +36,8 @@
           :is-adding-marker="isAddingMarker"
           :is-adding-pin="isAddingPin"
           :pin-position="pinPosition"
+          :is-dragging-existing-pin="isDraggingExistingPin"
+          :dragging-existing-task-id="draggingExistingTaskId"
           :fixed-pins="fixedPins"
           :get-marker-style="getMarkerStyle"
           @wheel="handleWheel"
@@ -48,6 +50,8 @@
           @select-marker="selectMarker"
           @edit-marker="editMarker"
           @delete-marker="deleteMarkerById"
+          @pin-click="handlePinClickFromCanvas"
+          @pin-mousedown="handlePinMouseDownFromCanvas"
         />
       </div>
     </div>
@@ -60,16 +64,22 @@
         :tasks="sortedTasks"
         :task-markers="taskMarkers"
         :selected-marker-id="selectedMarkerId"
+        :highlighted-task-id="highlightedTaskId"
+        :is-pinning="isAddingPin"
+        :pinning-task-id="selectedTaskIdForPin"
         @select-task="handleTaskSelect"
         @link-task-to-marker="handleLinkTaskToMarker"
         @create-marker-for-task="selectTaskForPin"
+        @remove-task-pin="handleRemoveTaskPin"
+        @cancel-marker-for-task="handleCancelMarkerForTask"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { ElMessage } from 'element-plus';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 import FloorPlanCanvas from './FloorPlanCanvas.vue';
 import FloorPlanToolbar from './FloorPlanToolbar.vue';
@@ -106,6 +116,20 @@ const canvasRef = ref<InstanceType<typeof FloorPlanCanvas> | null>(null);
 // 任務管理
 const tasksRef = ref(props.tasks);
 const { updateTask } = useTasks(props.projectId);
+
+const highlightedTaskId = ref<string | null>(null);
+let highlightTimer: ReturnType<typeof setTimeout> | null = null;
+
+const triggerTaskHighlight = (taskId: string) => {
+  highlightedTaskId.value = taskId;
+  if (highlightTimer) {
+    clearTimeout(highlightTimer);
+  }
+  highlightTimer = setTimeout(() => {
+    highlightedTaskId.value = null;
+    highlightTimer = null;
+  }, 1200);
+};
 
 // 任務按創建時間排序（最新的在前）
 const sortedTasks = computed(() => {
@@ -198,9 +222,17 @@ const { handleFileSelect, handleFileDrop } = useFloorPlanUploadHandler({
 // 釘選功能 composable
 const {
   isAddingPin,
+  selectedTaskIdForPin,
   pinPosition,
   isDraggingPin,
+  isDraggingExistingPin,
+  pendingExistingPinTaskId,
+  draggingExistingTaskId,
+  startDraggingExistingPin,
+  updateExistingPinPosition,
+  endDraggingExistingPin,
   selectTaskForPin,
+  cancelPin,
   startDraggingPin,
   updatePinPosition,
   endDraggingPin,
@@ -208,7 +240,6 @@ const {
   pinsOnCurrentImage,
 } = useFloorPlanPinning({
   tasks: tasksRef,
-  currentFloorPlanImage,
   currentFloorPlanKey,
   scale,
   translateX,
@@ -235,26 +266,78 @@ const fixedPins = computed(() => {
 const handleCanvasMouseDown = (event: MouseEvent) => {
   if (isAddingPin.value) {
     startDraggingPin(event);
-  } else {
-    handleMouseDownInternal(event, isAddingMarker.value);
+    return;
   }
+  // 若正在按住 TaskPin（尚未達門檻）或已在拖拽既有釘選，禁止底圖開始平移
+  if (
+    pendingExistingPinTaskId.value ||
+    isDraggingExistingPin.value ||
+    draggingExistingTaskId.value
+  ) {
+    return;
+  }
+  handleMouseDownInternal(event, isAddingMarker.value);
 };
 
 // 包裝 handleMouseMove 以支持釘選拖拽
 const handleCanvasMouseMove = (event: MouseEvent) => {
+  // 先交給既有釘選的拖拽門檻邏輯決定是否進入拖拽
+  updateExistingPinPosition(event);
+  if (isDraggingExistingPin.value) return;
   if (isDraggingPin.value) {
     updatePinPosition(event);
-  } else {
-    handleMouseMove(event);
+    return;
   }
+  handleMouseMove(event);
 };
 
 // 包裝 handleMouseUp 以支持釘選拖拽結束
 const handleCanvasMouseUp = async (event: MouseEvent) => {
+  // 先讓既有釘選的門檻處理點擊/拖拽結束
+  const handled = await endDraggingExistingPin(event);
+  if (handled) return;
   if (isDraggingPin.value) {
     await endDraggingPin(event);
-  } else {
-    handleMouseUp();
+    return;
+  }
+  handleMouseUp();
+};
+
+const handlePinClickFromCanvas = (taskId: string) => {
+  handleTaskSelect(taskId);
+  triggerTaskHighlight(taskId);
+};
+
+const handlePinMouseDownFromCanvas = (payload: { taskId: string; event: MouseEvent }) => {
+  startDraggingExistingPin(payload.taskId, payload.event);
+};
+
+const handleCancelMarkerForTask = (taskId: string) => {
+  if (!isAddingPin.value || selectedTaskIdForPin.value !== taskId) return;
+  cancelPin();
+  ElMessage.info('已取消標記');
+};
+
+const handleRemoveTaskPin = async (taskId: string) => {
+  try {
+    const result = await updateTask(taskId, { pinLocation: null });
+    if (result?.success) {
+      ElMessage.success('已移除釘選');
+      if (tasksRef.value) {
+        const idx = tasksRef.value.findIndex((task) => task.id === taskId);
+        if (idx !== -1) {
+          tasksRef.value[idx] = {
+            ...tasksRef.value[idx],
+            pinLocation: null,
+          };
+        }
+      }
+    } else {
+      ElMessage.error('移除釘選失敗');
+    }
+  } catch (error) {
+    console.error('Failed to remove task pin:', error);
+    ElMessage.error('移除釘選失敗');
   }
 };
 
@@ -281,6 +364,12 @@ watch(currentFloorPlanImage, () => {
     setTimeout(() => {
       resetZoom();
     }, 100);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (highlightTimer) {
+    clearTimeout(highlightTimer);
   }
 });
 </script>

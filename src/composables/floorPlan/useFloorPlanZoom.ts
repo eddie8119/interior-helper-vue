@@ -34,7 +34,18 @@ export const useFloorPlanZoom = (options: UseFloorPlanZoomOptions) => {
     maxWidth: 'none',
     maxHeight: 'none',
     objectFit: 'contain',
+    display: 'block',
   }));
+
+  const centerImage = () => {
+    if (!floorPlanImg.value || !imageContainer.value) return;
+    const container = imageContainer.value;
+    const img = floorPlanImg.value;
+    const displayWidth = img.naturalWidth * scale.value;
+    const displayHeight = img.naturalHeight * scale.value;
+    translateX.value = (container.clientWidth - displayWidth) / 2;
+    translateY.value = (container.clientHeight - displayHeight) / 2;
+  };
 
   const handleImageLoad = () => {
     if (!floorPlanImg.value || !imageContainer.value) return;
@@ -53,8 +64,7 @@ export const useFloorPlanZoom = (options: UseFloorPlanZoomOptions) => {
     initialScale.value = calculatedScale;
 
     scale.value = calculatedScale;
-    translateX.value = 0;
-    translateY.value = 0;
+    centerImage();
 
     imageLoaded.value = true;
   };
@@ -62,8 +72,7 @@ export const useFloorPlanZoom = (options: UseFloorPlanZoomOptions) => {
   const resetZoom = () => {
     const zoomState = resetZoomState(initialScale.value);
     scale.value = zoomState.scale;
-    translateX.value = zoomState.translateX;
-    translateY.value = zoomState.translateY;
+    centerImage();
   };
 
   const handleWheel = (event: WheelEvent) => {
@@ -79,6 +88,14 @@ export const useFloorPlanZoom = (options: UseFloorPlanZoomOptions) => {
     };
 
     const { newScale, newTranslateX, newTranslateY } = calculateWheelZoom(params);
+
+    // Do not allow zooming out below the initial fitted scale; re-center when clamped
+    if (newScale < initialScale.value) {
+      scale.value = initialScale.value;
+      centerImage();
+      return;
+    }
+
     scale.value = newScale;
     translateX.value = newTranslateX;
     translateY.value = newTranslateY;

@@ -45,7 +45,7 @@ export const createTaskSchema = (t: TranslateFunction) =>
     endDateTime: z.string().optional(),
     pinLocation: z
       .object({
-        floorPlanUrl: z.string().url(),
+        floorPlanKey: z.string(),
         xPercent: z.number().min(0).max(100),
         yPercent: z.number().min(0).max(100),
       })

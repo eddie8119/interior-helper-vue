@@ -49,7 +49,7 @@ export interface ProjectResponse {
   createdAt: Date;
   updatedAt: Date;
   tasks?: TaskResponse[];
-  floorPlanUrls?: (FloorPlanItem | string)[]; // 支援新舊格式
+  floorPlanUrls?: FloorPlanItem[];
 }
 
 // 任務
